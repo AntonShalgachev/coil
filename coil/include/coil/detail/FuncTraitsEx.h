@@ -2,7 +2,7 @@
 #include "utils\TypeListTraits.h"
 #include "ArgumentTraits.h"
 
-namespace cmdapi
+namespace coil
 {
     namespace detail
     {

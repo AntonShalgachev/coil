@@ -1,7 +1,7 @@
 #pragma once
 #include "Context.h"
 
-namespace cmdapi
+namespace coil
 {
     namespace detail
     {

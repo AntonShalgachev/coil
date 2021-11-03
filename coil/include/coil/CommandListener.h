@@ -14,7 +14,7 @@
 #include "utils/TypeId.h"
 #include <any>
 
-namespace cmdapi
+namespace coil
 {
 	class CommandListener
 	{

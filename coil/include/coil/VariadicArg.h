@@ -2,7 +2,7 @@
 
 #include "detail/Converter.h"
 
-namespace cmdapi
+namespace coil
 {
     namespace detail
     {

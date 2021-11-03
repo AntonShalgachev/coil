@@ -3,7 +3,7 @@
 #include <vector>
 #include <string>
 
-namespace cmdapi
+namespace coil
 {
 	struct ExecutionResult
     {

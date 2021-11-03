@@ -12,7 +12,7 @@
 #include "FuncTraitsEx.h"
 #include "utils/ElementSelector.h"
 
-namespace cmdapi
+namespace coil
 {
 	namespace detail
     {

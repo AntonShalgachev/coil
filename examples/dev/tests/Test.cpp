@@ -16,12 +16,12 @@ namespace
             return val * 2.0f;
         }
 
-        float memberFuncWithTargetContext(Object*, cmdapi::Context&, float val)
+        float memberFuncWithTargetContext(Object*, coil::Context&, float val)
         {
             return val * 2.0f;
         }
 
-        float memberFuncWithContext(cmdapi::Context&, float val)
+        float memberFuncWithContext(coil::Context&, float val)
         {
             return val * 2.0f;
         }
@@ -36,12 +36,12 @@ namespace
             return val * 2.0f;
         }
 
-        static float staticFuncWithTargetContext(Object*, cmdapi::Context&, float val)
+        static float staticFuncWithTargetContext(Object*, coil::Context&, float val)
         {
             return val * 2.0f;
         }
 
-        static float staticFuncWithContext(cmdapi::Context&, float val)
+        static float staticFuncWithContext(coil::Context&, float val)
         {
             return val * 2.0f;
         }
@@ -67,7 +67,7 @@ namespace
 
     struct FunctorWithTargetContext
     {
-        float operator()(Object*, cmdapi::Context&, float val)
+        float operator()(Object*, coil::Context&, float val)
         {
             return val * 2.0f;
         }
@@ -75,7 +75,7 @@ namespace
 
     struct FunctorWithContext
     {
-        float operator()(cmdapi::Context&, float val)
+        float operator()(coil::Context&, float val)
         {
             return val * 2.0f;
         }
@@ -86,7 +86,7 @@ namespace
         return val * 2.0f;
     }
 
-    float freeFuncWithContext(cmdapi::Context&, float val)
+    float freeFuncWithContext(coil::Context&, float val)
     {
         return val * 2.0f;
     }
@@ -96,7 +96,7 @@ namespace
         return val * 2.0f;
     }
 
-    float freeFuncWithTargetContext(Object*, cmdapi::Context&, float val)
+    float freeFuncWithTargetContext(Object*, coil::Context&, float val)
     {
         return val * 2.0f;
     }
@@ -111,17 +111,17 @@ namespace
 
     }
 
-    void freeFuncWithoutArgsWithTargetContext(Object*, cmdapi::Context&)
+    void freeFuncWithoutArgsWithTargetContext(Object*, coil::Context&)
     {
 
     }
 
-    void freeFuncWithoutArgsWithContext(cmdapi::Context&)
+    void freeFuncWithoutArgsWithContext(coil::Context&)
     {
 
     }
 
-    std::size_t funcVariadicVector(float, std::string const&, std::vector<cmdapi::VariadicArg> const& args)
+    std::size_t funcVariadicVector(float, std::string const&, std::vector<coil::VariadicArg> const& args)
     {
         return args.size();
     }
@@ -137,9 +137,9 @@ namespace
     }
 }
 
-void cmdapi::tests::test()
+void coil::tests::test()
 {
-    [[maybe_unused]] cmdapi::CommandListener cmd;
+    [[maybe_unused]] coil::CommandListener cmd;
 
     [[maybe_unused]] Object object;
 
@@ -151,11 +151,11 @@ void cmdapi::tests::test()
     {
         return val * 2.0f;
     };
-    [[maybe_unused]] auto lambdaWithTargetContext = [](Object*, cmdapi::Context&, float val)
+    [[maybe_unused]] auto lambdaWithTargetContext = [](Object*, coil::Context&, float val)
     {
         return val * 2.0f;
     };
-    [[maybe_unused]] auto lambdaWithContext = [](cmdapi::Context&, float val)
+    [[maybe_unused]] auto lambdaWithContext = [](coil::Context&, float val)
     {
         return val * 2.0f;
     };

@@ -8,7 +8,7 @@
 #include <algorithm>
 #include <optional>
 
-namespace cmdapi
+namespace coil
 {
 	namespace detail
 	{
