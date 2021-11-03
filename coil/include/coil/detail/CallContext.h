@@ -1,7 +1,6 @@
 #pragma once
 
-#include <string>
-#include <vector>
+#include "ExecutionInput.h"
 #include "ExecutionResult.h"
 
 namespace coil
@@ -10,10 +9,7 @@ namespace coil
     {
         struct CallContext
         {
-            std::string target;
-            std::string name;
-            std::vector<std::string> arguments;
-
+            ExecutionInput input;
             ExecutionResult result;
         };
     }
