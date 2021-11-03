@@ -144,14 +144,14 @@ namespace coil
                     context.result.errors.push_back(std::move(error));
                 };
 
-                invoke(func, context, std::get<NonUserIndices>(nonUserArgs)..., VariadicConverter<std::decay_t<UserArgs>>::fromString(context.arguments, UserIndices, onError)...);
+                invoke(func, context.result, std::get<NonUserIndices>(nonUserArgs)..., VariadicConverter<std::decay_t<UserArgs>>::fromString(context.input.arguments, UserIndices, onError)...);
             }
 
             // Introduce fake R template parameter as a workaround to MSVC evaluating false 'if constexpr' branch
             template<typename... Args, typename R = R>
-            static void invoke(Func& func, CallContext& context, Args&&... args)
+            static void invoke(Func& func, ExecutionResult& result, Args&&... args)
             {
-                if (!context.result)
+                if (!result)
                     return;
 
                 try
@@ -165,20 +165,20 @@ namespace coil
                     else
                     {
                         auto returnValue = std::invoke(func, std::forward<Args>(args)...);
-                        if (context.result)
-                            context.result.output = Converter<R>::toString(returnValue);
+                        if (result)
+                            result.output = Converter<R>::toString(returnValue);
                     }
                 }
                 catch (std::exception const& ex)
                 {
-                    context.result.errors.push_back(utils::formatString("Exception caught during execution: %s", ex.what()));
+                    result.errors.push_back(utils::formatString("Exception caught during execution: %s", ex.what()));
                 }
             }
 
             template<typename ArgTypes>
             static bool validateArguments(CallContext& context)
             {
-                std::vector<std::string> const& arguments = context.arguments;
+                std::vector<std::string> const& arguments = context.input.arguments;
 
                 auto constexpr minArgs = SwallowTraits<ArgTypes>::min;
                 auto constexpr isVariadic = SwallowTraits<ArgTypes>::variadic;
@@ -201,7 +201,7 @@ namespace coil
 
                 std::string typeNames = ArgTypes::name();
                 std::string actualArguments = utils::flatten(arguments, "'");
-                context.result.errors.push_back(utils::formatString(errorFormat, context.name.c_str(), minArgs, typeNames.c_str(), arguments.size(), actualArguments.c_str()));
+                context.result.errors.push_back(utils::formatString(errorFormat, context.input.name.c_str(), minArgs, typeNames.c_str(), arguments.size(), actualArguments.c_str()));
 
                 return false;
             }

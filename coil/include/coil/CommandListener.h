@@ -220,13 +220,15 @@ namespace coil
         {
             auto& typeFunctors = m_functors[utils::typeId<T>()];
 
-            auto it = typeFunctors.find(context.name);
+            std::string const& name = context.input.name;
+
+            auto it = typeFunctors.find(name);
             if (it == typeFunctors.end())
             {
                 if constexpr (std::is_void_v<T>)
-                    context.result.errors.push_back(utils::formatString("No function '%s' is registered", context.name.c_str()));
+                    context.result.errors.push_back(utils::formatString("No function '%s' is registered", name.c_str()));
                 else
-                    context.result.errors.push_back(utils::formatString("No function '%s' is registered for type '%s'", context.name.c_str(), utils::Types<T>::name().c_str()));
+                    context.result.errors.push_back(utils::formatString("No function '%s' is registered for type '%s'", name.c_str(), utils::Types<T>::name().c_str()));
 
                 return;
             }

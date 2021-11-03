@@ -20,6 +20,7 @@ set(ALL_FILES
 
     "include/coil/CommandListener.h"
     "include/coil/ExecutionResult.h"
+    "include/coil/ExecutionInput.h"
     "include/coil/VariadicArg.h"
     "include/coil/Context.h"
 

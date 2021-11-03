@@ -139,16 +139,19 @@ coil::ExecutionResult coil::CommandListener::execute(std::string command)
 
     std::vector<std::string> tokens = Tokenizer{ std::move(rest) }.getTokens();
 
-    detail::CallContext context;
+    ExecutionInput input;
 
-    context.target = std::move(target);
+    input.target = std::move(target);
 
     if (!tokens.empty())
     {
-        context.name = tokens[0];
+        input.name = tokens[0];
         tokens.erase(tokens.begin());
-        context.arguments = std::move(tokens);
+        input.arguments = std::move(tokens);
     }
+
+    detail::CallContext context;
+    context.input = std::move(input);
 
     execute(context);
 
@@ -157,19 +160,19 @@ coil::ExecutionResult coil::CommandListener::execute(std::string command)
 
 void coil::CommandListener::execute(detail::CallContext& context)
 {
-	if (context.name.empty())
-	{
+	if (context.input.name.empty())
+    {
         context.result.errors.push_back("No command name is specified");
-		return;
-	}
+        return;
+    }
 
-    if (context.target.empty())
+    if (context.input.target.empty())
         return objectTrampoline<void>({}, context);
 
-    auto it = m_objects.find(context.target);
+    auto it = m_objects.find(context.input.target);
     if (it == m_objects.end())
     {
-        context.result.errors.push_back(utils::formatString("Object '%s' is not registered", context.target.c_str()));
+        context.result.errors.push_back(utils::formatString("Object '%s' is not registered", context.input.target.c_str()));
         return;
     }
 
