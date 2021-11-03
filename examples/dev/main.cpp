@@ -9,7 +9,7 @@ namespace test
     class ServiceB
     {
     public:
-        float update(cmdapi::Context& context, float dt)
+        float update(coil::Context& context, float dt)
         {
             if (dt < 1.0f)
             {
@@ -22,7 +22,7 @@ namespace test
         }
     };
 
-    cmdapi::VariadicArg freeFunction(cmdapi::Context&, cmdapi::VariadicArg arg)
+    coil::VariadicArg freeFunction(coil::Context&, coil::VariadicArg arg)
     {
         std::cout << "I'm a free function!" << std::endl;
         return !arg.as<bool>();
@@ -40,7 +40,7 @@ namespace test
 
     void test()
     {
-        cmdapi::CommandListener cmd;
+        coil::CommandListener cmd;
 
         ServiceB serviceB;
 
@@ -75,7 +75,7 @@ int main()
 {
     try
     {
-        cmdapi::tests::test();
+        coil::tests::test();
 
         test::test();
         std::getchar();

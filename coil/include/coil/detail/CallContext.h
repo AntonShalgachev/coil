@@ -4,7 +4,7 @@
 #include <vector>
 #include "ExecutionResult.h"
 
-namespace cmdapi
+namespace coil
 {
     namespace detail
     {

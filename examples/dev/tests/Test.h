@@ -1,6 +1,6 @@
 #pragma once
 
-namespace cmdapi
+namespace coil
 {
     namespace tests
     {

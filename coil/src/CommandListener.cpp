@@ -92,17 +92,17 @@ namespace
     }
 }
 
-bool cmdapi::CommandListener::unbind(std::string const& name)
+bool coil::CommandListener::unbind(std::string const& name)
 {
 	return unbind<void>(name);
 }
 
-void cmdapi::CommandListener::unbindAll()
+void coil::CommandListener::unbindAll()
 {
 	return unbindAll<void>();
 }
 
-bool cmdapi::CommandListener::removeObject(std::string const& name)
+bool coil::CommandListener::removeObject(std::string const& name)
 {
 	if (name.empty())
 		return false;
@@ -112,12 +112,12 @@ bool cmdapi::CommandListener::removeObject(std::string const& name)
 	return true;
 }
 
-void cmdapi::CommandListener::removeAllObjects()
+void coil::CommandListener::removeAllObjects()
 {
     m_objects.clear();
 }
 
-cmdapi::ExecutionResult cmdapi::CommandListener::execute(std::string command)
+coil::ExecutionResult coil::CommandListener::execute(std::string command)
 {
     std::string target;
     std::string rest;
@@ -155,7 +155,7 @@ cmdapi::ExecutionResult cmdapi::CommandListener::execute(std::string command)
     return context.result;
 }
 
-void cmdapi::CommandListener::execute(detail::CallContext& context)
+void coil::CommandListener::execute(detail::CallContext& context)
 {
 	if (context.name.empty())
 	{
