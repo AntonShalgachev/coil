@@ -6,7 +6,7 @@
       "type": "native",
       "name": "Run",
       "project": "CMakeLists.txt",
-      "currentDir": "${projectDir}/debug-api-prototype"
+      "currentDir": "${projectDir}/coil"
     }
   ]
 }
