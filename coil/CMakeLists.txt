@@ -23,6 +23,7 @@ set(ALL_FILES
     "include/coil/ExecutionInput.h"
     "include/coil/VariadicArg.h"
     "include/coil/Context.h"
+    "include/coil/NamedArgs.h"
 
     "include/coil/detail/FunctorCaller.h"
     "include/coil/detail/CallContext.h"

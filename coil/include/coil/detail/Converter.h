@@ -4,9 +4,10 @@
 #include <sstream>
 #include <cctype>
 
-#include "CallContext.h"
 #include <algorithm>
 #include <optional>
+
+// TODO move to utils
 
 namespace coil
 {
@@ -15,10 +16,10 @@ namespace coil
         namespace util
         {
             template<typename T, typename OnError>
-            static void reportError(std::string const& str, OnError&& onError)
+            static void reportError(std::string_view const& str, OnError&& onError)
             {
                 std::string typeName = utils::Types<T>::name();
-                onError(utils::formatString("Unable to convert '%s' to type '%s'", str.c_str(), typeName.c_str()));
+                onError(utils::formatString("Unable to convert '%.*s' to type '%s'", str.length(), str.data(), typeName.c_str()));
             }
         }
 
@@ -28,9 +29,11 @@ namespace coil
             static_assert(!std::is_void_v<T>, "Void isn't a valid conversion type");
 
             template<typename OnError>
-            static T fromString(std::string const& str, OnError&& onError)
+            static T fromString(std::string_view str, OnError&& onError)
             {
-                std::stringstream ss{ str };
+                std::stringstream ss;
+
+                ss << str;
 
                 if constexpr (std::is_same_v<T, bool>)
                 {
@@ -66,9 +69,9 @@ namespace coil
         struct Converter<bool>
         {
             template<typename OnError>
-            static bool fromString(std::string const& str, OnError&& onError)
+            static bool fromString(std::string_view str, OnError&& onError)
             {
-                std::string lowercaseStr = str;
+                std::string lowercaseStr{ str };
                 std::transform(lowercaseStr.begin(), lowercaseStr.end(), lowercaseStr.begin(),
                                [](unsigned char c) { return static_cast<unsigned char>(std::tolower(c)); });
 
@@ -91,9 +94,9 @@ namespace coil
         struct Converter<std::string>
         {
             template<typename OnError>
-            static std::string fromString(std::string const& str, [[maybe_unused]] OnError&& onError)
+            static std::string fromString(std::string_view str, [[maybe_unused]] OnError&& onError)
             {
-                return str;
+                return std::string{ str };
             }
 
             static std::string toString(std::string const& value)
@@ -102,26 +105,26 @@ namespace coil
             }
         };
 
-        template<>
-        struct Converter<char const*>
-        {
-            template<typename OnError>
-            static char const* fromString(std::string const& str, [[maybe_unused]] OnError&& onError)
-            {
-                return str.c_str();
-            }
+        //template<>
+        //struct Converter<char const*>
+        //{
+        //    template<typename OnError>
+        //    static char const* fromString(std::string_view str, [[maybe_unused]] OnError&& onError)
+        //    {
+        //        return str.c_str();
+        //    }
 
-            static std::string toString(char const* const& value)
-            {
-                return std::string{ value };
-            }
-        };
+        //    static std::string toString(char const* const& value)
+        //    {
+        //        return std::string{ value };
+        //    }
+        //};
 
         template<typename T>
         struct Converter<std::optional<T>>
         {
             template<typename OnError>
-            static std::optional<T> fromString(std::string const& str, [[maybe_unused]] OnError&& onError)
+            static std::optional<T> fromString(std::string_view const& str, [[maybe_unused]] OnError&& onError)
             {
                 if (str.empty())
                     return {};

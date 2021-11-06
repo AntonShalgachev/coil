@@ -43,17 +43,28 @@ namespace coil
     {
     public:
         VariadicArg() = default;
-        VariadicArg(std::string value) : m_value(value) {}
+        VariadicArg(std::string_view value) : m_value(value) {}
 
         template<typename T>
         VariadicArg(T const& value) : m_value(detail::Converter<T>::toString(value)) {}
+
+        template<typename T>
+        std::optional<T> tryGet() const
+        {
+            detail::OnErrorFlag errorFlag;
+            auto val = detail::Converter<T>::fromString(m_value, errorFlag);
+            if (errorFlag)
+                return {};
+
+            return val;
+        }
 
         template<typename T>
         bool is() const
         {
             detail::OnErrorFlag errorFlag;
             detail::Converter<T>::fromString(m_value, errorFlag);
-            return errorFlag;
+            return !errorFlag;
         }
 
         template<typename T>
@@ -67,11 +78,12 @@ namespace coil
             return val;
         }
 
-        std::string const& getRaw() const { return m_value; }
+        std::string_view const& getRaw() const { return m_value; }
 
         friend std::istream& operator>>(std::istream& is, VariadicArg& self)
         {
-            is >> self.m_value;
+            is >> self.m_container;
+            self.m_value = self.m_container;
             return is;
         }
 
@@ -82,6 +94,9 @@ namespace coil
         }
 
     private:
-        std::string m_value;
+        std::string_view m_value;
+
+        // used only when owning a string, i.e. when parsing it from a stream
+        std::string m_container;
     };
 }
