@@ -178,7 +178,7 @@ namespace coil
             template<typename ArgTypes>
             static bool validateArguments(CallContext& context)
             {
-                std::vector<std::string> const& arguments = context.input.arguments;
+                auto const& arguments = context.input.arguments;
 
                 auto constexpr minArgs = SwallowTraits<ArgTypes>::min;
                 auto constexpr isVariadic = SwallowTraits<ArgTypes>::variadic;
