@@ -1,9 +1,9 @@
 #pragma once
 
+#include "detail/CallContext.h"
+
 namespace coil
 {
-    // TODO rename to Context
-
     class Context
     {
     public:
