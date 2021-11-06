@@ -3,7 +3,6 @@
 #include <string>
 #include <functional>
 #include <unordered_map>
-#include <stdexcept>
 
 #include "utils/FuncTraits.h"
 #include "utils/Utils.h"
@@ -123,7 +122,10 @@ namespace coil
             return bindFunc<void>(std::move(name), utils::VariableWrapper{ var });
         }
 
-		bool unbind(std::string const& name);
+        bool unbind(std::string const& name)
+        {
+            return unbind<void>(name);
+        }
 
         template<typename T>
         bool unbind(std::string const& name)
@@ -137,7 +139,10 @@ namespace coil
 			return true;
         }
 
-		void unbindAll();
+        void unbindAll()
+        {
+            return unbindAll<void>();
+        }
 
         template<typename T>
         void unbindAll()
@@ -162,9 +167,26 @@ namespace coil
 
         bool removeObject(std::string const& name);
 
-        void removeAllObjects();
+        void removeAllObjects()
+        {
+            m_objects.clear();
+        }
 
-        ExecutionResult execute(std::string command);
+        template<typename LexerT>
+        ExecutionResult execute(std::string command, LexerT&& lexer)
+        {
+            return execute(lexer(std::move(command)));
+        }
+
+        ExecutionResult execute(ExecutionInput input)
+        {
+            detail::CallContext context;
+            context.input = std::move(input);
+
+            execute(context);
+
+            return context.result;
+        }
 
 	private:
         struct AnyObject
