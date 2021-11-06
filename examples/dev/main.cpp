@@ -84,7 +84,8 @@ namespace test
         execute("func true");
         execute("func trues");
         execute("func");
-        execute("namedFunc");
+        execute("func key=val");
+        execute("namedFunc time=0.15 key=value dt=0.12");
     }
 }
 
