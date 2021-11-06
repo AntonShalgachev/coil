@@ -120,13 +120,21 @@ namespace coil
                 if (!validateArguments<UserArgTypes>(context))
                     return;
 
+                if (!context.input.namedArguments.empty() && !Traits::NamedArgsTraits::isPresent)
+                {
+                    context.result.errors.push_back("The function doesn't support named arguments");
+                    return;
+                }
+
                 Context contextArg{ context };
-                std::tuple<T*, Context&> nonUserArgOptions{ target, contextArg };
+                NamedArgs namedArgs{ context.input };
+                std::tuple<T*, Context&, NamedArgs> nonUserArgOptions{ target, contextArg, namedArgs };
 
                 static constexpr bool b1 = Traits::template isMethodOfType<T> || Traits::ExplicitTargetTraits::isPresent;
                 static constexpr bool b2 = Traits::ContextTraits::isPresent;
+                static constexpr bool b3 = Traits::NamedArgsTraits::isPresent;
 
-                auto nonUserArgs = utils::ElementSelector<b1, b2>::select(nonUserArgOptions);
+                auto nonUserArgs = utils::ElementSelector<b1, b2, b3>::select(nonUserArgOptions);
                 using NonUserArgIndices = std::make_index_sequence<std::tuple_size_v<decltype(nonUserArgs)>>;
 
                 unpackAndInvoke(func, context, nonUserArgs, NonUserArgIndices{}, UserArgTypes{}, UserArgIndicesType{});

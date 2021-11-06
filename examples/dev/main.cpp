@@ -4,6 +4,7 @@
 #include "coil/VariadicArg.h"
 #include "tests/Test.h"
 #include "SimpleLexer.h"
+#include "coil/NamedArgs.h"
 
 namespace test
 {
@@ -39,6 +40,17 @@ namespace test
         return {};
     }
 
+    void variadicNamedFunc(coil::NamedArgs args)
+    {
+        std::cout << args.size() << " arguments were received:" << std::endl;
+        for (coil::NamedArg const& arg : args)
+        {
+            auto variadic = arg.asVariadic();
+            bool isFloat = variadic.is<float>();
+            std::cout << arg.key() << ": " << arg.value() << (isFloat ? " (float)" : "") << std::endl;
+        }
+    }
+
     void test()
     {
         coil::CommandListener cmd;
@@ -50,6 +62,7 @@ namespace test
         cmd.bind<ServiceB>("update", &ServiceB::update);
 
         cmd.bind("func", &optionalArgFunc);
+        cmd.bind("namedFunc", &variadicNamedFunc);
 
         SimpleLexer lexer;
 
@@ -71,6 +84,7 @@ namespace test
         execute("func true");
         execute("func trues");
         execute("func");
+        execute("namedFunc");
     }
 }
 

@@ -20,6 +20,7 @@ namespace coil
             using UserArgumentTypes = utils::FilterTypesT<IsUserArgument, ArgTypes>;
             using ExplicitTargetTraits = utils::TypeListTraits<IsExplicitTargetArgument, ArgTypes>;
             using ContextTraits = utils::TypeListTraits<IsContextArgument, ArgTypes>;
+            using NamedArgsTraits = utils::TypeListTraits<IsNamedArgsArgument, ArgTypes>;
         };
     }
 }
