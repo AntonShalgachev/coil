@@ -3,6 +3,7 @@
 #include "coil/CommandListener.h"
 #include "coil/VariadicArg.h"
 #include "tests/Test.h"
+#include "SimpleLexer.h"
 
 namespace test
 {
@@ -50,10 +51,12 @@ namespace test
 
         cmd.bind("func", &optionalArgFunc);
 
-		auto execute = [&cmd](std::string command)
+        SimpleLexer lexer;
+
+		auto execute = [&cmd, &lexer](std::string command)
 		{
 			std::cout << "Executing [" << command << "]" << std::endl;
-			auto result = cmd.execute(std::move(command));
+			auto result = cmd.execute(std::move(command), lexer);
 
 			for (const auto& error : result.errors)
 				std::cout << "\t" << "Error: " << error << std::endl;

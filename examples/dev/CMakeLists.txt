@@ -7,6 +7,8 @@ set(ALL_FILES
     "main.cpp"
     "tests/Test.h"
     "tests/Test.cpp"
+    "SimpleLexer.h"
+    "SimpleLexer.cpp"
 )
 
 set (VS2017 OFF)
