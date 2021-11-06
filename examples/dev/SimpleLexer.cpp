@@ -59,7 +59,23 @@ coil::ExecutionInput SimpleLexer::operator()(std::string str) const
     {
         input.name = tokens[0];
         tokens.erase(tokens.begin());
-        input.arguments = std::move(tokens);
+
+        // wtf Wtf WTF WTF!!! Burn this shit with the flamethrower
+        for (auto&& token : tokens)
+        {
+            auto pos = token.find("=");
+            if (pos == std::string::npos)
+            {
+                input.arguments.push_back(std::move(token));
+            }
+            else
+            {
+                auto key = token.substr(0, pos);
+                auto value = token.substr(pos + 1);
+
+                input.namedArguments.emplace(std::move(key), std::move(value));
+            }
+        }
     }
 
     return input;
