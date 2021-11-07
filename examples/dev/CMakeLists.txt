@@ -9,6 +9,7 @@ set(ALL_FILES
     "tests/Test.cpp"
     "SimpleLexer.h"
     "SimpleLexer.cpp"
+    "EnumToString.h"
 )
 
 set (VS2017 OFF)

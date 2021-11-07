@@ -1,9 +1,24 @@
 #include "Test.h"
 #include "coil/CommandListener.h"
 #include "coil/VariadicArg.h"
+#include "../EnumToString.h"
 
 namespace
 {
+    enum class ScopedEnum
+    {
+        One,
+        Two,
+        Three,
+    };
+
+    enum UnscopedEnum
+    {
+        UnscopedEnum_One,
+        UnscopedEnum_Two,
+        UnscopedEnum_Three,
+    };
+
     struct Object
     {
         float memberFunc(float val)
@@ -47,6 +62,11 @@ namespace
         }
 
         float memberVariable = 2.0f;
+    };
+
+    struct SecondObject
+    {
+
     };
 
     struct Functor
@@ -96,6 +116,11 @@ namespace
         return val * 2.0f;
     }
 
+    float freeFuncWithWrongTarget(SecondObject*, float val)
+    {
+        return val * 2.0f;
+    }
+
     float freeFuncWithTargetContext(Object*, coil::Context&, float val)
     {
         return val * 2.0f;
@@ -134,6 +159,26 @@ namespace
     float funcOptional(float, std::string const&, std::optional<float> arg)
     {
         return arg.value_or(0.0f);
+    }
+
+    ScopedEnum funcScopedEnum(ScopedEnum val)
+    {
+        return val;
+    }
+
+    UnscopedEnum funcUnscopedEnum(UnscopedEnum val)
+    {
+        return val;
+    }
+
+    void funcNamedArgs(coil::NamedArgs)
+    {
+
+    }
+
+    void funcTargetNamedArgs(Object*, coil::NamedArgs)
+    {
+
     }
 }
 
@@ -203,18 +248,25 @@ void coil::tests::test()
     cmd.bind<Object>("", &Object::staticFuncWithTarget);
     cmd.bind<Object>("", &Object::staticFuncWithTargetContext);
 
+    cmd.bind<Object>("", &funcTargetNamedArgs);
+
     cmd.bind<Object>("", &Object::memberFuncWithTarget, &object);
     cmd.bind<Object>("", &Object::memberFuncWithTargetContext, &object);
 
     cmd.bind("", &funcVariadicVector);
     cmd.bind("", &funcFloatVector);
     cmd.bind("", &funcOptional);
+    cmd.bind("", &funcNamedArgs);
+
+    cmd.bind("", &funcScopedEnum);
+    cmd.bind("", &funcUnscopedEnum);
 
     // Compilation error
     //cmd.bind<Object>("", &variable);
     //cmd.bind<Object>("", [](int*) {});
     //cmd.bind<Object>("", &Object::memberFuncWithTarget);
     //cmd.bind<Object>("", &Object::memberFuncWithTargetContext);
+    //cmd.bind<Object>("", &freeFuncWithWrongTarget);
 
     //cmd.bind("", &Object::memberFunc);
     //cmd.bind("", &freeFuncWithTarget);
