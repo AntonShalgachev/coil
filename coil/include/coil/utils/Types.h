@@ -2,7 +2,7 @@
 
 #include "Utils.h"
 
-namespace utils
+namespace coil::utils
 {
 	namespace detail
 	{
@@ -26,7 +26,7 @@ namespace utils
 		{
 			std::vector<std::string> names = { detail::TypeInfo<Args>::name() ... };
 
-			return utils::flatten(names);
+			return flatten(names);
 		}
 	};
 }

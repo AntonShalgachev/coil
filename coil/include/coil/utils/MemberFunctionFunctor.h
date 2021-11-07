@@ -2,7 +2,7 @@
 
 #include "Types.h"
 
-namespace utils
+namespace coil::utils
 {
 	namespace detail
 	{

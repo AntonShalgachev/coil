@@ -1,6 +1,6 @@
 #include "utils/Utils.h"
 
-std::string utils::flatten(std::vector<std::string> const& strings, std::string decorator, std::string separator)
+std::string coil::utils::flatten(std::vector<std::string> const& strings, std::string decorator, std::string separator)
 {
 	std::string currentSeparator = "";
 	std::stringstream ss;

@@ -2,7 +2,7 @@
 
 #include <optional>
 
-namespace utils
+namespace coil::utils
 {
     // TODO support const variables
 
