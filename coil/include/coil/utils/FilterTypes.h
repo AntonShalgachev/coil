@@ -1,25 +1,27 @@
 #pragma once
 
-namespace utils
+#include "Types.h"
+
+namespace coil::utils
 {
-    template<typename FilteredTypes, template<typename> typename Pred, typename Types, typename = void>
+    template<typename FilteredTypes, template<typename> typename Pred, typename TypeList, typename = void>
     struct FilterTypesImpl;
 
     template<template<typename> typename Pred, typename Head, typename... Tail, typename... FilteredTs>
-    struct FilterTypesImpl<utils::Types<FilteredTs...>, Pred, utils::Types<Head, Tail...>, std::enable_if_t<Pred<Head>::value>> : public FilterTypesImpl<utils::Types<FilteredTs..., Head>, Pred, utils::Types<Tail...>> {};
+    struct FilterTypesImpl<Types<FilteredTs...>, Pred, Types<Head, Tail...>, std::enable_if_t<Pred<Head>::value>> : FilterTypesImpl<Types<FilteredTs..., Head>, Pred, Types<Tail...>> {};
 
     template<template<typename> typename Pred, typename Head, typename... Tail, typename... FilteredTs>
-    struct FilterTypesImpl<utils::Types<FilteredTs...>, Pred, utils::Types<Head, Tail...>, std::enable_if_t<!Pred<Head>::value>> : public FilterTypesImpl<utils::Types<FilteredTs...>, Pred, utils::Types<Tail...>> {};
+    struct FilterTypesImpl<Types<FilteredTs...>, Pred, Types<Head, Tail...>, std::enable_if_t<!Pred<Head>::value>> : FilterTypesImpl<Types<FilteredTs...>, Pred, Types<Tail...>> {};
 
     template<typename FilteredTypes, template<typename> typename Pred>
-    struct FilterTypesImpl<FilteredTypes, Pred, utils::Types<>>
+    struct FilterTypesImpl<FilteredTypes, Pred, Types<>>
     {
         using Types = FilteredTypes;
     };
 
-    template<template<typename> typename Pred, typename Types>
-    struct FilterTypes : public FilterTypesImpl<utils::Types<>, Pred, Types> {};
+    template<template<typename> typename Pred, typename TypeList>
+    struct FilterTypes : FilterTypesImpl<Types<>, Pred, TypeList> {};
 
-    template<template<typename> typename Pred, typename Types>
-    using FilterTypesT = typename FilterTypes<Pred, Types>::Types;
+    template<template<typename> typename Pred, typename TypeList>
+    using FilterTypesT = typename FilterTypes<Pred, TypeList>::Types;
 }

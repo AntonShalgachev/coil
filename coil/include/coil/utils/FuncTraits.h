@@ -3,7 +3,7 @@
 #include "Types.h"
 #include <type_traits>
 
-namespace utils
+namespace coil::utils
 {
 	template<typename R, typename T, bool IsConst, typename... Args>
 	struct BaseFuncTraits

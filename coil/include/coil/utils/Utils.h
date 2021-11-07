@@ -5,7 +5,7 @@
 #include <string>
 #include <sstream>
 
-namespace utils
+namespace coil::utils
 {
 	template<typename... Args>
 	std::string formatString(char const* format, Args... args)

@@ -2,7 +2,7 @@
 #include <utility>
 #include "TrueIndices.h"
 
-namespace utils
+namespace coil::utils
 {
     template<bool... Bs>
     struct ElementSelector
@@ -13,7 +13,7 @@ namespace utils
         {
             static_assert(sizeof...(Bs) == std::tuple_size_v<SourceTuple>, "SourceTuple size should match the size of Bs");
 
-            return createTuple(source, utils::TrueIndicesT<Bs...>{});
+            return createTuple(source, TrueIndicesT<Bs...>{});
         }
 
     private:

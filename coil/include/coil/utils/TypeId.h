@@ -1,6 +1,6 @@
 #pragma once
 
-namespace utils
+namespace coil::utils
 {
     using TypeIdT = void const*;
     template<typename T>

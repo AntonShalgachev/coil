@@ -1,6 +1,6 @@
 #pragma once
 
-namespace utils
+namespace coil::utils
 {
     // indices where Bs are true
     template<typename IndexSequence, std::size_t Index, typename BoolSequence, typename = void>
