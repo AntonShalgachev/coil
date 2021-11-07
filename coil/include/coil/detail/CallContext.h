@@ -3,14 +3,11 @@
 #include "coil/ExecutionInput.h"
 #include "coil/ExecutionResult.h"
 
-namespace coil
+namespace coil::detail
 {
-    namespace detail
+    struct CallContext
     {
-        struct CallContext
-        {
-            ExecutionInput input;
-            ExecutionResult result;
-        };
-    }
+        ExecutionInput input;
+        ExecutionResult result;
+    };
 }
