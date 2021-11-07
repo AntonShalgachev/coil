@@ -5,6 +5,148 @@
 #include "tests/Test.h"
 #include "SimpleLexer.h"
 #include "coil/NamedArgs.h"
+#include "magic_enum.hpp"
+#include <array>
+
+//#define USE_MAGIC_ENUM
+
+#ifdef USE_MAGIC_ENUM
+template<typename EnumT, typename = std::enable_if_t<std::is_enum_v<EnumT>>>
+std::istream& operator>>(std::istream& is, EnumT& value)
+{
+    std::string stringValue;
+    is >> stringValue;
+
+    // TODO somehow notify caller of possible values of EnumT
+
+    std::optional<EnumT> optionalValue = magic_enum::enum_cast<EnumT>(stringValue, [](unsigned char a, unsigned char b)
+    {
+        return std::tolower(a) == std::tolower(b);
+    });
+
+    if (optionalValue.has_value())
+        value = optionalValue.value();
+    else
+        is.setstate(std::ios_base::failbit);
+
+    return is;
+}
+
+template<typename EnumT, typename = std::enable_if_t<std::is_enum_v<EnumT>>>
+std::ostream& operator<<(std::ostream& os, EnumT const& value)
+{
+    os << magic_enum::enum_name(value);
+    return os;
+}
+#endif
+
+#ifndef USE_MAGIC_ENUM
+namespace enum_util
+{
+    template<typename EnumT>
+    std::vector<std::string_view> const& getEnumNames();
+
+    template<typename EnumT>
+    std::optional<EnumT> stringToEnum(std::string_view value)
+    {
+        std::vector<std::string_view> const& names = getEnumNames<EnumT>();
+
+        for (std::size_t i = 0; i < names.size(); i++)
+        {
+            std::string_view name = names[i];
+            if (name == value)
+                return static_cast<EnumT>(i);
+        }
+
+        return {};
+    }
+
+    template<typename EnumT>
+    std::string_view enumToString(EnumT value)
+    {
+        std::vector<std::string_view> const& names = getEnumNames<EnumT>();
+
+        std::size_t index = static_cast<std::size_t>(value);
+        if (index < names.size())
+            return names.at(index);
+
+        return {};
+    }
+}
+
+template<typename EnumT, typename = std::enable_if_t<std::is_enum_v<EnumT>>>
+std::istream& operator>>(std::istream& is, EnumT& value)
+{
+    std::string stringValue;
+    is >> stringValue;
+
+    // TODO somehow notify caller of possible values of EnumT
+
+    std::optional<EnumT> optionalValue = enum_util::stringToEnum<EnumT>(stringValue);
+
+    if (optionalValue.has_value())
+        value = optionalValue.value();
+    else
+        is.setstate(std::ios_base::failbit);
+
+    return is;
+}
+
+template<typename EnumT, typename = std::enable_if_t<std::is_enum_v<EnumT>>>
+std::ostream& operator<<(std::ostream& os, EnumT const& value)
+{
+    os << enum_util::enumToString(value);
+    return os;
+}
+#endif
+
+namespace ext
+{
+    enum class Speed
+    {
+        Slow,
+        Fast,
+    };
+
+#ifndef USE_MAGIC_ENUM
+    static std::vector<std::string_view> speedEnumNames = { "Slow", "Fast" };
+#endif
+}
+
+#ifndef USE_MAGIC_ENUM
+namespace enum_util
+{
+    template<>
+    std::vector<std::string_view> const& getEnumNames<ext::Speed>()
+    {
+        return ext::speedEnumNames;
+    }
+}
+#endif
+
+namespace test
+{
+    enum class Type
+    {
+        Soft,
+        Hard,
+    };
+
+#ifndef USE_MAGIC_ENUM
+    static std::vector<std::string_view> typeEnumNames = { "Soft", "Hard" };
+#endif
+}
+
+#ifndef USE_MAGIC_ENUM
+namespace enum_util
+{
+    template<>
+    std::vector<std::string_view> const& getEnumNames<test::Type>()
+    {
+        return test::typeEnumNames;
+    }
+}
+#endif
 
 namespace test
 {
@@ -40,6 +182,17 @@ namespace test
         return {};
     }
 
+    Type enumFunc(Type type, std::optional<ext::Speed> speed)
+    {
+        std::cout << "Type: " << magic_enum::enum_name(type) << std::endl;
+        if (speed.has_value())
+            std::cout << "Speed: " << magic_enum::enum_name(speed.value()) << std::endl;
+
+        if (type == Type::Soft)
+            return Type::Hard;
+        return Type::Soft;
+    }
+
     void variadicNamedFunc(coil::NamedArgs args)
     {
         std::cout << args.size() << " arguments were received:" << std::endl;
@@ -63,6 +216,7 @@ namespace test
 
         cmd.bind("func", &optionalArgFunc);
         cmd.bind("namedFunc", &variadicNamedFunc);
+        cmd.bind("enumFunc", &enumFunc);
 
         SimpleLexer lexer;
 
@@ -78,14 +232,11 @@ namespace test
             std::cout << std::endl;
 		};
 
-        //execute("service.update 0.16");
-        //execute("service.update 1.16");
-        //execute("service.update 1.16s");
-        execute("func true");
-        execute("func trues");
-        execute("func");
-        execute("func key=val");
-        execute("namedFunc time=0.15 key=value dt=0.12");
+        execute("enumFunc Soft Fast");
+        execute("enumFunc soft FAst");
+        execute("enumFunc hard slOW");
+        execute("enumFunc Hard Slow");
+        execute("enumFunc foo bar");
     }
 }
 
