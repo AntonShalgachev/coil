@@ -2,6 +2,7 @@
 
 #include <stdexcept>
 #include <algorithm>
+#include <cctype>
 
 #include "coil/ExecutionInput.h"
 
