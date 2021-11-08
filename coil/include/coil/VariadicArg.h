@@ -1,6 +1,8 @@
 #pragma once
 
 #include "detail/Converter.h"
+#include <string_view>
+#include <vector>
 
 namespace coil
 {
