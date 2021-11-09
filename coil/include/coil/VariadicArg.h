@@ -1,6 +1,6 @@
 #pragma once
 
-#include "detail/Converter.h"
+#include "Converter.h"
 #include <string_view>
 #include <vector>
 
@@ -48,13 +48,13 @@ namespace coil
         VariadicArg(std::string_view value) : m_value(value) {}
 
         template<typename T>
-        VariadicArg(T const& value) : m_value(detail::Converter<T>::toString(value)) {}
+        VariadicArg(T const& value) : m_value(Converter<T>::toString(value)) {}
 
         template<typename T>
         std::optional<T> tryGet() const
         {
             detail::OnErrorFlag errorFlag;
-            auto val = detail::Converter<T>::fromString(m_value, errorFlag);
+            auto val = Converter<T>::fromString(m_value, errorFlag);
             if (errorFlag)
                 return {};
 
@@ -64,16 +64,14 @@ namespace coil
         template<typename T>
         bool is() const
         {
-            detail::OnErrorFlag errorFlag;
-            detail::Converter<T>::fromString(m_value, errorFlag);
-            return !errorFlag;
+            return tryGet<T>().has_value();
         }
 
         template<typename T>
         T as() const
         {
             detail::OnErrorContainer onError;
-            auto val = detail::Converter<T>::fromString(m_value, onError);
+            auto val = Converter<T>::fromString(m_value, onError);
             if (!onError)
                 throw std::invalid_argument(utils::flatten(onError.errors));
 

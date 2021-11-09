@@ -7,40 +7,31 @@
 #include <algorithm>
 #include <optional>
 
-// TODO move to utils
-
-namespace coil::detail
+namespace coil
 {
-    namespace util
+    template<typename T, typename OnError>
+    static void reportConversionError(OnError&& onError, std::string_view inputString, std::string_view details = {})
     {
-        template<typename T, typename OnError>
-        static void reportError(OnError&& onError, std::string_view inputString, std::string_view details = {})
-        {
-            std::string typeName = utils::Types<T>::name();
+        std::string typeName = utils::Types<T>::name();
 
-            if (details.empty())
-                onError(utils::formatString("Unable to convert '%.*s' to type '%s'", inputString.length(), inputString.data(), typeName.c_str()));
-            else
-                onError(utils::formatString("Unable to convert '%.*s' to type '%s': %.*s", inputString.length(), inputString.data(), typeName.c_str(), details.length(), details.data()));
-        }
+        if (details.empty())
+            onError(utils::formatString("Unable to convert '%.*s' to type '%s'", inputString.length(), inputString.data(), typeName.c_str()));
+        else
+            onError(utils::formatString("Unable to convert '%.*s' to type '%s': %.*s", inputString.length(), inputString.data(), typeName.c_str(), details.length(), details.data()));
     }
 
     template<typename T, typename = void>
     struct Converter
     {
         static_assert(!std::is_void_v<T>, "Void isn't a valid conversion type");
+        
+        // TODO static_assert that T can be used with streams
 
         template<typename OnError>
         static T fromString(std::string_view str, OnError&& onError)
         {
             std::stringstream ss;
-
             ss << str;
-
-            if constexpr (std::is_same_v<T, bool>)
-            {
-                ss << std::boolalpha;
-            }
 
             T value{};
             ss >> value;
@@ -48,19 +39,13 @@ namespace coil::detail
             if (ss.eof() && !ss.fail())
                 return value;
 
-            util::reportError<T>(std::forward<OnError>(onError), str);
+            reportConversionError<T>(std::forward<OnError>(onError), str);
             return T{};
         }
 
         static std::string toString(T const& value)
         {
             std::stringstream ss;
-
-            if constexpr (std::is_same_v<T, bool>)
-            {
-                ss << std::boolalpha;
-            }
-
             ss << value;
 
             return ss.str();
@@ -82,7 +67,7 @@ namespace coil::detail
             if (lowercaseStr == "1" || lowercaseStr == "true")
                 return true;
 
-            util::reportError<bool>(std::forward<OnError>(onError), str);
+            reportConversionError<bool>(std::forward<OnError>(onError), str);
             return false;
         }
 
