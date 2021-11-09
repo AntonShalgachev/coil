@@ -21,7 +21,7 @@ namespace coil
     }
 
     template<typename T, typename = void>
-    struct Converter
+    struct TypeSerializer
     {
         static_assert(!std::is_void_v<T>, "Void isn't a valid conversion type");
         
@@ -53,7 +53,7 @@ namespace coil
     };
 
     template<>
-    struct Converter<bool>
+    struct TypeSerializer<bool>
     {
         template<typename OnError>
         static bool fromString(std::string_view str, OnError&& onError)
@@ -78,7 +78,7 @@ namespace coil
     };
 
     template<>
-    struct Converter<std::string>
+    struct TypeSerializer<std::string>
     {
         template<typename OnError>
         static std::string fromString(std::string_view str, [[maybe_unused]] OnError&& onError)
@@ -93,7 +93,7 @@ namespace coil
     };
 
     //template<>
-    //struct Converter<char const*>
+    //struct TypeSerializer<char const*>
     //{
     //    template<typename OnError>
     //    static char const* fromString(std::string_view str, [[maybe_unused]] OnError&& onError)
@@ -108,7 +108,7 @@ namespace coil
     //};
 
     template<typename T>
-    struct Converter<std::optional<T>>
+    struct TypeSerializer<std::optional<T>>
     {
         template<typename OnError>
         static std::optional<T> fromString(std::string_view const& str, [[maybe_unused]] OnError&& onError)
@@ -116,7 +116,7 @@ namespace coil
             if (str.empty())
                 return {};
 
-            return Converter<T>::fromString(str, std::forward<OnError>(onError));
+            return TypeSerializer<T>::fromString(str, std::forward<OnError>(onError));
         }
 
         static std::string toString(std::optional<T> const& value)
@@ -124,7 +124,7 @@ namespace coil
             if (!value.has_value())
                 return {};
 
-            return Converter<T>::toString(value.value());
+            return TypeSerializer<T>::toString(value.value());
         }
     };
 

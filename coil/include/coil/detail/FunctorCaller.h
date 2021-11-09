@@ -6,7 +6,7 @@
 
 #include "CallContext.h"
 #include "../utils/Types.h"
-#include "Converter.h"
+#include "TypeSerializer.h"
 #include "../utils/FuncTraits.h"
 #include "../utils/FilterTypes.h"
 #include "FuncTraitsEx.h"
@@ -21,7 +21,7 @@ namespace coil::detail
         template<typename OnError>
         static T fromString(std::vector<std::string> const& arguments, std::size_t index, OnError&& onError)
         {
-            return Converter<T>::fromString(arguments.at(index), std::forward<OnError>(onError));
+            return TypeSerializer<T>::fromString(arguments.at(index), std::forward<OnError>(onError));
         }
     };
 
@@ -34,7 +34,7 @@ namespace coil::detail
             std::vector<T> args;
 
             for (auto i = index; i < arguments.size(); i++)
-                args.push_back(Converter<T>::fromString(arguments.at(i), onError));
+                args.push_back(TypeSerializer<T>::fromString(arguments.at(i), onError));
 
             return args;
         }
@@ -49,7 +49,7 @@ namespace coil::detail
             if (index >= arguments.size())
                 return {};
 
-            return Converter<T>::fromString(arguments.at(index), std::forward<OnError>(onError));
+            return TypeSerializer<T>::fromString(arguments.at(index), std::forward<OnError>(onError));
         }
     };
 
@@ -172,7 +172,7 @@ namespace coil::detail
                 {
                     auto returnValue = std::invoke(func, std::forward<Args>(args)...);
                     if (result)
-                        result.output = Converter<R>::toString(returnValue);
+                        result.output = TypeSerializer<R>::toString(returnValue);
                 }
             }
             catch (std::exception const& ex)

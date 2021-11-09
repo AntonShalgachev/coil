@@ -7,7 +7,7 @@
 namespace coil::detail
 {
     template<typename EnumT>
-    struct Converter<EnumT, std::enable_if_t<std::is_enum_v<EnumT>>>
+    struct TypeSerializer<EnumT, std::enable_if_t<std::is_enum_v<EnumT>>>
     {
         template<typename OnError>
         static EnumT fromString(std::string_view str, [[maybe_unused]] OnError&& onError)
