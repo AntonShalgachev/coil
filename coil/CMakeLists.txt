@@ -5,7 +5,6 @@ set(PROJECT_NAME libcoil)
 ################################################################################
 set(ALL_FILES
     "src/CommandListener.cpp"
-    "src/Utils.cpp"
     
     "include/coil/utils/FuncTraits.h"
     "include/coil/utils/Types.h"
