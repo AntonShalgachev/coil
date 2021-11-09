@@ -6,73 +6,8 @@
 #include "SimpleLexer.h"
 #include "coil/NamedArgs.h"
 #include "magic_enum.hpp"
-#include <array>
 
-//#define USE_MAGIC_ENUM
-
-#ifdef USE_MAGIC_ENUM
 #include "EnumToString.h"
-#endif
-
-#ifndef USE_MAGIC_ENUM
-namespace enum_util
-{
-    template<typename EnumT>
-    std::vector<std::string_view> const& getEnumNames();
-
-    template<typename EnumT>
-    std::optional<EnumT> stringToEnum(std::string_view value)
-    {
-        std::vector<std::string_view> const& names = getEnumNames<EnumT>();
-
-        for (std::size_t i = 0; i < names.size(); i++)
-        {
-            std::string_view name = names[i];
-            if (name == value)
-                return static_cast<EnumT>(i);
-        }
-
-        return {};
-    }
-
-    template<typename EnumT>
-    std::string_view enumToString(EnumT value)
-    {
-        std::vector<std::string_view> const& names = getEnumNames<EnumT>();
-
-        std::size_t index = static_cast<std::size_t>(value);
-        if (index < names.size())
-            return names.at(index);
-
-        return {};
-    }
-}
-
-template<typename EnumT, typename = std::enable_if_t<std::is_enum_v<EnumT>>>
-std::istream& operator>>(std::istream& is, EnumT& value)
-{
-    std::string stringValue;
-    is >> stringValue;
-
-    // TODO somehow notify caller of possible values of EnumT
-
-    std::optional<EnumT> optionalValue = enum_util::stringToEnum<EnumT>(stringValue);
-
-    if (optionalValue.has_value())
-        value = optionalValue.value();
-    else
-        is.setstate(std::ios_base::failbit);
-
-    return is;
-}
-
-template<typename EnumT, typename = std::enable_if_t<std::is_enum_v<EnumT>>>
-std::ostream& operator<<(std::ostream& os, EnumT const& value)
-{
-    os << enum_util::enumToString(value);
-    return os;
-}
-#endif
 
 namespace ext
 {
