@@ -23,7 +23,7 @@ set(ALL_FILES
     "include/coil/VariadicArg.h"
     "include/coil/Context.h"
     "include/coil/NamedArgs.h"
-    "include/coil/Converter.h"
+    "include/coil/TypeSerializer.h"
 
     "include/coil/detail/FunctorCaller.h"
     "include/coil/detail/CallContext.h"
