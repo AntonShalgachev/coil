@@ -18,5 +18,19 @@ namespace coil::utils
 		return std::string(buf.get(), buf.get() + size - 1);
 	}
 
-	std::string flatten(std::vector<std::string> const& strings, std::string decorator = "", std::string separator = ", ");
+    template<typename StringVectorLike>
+    std::string flatten(StringVectorLike const& strings, std::string_view decorator = "", std::string_view separator = ", ")
+    {
+        std::string_view currentSeparator = "";
+        std::stringstream ss;
+
+        for (auto const& value : strings)
+        {
+            ss << currentSeparator << decorator << value << decorator;
+            currentSeparator = separator;
+        }
+
+        return ss.str();
+    }
+
 }
