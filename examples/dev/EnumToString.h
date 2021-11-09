@@ -46,7 +46,7 @@ namespace enum_util
 }
 #endif
 
-namespace coil::detail
+namespace coil
 {
     template<typename EnumT>
     struct Converter<EnumT, std::enable_if_t<std::is_enum_v<EnumT>>>
@@ -70,7 +70,7 @@ namespace coil::detail
             std::string names = utils::flatten(enum_util::getEnumNames<EnumT>(), "'");
 #endif
 
-            util::reportError<EnumT>(std::forward<OnError>(onError), str, utils::formatString("Possible values are [%s]", names.c_str()));
+            reportConversionError<EnumT>(std::forward<OnError>(onError), str, utils::formatString("Possible values are [%s]", names.c_str()));
             return EnumT{};
         }
 

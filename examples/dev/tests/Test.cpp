@@ -20,7 +20,7 @@ namespace coil::detail
 
             std::string names = utils::flatten(magic_enum::enum_names<EnumT>(), "'");
 
-            util::reportError<EnumT>(std::forward<OnError>(onError), str, utils::formatString("Possible values are [%s]", names.c_str()));
+            reportConversionError<EnumT>(std::forward<OnError>(onError), str, utils::formatString("Possible values are [%s]", names.c_str()));
             return EnumT{};
         }
 
