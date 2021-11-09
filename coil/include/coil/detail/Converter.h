@@ -14,14 +14,18 @@ namespace coil::detail
     namespace util
     {
         template<typename T, typename OnError>
-        static void reportError(std::string_view const& str, OnError&& onError)
+        static void reportError(OnError&& onError, std::string_view inputString, std::string_view details = {})
         {
             std::string typeName = utils::Types<T>::name();
-            onError(utils::formatString("Unable to convert '%.*s' to type '%s'", str.length(), str.data(), typeName.c_str()));
+
+            if (details.empty())
+                onError(utils::formatString("Unable to convert '%.*s' to type '%s'", inputString.length(), inputString.data(), typeName.c_str()));
+            else
+                onError(utils::formatString("Unable to convert '%.*s' to type '%s': %.*s", inputString.length(), inputString.data(), typeName.c_str(), details.length(), details.data()));
         }
     }
 
-    template<typename T>
+    template<typename T, typename = void>
     struct Converter
     {
         static_assert(!std::is_void_v<T>, "Void isn't a valid conversion type");
@@ -44,7 +48,7 @@ namespace coil::detail
             if (ss.eof() && !ss.fail())
                 return value;
 
-            util::reportError<T>(str, std::forward<OnError>(onError));
+            util::reportError<T>(std::forward<OnError>(onError), str);
             return T{};
         }
 
@@ -78,7 +82,7 @@ namespace coil::detail
             if (lowercaseStr == "1" || lowercaseStr == "true")
                 return true;
 
-            util::reportError<bool>(str, std::forward<OnError>(onError));
+            util::reportError<bool>(std::forward<OnError>(onError), str);
             return false;
         }
 
