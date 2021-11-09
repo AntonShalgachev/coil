@@ -129,5 +129,4 @@ namespace coil
     };
 
     // TODO return some default string for non-convertible types
-    // TODO support enums
 }
