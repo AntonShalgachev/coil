@@ -15,7 +15,7 @@
 
 namespace coil
 {
-	class CommandListener
+	class Bindings
 	{
 	public:
         template<typename T, typename Func, typename ObjectPointerT>
@@ -191,17 +191,17 @@ namespace coil
 	private:
         struct AnyObject
         {
-            using TrampolineT = void(CommandListener::*)(std::any const&, detail::CallContext&);
+            using TrampolineT = void(Bindings::*)(std::any const&, detail::CallContext&);
 
             template<typename T>
             AnyObject(T* object)
                 : object(object)
-                , trampoline(&CommandListener::objectTrampoline<T>)
+                , trampoline(&Bindings::objectTrampoline<T>)
             {
 
             }
 
-            void invokeTrampoline(CommandListener* self, detail::CallContext& context) const
+            void invokeTrampoline(Bindings* self, detail::CallContext& context) const
             {
                 std::invoke(trampoline, self, object, context);
             }
@@ -212,12 +212,12 @@ namespace coil
 
         struct AnyFunctor
         {
-            using TrampolineT = void(CommandListener::*)(std::any const&, std::any&, detail::CallContext&);
+            using TrampolineT = void(Bindings::*)(std::any const&, std::any&, detail::CallContext&);
 
             template<typename T, typename Func>
             AnyFunctor(Func&& func, utils::Types<T>)
                 : functor(std::forward<Func>(func))
-                , trampoline(&CommandListener::functorTrampoline<T, Func>)
+                , trampoline(&Bindings::functorTrampoline<T, Func>)
             {
 
             }
@@ -228,7 +228,7 @@ namespace coil
                 return AnyFunctor(std::forward<Func>(func), utils::Types<T>{});
             }
 
-            void invokeTrampoline(CommandListener* self, std::any const& anyObject, detail::CallContext& context)
+            void invokeTrampoline(Bindings* self, std::any const& anyObject, detail::CallContext& context)
             {
                 std::invoke(trampoline, self, anyObject, functor, context);
             }

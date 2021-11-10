@@ -1,5 +1,5 @@
 #include "Test.h"
-#include "coil/CommandListener.h"
+#include "coil/Bindings.h"
 #include "coil/VariadicArg.h"
 
 #include "magic_enum.hpp"
@@ -212,7 +212,7 @@ namespace
 
 void coil::tests::test()
 {
-    [[maybe_unused]] coil::CommandListener cmd;
+    [[maybe_unused]] coil::Bindings cmd;
 
     [[maybe_unused]] Object object;
 
