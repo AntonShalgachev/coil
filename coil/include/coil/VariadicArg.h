@@ -41,14 +41,11 @@ namespace coil
         };
     }
 
+    // TODO Rename class to contain "view" in it
     class VariadicArg
     {
     public:
-        VariadicArg() = default;
         VariadicArg(std::string_view value) : m_value(value) {}
-
-        template<typename T>
-        VariadicArg(T const& value) : m_value(TypeSerializer<T>::toString(value)) {}
 
         template<typename T>
         std::optional<T> tryGet() const
@@ -80,23 +77,22 @@ namespace coil
 
         std::string_view const& getRaw() const { return m_value; }
 
-        friend std::istream& operator>>(std::istream& is, VariadicArg& self)
-        {
-            is >> self.m_container;
-            self.m_value = self.m_container;
-            return is;
-        }
-
-        friend std::ostream& operator<<(std::ostream& os, VariadicArg const& self)
-        {
-            os << self.m_value;
-            return os;
-        }
-
     private:
         std::string_view m_value;
+    };
 
-        // used only when owning a string, i.e. when parsing it from a stream
-        std::string m_container;
+    template<>
+    struct TypeSerializer<VariadicArg>
+    {
+        template<typename OnError>
+        static VariadicArg fromString(std::string_view str, OnError&&)
+        {
+            return VariadicArg(str);
+        }
+
+        static std::string toString(VariadicArg const& value)
+        {
+            return std::string{ value.getRaw() };
+        }
     };
 }

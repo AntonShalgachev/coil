@@ -75,7 +75,7 @@ namespace test
         }
     };
 
-    coil::VariadicArg freeFunction(coil::Context&, coil::VariadicArg arg)
+    bool freeFunction(coil::Context&, coil::VariadicArg arg)
     {
         std::cout << "I'm a free function!" << std::endl;
         return !arg.as<bool>();
