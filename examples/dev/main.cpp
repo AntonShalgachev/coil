@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "coil/CommandListener.h"
+#include "coil/Bindings.h"
 #include "coil/VariadicArg.h"
 #include "tests/Test.h"
 #include "SimpleLexer.h"
@@ -115,7 +115,7 @@ namespace test
 
     void test()
     {
-        coil::CommandListener cmd;
+        coil::Bindings cmd;
 
         ServiceB serviceB;
 

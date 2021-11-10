@@ -1,6 +1,6 @@
-#include "CommandListener.h"
+#include "Bindings.h"
 
-bool coil::CommandListener::removeObject(std::string const& name)
+bool coil::Bindings::removeObject(std::string const& name)
 {
 	if (name.empty())
 		return false;
@@ -10,7 +10,7 @@ bool coil::CommandListener::removeObject(std::string const& name)
 	return true;
 }
 
-void coil::CommandListener::execute(detail::CallContext& context)
+void coil::Bindings::execute(detail::CallContext& context)
 {
 	if (context.input.name.empty())
     {

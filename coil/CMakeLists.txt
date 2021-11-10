@@ -4,7 +4,7 @@ set(PROJECT_NAME libcoil)
 # Source groups
 ################################################################################
 set(ALL_FILES
-    "src/CommandListener.cpp"
+    "src/Bindings.cpp"
     
     "include/coil/utils/FuncTraits.h"
     "include/coil/utils/Types.h"
@@ -17,7 +17,7 @@ set(ALL_FILES
     "include/coil/utils/TypeListTraits.h"
     "include/coil/utils/ElementSelector.h"
 
-    "include/coil/CommandListener.h"
+    "include/coil/Bindings.h"
     "include/coil/ExecutionResult.h"
     "include/coil/ExecutionInput.h"
     "include/coil/VariadicArg.h"
