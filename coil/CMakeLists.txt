@@ -4,8 +4,6 @@ set(PROJECT_NAME libcoil)
 # Source groups
 ################################################################################
 set(ALL_FILES
-    "src/Bindings.cpp"
-    
     "include/coil/utils/FuncTraits.h"
     "include/coil/utils/Types.h"
     "include/coil/utils/Utils.h"
@@ -31,7 +29,7 @@ set(ALL_FILES
     "include/coil/detail/ArgumentTraits.h"
 )
 
-add_library(${PROJECT_NAME} STATIC ${ALL_FILES})
+add_library(${PROJECT_NAME} INTERFACE ${ALL_FILES})
 
 set (VS2017 OFF)
 if (CMAKE_CXX_COMPILER MATCHES ".*Visual Studio.*2017.*")
@@ -39,20 +37,17 @@ if (CMAKE_CXX_COMPILER MATCHES ".*Visual Studio.*2017.*")
     set (VS2017 ON)
 endif()
 
-# add_executable(${PROJECT_NAME} ${ALL_FILES})
-
 ################################################################################
 # Include directories
 ################################################################################
 target_include_directories(${PROJECT_NAME}
-    PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include;"
-    PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include/coil;"
+    INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/include;"
 )
 
 ################################################################################
 # Compile and link options
 ################################################################################
-target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
+target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_17)
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_EXTENSIONS OFF)
 
 set(COMPILE_OPTIONS)
@@ -67,7 +62,7 @@ if(MSVC)
     endif()
 endif()
 
-target_compile_options(${PROJECT_NAME} PRIVATE
+target_compile_options(${PROJECT_NAME} INTERFACE
     ${COMPILE_OPTIONS}
 )
 

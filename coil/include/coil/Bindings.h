@@ -165,7 +165,15 @@ namespace coil
 			return true;
         }
 
-        bool removeObject(std::string const& name);
+        bool removeObject(std::string const& name)
+        {
+            if (name.empty())
+                return false;
+
+            m_objects.erase(name);
+
+            return true;
+        }
 
         void removeAllObjects()
         {
@@ -272,7 +280,27 @@ namespace coil
             detail::FunctorCaller<FuncT>::template call<T>(*functor, context, object);
         }
 
-		void execute(detail::CallContext& context);
+        void execute(detail::CallContext& context)
+        {
+            if (context.input.name.empty())
+            {
+                context.result.errors.push_back("No command name is specified");
+                return;
+            }
+
+            if (context.input.target.empty())
+                return objectTrampoline<void>({}, context);
+
+            auto it = m_objects.find(context.input.target);
+            if (it == m_objects.end())
+            {
+                context.result.errors.push_back(utils::formatString("Object '%s' is not registered", context.input.target.c_str()));
+                return;
+            }
+
+            AnyObject& obj = it->second;
+            obj.invokeTrampoline(this, context);
+        }
 
         std::unordered_map<std::string, AnyObject> m_objects;
         std::unordered_map<utils::TypeIdT, std::unordered_map<std::string, AnyFunctor>> m_functors;
