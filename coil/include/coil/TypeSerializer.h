@@ -81,7 +81,7 @@ namespace coil
     struct TypeSerializer<std::string>
     {
         template<typename OnError>
-        static std::string fromString(std::string_view str, [[maybe_unused]] OnError&& onError)
+        static std::string fromString(std::string_view str, OnError&&)
         {
             return std::string{ str };
         }
@@ -96,7 +96,7 @@ namespace coil
     //struct TypeSerializer<char const*>
     //{
     //    template<typename OnError>
-    //    static char const* fromString(std::string_view str, [[maybe_unused]] OnError&& onError)
+    //    static char const* fromString(std::string_view str, OnError&&)
     //    {
     //        return str.c_str();
     //    }
@@ -111,7 +111,7 @@ namespace coil
     struct TypeSerializer<std::optional<T>>
     {
         template<typename OnError>
-        static std::optional<T> fromString(std::string_view const& str, [[maybe_unused]] OnError&& onError)
+        static std::optional<T> fromString(std::string_view const& str, OnError&& onError)
         {
             if (str.empty())
                 return {};
