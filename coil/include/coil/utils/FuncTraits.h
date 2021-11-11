@@ -28,17 +28,47 @@ namespace coil::utils
         static constexpr bool isFunc = false;
     };
 
+    // TODO support qualified operator()
     template<typename T>
     struct FuncTraits<T, std::void_t<decltype(&T::operator())>>
         : public FuncTraits<decltype(&T::operator())> {};
 
-	// Free functions
-	template<typename R, typename... Args>
+    // Free functions
+    template<typename R, typename... Args>
     struct FuncTraits<R(*)(Args...), void> : public BaseFuncTraits<R, void, false, Args...> {};
+    template<typename R, typename... Args>
+    struct FuncTraits<R(*)(Args...) noexcept, void> : public BaseFuncTraits<R, void, false, Args...> {};
 
 	// Pointer to member function
-	template<typename R, typename T, typename... Args>
-	struct FuncTraits<R(T::*)(Args...), void> : public BaseFuncTraits<R, T, false, Args...> {};
-	template<typename R, typename T, typename... Args>
-	struct FuncTraits<R(T::*)(Args...) const, void> : public BaseFuncTraits<R, T, true, Args...> {};
+#define COIL_MEMBER_FUNCTION_SPECIALIZATION(QUALIFIERS, IS_CONST) \
+    template<typename R, typename T, typename... Args> \
+    struct FuncTraits<R(T::*)(Args...) QUALIFIERS, void> : public BaseFuncTraits<R, T, IS_CONST, Args...> {}
+
+    COIL_MEMBER_FUNCTION_SPECIALIZATION(, false);
+    COIL_MEMBER_FUNCTION_SPECIALIZATION(volatile, false);
+    COIL_MEMBER_FUNCTION_SPECIALIZATION(&, false);
+    COIL_MEMBER_FUNCTION_SPECIALIZATION(volatile&, false);
+    COIL_MEMBER_FUNCTION_SPECIALIZATION(&&, false);
+    COIL_MEMBER_FUNCTION_SPECIALIZATION(volatile&&, false);
+    COIL_MEMBER_FUNCTION_SPECIALIZATION(noexcept, false);
+    COIL_MEMBER_FUNCTION_SPECIALIZATION(volatile noexcept, false);
+    COIL_MEMBER_FUNCTION_SPECIALIZATION(& noexcept, false);
+    COIL_MEMBER_FUNCTION_SPECIALIZATION(volatile& noexcept, false);
+    COIL_MEMBER_FUNCTION_SPECIALIZATION(&& noexcept, false);
+    COIL_MEMBER_FUNCTION_SPECIALIZATION(volatile&& noexcept, false);
+
+    COIL_MEMBER_FUNCTION_SPECIALIZATION(const, true);
+    COIL_MEMBER_FUNCTION_SPECIALIZATION(const volatile, true);
+    COIL_MEMBER_FUNCTION_SPECIALIZATION(const&, true);
+    COIL_MEMBER_FUNCTION_SPECIALIZATION(const volatile&, true);
+    COIL_MEMBER_FUNCTION_SPECIALIZATION(const&&, true);
+    COIL_MEMBER_FUNCTION_SPECIALIZATION(const volatile&&, true);
+    COIL_MEMBER_FUNCTION_SPECIALIZATION(const noexcept, true);
+    COIL_MEMBER_FUNCTION_SPECIALIZATION(const volatile noexcept, true);
+    COIL_MEMBER_FUNCTION_SPECIALIZATION(const& noexcept, true);
+    COIL_MEMBER_FUNCTION_SPECIALIZATION(const volatile& noexcept, true);
+    COIL_MEMBER_FUNCTION_SPECIALIZATION(const && noexcept, true);
+    COIL_MEMBER_FUNCTION_SPECIALIZATION(const volatile&& noexcept, true);
+
+#undef COIL_MEMBER_FUNCTION_SPECIALIZATION
 }
