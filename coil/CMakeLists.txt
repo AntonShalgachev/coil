@@ -27,6 +27,7 @@ set(ALL_FILES
     "include/coil/detail/CallContext.h"
     "include/coil/detail/FuncTraitsEx.h"
     "include/coil/detail/ArgumentTraits.h"
+    "include/coil/BindingProxy.h"
 )
 
 add_library(${PROJECT_NAME} INTERFACE ${ALL_FILES})
