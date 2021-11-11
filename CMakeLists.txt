@@ -17,4 +17,4 @@ endif()
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 add_subdirectory(coil)
-add_subdirectory(examples/dev)
+add_subdirectory(examples)

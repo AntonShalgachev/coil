@@ -4,12 +4,17 @@ set(PROJECT_NAME dev)
 # Source groups
 ################################################################################
 set(ALL_FILES
-    "main.cpp"
-    "tests/Test.h"
-    "tests/Test.cpp"
+    
+    "basic_example/Test.h"
+    "basic_example/Test.cpp"
     "SimpleLexer.h"
     "SimpleLexer.cpp"
-    "EnumToString.h"
+    "basic_example/EnumToString.h"
+
+    "main.cpp"
+    
+    "basic_example/BasicExample.h"
+    "basic_example/BasicExample.cpp"
 )
 
 set (VS2017 OFF)
@@ -25,6 +30,7 @@ add_executable(${PROJECT_NAME} ${ALL_FILES})
 ################################################################################
 target_include_directories(${PROJECT_NAME} PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR};"
+    "${CMAKE_CURRENT_SOURCE_DIR}/include;"
 )
 
 ################################################################################
