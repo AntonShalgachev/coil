@@ -123,9 +123,9 @@ namespace test
 
         cmd.bind<ServiceB>("update", &ServiceB::update);
 
-        cmd.bind("func", &optionalArgFunc);
-        cmd.bind("namedFunc", &variadicNamedFunc);
-        cmd.bind("enumFunc", &enumFunc);
+        cmd["func"] = &optionalArgFunc;
+        cmd["namedFunc"] = &variadicNamedFunc;
+        cmd["enumFunc"] = &enumFunc;
 
         SimpleLexer lexer;
 

@@ -242,17 +242,17 @@ void coil::tests::test()
 
     cmd.addObject("obj", &object);
 
-    cmd.bind("", &freeFunc);
-    cmd.bind("", &freeFuncWithContext);
-    cmd.bind("", &variable);
-    cmd.bind("", &freeFuncWithoutArgs);
-    cmd.bind("", &freeFuncWithoutArgsWithContext);
-    cmd.bind("", functor);
-    cmd.bind("", functorWithContext);
-    cmd.bind("", lambda);
-    cmd.bind("", lambdaWithContext);
-    cmd.bind("", &Object::staticFunc);
-    cmd.bind("", &Object::staticFuncWithContext);
+    cmd[""] = &freeFunc;
+    cmd[""] = &freeFuncWithContext;
+    cmd[""] = &variable;
+    cmd[""] = &freeFuncWithoutArgs;
+    cmd[""] = &freeFuncWithoutArgsWithContext;
+    cmd[""] = functor;
+    cmd[""] = functorWithContext;
+    cmd[""] = lambda;
+    cmd[""] = lambdaWithContext;
+    cmd[""] = &Object::staticFunc;
+    cmd[""] = &Object::staticFuncWithContext;
     cmd.bind("", &Object::memberFunc, &object);
     cmd.bind("", &Object::memberFuncWithContext, &object);
 
@@ -281,13 +281,13 @@ void coil::tests::test()
     cmd.bind<Object>("", &Object::memberFuncWithTarget, &object);
     cmd.bind<Object>("", &Object::memberFuncWithTargetContext, &object);
 
-    cmd.bind("", &funcVariadicVector);
-    cmd.bind("", &funcFloatVector);
-    cmd.bind("", &funcOptional);
-    cmd.bind("", &funcNamedArgs);
+    cmd[""] = &funcVariadicVector;
+    cmd[""] = &funcFloatVector;
+    cmd[""] = &funcOptional;
+    cmd[""] = &funcNamedArgs;
 
-    cmd.bind("", &funcScopedEnum);
-    cmd.bind("", &funcUnscopedEnum);
+    cmd[""] = &funcScopedEnum;
+    cmd[""] = &funcUnscopedEnum;
 
     // Compilation error
     //cmd.bind<Object>("", &variable);
@@ -296,7 +296,7 @@ void coil::tests::test()
     //cmd.bind<Object>("", &Object::memberFuncWithTargetContext);
     //cmd.bind<Object>("", &freeFuncWithWrongTarget);
 
-    //cmd.bind("", &Object::memberFunc);
-    //cmd.bind("", &freeFuncWithTarget);
-    //cmd.bind("", &Object::memberVariable);
+    //cmd[""] = &Object::memberFunc;
+    //cmd[""] = &freeFuncWithTarget;
+    //cmd[""] = &Object::memberVariable;
 }

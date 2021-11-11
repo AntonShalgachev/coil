@@ -11,6 +11,7 @@
 #include "utils/MemberFunctionFunctor.h"
 #include "utils/VariableWrapper.h"
 #include "utils/TypeId.h"
+#include "BindingProxy.h"
 #include <any>
 
 namespace coil
@@ -18,6 +19,11 @@ namespace coil
 	class Bindings
 	{
 	public:
+        BindingProxy<Bindings> operator[](std::string name)
+        {
+            return BindingProxy<Bindings>(*this, std::move(name));
+        }
+
         template<typename T, typename Func, typename ObjectPointerT>
         bool bind(std::string name, Func&& func, ObjectPointerT obj)
         {
