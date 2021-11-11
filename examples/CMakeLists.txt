@@ -1,8 +1,5 @@
 set(PROJECT_NAME dev)
 
-################################################################################
-# Source groups
-################################################################################
 set(ALL_FILES
     
     "basic_example/Test.h"
@@ -25,17 +22,11 @@ endif()
 
 add_executable(${PROJECT_NAME} ${ALL_FILES})
 
-################################################################################
-# Include directories
-################################################################################
 target_include_directories(${PROJECT_NAME} PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR};"
     "${CMAKE_CURRENT_SOURCE_DIR}/include;"
 )
 
-################################################################################
-# Compile and link options
-################################################################################
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_EXTENSIONS OFF)
 
@@ -64,9 +55,6 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
     VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
 )
 
-################################################################################
-# Dependencies
-################################################################################
 target_link_libraries(${PROJECT_NAME}
     libcoil
 )
