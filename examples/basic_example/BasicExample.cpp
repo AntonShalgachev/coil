@@ -1,13 +1,12 @@
-#include <iostream>
+#include "BasicExample.h"
 
 #include "coil/Bindings.h"
-#include "coil/VariadicArg.h"
-#include "tests/Test.h"
 #include "SimpleLexer.h"
-#include "coil/NamedArgs.h"
-#include "magic_enum.hpp"
-
 #include "EnumToString.h"
+#include "Test.h"
+
+#include "magic_enum.hpp"
+#include <iostream>
 
 namespace ext
 {
@@ -129,17 +128,17 @@ namespace test
 
         SimpleLexer lexer;
 
-		auto execute = [&cmd, &lexer](std::string command)
-		{
-			std::cout << "Executing [" << command << "]" << std::endl;
-			auto result = cmd.execute(std::move(command), lexer);
+        auto execute = [&cmd, &lexer](std::string command)
+        {
+            std::cout << "Executing [" << command << "]" << std::endl;
+            auto result = cmd.execute(std::move(command), lexer);
 
-			for (const auto& error : result.errors)
-				std::cout << "\t" << "Error: " << error << std::endl;
-			if (!result.output.empty())
-				std::cout << "\t" << "Output: '" << result.output << "'" << std::endl;
+            for (const auto& error : result.errors)
+                std::cout << "\t" << "Error: " << error << std::endl;
+            if (!result.output.empty())
+                std::cout << "\t" << "Output: '" << result.output << "'" << std::endl;
             std::cout << std::endl;
-		};
+        };
 
         execute("enumFunc Soft Fast");
         execute("enumFunc soft FAst");
@@ -149,21 +148,17 @@ namespace test
     }
 }
 
-int main()
+void BasicExample::registerExample(coil::Bindings& bindings)
 {
-    try
-    {
-        coil::tests::test();
+    bindings.addObject("basic_example", this);
 
-        test::test();
-        std::getchar();
-    }
-    catch (std::exception& e)
-    {
-        std::cout << "Finished with exception:" << std::endl;
-        std::cout << e.what();
-        std::getchar();
-    }
+    bindings.bind<BasicExample>("run", & BasicExample::run);
 
-	return 0;
+    // TODO remove object upon destruction
+}
+
+void BasicExample::run()
+{
+    compilation_test::run();
+    test::test();
 }

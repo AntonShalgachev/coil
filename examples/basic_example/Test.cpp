@@ -4,10 +4,10 @@
 
 #include "magic_enum.hpp"
 
-namespace coil::detail
+namespace compilation_test
 {
     template<typename EnumT>
-    struct TypeSerializer<EnumT, std::enable_if_t<std::is_enum_v<EnumT>>>
+    struct coil::TypeSerializer<EnumT, std::enable_if_t<std::is_enum_v<EnumT>>>
     {
         template<typename OnError>
         static EnumT fromString(std::string_view str, [[maybe_unused]] OnError&& onError)
@@ -210,7 +210,7 @@ namespace
     }
 }
 
-void coil::tests::test()
+void compilation_test::run()
 {
     [[maybe_unused]] coil::Bindings cmd;
 
