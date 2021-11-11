@@ -60,7 +60,7 @@ namespace coil
         NamedArgs(ExecutionInput const& input) : m_input(input) {}
 
         template<typename T>
-        std::optional<T> tryGet(std::string_view key)
+        std::optional<T> tryGet(std::string_view key) const
         {
             auto it = find(key);
             if (it == end())
@@ -71,7 +71,7 @@ namespace coil
         }
 
         template<typename T>
-        T get(std::string_view key)
+        T get(std::string_view key) const
         {
             auto it = find(key);
             if (it == end())
@@ -81,12 +81,12 @@ namespace coil
             return arg.as<T>();
         }
 
-        bool has(std::string_view key)
+        bool has(std::string_view key) const
         {
             return find(key) != end();
         }
 
-        std::size_t size()
+        std::size_t size() const
         {
             return m_input.namedArguments.size();
         }
@@ -102,7 +102,7 @@ namespace coil
         }
 
     private:
-        NamedArgsIterator find(std::string_view key)
+        NamedArgsIterator find(std::string_view key) const
         {
             return std::find_if(begin(), end(), [key](NamedArg const& arg)
             {
