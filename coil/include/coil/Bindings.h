@@ -70,6 +70,72 @@ namespace coil
             }
         }
 
+        bool unbind(std::string const& name) { return unbind<void>(name); }
+
+        template<typename T>
+        bool unbind(std::string const& name)
+		{
+			if (name.empty())
+				return false;
+
+            if (auto it = m_functors.find(utils::typeId<T>()); it != m_functors.end())
+                it->second.erase(name);
+
+			return true;
+        }
+
+        void unbindAll() { return unbindAll<void>(); }
+
+        template<typename T>
+        void unbindAll()
+        {
+            if (auto it = m_functors.find(utils::typeId<T>()); it != m_functors.end())
+                it->second.clear();
+        }
+
+        template<typename T>
+        bool addObject(std::string name, T* object)
+		{
+            // TODO allow const objects
+			static_assert(!std::is_const_v<T>, "T shouldn't be const");
+
+			if (name.empty())
+				return false;
+
+            m_objects.insert_or_assign(std::move(name), object);
+
+			return true;
+        }
+
+        bool removeObject(std::string const& name)
+        {
+            if (name.empty())
+                return false;
+
+            m_objects.erase(name);
+
+            return true;
+        }
+
+        void removeAllObjects() { m_objects.clear(); }
+
+        template<typename LexerT>
+        ExecutionResult execute(std::string command, LexerT&& lexer)
+        {
+            return execute(lexer(std::move(command)));
+        }
+
+        ExecutionResult execute(ExecutionInput input)
+        {
+            detail::CallContext context;
+            context.input = std::move(input);
+
+            execute(context);
+
+            return context.result;
+        }
+
+    private:
         template<typename T, typename Func>
         bool bindFunc(std::string name, Func&& func)
         {
@@ -122,81 +188,6 @@ namespace coil
             return bindFunc<void>(std::move(name), utils::VariableWrapper{ var });
         }
 
-        bool unbind(std::string const& name)
-        {
-            return unbind<void>(name);
-        }
-
-        template<typename T>
-        bool unbind(std::string const& name)
-		{
-			if (name.empty())
-				return false;
-
-            if (auto it = m_functors.find(utils::typeId<T>()); it != m_functors.end())
-                it->second.erase(name);
-
-			return true;
-        }
-
-        void unbindAll()
-        {
-            return unbindAll<void>();
-        }
-
-        template<typename T>
-        void unbindAll()
-        {
-            if (auto it = m_functors.find(utils::typeId<T>()); it != m_functors.end())
-                it->second.clear();
-        }
-
-        template<typename T>
-        bool addObject(std::string name, T* object)
-		{
-            // TODO allow const objects
-			static_assert(!std::is_const_v<T>, "T shouldn't be const");
-
-			if (name.empty())
-				return false;
-
-            m_objects.insert_or_assign(std::move(name), object);
-
-			return true;
-        }
-
-        bool removeObject(std::string const& name)
-        {
-            if (name.empty())
-                return false;
-
-            m_objects.erase(name);
-
-            return true;
-        }
-
-        void removeAllObjects()
-        {
-            m_objects.clear();
-        }
-
-        template<typename LexerT>
-        ExecutionResult execute(std::string command, LexerT&& lexer)
-        {
-            return execute(lexer(std::move(command)));
-        }
-
-        ExecutionResult execute(ExecutionInput input)
-        {
-            detail::CallContext context;
-            context.input = std::move(input);
-
-            execute(context);
-
-            return context.result;
-        }
-
-	private:
         struct AnyObject
         {
             using TrampolineT = void(Bindings::*)(std::any const&, detail::CallContext&);
