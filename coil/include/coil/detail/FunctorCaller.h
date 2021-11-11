@@ -126,7 +126,7 @@ namespace coil::detail
 
             Context contextArg{ context };
             NamedArgs namedArgs{ context.input };
-            std::tuple<T*, Context&, NamedArgs> nonUserArgOptions{ target, contextArg, namedArgs };
+            std::tuple<T*, Context, NamedArgs> nonUserArgOptions{ target, contextArg, namedArgs };
 
             static constexpr bool b1 = Traits::template isMethodOfType<T> || Traits::ExplicitTargetTraits::isPresent;
             static constexpr bool b2 = Traits::ContextTraits::isPresent;
@@ -143,7 +143,7 @@ namespace coil::detail
         using R = typename Traits::ReturnType;
 
         template<typename NonUserArgsTuple, std::size_t... NonUserIndices, typename... UserArgs, std::size_t... UserIndices>
-        static void unpackAndInvoke(Func& func, CallContext& context, NonUserArgsTuple const& nonUserArgs, std::index_sequence<NonUserIndices...>, utils::Types<UserArgs...>, std::index_sequence<UserIndices...>)
+        static void unpackAndInvoke(Func& func, CallContext& context, NonUserArgsTuple& nonUserArgs, std::index_sequence<NonUserIndices...>, utils::Types<UserArgs...>, std::index_sequence<UserIndices...>)
         {
             auto onError = [&context](std::string error)
             {

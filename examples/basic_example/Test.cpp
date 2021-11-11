@@ -256,6 +256,13 @@ void compilation_test::run()
     cmd.bind("", &Object::memberFunc, &object);
     cmd.bind("", &Object::memberFuncWithContext, &object);
 
+    cmd[""] = [](coil::NamedArgs) {};
+    cmd[""] = [](coil::NamedArgs&) {};
+    cmd[""] = [](coil::NamedArgs const&) {};
+    cmd[""] = [](coil::Context) {};
+    cmd[""] = [](coil::Context&) {};
+    cmd[""] = [](coil::Context const&) {};
+
     cmd.bind<Object>("", &Object::memberFunc);
     cmd.bind<Object>("", &Object::memberFuncWithContext);
     cmd.bind<Object>("", &Object::memberVariable);
