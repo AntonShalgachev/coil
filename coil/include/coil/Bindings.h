@@ -125,10 +125,12 @@ namespace coil
 
         void removeAllObjects() { m_objects.clear(); }
 
-        template<typename LexerT>
-        ExecutionResult execute(std::string command, LexerT&& lexer)
+        template<typename InputT, typename LexerT>
+        ExecutionResult execute(InputT&& command, LexerT&& lexer)
         {
-            return execute(lexer(std::move(command)));
+            static_assert(std::is_invocable_r_v<ExecutionInput, LexerT, InputT>, "Lexer should be invocable with InputT and it should return ExecutionInput");
+
+            return execute(lexer(std::forward<InputT>(command)));
         }
 
         ExecutionResult execute(ExecutionInput input)
