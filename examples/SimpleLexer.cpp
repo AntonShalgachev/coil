@@ -3,6 +3,8 @@
 #include <stdexcept>
 #include <algorithm>
 #include <cctype>
+#include <sstream>
+#include <vector>
 
 #include "coil/ExecutionInput.h"
 
@@ -28,6 +30,56 @@ namespace
     {
         ltrim(s);
         rtrim(s);
+    }
+
+    template<typename Iter>
+    void splitBySpace(Iter&& begin, Iter&& end, std::vector<std::string>& tokens)
+    {
+        if (begin == end)
+            return;
+
+        std::stringstream ss{ std::string{begin, end} };
+
+        std::string token;
+        while (ss >> token)
+        {
+            tokens.push_back(std::move(token));
+            token.clear();
+        }
+    }
+
+    template<typename Iter>
+    void add(Iter&& begin, Iter&& end, std::vector<std::string>& tokens)
+    {
+        tokens.emplace_back(std::forward<Iter>(begin), std::forward<Iter>(end));
+    }
+
+    void split(std::string str, std::vector<std::string>& tokens)
+    {
+        char constexpr quoteSeparator = '"';
+
+        auto begin = str.cbegin();
+        auto end = str.cend();
+
+        while (true)
+        {
+            auto leftQuoteIt = std::find(begin, end, quoteSeparator);
+
+            splitBySpace(begin, leftQuoteIt, tokens);
+
+            if (leftQuoteIt == end)
+                break;
+
+            auto quotedStringIt = std::next(leftQuoteIt);
+            auto rightQuoteIt = std::find(quotedStringIt, end, quoteSeparator);
+
+            add(quotedStringIt, rightQuoteIt, tokens);
+
+            if (rightQuoteIt == end)
+                throw std::invalid_argument("imbalanced quotes");
+
+            begin = std::next(rightQuoteIt);
+        }
     }
 }
 
@@ -80,32 +132,4 @@ coil::ExecutionInput SimpleLexer::operator()(std::string str) const
     }
 
     return input;
-}
-
-void SimpleLexer::split(std::string str, std::vector<std::string>& tokens) const
-{
-    char constexpr quoteSeparator = '"';
-
-    auto begin = str.cbegin();
-    auto end = str.cend();
-
-    while (true)
-    {
-        auto leftQuoteIt = std::find(begin, end, quoteSeparator);
-
-        splitBySpace(begin, leftQuoteIt, tokens);
-
-        if (leftQuoteIt == end)
-            break;
-
-        auto quotedStringIt = std::next(leftQuoteIt);
-        auto rightQuoteIt = std::find(quotedStringIt, end, quoteSeparator);
-
-        add(quotedStringIt, rightQuoteIt, tokens);
-
-        if (rightQuoteIt == end)
-            throw std::invalid_argument("imbalanced quotes");
-
-        begin = std::next(rightQuoteIt);
-    }
 }

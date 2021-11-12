@@ -4,6 +4,7 @@
 
 #include "coil/Bindings.h"
 #include "SimpleLexer.h"
+#include "LexerTests.h"
 
 void help()
 {
@@ -19,6 +20,10 @@ int main()
     BasicExample example;
     example.registerExample(bindings);
 
+    {
+        lexer_tests::run();
+    }
+
     while (true)
     {
         std::cout << ">>> ";
@@ -28,9 +33,9 @@ int main()
         auto result = bindings.execute(line, SimpleLexer{});
 
         for (const auto& error : result.errors)
-            std::cout << "\t" << "Error: " << error << std::endl;
+            std::cout << "Error: " << error << std::endl;
         if (!result.output.empty())
-            std::cout << "\t" << "Output: '" << result.output << "'" << std::endl;
+            std::cout << "Output: '" << result.output << "'" << std::endl;
     }
 
     return 0;
