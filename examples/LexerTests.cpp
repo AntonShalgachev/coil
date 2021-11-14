@@ -2,6 +2,7 @@
 
 #include "SimpleLexer.h"
 #include "coil/ExecutionInput.h"
+#include "coil/DefaultLexer.h"
 
 #include <iostream>
 #include <random>
@@ -148,20 +149,38 @@ namespace
     void testLexer()
     {
         validate<Lexer>("obj.func arg1 arg2 arg3=foo arg4=bar", expects("obj", "func", { "arg1", "arg2" }, { {"arg3", "foo"}, {"arg4", "bar"} }));
+        validate<Lexer>("func arg1 arg2 arg3=foo arg4=bar", expects("", "func", { "arg1", "arg2" }, { {"arg3", "foo"}, {"arg4", "bar"} }));
+        validate<Lexer>("", expects("", "", {}, {}));
 
         std::default_random_engine engine{};
-        std::size_t const generationsCount = 50;
+        std::size_t const generationsCount = 500;
         for (int i = 0; i < generationsCount; i++)
         {
             auto input = generateRandomInput(engine);
             auto str = generateRandomInputString(engine, input);
             validate<Lexer>(str, input);
         }
+
+        // TODO test invalid
+        {
+            "target.func=arg";
+            "target.func arg=val=foo";
+            "target.func arg=";
+            "target.";
+            ".func";
+            "=foo";
+            "target.=foo";
+            "target.func arg=.foo";
+
+            "arg1 arg2=foo obj.func";
+            "obj.func obj2.func2"
+        }
     }
 }
 
 void lexer_tests::run()
 {
-    testLexer<SimpleLexer>();
+    //testLexer<SimpleLexer>();
+    testLexer<coil::DefaultLexer>();
 }
 

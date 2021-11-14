@@ -25,6 +25,8 @@ set(ALL_FILES
     "include/coil/detail/FuncTraitsEx.h"
     "include/coil/detail/ArgumentTraits.h"
     "include/coil/BindingProxy.h"
+    "include/coil/DefaultLexer.h"
+    
 )
 
 add_library(${PROJECT_NAME} INTERFACE ${ALL_FILES})
