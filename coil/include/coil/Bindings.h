@@ -3,6 +3,7 @@
 #include <string>
 #include <functional>
 #include <unordered_map>
+#include <any>
 
 #include "utils/FuncTraits.h"
 #include "utils/Utils.h"
@@ -12,7 +13,7 @@
 #include "utils/VariableWrapper.h"
 #include "utils/TypeId.h"
 #include "BindingProxy.h"
-#include <any>
+#include "Expected.h"
 
 namespace coil
 {
@@ -128,17 +129,24 @@ namespace coil
         template<typename InputT, typename LexerT>
         ExecutionResult execute(InputT&& command, LexerT&& lexer)
         {
-            static_assert(std::is_invocable_r_v<ExecutionInput, LexerT, InputT>, "Lexer should be invocable with InputT and it should return ExecutionInput");
+            static_assert(std::is_invocable_r_v<Expected<ExecutionInput, std::string>, LexerT, InputT>, "Lexer should be invocable with InputT and it should return ExecutionInput");
 
             return execute(lexer(std::forward<InputT>(command)));
         }
 
-        ExecutionResult execute(ExecutionInput input)
+        ExecutionResult execute(Expected<ExecutionInput, std::string> input)
         {
             detail::CallContext context;
-            context.input = std::move(input);
 
-            execute(context);
+            if (!input)
+            {
+                context.result.errors.push_back(input.error());
+            }
+            else
+            {
+                context.input = std::move(*input);
+                execute(context);
+            }
 
             return context.result;
         }
