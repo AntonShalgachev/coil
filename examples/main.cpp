@@ -5,6 +5,7 @@
 #include "coil/Bindings.h"
 #include "SimpleLexer.h"
 #include "LexerTests.h"
+#include "coil/DefaultLexer.h"
 
 void help()
 {
@@ -30,7 +31,7 @@ int main()
         std::string line;
         std::getline(std::cin, line);
 
-        auto result = bindings.execute(line, SimpleLexer{});
+        auto result = bindings.execute(line, coil::DefaultLexer{});
 
         for (const auto& error : result.errors)
             std::cout << "Error: " << error << std::endl;
