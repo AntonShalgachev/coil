@@ -7,6 +7,7 @@
 #include <iostream>
 #include <random>
 #include <sstream>
+#include <string_view>
 
 namespace
 {
@@ -173,7 +174,7 @@ namespace
             "target.func arg=.foo";
 
             "arg1 arg2=foo obj.func";
-            "obj.func obj2.func2"
+            "obj.func obj2.func2";
         }
     }
 }
