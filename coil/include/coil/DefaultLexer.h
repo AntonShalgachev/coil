@@ -1,10 +1,11 @@
 #pragma once
 
 #include <string>
+#include <optional>
+#include <cctype>
 
 #include "DefaultLexer.h"
 #include "ExecutionInput.h"
-#include <optional>
 
 namespace coil
 {
