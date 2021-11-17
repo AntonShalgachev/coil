@@ -10,6 +10,12 @@
 
 namespace
 {
+    struct ExecutionInputWithStorage
+    {
+        coil::ExecutionInput input;
+        std::vector<std::string> storage;
+    };
+
     void dump(std::ostream& os, std::string_view name, coil::Expected<coil::ExecutionInput, std::string> const& self)
     {
         os << name << ":" << std::endl;
@@ -89,31 +95,45 @@ namespace
     }
 
     template<typename RandomEngine>
-    coil::ExecutionInput generateRandomInput(RandomEngine& engine)
+    ExecutionInputWithStorage generateRandomInput(RandomEngine& engine)
     {
         std::size_t generation = 0;
 
-        coil::ExecutionInput input;
+        ExecutionInputWithStorage inputWithStorage;
+        coil::ExecutionInput& input = inputWithStorage.input;
 
-        input.target = generateRandomString(engine, generation++, true);
-        input.name = generateRandomString(engine, generation++, false);
-
-        std::uniform_int_distribution<std::size_t> argsCountDist{0, 3};
+        std::uniform_int_distribution<std::size_t> argsCountDist{ 0, 3 };
 
         std::size_t argsCount = argsCountDist(engine);
         std::size_t namedArgsCount = argsCountDist(engine);
 
+        std::size_t const maxStorageSize = 2 + argsCount + 2 * namedArgsCount;
+        inputWithStorage.storage.reserve(maxStorageSize);
+
+        auto generateNewString = [&storage = inputWithStorage.storage, &engine, &generation, maxStorageSize](bool allowEmpty)
+        {
+            // to prevent storage reallocation
+            if (storage.size() >= maxStorageSize)
+                throw std::runtime_error("Maximum allocations reached");
+
+            storage.push_back(generateRandomString(engine, generation++, allowEmpty));
+            return std::string_view{storage.back()};
+        };
+
+        input.target = generateNewString(true);
+        input.name = generateNewString(false);
+
         for (std::size_t i = 0; i < argsCount; i++)
-            input.arguments.push_back(generateRandomString(engine, generation++, false));
+            input.arguments.push_back(generateNewString(false));
 
         for (std::size_t i = 0; i < namedArgsCount; i++)
         {
-            auto key = generateRandomString(engine, generation++, false);
-            auto value = generateRandomString(engine, generation++, false);
+            auto key = generateNewString(false);
+            auto value = generateNewString(false);
             input.namedArguments.emplace(key, value);
         }
 
-        return input;
+        return inputWithStorage;
     }
 
     template<typename RandomEngine>
@@ -175,9 +195,9 @@ namespace
         std::size_t const generationsCount = 50;
         for (std::size_t i = 0; i < generationsCount; i++)
         {
-            auto input = generateRandomInput(engine);
-            auto str = generateRandomInputString(engine, input);
-            validate<Lexer>(str, input);
+            auto inputWithStorage = generateRandomInput(engine);
+            auto str = generateRandomInputString(engine, inputWithStorage.input);
+            validate<Lexer>(str, inputWithStorage.input);
         }
 
         validate<Lexer>(".func", coil::makeUnexpected("Unexpected token '.' at the beginning of the expression"));
