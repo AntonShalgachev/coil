@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Types.h"
+#include "FuncTraits.h"
 
 namespace coil::utils
 {
@@ -34,6 +35,7 @@ namespace coil::utils
 	template<typename Func, typename ObjectReferenceT>
 	struct MemberFunctionFunctor : public detail::MemberFunctionFunctorImplT<Func, ObjectReferenceT>
 	{
-		using detail::MemberFunctionFunctorImplT<Func, ObjectReferenceT>::MemberFunctionFunctorImpl;
+		using Base = detail::MemberFunctionFunctorImplT<Func, ObjectReferenceT>;
+		using Base::Base;
 	};
 }

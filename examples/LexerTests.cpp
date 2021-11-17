@@ -107,7 +107,11 @@ namespace
             input.arguments.push_back(generateRandomString(engine, generation++, false));
 
         for (std::size_t i = 0; i < namedArgsCount; i++)
-            input.namedArguments.emplace(generateRandomString(engine, generation++, false), generateRandomString(engine, generation++, false));
+        {
+            auto key = generateRandomString(engine, generation++, false);
+            auto value = generateRandomString(engine, generation++, false);
+            input.namedArguments.emplace(key, value);
+        }
 
         return input;
     }
@@ -168,8 +172,8 @@ namespace
         validate<Lexer>("", expects("", "", {}, {}));
 
         std::default_random_engine engine{};
-        std::size_t const generationsCount = 0;
-        for (int i = 0; i < generationsCount; i++)
+        std::size_t const generationsCount = 50;
+        for (std::size_t i = 0; i < generationsCount; i++)
         {
             auto input = generateRandomInput(engine);
             auto str = generateRandomInputString(engine, input);

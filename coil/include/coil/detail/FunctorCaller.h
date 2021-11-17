@@ -6,7 +6,7 @@
 
 #include "CallContext.h"
 #include "../utils/Types.h"
-#include "TypeSerializer.h"
+#include "coil/TypeSerializer.h"
 #include "../utils/FuncTraits.h"
 #include "../utils/FilterTypes.h"
 #include "FuncTraitsEx.h"
@@ -89,8 +89,8 @@ namespace coil::detail
     template<std::size_t min, bool variadic>
     struct SwallowTraitsImpl<min, variadic>
     {
-        static constexpr std::size_t min = min;
-        static constexpr bool variadic = variadic;
+        static constexpr std::size_t minArgs = min;
+        static constexpr bool isVariadic = variadic;
     };
 
     template<typename... Args>
@@ -186,8 +186,8 @@ namespace coil::detail
         {
             auto const& arguments = context.input.arguments;
 
-            auto constexpr minArgs = SwallowTraits<ArgTypes>::min;
-            auto constexpr isVariadic = SwallowTraits<ArgTypes>::variadic;
+            auto constexpr minArgs = SwallowTraits<ArgTypes>::minArgs;
+            auto constexpr isVariadic = SwallowTraits<ArgTypes>::isVariadic;
 
             bool result = false;
 

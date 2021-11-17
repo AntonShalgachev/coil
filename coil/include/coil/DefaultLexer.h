@@ -65,6 +65,9 @@ namespace coil
                 return TokenType::Dot;
             case CharType::Assignment:
                 return TokenType::Assignment;
+            default:
+                // TODO logic error
+                break;
             }
 
             // TODO logic error

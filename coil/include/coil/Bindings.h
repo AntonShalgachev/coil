@@ -33,9 +33,9 @@ namespace coil
             using ObjectT = std::remove_pointer_t<ObjectPointerT>;
             using ObjectReferenceT = std::add_lvalue_reference_t<ObjectT>;
  
-            static_assert(!std::is_void_v<Traits::ObjectType>, "Func must be a pointer to member function");
+            static_assert(!std::is_void_v<typename Traits::ObjectType>, "Func must be a pointer to member function");
             static_assert(std::is_pointer_v<ObjectPointerT>, "Object must be a pointer"); // To make it obvious that we don't make a copy of this object
-            static_assert(std::is_same_v<Traits::ObjectType, std::decay_t<ObjectT>>, "Object must have the same type as the function's object type");
+            static_assert(std::is_same_v<typename Traits::ObjectType, std::decay_t<ObjectT>>, "Object must have the same type as the function's object type");
             if constexpr (std::is_const_v<ObjectT>)
                 static_assert(Traits::isConst, "Can't call non-const method on a const object");
 
@@ -74,7 +74,7 @@ namespace coil
             }
             else
             {
-                static_assert(false, "Unsupported type AnyT");
+                static_assert(sizeof(AnyT) == -1, "Unsupported type AnyT");
             }
         }
 
@@ -181,9 +181,9 @@ namespace coil
             using ExplicitTargetTrait = typename FuncTraits::ExplicitTargetTraits;
             if constexpr (ExplicitTargetTrait::isPresent)
             {
-                static_assert(!std::is_same_v<T, FuncTraits::ObjectType>, "Explicit target shouldn't be used on member functions of the same type");
+                static_assert(!std::is_same_v<T, typename FuncTraits::ObjectType>, "Explicit target shouldn't be used on member functions of the same type");
                 static_assert(!std::is_void_v<T>, "Can't have explicit target for bindings without target");
-                using SpecifiedExplicitTarget = std::decay_t<std::remove_pointer_t<ExplicitTargetTrait::Type>>;
+                using SpecifiedExplicitTarget = std::decay_t<std::remove_pointer_t<typename ExplicitTargetTrait::Type>>;
                 static_assert(std::is_same_v<T, SpecifiedExplicitTarget>, "Explicit target should match the given type T");
             }
 
