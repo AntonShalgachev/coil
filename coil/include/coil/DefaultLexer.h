@@ -1,11 +1,13 @@
 #pragma once
 
-#include <string>
+#include <string_view>
 #include <optional>
 #include <cctype>
 
 #include "DefaultLexer.h"
 #include "ExecutionInput.h"
+#include "Expected.h"
+#include "utils/Utils.h"
 
 namespace coil
 {
@@ -14,7 +16,7 @@ namespace coil
     struct DefaultLexer
     {
     public:
-        ExecutionInput operator()(std::string_view str) const
+        Expected<ExecutionInput, std::string> operator()(std::string_view str) const
         {
             return parse(tokenize(str));
         }
@@ -45,9 +47,9 @@ namespace coil
         {
             if (c == '.')
                 return CharType::Dot;
-            else if (c == '=')
+            if (c == '=')
                 return CharType::Assignment;
-            else if (std::isspace(c))
+            if (std::isspace(c))
                 return CharType::Space;
 
             return CharType::String;
@@ -119,7 +121,7 @@ namespace coil
             }
         };
 
-        std::vector<TokenGroup> groupTokens(std::vector<Token> const& tokens) const
+        Expected<std::vector<TokenGroup>, std::string> groupTokens(std::vector<Token> const& tokens) const
         {
             std::vector<TokenGroup> tokenGroups;
 
@@ -136,23 +138,19 @@ namespace coil
                 }
                 else
                 {
-                    if (hasPreviousGroup)
-                    {
-                        // TODO report error
-                    }
+                    std::string_view tokenValue = tokens[i].value;
+
+                    if (!hasPreviousGroup)
+                        return makeUnexpected(utils::formatString("Unexpected token '%.*s' at the beginning of the expression", tokenValue.size(), tokenValue.data()));
+
                     TokenGroup& previousGroup = tokenGroups.back();
+
                     if (previousGroup.secondaryTokenIndex != invalidIndex)
-                    {
-                        // TODO report error
-                    }
+                        return makeUnexpected(utils::formatString("Unexpected token '%.*s'; previous token group is already complete", tokenValue.size(), tokenValue.data()));
                     if (previousGroup.separatorTokenIndex != invalidIndex)
-                    {
-                        // TODO report error
-                    }
+                        return makeUnexpected(utils::formatString("Unexpected token '%.*s'; previous token group already has a token", tokenValue.size(), tokenValue.data()));
                     if (i + 1 >= tokens.size())
-                    {
-                        // TODO report error
-                    }
+                        return makeUnexpected(utils::formatString("Unexpected token '%.*s' at the end of the expression", tokenValue.size(), tokenValue.data()));
 
                     previousGroup.separatorTokenIndex = i;
                 }
@@ -161,13 +159,16 @@ namespace coil
             return tokenGroups;
         }
 
-        ExecutionInput parse(std::vector<Token> tokens) const
+        Expected<ExecutionInput, std::string> parse(std::vector<Token> tokens) const
         {
             ExecutionInput input;
 
             auto tokenGroups = groupTokens(tokens);
 
-            for (TokenGroup const& group : tokenGroups)
+            if (!tokenGroups)
+                return makeUnexpected(tokenGroups.error());
+
+            for (TokenGroup const& group : *tokenGroups)
             {
                 if (group.lacksSecondaryToken())
                 {
@@ -179,37 +180,24 @@ namespace coil
                 TokenType type = group.separatorTokenIndex != invalidIndex ? tokens[group.separatorTokenIndex].type : TokenType::String;
                 std::string_view secondaryTokenValue = group.secondaryTokenIndex != invalidIndex ? tokens[group.secondaryTokenIndex].value : std::string_view{};
 
-                auto parseAsFuncName = [type, &input, secondaryTokenValue, &primaryToken]()
+                if (input.name.empty())
                 {
-                    switch (type)
-                    {
-                    case coil::DefaultLexer::TokenType::Dot:
-                        input.target = primaryToken.value;
-                        input.name = secondaryTokenValue;
-                        break;
-                    case coil::DefaultLexer::TokenType::String:
-                        input.name = primaryToken.value;;
-                        break;
-                    default:
-                        // TODO report error
-                        break;
-                    }
-                };
-
-                auto parseAsArgument = [type, &input, secondaryTokenValue, &primaryToken]()
+                    if (type == TokenType::Dot)
+                        input.setTargetAndName(primaryToken.value, secondaryTokenValue);
+                    else if (type == TokenType::String)
+                        input.name = primaryToken.value;
+                    else
+                        return makeUnexpected("Unexpected named argument at the beginning of the expression");
+                }
+                else
                 {
                     if (type == TokenType::Assignment)
                         input.namedArguments.emplace(primaryToken.value, secondaryTokenValue);
                     else if (type == TokenType::String)
                         input.arguments.emplace_back(primaryToken.value);
                     else
-                        ; // TODO report error
-                };
-
-                if (input.name.empty())
-                    parseAsFuncName();
-                else
-                    parseAsArgument();
+                        return makeUnexpected("Unexpected token '.' when the function name has already been defined");
+                }
             }
 
             return input;
