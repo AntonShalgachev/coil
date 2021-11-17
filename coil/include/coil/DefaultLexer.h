@@ -144,13 +144,11 @@ namespace coil
                         return makeUnexpected(utils::formatString("Unexpected token '%.*s' at the beginning of the expression", tokenValue.size(), tokenValue.data()));
 
                     TokenGroup& previousGroup = tokenGroups.back();
+
                     if (previousGroup.secondaryTokenIndex != invalidIndex)
-                    {
                         return makeUnexpected(utils::formatString("Unexpected token '%.*s'; previous token group is already complete", tokenValue.size(), tokenValue.data()));
-                    }
                     if (previousGroup.separatorTokenIndex != invalidIndex)
                         return makeUnexpected(utils::formatString("Unexpected token '%.*s'; previous token group already has a token", tokenValue.size(), tokenValue.data()));
-
                     if (i + 1 >= tokens.size())
                         return makeUnexpected(utils::formatString("Unexpected token '%.*s' at the end of the expression", tokenValue.size(), tokenValue.data()));
 
