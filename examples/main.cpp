@@ -3,7 +3,6 @@
 #include "basic_example/BasicExample.h"
 
 #include "coil/Bindings.h"
-#include "SimpleLexer.h"
 #include "LexerTests.h"
 #include "coil/DefaultLexer.h"
 

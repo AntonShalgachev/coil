@@ -1,7 +1,6 @@
 #include "BasicExample.h"
 
 #include "coil/Bindings.h"
-#include "SimpleLexer.h"
 #include "EnumToString.h"
 #include "Test.h"
 
@@ -126,12 +125,10 @@ namespace test
         cmd["namedFunc"] = &variadicNamedFunc;
         cmd["enumFunc"] = &enumFunc;
 
-        SimpleLexer lexer;
-
-        auto execute = [&cmd, &lexer](std::string command)
+        auto execute = [&cmd](std::string_view command)
         {
             std::cout << "Executing [" << command << "]" << std::endl;
-            auto result = cmd.execute(std::move(command), lexer);
+            auto result = cmd.execute(command);
 
             for (const auto& error : result.errors)
                 std::cout << "\t" << "Error: " << error << std::endl;
