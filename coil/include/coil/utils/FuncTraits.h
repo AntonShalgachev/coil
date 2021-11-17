@@ -15,8 +15,8 @@ namespace coil::utils
 		using ObjectType = T; // void if free/static function, T if it's a method of type T
 		using ArgumentTypes = Types<Args...>;
 
-        template<typename T>
-        static const bool isMethodOfType = !std::is_void_v<T> && std::is_same_v<ObjectType, T>;
+        template<typename U>
+        static const bool isMethodOfType = !std::is_void_v<U> && std::is_same_v<ObjectType, U>;
 
 		static constexpr bool isConst = IsConst;
 	};

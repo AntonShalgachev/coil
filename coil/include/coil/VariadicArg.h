@@ -11,7 +11,7 @@ namespace coil
         struct OnErrorFlag
         {
         public:
-            void operator()(std::string error)
+            void operator()(std::string)
             {
                 m_flag = true;
             }
