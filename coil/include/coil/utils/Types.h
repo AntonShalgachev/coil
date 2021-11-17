@@ -6,10 +6,11 @@ namespace coil::utils
 {
 	namespace detail
 	{
+        // TODO move out of detail, remove RTTI and allow specializations
 		template<typename T>
 		struct TypeInfo
 		{
-			static std::string name()
+			static std::string_view name()
 			{
 				return typeid(T).name();
 			}
@@ -24,7 +25,7 @@ namespace coil::utils
 
 		static std::string name()
 		{
-			std::vector<std::string> names = { detail::TypeInfo<Args>::name() ... };
+			std::vector<std::string_view> names = { detail::TypeInfo<Args>::name() ... };
 
 			return flatten(names);
 		}
