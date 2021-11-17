@@ -19,7 +19,7 @@ namespace coil::detail
     struct VariadicConverter
     {
         template<typename OnError>
-        static T fromString(std::vector<std::string> const& arguments, std::size_t index, OnError&& onError)
+        static T fromString(std::vector<std::string_view> const& arguments, std::size_t index, OnError&& onError)
         {
             return TypeSerializer<T>::fromString(arguments.at(index), std::forward<OnError>(onError));
         }
@@ -29,7 +29,7 @@ namespace coil::detail
     struct VariadicConverter<std::vector<T>>
     {
         template<typename OnError>
-        static std::vector<T> fromString(std::vector<std::string> const& arguments, std::size_t index, OnError&& onError)
+        static std::vector<T> fromString(std::vector<std::string_view> const& arguments, std::size_t index, OnError&& onError)
         {
             std::vector<T> args;
 
@@ -44,7 +44,7 @@ namespace coil::detail
     struct VariadicConverter<std::optional<T>>
     {
         template<typename OnError>
-        static std::optional<T> fromString(std::vector<std::string> const& arguments, std::size_t index, OnError&& onError)
+        static std::optional<T> fromString(std::vector<std::string_view> const& arguments, std::size_t index, OnError&& onError)
         {
             if (index >= arguments.size())
                 return {};
@@ -201,13 +201,14 @@ namespace coil::detail
 
             char const* errorFormat = nullptr;
             if constexpr (isVariadic)
-                errorFormat = "Wrong number of arguments to variadic '%s': expected at least %d (%s), got %d (%s)";
+                errorFormat = "Wrong number of arguments to variadic '%.*s': expected at least %d (%s), got %d (%s)";
             else
-                errorFormat = "Wrong number of arguments to '%s': expected %d (%s), got %d (%s)";
+                errorFormat = "Wrong number of arguments to '%.*s': expected %d (%s), got %d (%s)";
 
             std::string typeNames = ArgTypes::name();
             std::string actualArguments = utils::flatten(arguments, "'");
-            context.result.errors.push_back(utils::formatString(errorFormat, context.input.name.c_str(), minArgs, typeNames.c_str(), arguments.size(), actualArguments.c_str()));
+            std::string_view name = context.input.name; // TODO rename
+            context.result.errors.push_back(utils::formatString(errorFormat, name.size(), name.data(), minArgs, typeNames.c_str(), arguments.size(), actualArguments.c_str()));
 
             return false;
         }

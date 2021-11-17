@@ -8,7 +8,7 @@ namespace coil
     class BindingProxy
     {
     public:
-        BindingProxy(Bindings& bindings, std::string name) : m_bindings(bindings), m_name(std::move(name)) {}
+        BindingProxy(Bindings& bindings, std::string_view name) : m_bindings(bindings), m_name(name) {}
 
         template<typename AnyT>
         BindingProxy& operator=(AnyT&& anything) const& = delete;
@@ -37,6 +37,6 @@ namespace coil
 
     private:
         Bindings& m_bindings;
-        std::string m_name;
+        std::string_view m_name;
     };
 }
