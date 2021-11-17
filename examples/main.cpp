@@ -22,7 +22,7 @@ int main()
     example.registerExample(bindings);
 
     {
-        //lexer_tests::run();
+        lexer_tests::run();
         bindings.execute("basic_example.run");
     }
 
