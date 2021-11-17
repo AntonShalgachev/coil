@@ -1,6 +1,7 @@
 #include "BasicExample.h"
 
 #include "coil/Bindings.h"
+#include "CustomTypeName.h"
 #include "EnumToString.h"
 #include "Test.h"
 

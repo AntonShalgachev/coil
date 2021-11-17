@@ -3,8 +3,9 @@
 #include "basic_example/BasicExample.h"
 
 #include "coil/Bindings.h"
+#include "CustomTypeName.h"
+
 #include "LexerTests.h"
-#include "coil/DefaultLexer.h"
 
 void help()
 {
@@ -21,7 +22,8 @@ int main()
     example.registerExample(bindings);
 
     {
-        lexer_tests::run();
+        //lexer_tests::run();
+        bindings.execute("basic_example.run");
     }
 
     while (true)

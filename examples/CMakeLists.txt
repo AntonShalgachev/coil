@@ -12,6 +12,7 @@ set(ALL_FILES
     "basic_example/BasicExample.cpp"
     "LexerTests.h"
     "LexerTests.cpp"
+    "CustomTypeName.h"
 )
 
 set (VS2017 OFF)
