@@ -1,6 +1,5 @@
 #include "LexerTests.h"
 
-#include "SimpleLexer.h"
 #include "coil/ExecutionInput.h"
 #include "coil/DefaultLexer.h"
 
@@ -181,7 +180,6 @@ namespace
 
 void lexer_tests::run()
 {
-    //testLexer<SimpleLexer>();
     testLexer<coil::DefaultLexer>();
 }
 

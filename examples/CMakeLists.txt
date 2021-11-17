@@ -4,8 +4,6 @@ set(ALL_FILES
     
     "basic_example/Test.h"
     "basic_example/Test.cpp"
-    "SimpleLexer.h"
-    "SimpleLexer.cpp"
     "basic_example/EnumToString.h"
 
     "main.cpp"
