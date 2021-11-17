@@ -8,10 +8,10 @@ namespace coil
 {
     struct ExecutionInput
     {
-        std::string target;
-        std::string name;
-        std::vector<std::string> arguments;
-        std::unordered_map<std::string, std::string> namedArguments;
+        std::string_view target;
+        std::string_view name;
+        std::vector<std::string_view> arguments;
+        std::unordered_map<std::string_view, std::string_view> namedArguments;
 
         void setTargetAndName(std::string_view t, std::string_view n)
         {

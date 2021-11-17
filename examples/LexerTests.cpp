@@ -43,7 +43,7 @@ namespace
         std::cout << "Testing '" << str << "'";
 
         Lexer lexer;
-        auto actual = lexer(std::string(str));
+        auto actual = lexer(str);
 
         bool passed = false;
         if (actual && expected)
@@ -65,7 +65,7 @@ namespace
         }
     }
 
-    coil::ExecutionInput expects(std::string_view target, std::string_view name, std::vector<std::string> args, std::unordered_map<std::string, std::string> namedArgs)
+    coil::ExecutionInput expects(std::string_view target, std::string_view name, std::vector<std::string_view> args, std::unordered_map<std::string_view, std::string_view> namedArgs)
     {
         coil::ExecutionInput input;
         input.target = target;
