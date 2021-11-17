@@ -10,21 +10,27 @@
 
 namespace
 {
-    void dump(std::ostream& os, std::string_view name, coil::ExecutionInput const& self)
+    void dump(std::ostream& os, std::string_view name, coil::Expected<coil::ExecutionInput, std::string> const& self)
     {
         os << name << ":" << std::endl;
 
+        if (!self)
+        {
+            os << "Error: " << self.error() << std::endl;
+            return;
+        }
+
         os << "{\n";
-        os << "\ttarget: '" << self.target << "'\n";
-        os << "\tname: '" << self.name << "'\n";
+        os << "\ttarget: '" << self->target << "'\n";
+        os << "\tname: '" << self->name << "'\n";
 
         os << "\targs: {";
-        for (auto const& arg : self.arguments)
+        for (auto const& arg : self->arguments)
             os << "'" << arg << "',";
         os << "}\n";
 
         os << "\tnamed args: {\n";
-        for (auto const& pair : self.namedArguments)
+        for (auto const& pair : self->namedArguments)
             os << "\t\t'" << pair.first << "': '" << pair.second << "',\n";
         os << "\t}\n";
 
@@ -32,14 +38,22 @@ namespace
     }
 
     template<typename Lexer>
-    void validate(std::string_view str, coil::ExecutionInput expected)
+    void validate(std::string_view str, coil::Expected<coil::ExecutionInput, std::string> expected)
     {
         std::cout << "Testing '" << str << "'";
 
         Lexer lexer;
-        coil::ExecutionInput actual = lexer(std::string(str));
+        auto actual = lexer(std::string(str));
 
-        bool const passed = actual == expected;
+        bool passed = false;
+        if (actual && expected)
+        {
+            passed = actual.value() == expected.value();
+        }
+        else if (!actual && !expected)
+        {
+            passed = actual.error() == expected.error();
+        }
 
         std::cout << (passed ? " [SUCCESS]" : " [FAILURE]") << std::endl;
 
@@ -47,6 +61,7 @@ namespace
         {
             dump(std::cout, "Expected", expected);
             dump(std::cout, "Actual", actual);
+            std::cout << std::endl;
         }
     }
 
@@ -153,7 +168,7 @@ namespace
         validate<Lexer>("", expects("", "", {}, {}));
 
         std::default_random_engine engine{};
-        std::size_t const generationsCount = 500;
+        std::size_t const generationsCount = 0;
         for (int i = 0; i < generationsCount; i++)
         {
             auto input = generateRandomInput(engine);
@@ -161,20 +176,23 @@ namespace
             validate<Lexer>(str, input);
         }
 
-        // TODO test invalid
-        {
-            "target.func=arg";
-            "target.func arg=val=foo";
-            "target.func arg=";
-            "target.";
-            ".func";
-            "=foo";
-            "target.=foo";
-            "target.func arg=.foo";
+        validate<Lexer>(".func", coil::makeUnexpected("Unexpected token '.' at the beginning of the expression"));
+        validate<Lexer>("=val", coil::makeUnexpected("Unexpected token '=' at the beginning of the expression"));
 
-            "arg1 arg2=foo obj.func";
-            "obj.func obj2.func2";
-        }
+        validate<Lexer>("target.func=arg", coil::makeUnexpected("Unexpected token '='; previous token group is already complete"));
+        validate<Lexer>("target.func arg=val=foo", coil::makeUnexpected("Unexpected token '='; previous token group is already complete"));
+        validate<Lexer>("target.func.foo", coil::makeUnexpected("Unexpected token '.'; previous token group is already complete"));
+
+        validate<Lexer>("target.func arg=", coil::makeUnexpected("Unexpected token '=' at the end of the expression"));
+        validate<Lexer>("target.", coil::makeUnexpected("Unexpected token '.' at the end of the expression"));
+
+        validate<Lexer>("target.=foo", coil::makeUnexpected("Unexpected token '='; previous token group already has a token"));
+        validate<Lexer>("target.func arg=.foo", coil::makeUnexpected("Unexpected token '.'; previous token group already has a token"));
+
+        validate<Lexer>("arg1 arg2=foo obj.func", coil::makeUnexpected("Unexpected token '.' when the function name has already been defined"));
+        validate<Lexer>("obj.func obj2.func2", coil::makeUnexpected("Unexpected token '.' when the function name has already been defined"));
+
+        validate<Lexer>("arg=val", coil::makeUnexpected("Unexpected named argument at the beginning of the expression"));
     }
 }
 

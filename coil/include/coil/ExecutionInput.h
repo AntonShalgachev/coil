@@ -13,6 +13,12 @@ namespace coil
         std::vector<std::string> arguments;
         std::unordered_map<std::string, std::string> namedArguments;
 
+        void setTargetAndName(std::string_view t, std::string_view n)
+        {
+            target = t;
+            name = n;
+        }
+
         auto tie() const
         {
             return std::tie(target, name, arguments, namedArguments);
