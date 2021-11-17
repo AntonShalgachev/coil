@@ -12,12 +12,12 @@ namespace coil
     template<typename T, typename OnError>
     static void reportConversionError(OnError&& onError, std::string_view inputString, std::string_view details = {})
     {
-        std::string typeName = utils::Types<T>::name();
+        std::string_view typeName = TypeName<T>::name();
 
         if (details.empty())
-            onError(utils::formatString("Unable to convert '%.*s' to type '%s'", inputString.length(), inputString.data(), typeName.c_str()));
+            onError(utils::formatString("Unable to convert '%.*s' to type '%.*s'", inputString.length(), inputString.data(), typeName.length(), typeName.data()));
         else
-            onError(utils::formatString("Unable to convert '%.*s' to type '%s': %.*s", inputString.length(), inputString.data(), typeName.c_str(), details.length(), details.data()));
+            onError(utils::formatString("Unable to convert '%.*s' to type '%.*s': %.*s", inputString.length(), inputString.data(), typeName.length(), typeName.data(), details.length(), details.data()));
     }
 
     template<typename T, typename = void>

@@ -191,6 +191,8 @@ namespace coil::detail
 
             bool result = false;
 
+            // TODO add and check maxArgs (for std::optional)
+
             if constexpr (isVariadic)
                 result = arguments.size() >= minArgs;
             else
