@@ -12,6 +12,7 @@
 #include "utils/VariableWrapper.h"
 #include "utils/TypeId.h"
 #include "BindingProxy.h"
+#include "DefaultLexer.h"
 #include <any>
 
 namespace coil
@@ -131,6 +132,11 @@ namespace coil
             static_assert(std::is_invocable_r_v<ExecutionInput, LexerT, InputT>, "Lexer should be invocable with InputT and it should return ExecutionInput");
 
             return execute(lexer(std::forward<InputT>(command)));
+        }
+
+        ExecutionResult execute(std::string_view command)
+        {
+            return execute(command, DefaultLexer{});
         }
 
         ExecutionResult execute(ExecutionInput input)

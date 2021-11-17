@@ -31,7 +31,7 @@ int main()
         std::string line;
         std::getline(std::cin, line);
 
-        auto result = bindings.execute(line, coil::DefaultLexer{});
+        auto result = bindings.execute(line);
 
         for (const auto& error : result.errors)
             std::cout << "Error: " << error << std::endl;
