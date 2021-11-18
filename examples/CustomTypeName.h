@@ -31,4 +31,26 @@ namespace coil
             return "std::string_view";
         }
     };
+
+    template<typename T>
+    struct TypeName<std::vector<T>>
+    {
+        static std::string_view name()
+        {
+            using namespace std::literals::string_literals;
+            static std::string typeName = "std::vector<"s + std::string{ TypeName<T>::name() } +">"s;
+            return typeName;
+        }
+    };
+
+    template<typename T>
+    struct TypeName<std::optional<T>>
+    {
+        static std::string_view name()
+        {
+            using namespace std::literals::string_literals;
+            static std::string typeName = "std::optional<"s + std::string{ TypeName<T>::name() } +">"s;
+            return typeName;
+        }
+    };
 }
