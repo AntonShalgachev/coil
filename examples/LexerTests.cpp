@@ -44,7 +44,7 @@ namespace
     }
 
     template<typename Lexer>
-    void validate(std::string_view str, coil::Expected<coil::ExecutionInput, std::string> expected)
+    bool validate(std::string_view str, coil::Expected<coil::ExecutionInput, std::string> expected)
     {
         std::cout << "Testing '" << str << "'";
 
@@ -69,6 +69,8 @@ namespace
             dump(std::cout, "Actual", actual);
             std::cout << std::endl;
         }
+
+        return passed;
     }
 
     coil::ExecutionInput expects(std::string_view objectName, std::string_view functionName, std::vector<std::string_view> args, std::unordered_map<std::string_view, std::string_view> namedArgs)
@@ -84,12 +86,17 @@ namespace
     }
 
     template<typename RandomEngine>
-    std::string generateRandomString(RandomEngine& engine, std::size_t generation, bool allowEmpty)
+    std::string generateRandomString(RandomEngine& engine, std::size_t generation, bool allowEmpty, bool allowNumber)
     {
         std::bernoulli_distribution isEmptyDist{ allowEmpty ? 0.5f : 0.0f };
 
         if (isEmptyDist(engine))
             return "";
+
+        std::bernoulli_distribution isNumberDist{ allowNumber ? 0.5f : 0.0f };
+
+        if (isNumberDist(engine))
+            return "3.14";
 
         return std::string("str") + std::to_string(generation);
     }
@@ -110,26 +117,26 @@ namespace
         std::size_t const maxStorageSize = 2 + argsCount + 2 * namedArgsCount;
         inputWithStorage.storage.reserve(maxStorageSize);
 
-        auto generateNewString = [&storage = inputWithStorage.storage, &engine, &generation, maxStorageSize](bool allowEmpty)
+        auto generateNewString = [&storage = inputWithStorage.storage, &engine, &generation, maxStorageSize](bool allowEmpty, bool allowNumber)
         {
             // to prevent storage reallocation
             if (storage.size() >= maxStorageSize)
                 throw std::runtime_error("Maximum allocations reached");
 
-            storage.push_back(generateRandomString(engine, generation++, allowEmpty));
+            storage.push_back(generateRandomString(engine, generation++, allowEmpty, allowNumber));
             return std::string_view{storage.back()};
         };
 
-        input.objectName = generateNewString(true);
-        input.functionName = generateNewString(false);
+        input.objectName = generateNewString(true, false);
+        input.functionName = generateNewString(false, false);
 
         for (std::size_t i = 0; i < argsCount; i++)
-            input.arguments.push_back(generateNewString(false));
+            input.arguments.push_back(generateNewString(false, true));
 
         for (std::size_t i = 0; i < namedArgsCount; i++)
         {
-            auto key = generateNewString(false);
-            auto value = generateNewString(false);
+            auto key = generateNewString(false, false);
+            auto value = generateNewString(false, true);
             input.namedArguments.emplace(key, value);
         }
 
@@ -191,15 +198,6 @@ namespace
         validate<Lexer>("func arg1 arg2 arg3=foo arg4=bar", expects("", "func", { "arg1", "arg2" }, { {"arg3", "foo"}, {"arg4", "bar"} }));
         validate<Lexer>("", expects("", "", {}, {}));
 
-        std::default_random_engine engine{};
-        std::size_t const generationsCount = 50;
-        for (std::size_t i = 0; i < generationsCount; i++)
-        {
-            auto inputWithStorage = generateRandomInput(engine);
-            auto str = generateRandomInputString(engine, inputWithStorage.input);
-            validate<Lexer>(str, inputWithStorage.input);
-        }
-
         validate<Lexer>(".func", coil::makeUnexpected("Unexpected token '.' at the beginning of the expression"));
         validate<Lexer>("=val", coil::makeUnexpected("Unexpected token '=' at the beginning of the expression"));
 
@@ -217,6 +215,19 @@ namespace
         validate<Lexer>("obj.func obj2.func2", coil::makeUnexpected("Unexpected token '.' when the function name has already been defined"));
 
         validate<Lexer>("arg=val", coil::makeUnexpected("Unexpected named argument at the beginning of the expression"));
+
+        std::default_random_engine engine{};
+        std::size_t const generationsCount = 5000;
+        std::size_t failures = 0;
+        for (std::size_t i = 0; i < generationsCount; i++)
+        {
+            auto inputWithStorage = generateRandomInput(engine);
+            auto str = generateRandomInputString(engine, inputWithStorage.input);
+            if (!validate<Lexer>(str, inputWithStorage.input))
+                failures++;
+        }
+
+        std::cout << "Automatic tests completed: " << failures << " failed" << std::endl << std::endl;
     }
 }
 

@@ -26,6 +26,7 @@ namespace coil
         {
             Space,
             String,
+            Number,
             Dot,
             Assignment,
         };
@@ -43,14 +44,20 @@ namespace coil
             std::string_view value;
         };
 
-        static CharType getCharType(unsigned char c)
+        static CharType getCharType(CharType currentCharType, unsigned char c)
         {
-            if (c == '.')
-                return CharType::Dot;
             if (c == '=')
                 return CharType::Assignment;
             if (std::isspace(c))
                 return CharType::Space;
+
+            if (c == '.' && currentCharType == CharType::Number)
+                return CharType::Number;
+            if (c == '.' && currentCharType != CharType::Number)
+                return CharType::Dot;
+
+            if (std::isdigit(c) && currentCharType != CharType::String)
+                return CharType::Number;
 
             return CharType::String;
         }
@@ -60,6 +67,7 @@ namespace coil
             switch (type)
             {
             case CharType::String:
+            case CharType::Number:
                 return TokenType::String;
             case CharType::Dot:
                 return TokenType::Dot;
@@ -76,8 +84,6 @@ namespace coil
 
         std::vector<Token> tokenize(std::string_view str) const
         {
-            // TODO properly handle floating point numbers
-
             std::vector<Token> tokens;
 
             std::size_t tokenBegin = std::string_view::npos;
@@ -95,7 +101,7 @@ namespace coil
 
             for (std::size_t i = 0; i < str.size(); i++)
             {
-                CharType charType = getCharType(str[i]);
+                CharType charType = getCharType(currentCharType, str[i]);
 
                 if (currentCharType != charType)
                 {
