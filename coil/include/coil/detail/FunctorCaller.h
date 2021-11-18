@@ -53,62 +53,60 @@ namespace coil::detail
         }
     };
 
-    // TODO think of a better name and move to another file
+    // TODO move to another file
+    // TODO allow specialization
     template<typename T>
-    struct SwallowAmount
+    struct ArgCountTraits
     {
-        static constexpr std::size_t count = 1;
-        static constexpr bool variadic = false;
-    };
-
-    template<typename T>
-    struct SwallowAmount<std::vector<T>>
-    {
-        static constexpr std::size_t count = 0;
-        static constexpr bool variadic = true;
+        static constexpr std::size_t min = 1;
+        static constexpr bool isUnlimited = false;
+        static constexpr std::size_t max = 1;
     };
 
     template<typename T>
-    struct SwallowAmount<std::optional<T>>
+    struct ArgCountTraits<std::vector<T>>
     {
-        static constexpr std::size_t count = 0;
-        static constexpr bool variadic = true;
+        static constexpr std::size_t min = 0;
+        static constexpr bool isUnlimited = true;
+        static constexpr std::size_t max = 0;
     };
 
-    template<std::size_t min, bool variadic, typename... Args>
-    struct SwallowTraitsImpl
+    template<typename T>
+    struct ArgCountTraits<std::optional<T>>
     {
-
+        static constexpr std::size_t min = 0;
+        static constexpr bool isUnlimited = false;
+        static constexpr std::size_t max = 1;
     };
 
-    template<std::size_t min, bool variadic, typename Head, typename... Tail>
-    struct SwallowTraitsImpl<min, variadic, Head, Tail...> : SwallowTraitsImpl<min + SwallowAmount<std::decay_t<Head>>::count, variadic || SwallowAmount<std::decay_t<Head>>::variadic, Tail...>
-    {
+    template<std::size_t currentMin, bool isUnlimited, std::size_t currentMax, typename... Args>
+    struct VariadicArgsTraitsImpl;
 
-    };
-    template<std::size_t min, bool variadic>
-    struct SwallowTraitsImpl<min, variadic>
+    template<std::size_t currentMin, bool isUnlimited, std::size_t currentMax, typename Head, typename... Tail>
+    struct VariadicArgsTraitsImpl<currentMin, isUnlimited, currentMax, Head, Tail...> : VariadicArgsTraitsImpl<currentMin + ArgCountTraits<std::decay_t<Head>>::min, isUnlimited || ArgCountTraits<std::decay_t<Head>>::isUnlimited, currentMax + ArgCountTraits<std::decay_t<Head>>::max, Tail...> {};
+
+    template<std::size_t currentMin, bool isUnlimited, std::size_t currentMax>
+    struct VariadicArgsTraitsImpl<currentMin, isUnlimited, currentMax>
     {
-        static constexpr std::size_t minArgs = min;
-        static constexpr bool isVariadic = variadic;
+        static_assert(currentMax >= currentMin || isUnlimited, "For unlimited arguments currentMax should not be less than currentMin");
+
+        static constexpr std::size_t minArgs = currentMin;
+        static constexpr bool isUnlimited = isUnlimited;
+        static constexpr std::size_t maxArgs = currentMax;
+
+        static constexpr bool isVariadic = isUnlimited || (minArgs != maxArgs);
     };
 
     template<typename... Args>
-    struct SwallowTraits : SwallowTraitsImpl<0, false, Args...>
-    {
-
-    };
+    struct VariadicArgsTraits;
 
     template<typename... Args>
-    struct SwallowTraits<utils::Types<Args...>> : SwallowTraits<Args...>
+    struct VariadicArgsTraits<utils::Types<Args...>> : VariadicArgsTraitsImpl<0, false, 0, Args...> {};
+
+    template<typename Func>
+    struct FunctorCaller
     {
-
-    };
-
-	template<typename Func>
-	struct FunctorCaller
-	{
-	public:
+    public:
         template<typename T>
         static void call(Func& func, CallContext& context, T* target)
         {
@@ -138,8 +136,8 @@ namespace coil::detail
             unpackAndInvoke(func, context, nonUserArgs, NonUserArgIndices{}, UserArgTypes{}, UserArgIndicesType{});
         }
 
-	private:
-		using Traits = detail::FuncTraitsEx<Func>;
+    private:
+        using Traits = detail::FuncTraitsEx<Func>;
         using R = typename Traits::ReturnType;
 
         template<typename NonUserArgsTuple, std::size_t... NonUserIndices, typename... UserArgs, std::size_t... UserIndices>
@@ -185,32 +183,32 @@ namespace coil::detail
         static bool validateArguments(CallContext& context)
         {
             auto const& arguments = context.input.arguments;
+            std::size_t const actualArgsCount = arguments.size();
 
-            auto constexpr minArgs = SwallowTraits<ArgTypes>::minArgs;
-            auto constexpr isVariadic = SwallowTraits<ArgTypes>::isVariadic;
+            auto constexpr minArgs = VariadicArgsTraits<ArgTypes>::minArgs;
+            auto constexpr isUnlimited = VariadicArgsTraits<ArgTypes>::isUnlimited;
+            auto constexpr maxArgs = VariadicArgsTraits<ArgTypes>::maxArgs;
+            auto constexpr isVariadic = VariadicArgsTraits<ArgTypes>::isVariadic;
 
-            bool result = false;
+            auto const isCorrect = actualArgsCount >= minArgs && (isUnlimited || actualArgsCount <= maxArgs);
 
-            // TODO add and check maxArgs (for std::optional)
-
-            if constexpr (isVariadic)
-                result = arguments.size() >= minArgs;
-            else
-                result = arguments.size() == minArgs;
-
-            if (result)
+            if (isCorrect)
                 return true;
 
-            char const* errorFormat = nullptr;
-            if constexpr (isVariadic)
-                errorFormat = "Wrong number of arguments to variadic '%.*s': expected at least %d (%s), got %d (%s)";
+            std::string expectedMessage;
+            if constexpr (isVariadic && isUnlimited)
+                expectedMessage = utils::formatString("at least %d", minArgs);
+            else if constexpr (isVariadic && !isUnlimited)
+                expectedMessage = utils::formatString("from %d to %d", minArgs, maxArgs);
             else
-                errorFormat = "Wrong number of arguments to '%.*s': expected %d (%s), got %d (%s)";
+                expectedMessage = utils::formatString("%d", minArgs);
 
-            std::string typeNames = ArgTypes::name();
-            std::string actualArguments = utils::flatten(arguments, "'");
             std::string_view name = context.input.name; // TODO rename
-            context.result.errors.push_back(utils::formatString(errorFormat, name.size(), name.data(), minArgs, typeNames.c_str(), arguments.size(), actualArguments.c_str()));
+            std::string typeNames = utils::flatten(ArgTypes::names());
+            std::string actualArgsStr = utils::flatten(arguments, "'");
+            auto errorMessage = utils::formatString("Wrong number of arguments to '%.*s': expected %s ([%s]), got %d (%s)", name.size(), name.data(), expectedMessage.c_str(), typeNames.c_str(), actualArgsCount, actualArgsStr.c_str());
+
+            context.result.errors.push_back(std::move(errorMessage));
 
             return false;
         }

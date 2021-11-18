@@ -74,42 +74,19 @@ namespace test
         }
     };
 
-    bool freeFunction(coil::Context&, coil::VariadicArg arg)
+    void funcVector(float, int, std::vector<double>)
     {
-        std::cout << "I'm a free function!" << std::endl;
-        return !arg.as<bool>();
+
     }
 
-    std::optional<bool> optionalArgFunc(std::optional<bool> arg)
+    void funcOptional(float, int, std::optional<double>)
     {
-        std::cout << "Optional arg!" << std::endl;
 
-        if (arg.has_value())
-            return !arg.value();
-
-        return {};
     }
 
-    Type enumFunc(Type type, std::optional<ext::Speed> speed)
+    void funcNormal(float, int, double)
     {
-        std::cout << "Type: " << magic_enum::enum_name(type) << std::endl;
-        if (speed.has_value())
-            std::cout << "Speed: " << magic_enum::enum_name(speed.value()) << std::endl;
 
-        if (type == Type::Soft)
-            return Type::Hard;
-        return Type::Soft;
-    }
-
-    void variadicNamedFunc(coil::NamedArgs args)
-    {
-        std::cout << args.size() << " arguments were received:" << std::endl;
-        for (coil::NamedArg const& arg : args)
-        {
-            auto variadic = arg.asVariadic();
-            bool isFloat = variadic.is<float>();
-            std::cout << arg.key() << ": " << arg.value() << (isFloat ? " (float)" : "") << std::endl;
-        }
     }
 
     void test()
@@ -120,11 +97,9 @@ namespace test
 
         cmd.addObject("service", &serviceB);
 
-        cmd.bind<ServiceB>("update", &ServiceB::update);
-
-        cmd["func"] = &optionalArgFunc;
-        cmd["namedFunc"] = &variadicNamedFunc;
-        cmd["enumFunc"] = &enumFunc;
+        cmd["normal"] = &funcNormal;
+        cmd["optional"] = &funcOptional;
+        cmd["vector"] = &funcVector;
 
         auto execute = [&cmd](std::string_view command)
         {
@@ -138,11 +113,19 @@ namespace test
             std::cout << std::endl;
         };
 
-        execute("enumFunc Soft Fast");
-        execute("enumFunc soft FAst");
-        execute("enumFunc hard slOW");
-        execute("enumFunc Hard Slow");
-        execute("enumFunc foo bar");
+        execute("normal 0 1");
+        execute("normal 0 1 2");
+        execute("normal 0 1 2 3");
+
+        execute("optional 0");
+        execute("optional 0 1");
+        execute("optional 0 1 2");
+        execute("optional 0 1 2 3");
+
+        execute("vector 0");
+        execute("vector 0 1");
+        execute("vector 0 1 2");
+        execute("vector 0 1 2 3");
     }
 }
 

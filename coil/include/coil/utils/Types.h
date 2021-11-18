@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Utils.h"
+#include <array>
+
 #include "coil/TypeName.h"
 
 namespace coil::utils
@@ -11,11 +12,9 @@ namespace coil::utils
 		static std::size_t constexpr size = sizeof...(Args);
 		using IndicesType = std::make_index_sequence<size>;
 
-		static std::string name()
-		{
-			std::vector<std::string_view> names = { TypeName<Args>::name() ... };
-
-			return flatten(names);
-		}
+        static auto names()
+        {
+            return std::array<std::string_view, size>{ TypeName<Args>::name()... };
+        }
 	};
 }
