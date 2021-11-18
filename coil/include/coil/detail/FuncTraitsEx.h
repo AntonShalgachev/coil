@@ -12,9 +12,6 @@ namespace coil::detail
         using ArgTypes = typename Base::ArgumentTypes;
 
     public:
-        template<typename TargetT>
-        static constexpr bool needToPassTarget = !std::is_void_v<TargetT> && std::is_same_v<TargetT, typename Base::ObjectType>;
-
         using UserArgumentTypes = utils::FilterTypesT<IsUserArgument, ArgTypes>;
         using ExplicitTargetTraits = utils::TypeListTraits<IsExplicitTargetArgument, ArgTypes>;
         using ContextTraits = utils::TypeListTraits<IsContextArgument, ArgTypes>;
