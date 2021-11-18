@@ -204,10 +204,10 @@ namespace coil::detail
             else
                 expectedMessage = utils::formatString("%d", minArgs);
 
-            std::string_view name = context.input.name; // TODO rename
+            std::string_view functionName = context.input.functionName;
             std::string typeNames = utils::flatten(ArgTypes::names());
             std::string actualArgsStr = utils::flatten(arguments, "'");
-            auto errorMessage = utils::formatString("Wrong number of arguments to '%.*s': expected %s ([%s]), got %d (%s)", name.size(), name.data(), expectedMessage.c_str(), typeNames.c_str(), actualArgsCount, actualArgsStr.c_str());
+            auto errorMessage = utils::formatString("Wrong number of arguments to '%.*s': expected %s ([%s]), got %d (%s)", functionName.size(), functionName.data(), expectedMessage.c_str(), typeNames.c_str(), actualArgsCount, actualArgsStr.c_str());
 
             context.result.errors.push_back(std::move(errorMessage));
 

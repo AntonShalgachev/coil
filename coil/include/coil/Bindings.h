@@ -161,11 +161,9 @@ namespace coil
         template<typename T, typename Func>
         bool bindFunc(std::string_view name, Func&& func)
         {
-            // Possible Func arguments:
-            // [Target [const]*], [Context&], Args...
-
             // TODO assert that user parameters of Func are either values or const-references
             // TODO assert that Context parameter is non-const reference and is at second optional position
+            // TODO assert that variadic args are at the end of the function
 
             static_assert(!std::is_const_v<T>, "T shouldn't be const");
             static_assert(!std::is_pointer_v<T>, "T shouldn't be a pointer");
@@ -263,17 +261,17 @@ namespace coil
         {
             auto& typeFunctors = m_functors[utils::typeId<T>()];
 
-            std::string_view name = context.input.name;
+            std::string_view functionName = context.input.functionName;
 
-            auto it = typeFunctors.find(name);
+            auto it = typeFunctors.find(functionName);
             if (it == typeFunctors.end())
             {
                 std::string_view typeName = TypeName<T>::name();
 
                 if constexpr (std::is_void_v<T>)
-                    context.result.errors.push_back(utils::formatString("No function '%.*s' is registered", name.size(), name.data()));
+                    context.result.errors.push_back(utils::formatString("No function '%.*s' is registered", functionName.size(), functionName.data()));
                 else
-                    context.result.errors.push_back(utils::formatString("No function '%.*s' is registered for type '%.*s'", name.size(), name.data(), typeName.size(), typeName.data()));
+                    context.result.errors.push_back(utils::formatString("No function '%.*s' is registered for type '%.*s'", functionName.size(), functionName.data(), typeName.size(), typeName.data()));
 
                 return;
             }
@@ -297,19 +295,21 @@ namespace coil
 
         void execute(detail::CallContext& context)
         {
-            if (context.input.name.empty())
+            if (context.input.functionName.empty())
             {
-                context.result.errors.push_back("No command name is specified");
+                context.result.errors.push_back("No function name is specified");
                 return;
             }
 
-            if (context.input.target.empty())
+            std::string_view objectName = context.input.objectName;
+
+            if (objectName.empty())
                 return objectTrampoline<void>({}, context);
 
-            auto it = m_objects.find(context.input.target);
+            auto it = m_objects.find(objectName);
             if (it == m_objects.end())
             {
-                context.result.errors.push_back(utils::formatString("Object '%.*s' is not registered", context.input.target.size(), context.input.target.data()));
+                context.result.errors.push_back(utils::formatString("Object '%.*s' is not registered", objectName.size(), objectName.data()));
                 return;
             }
 
