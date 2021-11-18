@@ -8,20 +8,20 @@ namespace coil
 {
     struct ExecutionInput
     {
-        std::string_view target;
-        std::string_view name;
+        std::string_view objectName;
+        std::string_view functionName;
         std::vector<std::string_view> arguments;
         std::unordered_map<std::string_view, std::string_view> namedArguments;
 
-        void setTargetAndName(std::string_view t, std::string_view n)
+        void setTargetAndName(std::string_view object, std::string_view function)
         {
-            target = t;
-            name = n;
+            objectName = object;
+            functionName = function;
         }
 
         auto tie() const
         {
-            return std::tie(target, name, arguments, namedArguments);
+            return std::tie(objectName, functionName, arguments, namedArguments);
         }
 
         bool operator==(ExecutionInput const& rhs)

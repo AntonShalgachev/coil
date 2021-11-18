@@ -185,12 +185,12 @@ namespace coil
                 TokenType type = group.separatorTokenIndex != invalidIndex ? tokens[group.separatorTokenIndex].type : TokenType::String;
                 std::string_view secondaryTokenValue = group.secondaryTokenIndex != invalidIndex ? tokens[group.secondaryTokenIndex].value : std::string_view{};
 
-                if (input.name.empty())
+                if (input.functionName.empty())
                 {
                     if (type == TokenType::Dot)
                         input.setTargetAndName(primaryToken.value, secondaryTokenValue);
                     else if (type == TokenType::String)
-                        input.name = primaryToken.value;
+                        input.functionName = primaryToken.value;
                     else
                         return makeUnexpected("Unexpected named argument at the beginning of the expression");
                 }

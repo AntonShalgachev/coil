@@ -27,8 +27,8 @@ namespace
         }
 
         os << "{\n";
-        os << "\ttarget: '" << self->target << "'\n";
-        os << "\tname: '" << self->name << "'\n";
+        os << "\tobject: '" << self->objectName << "'\n";
+        os << "\tfunction: '" << self->functionName << "'\n";
 
         os << "\targs: {";
         for (auto const& arg : self->arguments)
@@ -71,11 +71,11 @@ namespace
         }
     }
 
-    coil::ExecutionInput expects(std::string_view target, std::string_view name, std::vector<std::string_view> args, std::unordered_map<std::string_view, std::string_view> namedArgs)
+    coil::ExecutionInput expects(std::string_view objectName, std::string_view functionName, std::vector<std::string_view> args, std::unordered_map<std::string_view, std::string_view> namedArgs)
     {
         coil::ExecutionInput input;
-        input.target = target;
-        input.name = name;
+        input.objectName = objectName;
+        input.functionName = functionName;
 
         input.arguments = std::move(args);
         input.namedArguments = std::move(namedArgs);
@@ -120,8 +120,8 @@ namespace
             return std::string_view{storage.back()};
         };
 
-        input.target = generateNewString(true);
-        input.name = generateNewString(false);
+        input.objectName = generateNewString(true);
+        input.functionName = generateNewString(false);
 
         for (std::size_t i = 0; i < argsCount; i++)
             input.arguments.push_back(generateNewString(false));
@@ -151,16 +151,16 @@ namespace
 
         randomSpaces(ss);
 
-        if (!input.target.empty())
+        if (!input.objectName.empty())
         {
             randomSpaces(ss);
-            ss << input.target;
+            ss << input.objectName;
             randomSpaces(ss);
             ss << '.';
             randomSpaces(ss);
         }
 
-        ss << input.name << ' ';
+        ss << input.functionName << ' ';
         randomSpaces(ss);
 
         for (auto const& arg : input.arguments)
