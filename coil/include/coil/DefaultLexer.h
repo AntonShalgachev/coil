@@ -76,6 +76,8 @@ namespace coil
 
         std::vector<Token> tokenize(std::string_view str) const
         {
+            // TODO properly handle floating point numbers
+
             std::vector<Token> tokens;
 
             std::size_t tokenBegin = std::string_view::npos;
