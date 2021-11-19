@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "basic_example/BasicExample.h"
+#include "basic/BasicExample.h"
 
 #include "coil/Bindings.h"
 #include "CustomTypeName.h"
