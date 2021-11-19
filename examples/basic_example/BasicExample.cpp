@@ -1,139 +1,82 @@
 #include "BasicExample.h"
 
 #include "coil/Bindings.h"
-#include "CustomTypeName.h"
-#include "EnumToString.h"
 
-#include "magic_enum.hpp"
 #include <iostream>
 
-namespace ext
+namespace
 {
-    enum class Speed
+    void func()
     {
-        Slow,
-        Fast,
-    };
-
-#ifndef USE_MAGIC_ENUM
-    static std::vector<std::string_view> speedEnumNames = { "Slow", "Fast" };
-#endif
-}
-
-#ifndef USE_MAGIC_ENUM
-namespace enum_util
-{
-    template<>
-    std::vector<std::string_view> const& getEnumNames<ext::Speed>()
-    {
-        return ext::speedEnumNames;
-    }
-}
-#endif
-
-namespace test
-{
-    enum class Type
-    {
-        Soft,
-        Hard,
-    };
-
-#ifndef USE_MAGIC_ENUM
-    static std::vector<std::string_view> typeEnumNames = { "Soft", "Hard" };
-#endif
-}
-
-#ifndef USE_MAGIC_ENUM
-namespace enum_util
-{
-    template<>
-    std::vector<std::string_view> const& getEnumNames<test::Type>()
-    {
-        return test::typeEnumNames;
-    }
-}
-#endif
-
-namespace test
-{
-    class ServiceB
-    {
-    public:
-        float update(coil::Context& context, float dt)
-        {
-            if (dt < 1.0f)
-            {
-                context.reportError("Very low dt");
-                return 0;
-            }
-
-            std::cout << "ServiceB::update " << dt << std::endl;
-            return dt;
-        }
-    };
-
-    void funcVector(float, int, std::vector<double>)
-    {
-
+        std::cout << "Hello, world!" << std::endl;
     }
 
-    void funcOptional(float, int, std::optional<double>)
+    void printRepeated(std::string const& val, std::size_t repetitions)
     {
-
+        for (std::size_t i = 0; i < repetitions; i++)
+            std::cout << val;
+        std::cout << std::endl;
     }
 
-    void funcNormal(float, int, double)
+    void printDecorated(std::string_view val)
     {
-
+        std::cout << "'" << val << "'" << std::endl;
     }
 
-    void test()
+    float add(float a, float b)
     {
-        coil::Bindings cmd;
-
-        ServiceB serviceB;
-
-        cmd.addObject("service", &serviceB);
-
-        cmd["normal"] = &funcNormal;
-        cmd["optional"] = &funcOptional;
-        cmd["vector"] = &funcVector;
-
-        auto execute = [&cmd](std::string_view command)
-        {
-            std::cout << "Executing [" << command << "]" << std::endl;
-            auto result = cmd.execute(command);
-
-            for (const auto& error : result.errors)
-                std::cout << "\t" << "Error: " << error << std::endl;
-            if (!result.output.empty())
-                std::cout << "\t" << "Output: '" << result.output << "'" << std::endl;
-            std::cout << std::endl;
-        };
-
-        execute("normal 0 1");
-        execute("normal 0 1 2");
-        execute("normal 0 1 2 3");
-
-        execute("optional 0");
-        execute("optional 0 1");
-        execute("optional 0 1 2");
-        execute("optional 0 1 2 3");
-
-        execute("vector 0");
-        execute("vector 0 1");
-        execute("vector 0 1 2");
-        execute("vector 0 1 2 3");
+        return a + b;
     }
-}
 
-void BasicExample::registerExample(coil::Bindings& bindings)
-{
-    bindings.bind<BasicExample>("run", &BasicExample::run);
+    std::string concat(std::string const& a, std::string const& b)
+    {
+        return a + b;
+    }
 }
 
 void BasicExample::run()
 {
-    test::test();
+    coil::Bindings bindings;
+
+    bindings["function"] = &func;
+    bindings["print_repeated"] = &printRepeated;
+    bindings["print_decorated"] = &printDecorated;
+    bindings["add"] = &add;
+    bindings["concat"] = &concat;
+
+    auto header = [](std::string_view str)
+    {
+        std::cout << str << std::endl;
+        std::cout << std::string(str.length(), '=') << std::endl;
+    };
+
+    auto execute = [&bindings](std::string_view command)
+    {
+        std::cout << "Executing [" << command << "]" << std::endl;
+        auto result = bindings.execute(command);
+
+        for (const auto& error : result.errors)
+            std::cout << "\t" << "Error: " << error << std::endl;
+        if (!result.output.empty())
+            std::cout << "\t" << "Output: '" << result.output << "'" << std::endl;
+        std::cout << std::endl;
+    };
+
+    header("Basic function without any arguments:");
+    execute("function");
+
+    header("Functions with arbitrary arguments:");
+    execute("print_decorated coil");
+    execute("print_repeated hi 10");
+
+    header("Functions with return values:");
+    execute("add 3.14 2.72");
+    execute("concat abc 123");
+
+    header("coil catches wrong number of arguments:");
+    execute("function 1 2");
+    execute("add 3.14");
+
+    header("coil catches incompatible types");
+    execute("add one two");
 }
