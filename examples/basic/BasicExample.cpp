@@ -1,6 +1,6 @@
 #include "BasicExample.h"
 
-#include "coil/Bindings.h"
+#include "common/ExamplesCommon.h"
 
 #include <iostream>
 
@@ -44,39 +44,21 @@ void BasicExample::run()
     bindings["add"] = &add;
     bindings["concat"] = &concat;
 
-    auto header = [](std::string_view str)
-    {
-        std::cout << str << std::endl;
-        std::cout << std::string(str.length(), '=') << std::endl;
-    };
+    common::printSectionHeader("Basic function without any arguments:");
+    common::executeCommand(bindings, "function");
 
-    auto execute = [&bindings](std::string_view command)
-    {
-        std::cout << "Executing [" << command << "]" << std::endl;
-        auto result = bindings.execute(command);
+    common::printSectionHeader("Functions with arbitrary arguments:");
+    common::executeCommand(bindings, "print_decorated coil");
+    common::executeCommand(bindings, "print_repeated hi 10");
 
-        for (const auto& error : result.errors)
-            std::cout << "\t" << "Error: " << error << std::endl;
-        if (!result.output.empty())
-            std::cout << "\t" << "Output: '" << result.output << "'" << std::endl;
-        std::cout << std::endl;
-    };
+    common::printSectionHeader("Functions with return values:");
+    common::executeCommand(bindings, "add 3.14 2.72");
+    common::executeCommand(bindings, "concat abc 123");
 
-    header("Basic function without any arguments:");
-    execute("function");
+    common::printSectionHeader("coil catches wrong number of arguments:");
+    common::executeCommand(bindings, "function 1 2");
+    common::executeCommand(bindings, "add 3.14");
 
-    header("Functions with arbitrary arguments:");
-    execute("print_decorated coil");
-    execute("print_repeated hi 10");
-
-    header("Functions with return values:");
-    execute("add 3.14 2.72");
-    execute("concat abc 123");
-
-    header("coil catches wrong number of arguments:");
-    execute("function 1 2");
-    execute("add 3.14");
-
-    header("coil catches incompatible types");
-    execute("add one two");
+    common::printSectionHeader("coil catches incompatible types:");
+    common::executeCommand(bindings, "add one two");
 }

@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "basic/BasicExample.h"
+#include "variadic/VariadicExample.h"
 
 #include "coil/Bindings.h"
 #include "CustomTypeName.h"
@@ -24,14 +25,13 @@ int main()
         shouldExit = true;
     };
 
-    BasicExample example;
-    example.registerExample(bindings);
-    bindings.addObject("basic", &example);
+    BasicExample basic;
+    basic.registerExample(bindings);
+    bindings.addObject("basic", &basic);
 
-    //{
-    //    lexer_tests::run();
-    //    bindings.execute("basic.run");
-    //}
+    VariadicExample variadic;
+    variadic.registerExample(bindings);
+    bindings.addObject("variadic", &variadic);
 
     while (!shouldExit)
     {
