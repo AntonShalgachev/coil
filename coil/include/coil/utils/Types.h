@@ -16,5 +16,9 @@ namespace coil::utils
         {
             return std::array<std::string_view, size>{ TypeName<Args>::name()... };
         }
+        static auto decayedNames()
+        {
+            return std::array<std::string_view, size>{ TypeName<std::decay_t<Args>>::name()... };
+        }
 	};
 }

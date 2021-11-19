@@ -206,7 +206,7 @@ namespace coil::detail
                 expectedMessage = utils::formatString("%d", minArgs);
 
             std::string_view functionName = context.input.functionName;
-            std::string typeNames = utils::flatten(ArgTypes::names());
+            std::string typeNames = utils::flatten(ArgTypes::decayedNames());
             std::string actualArgsStr = utils::flatten(arguments, "'");
             auto errorMessage = utils::formatString("Wrong number of arguments to '%.*s': expected %s ([%s]), got %d (%s)", functionName.size(), functionName.data(), expectedMessage.c_str(), typeNames.c_str(), actualArgsCount, actualArgsStr.c_str());
 
