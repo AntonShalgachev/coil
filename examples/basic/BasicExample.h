@@ -5,7 +5,7 @@
 class BasicExample final
 {
 public:
-    void registerExample(coil::Bindings& globalBindings)
+    static void registerExample(coil::Bindings& globalBindings)
     {
         globalBindings.bind<BasicExample>("run", &BasicExample::run);
     }

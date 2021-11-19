@@ -2,12 +2,12 @@
 
 #include "coil/Bindings.h"
 
-class VariadicExample final
+class VariablesExample final
 {
 public:
     static void registerExample(coil::Bindings& globalBindings)
     {
-        globalBindings.bind<VariadicExample>("run", &VariadicExample::run);
+        globalBindings.bind<VariablesExample>("run", &VariablesExample::run);
     }
 
 private:

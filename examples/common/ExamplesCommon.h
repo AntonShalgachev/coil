@@ -1,5 +1,7 @@
 #pragma once
 
+#include "CustomTypeName.h"
+
 #include <string_view>
 
 namespace coil { class Bindings; }
