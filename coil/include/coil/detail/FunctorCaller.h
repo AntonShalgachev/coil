@@ -33,6 +33,7 @@ namespace coil::detail
         static std::vector<T> consume(std::vector<std::string_view> const& arguments, std::size_t index, OnError&& onError)
         {
             std::vector<T> args;
+            args.reserve(arguments.size() - index);
 
             for (auto i = index; i < arguments.size(); i++)
                 args.push_back(TypeSerializer<T>::fromString(arguments[i], onError));
