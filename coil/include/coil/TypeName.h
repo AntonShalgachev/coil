@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string_view>
+
 namespace coil
 {
     template<typename T, typename = void>
