@@ -1,6 +1,5 @@
 #pragma once
 
-#include <string_view>
 #include "coil/Bindings.h"
 
 class BasicExample final
