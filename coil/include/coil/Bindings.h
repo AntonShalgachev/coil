@@ -146,7 +146,7 @@ namespace coil
 
             if (!input)
             {
-                context.result.errors.push_back(input.error());
+                context.result.errors.push_back(std::string("Syntax error: ") + input.error());
             }
             else
             {
