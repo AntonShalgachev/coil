@@ -2,14 +2,15 @@ set(PROJECT_NAME dev)
 
 set(ALL_FILES
     
-    "basic_example/Test.h"
-    "basic_example/Test.cpp"
-    "basic_example/EnumToString.h"
+    "basic/Test.h"
+    "basic/Test.cpp"
+    "basic/EnumToString.h"
 
     "main.cpp"
     
-    "basic_example/BasicExample.h"
-    "basic_example/BasicExample.cpp"
+    "basic/BasicExample.h"
+    "basic/BasicExample.cpp"
+
     "LexerTests.h"
     "LexerTests.cpp"
     "CustomTypeName.h"
