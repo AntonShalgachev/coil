@@ -3,7 +3,6 @@
 #include "coil/Bindings.h"
 #include "CustomTypeName.h"
 #include "EnumToString.h"
-#include "Test.h"
 
 #include "magic_enum.hpp"
 #include <iostream>
@@ -131,15 +130,10 @@ namespace test
 
 void BasicExample::registerExample(coil::Bindings& bindings)
 {
-    bindings.addObject("basic_example", this);
-
-    bindings.bind<BasicExample>("run", & BasicExample::run);
-
-    // TODO remove object upon destruction
+    bindings.bind<BasicExample>("run", &BasicExample::run);
 }
 
 void BasicExample::run()
 {
-    compilation_test::run();
     test::test();
 }

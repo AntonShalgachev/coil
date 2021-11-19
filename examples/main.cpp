@@ -14,19 +14,26 @@ void help()
 
 int main()
 {
+    bool shouldExit = false;
+
     coil::Bindings bindings;
 
     bindings["help"] = &help;
+    bindings["exit"] = [&shouldExit]()
+    {
+        shouldExit = true;
+    };
 
     BasicExample example;
     example.registerExample(bindings);
+    bindings.addObject("basic", &example);
 
-    {
-        lexer_tests::run();
-        bindings.execute("basic_example.run");
-    }
+    //{
+    //    lexer_tests::run();
+    //    bindings.execute("basic.run");
+    //}
 
-    while (true)
+    while (!shouldExit)
     {
         std::cout << ">>> ";
         std::string line;
