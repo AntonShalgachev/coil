@@ -1,7 +1,8 @@
 #include "Test.h"
 #include "coil/Bindings.h"
 #include "coil/VariadicArg.h"
-#include "CustomTypeName.h"
+
+#include "common/ExamplesCommon.h"
 
 #include "magic_enum.hpp"
 

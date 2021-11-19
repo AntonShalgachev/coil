@@ -15,6 +15,8 @@ set(ALL_FILES
     "basic/BasicExample.cpp"
     "variadic/VariadicExample.h"
     "variadic/VariadicExample.cpp"
+    "variables/VariablesExample.h"
+    "variables/VariablesExample.cpp"
 
     "LexerTests.h"
     "LexerTests.cpp"

@@ -3,6 +3,8 @@
 #include "coil/ExecutionInput.h"
 #include "coil/DefaultLexer.h"
 
+#include "common/ExamplesCommon.h"
+
 #include <iostream>
 #include <random>
 #include <sstream>
