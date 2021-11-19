@@ -8,8 +8,13 @@ set(ALL_FILES
 
     "main.cpp"
     
+    "common/ExamplesCommon.h"
+    "common/ExamplesCommon.cpp"
+    
     "basic/BasicExample.h"
     "basic/BasicExample.cpp"
+    "variadic/VariadicExample.h"
+    "variadic/VariadicExample.cpp"
 
     "LexerTests.h"
     "LexerTests.cpp"
