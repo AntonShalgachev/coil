@@ -5,6 +5,7 @@
 
 namespace coil
 {
+    // TODO rename to NamedArgView
     class NamedArg
     {
     public:
@@ -31,6 +32,14 @@ namespace coil
         {
             return NamedArg(m_iterator->first, m_iterator->second);
         }
+
+        struct NamedArgContainer
+        {
+            NamedArg arg;
+            NamedArg* operator->() { return std::addressof(arg); }
+        };
+
+        NamedArgContainer operator->() { return NamedArgContainer{ **this }; }
 
         bool operator==(NamedArgsIterator const& rhs)
         {
@@ -66,7 +75,7 @@ namespace coil
             if (it == end())
                 return {};
 
-            AnyArgView arg{ it->second };
+            AnyArgView arg{ it->value() };
             return arg.tryGet<T>();
         }
 
@@ -77,7 +86,7 @@ namespace coil
             if (it == end())
                 throw std::invalid_argument(utils::formatString("Named argument '%.*s' not found", key.length(), key.data()));
 
-            AnyArgView arg{ it->second };
+            AnyArgView arg{ it->value() };
             return arg.as<T>();
         }
 
