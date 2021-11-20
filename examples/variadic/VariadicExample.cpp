@@ -25,7 +25,7 @@ namespace
         std::string_view name;
     };
 
-    std::vector<Entity> entities = { {0, "entity0"}, {1, "entity1" }, {2, "entity2"} };
+    std::vector<Entity> entities;
 
     Entity* getEntityById(std::uint64_t id)
     {
@@ -64,6 +64,33 @@ namespace
         for (Entity const& entity : entities)
             std::cout << entity.id << ": " << entity.name << std::endl;
     }
+
+    void addEntities(coil::Context& context, std::vector<coil::AnyArgView> const& args)
+    {
+        using namespace std::literals::string_literals;
+
+        if (args.size() % 2 != 0)
+        {
+            context.reportError("Even amount of arguments was expected, got "s + std::to_string(args.size()));
+            return;
+        }
+
+        for (std::size_t i = 0; i < args.size(); i += 2)
+        {
+            auto optionalId = args[i].tryGet<std::uint64_t>();
+            auto optionalName = args[i + 1].tryGet<std::string_view>();
+
+            if (!optionalId)
+                context.reportError("Argument "s + std::to_string(i) + ": expected id, got '"s + std::string{ args[i].getRaw() } + "'"s);
+            if (!optionalName)
+                context.reportError("Argument "s + std::to_string(i) + ": expected name, got '"s + std::string{ args[i + 1].getRaw() } + "'"s);
+
+            if (!optionalId || !optionalName)
+                return;
+
+            entities.push_back(Entity{ *optionalId, *optionalName });
+        }
+    }
 }
 
 void VariadicExample::run()
@@ -75,6 +102,7 @@ void VariadicExample::run()
 
     bindings["rename_entity"] = &renameEntity;
     bindings["print_entities"] = &printEntities;
+    bindings["add_entities"] = &addEntities;
 
     common::printSectionHeader("std::vector consumes all remaining arguments:");
     common::executeCommand(bindings, "sum_all");
@@ -91,6 +119,7 @@ void VariadicExample::run()
     common::executeCommand(bindings, "scale 3.14 two");
 
     common::printSectionHeader("AnyArgView can be used with any type:");
+    common::executeCommand(bindings, "add_entities 0 entity0 1 entity1 2 entity2");
     common::executeCommand(bindings, "print_entities");
     common::executeCommand(bindings, "rename_entity 0 player0");
     common::executeCommand(bindings, "rename_entity entity1 player1");
