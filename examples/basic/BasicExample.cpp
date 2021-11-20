@@ -23,6 +23,11 @@ namespace
         std::cout << "'" << val << "'" << std::endl;
     }
 
+    bool invert(bool val)
+    {
+        return !val;
+    }
+
     float add(float a, float b)
     {
         return a + b;
@@ -41,6 +46,7 @@ void BasicExample::run()
     bindings["function"] = &func;
     bindings["print_repeated"] = &printRepeated;
     bindings["print_decorated"] = &printDecorated;
+    bindings["invert"] = &invert;
     bindings["add"] = &add;
     bindings["concat"] = &concat;
 
@@ -50,6 +56,10 @@ void BasicExample::run()
     common::printSectionHeader("Functions with arbitrary arguments:");
     common::executeCommand(bindings, "print_decorated coil");
     common::executeCommand(bindings, "print_repeated hi 10");
+
+    common::printSectionHeader("Boolean arguments can be passed in any format:");
+    common::executeCommand(bindings, "invert true");
+    common::executeCommand(bindings, "invert 0");
 
     common::printSectionHeader("Functions with return values:");
     common::executeCommand(bindings, "add 3.14 2.72");
