@@ -1,6 +1,6 @@
 #include "Test.h"
 #include "coil/Bindings.h"
-#include "coil/VariadicArg.h"
+#include "coil/AnyArgView.h"
 
 #include "common/ExamplesCommon.h"
 
@@ -176,7 +176,7 @@ namespace
 
     }
 
-    std::size_t funcVariadicVector(float, std::string const&, std::vector<coil::VariadicArg> const& args)
+    std::size_t funcVariadicVector(float, std::string const&, std::vector<coil::AnyArgView> const& args)
     {
         return args.size();
     }

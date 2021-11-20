@@ -42,10 +42,10 @@ namespace coil
     }
 
     // TODO Rename class to contain "view" in it
-    class VariadicArg
+    class AnyArgView
     {
     public:
-        VariadicArg(std::string_view value) : m_value(value) {}
+        AnyArgView(std::string_view value) : m_value(value) {}
 
         template<typename T>
         std::optional<T> tryGet() const
@@ -82,15 +82,15 @@ namespace coil
     };
 
     template<>
-    struct TypeSerializer<VariadicArg>
+    struct TypeSerializer<AnyArgView>
     {
         template<typename OnError>
-        static VariadicArg fromString(std::string_view str, OnError&&)
+        static AnyArgView fromString(std::string_view str, OnError&&)
         {
-            return VariadicArg(str);
+            return AnyArgView(str);
         }
 
-        static std::string toString(VariadicArg const& value)
+        static std::string toString(AnyArgView const& value)
         {
             return std::string{ value.getRaw() };
         }

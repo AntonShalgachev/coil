@@ -15,7 +15,7 @@ set(ALL_FILES
     "include/coil/Bindings.h"
     "include/coil/ExecutionResult.h"
     "include/coil/ExecutionInput.h"
-    "include/coil/VariadicArg.h"
+    "include/coil/AnyArgView.h"
     "include/coil/Context.h"
     "include/coil/NamedArgs.h"
     "include/coil/TypeSerializer.h"
