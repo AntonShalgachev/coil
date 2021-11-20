@@ -46,10 +46,10 @@ namespace
     void renameEntity(coil::Context& context, coil::AnyArgView entity, std::string_view newName)
     {
         Entity* target = nullptr;
-        if (auto optionalValue = entity.tryGet<std::uint64_t>())
-            target = getEntityById(*optionalValue);
-        else if (auto optionalValue = entity.tryGet<std::string_view>())
-            target = getEntityByName(*optionalValue);
+        if (auto id = entity.tryGet<std::uint64_t>())
+            target = getEntityById(*id);
+        else if (auto name = entity.tryGet<std::string_view>())
+            target = getEntityByName(*name);
 
         using namespace std::literals::string_literals;
         if (target)
