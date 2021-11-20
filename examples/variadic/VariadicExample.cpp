@@ -5,6 +5,7 @@
 
 #include <vector>
 #include <numeric>
+#include <iostream>
 
 namespace
 {
@@ -18,15 +19,50 @@ namespace
         return value * multiplier.value_or(1.0f);
     }
 
-    std::string half(coil::VariadicArg value)
+    struct Entity
     {
-        if (std::optional<int> optionalValue = value.tryGet<int>())
-            return std::to_string(*optionalValue / 2);
+        std::uint64_t id;
+        std::string_view name;
+    };
 
-        if (std::optional<float> optionalValue = value.tryGet<float>())
-            return std::to_string(*optionalValue * 0.5f);
+    std::vector<Entity> entities = { {0, "entity0"}, {1, "entity1" }, {2, "entity2"} };
 
-        return "<unknown type>";
+    Entity* getEntityById(std::uint64_t id)
+    {
+        for (Entity& entity : entities)
+            if (entity.id == id)
+                return &entity;
+        return nullptr;
+    }
+
+    Entity* getEntityByName(std::string_view name)
+    {
+        for (Entity& entity : entities)
+            if (entity.name == name)
+                return &entity;
+        return nullptr;
+    }
+
+    void renameEntity(coil::Context& context, coil::VariadicArg entity, std::string_view newName)
+    {
+        Entity* target = nullptr;
+        if (auto optionalValue = entity.tryGet<std::uint64_t>())
+            target = getEntityById(*optionalValue);
+        else if (auto optionalValue = entity.tryGet<std::string_view>())
+            target = getEntityByName(*optionalValue);
+
+        using namespace std::literals::string_literals;
+        if (target)
+            target->name = newName;
+        else
+            context.reportError("Failed to find entity '"s + std::string{ entity.getRaw() } + "'"s);
+    }
+
+    void printEntities()
+    {
+        std::cout << "Entities:" << std::endl;
+        for (Entity const& entity : entities)
+            std::cout << entity.id << ": " << entity.name << std::endl;
     }
 }
 
@@ -36,7 +72,9 @@ void VariadicExample::run()
 
     bindings["sum_all"] = &sumAll;
     bindings["scale"] = &scale;
-    bindings["half"] = &half;
+
+    bindings["rename_entity"] = &renameEntity;
+    bindings["print_entities"] = &printEntities;
 
     common::printSectionHeader("std::vector consumes all remaining arguments:");
     common::executeCommand(bindings, "sum_all");
@@ -53,7 +91,9 @@ void VariadicExample::run()
     common::executeCommand(bindings, "scale 3.14 two");
 
     common::printSectionHeader("VariadicArg can be used with any type:");
-    common::executeCommand(bindings, "half 13");
-    common::executeCommand(bindings, "half 13.0");
-    common::executeCommand(bindings, "half thirteen");
+    common::executeCommand(bindings, "print_entities");
+    common::executeCommand(bindings, "rename_entity 0 player0");
+    common::executeCommand(bindings, "rename_entity entity1 player1");
+    common::executeCommand(bindings, "rename_entity 3 player3");
+    common::executeCommand(bindings, "print_entities");
 }
