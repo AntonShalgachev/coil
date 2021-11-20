@@ -87,13 +87,13 @@ namespace coil::detail
     template<std::size_t currentMin, bool isUnlimited, std::size_t currentMax, typename Head, typename... Tail>
     struct VariadicArgsTraitsImpl<currentMin, isUnlimited, currentMax, Head, Tail...> : VariadicArgsTraitsImpl<currentMin + ArgCountTraits<std::decay_t<Head>>::min, isUnlimited || ArgCountTraits<std::decay_t<Head>>::isUnlimited, currentMax + ArgCountTraits<std::decay_t<Head>>::max, Tail...> {};
 
-    template<std::size_t currentMin, bool isUnlimited, std::size_t currentMax>
-    struct VariadicArgsTraitsImpl<currentMin, isUnlimited, currentMax>
+    template<std::size_t currentMin, bool currentIsUnlimited, std::size_t currentMax>
+    struct VariadicArgsTraitsImpl<currentMin, currentIsUnlimited, currentMax>
     {
-        static_assert(currentMax >= currentMin || isUnlimited, "For unlimited arguments currentMax should not be less than currentMin");
+        static_assert(currentMax >= currentMin || currentIsUnlimited, "For unlimited arguments currentMax should not be less than currentMin");
 
         static constexpr std::size_t minArgs = currentMin;
-        static constexpr bool isUnlimited = isUnlimited;
+        static constexpr bool isUnlimited = currentIsUnlimited;
         static constexpr std::size_t maxArgs = currentMax;
 
         static constexpr bool isVariadic = isUnlimited || (minArgs != maxArgs);
