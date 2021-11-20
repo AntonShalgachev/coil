@@ -1,7 +1,7 @@
 #pragma once
 
 #include "detail/CallContext.h"
-#include "VariadicArg.h"
+#include "AnyArgView.h"
 
 namespace coil
 {
@@ -13,7 +13,7 @@ namespace coil
         std::string_view key() const { return m_key; }
         std::string_view value() const { return m_value; }
 
-        VariadicArg asVariadic() const { return VariadicArg{m_value}; }
+        AnyArgView asAny() const { return AnyArgView{m_value}; }
 
     private:
         std::string_view m_key;
@@ -66,7 +66,7 @@ namespace coil
             if (it == end())
                 return {};
 
-            VariadicArg arg{ it->second };
+            AnyArgView arg{ it->second };
             return arg.tryGet<T>();
         }
 
@@ -77,7 +77,7 @@ namespace coil
             if (it == end())
                 throw std::invalid_argument(utils::formatString("Named argument '%.*s' not found", key.length(), key.data()));
 
-            VariadicArg arg{ it->second };
+            AnyArgView arg{ it->second };
             return arg.as<T>();
         }
 

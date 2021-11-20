@@ -1,7 +1,7 @@
 #include "VariadicExample.h"
 
 #include "common/ExamplesCommon.h"
-#include "coil/VariadicArg.h"
+#include "coil/AnyArgView.h"
 
 #include <vector>
 #include <numeric>
@@ -43,7 +43,7 @@ namespace
         return nullptr;
     }
 
-    void renameEntity(coil::Context& context, coil::VariadicArg entity, std::string_view newName)
+    void renameEntity(coil::Context& context, coil::AnyArgView entity, std::string_view newName)
     {
         Entity* target = nullptr;
         if (auto optionalValue = entity.tryGet<std::uint64_t>())
@@ -90,7 +90,7 @@ void VariadicExample::run()
     common::executeCommand(bindings, "scale 3.14 2.0 3.0");
     common::executeCommand(bindings, "scale 3.14 two");
 
-    common::printSectionHeader("VariadicArg can be used with any type:");
+    common::printSectionHeader("AnyArgView can be used with any type:");
     common::executeCommand(bindings, "print_entities");
     common::executeCommand(bindings, "rename_entity 0 player0");
     common::executeCommand(bindings, "rename_entity entity1 player1");
