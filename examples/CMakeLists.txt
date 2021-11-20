@@ -4,7 +4,7 @@ set(ALL_FILES
     
     "basic/Test.h"
     "basic/Test.cpp"
-    "basic/EnumToString.h"
+    "EnumToString.h"
 
     "main.cpp"
     
@@ -17,6 +17,8 @@ set(ALL_FILES
     "variadic/VariadicExample.cpp"
     "variables/VariablesExample.h"
     "variables/VariablesExample.cpp"
+    "named/NamedExample.h"
+    "named/NamedExample.cpp"
 
     "LexerTests.h"
     "LexerTests.cpp"

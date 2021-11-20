@@ -5,6 +5,7 @@
 #include "basic/BasicExample.h"
 #include "variadic/VariadicExample.h"
 #include "variables/VariablesExample.h"
+#include "named/NamedExample.h"
 
 #include "coil/Bindings.h"
 #include "CustomTypeName.h"
@@ -50,12 +51,14 @@ int main()
     using Examples = std::tuple<BasicExample
         , VariadicExample
         , VariablesExample
+        , NamedExample
     >;
 
     std::array<std::string_view, std::tuple_size_v<Examples>> names = {
         "basic",
         "variadic",
         "variable",
+        "named",
     };
 
     Examples examples;

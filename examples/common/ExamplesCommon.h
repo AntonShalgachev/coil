@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CustomTypeName.h"
+#include "EnumToString.h"
 
 #include <string_view>
 
