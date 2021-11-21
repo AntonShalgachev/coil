@@ -19,6 +19,8 @@ set(ALL_FILES
     "variables/VariablesExample.cpp"
     "named/NamedExample.h"
     "named/NamedExample.cpp"
+    "enums/EnumsExample.h"
+    "enums/EnumsExample.cpp"
 
     "LexerTests.h"
     "LexerTests.cpp"
