@@ -3,7 +3,7 @@
 #include "common/ExamplesCommon.h"
 
 // user-provided TypeSerializer for enums
-#include "EnumToString.h"
+#include "common/EnumToString.h"
 
 #include <iostream>
 

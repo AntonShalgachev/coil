@@ -9,9 +9,6 @@
 #include "enums/EnumsExample.h"
 
 #include "coil/Bindings.h"
-#include "CustomTypeName.h"
-
-#include "LexerTests.h"
 
 void help()
 {
