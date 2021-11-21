@@ -11,12 +11,17 @@
 
 namespace coil
 {
+    // It's up to a user to implement TypeSerializer for enums
+    // For this demo I use magic_enum to automatically convert any enum to/from string
+    // But other custom solutions are also possible to implement
+
     template<typename EnumT>
     struct TypeSerializer<EnumT, std::enable_if_t<std::is_enum_v<EnumT>>>
     {
         template<typename OnError>
         static EnumT fromString(std::string_view str, [[maybe_unused]] OnError&& onError)
         {
+            // This makes enum names case-insensitive
             auto pred = [](unsigned char a, unsigned char b) { return std::tolower(a) == std::tolower(b); };
             std::optional<EnumT> optionalValue = magic_enum::enum_cast<EnumT>(str, std::move(pred));
 

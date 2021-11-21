@@ -6,6 +6,7 @@
 #include "variadic/VariadicExample.h"
 #include "variables/VariablesExample.h"
 #include "named/NamedExample.h"
+#include "enums/EnumsExample.h"
 
 #include "coil/Bindings.h"
 #include "CustomTypeName.h"
@@ -52,6 +53,7 @@ int main()
         , VariadicExample
         , VariablesExample
         , NamedExample
+        , EnumsExample
     >;
 
     std::array<std::string_view, std::tuple_size_v<Examples>> names = {
@@ -59,6 +61,7 @@ int main()
         "variadic",
         "variable",
         "named",
+        "enums",
     };
 
     Examples examples;
