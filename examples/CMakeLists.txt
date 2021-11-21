@@ -55,6 +55,7 @@ endif()
 
 target_compile_options(${PROJECT_NAME} PRIVATE
     ${COMPILE_OPTIONS}
+    "/Zc:__cplusplus"
 )
 
 if (${VS2017})
