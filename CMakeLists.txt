@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.12.0 FATAL_ERROR)
 
-project(coil LANGUAGES CXX VERSION 1.0)
+project(coil LANGUAGES C CXX VERSION 1.0)
 
 set(CMAKE_CONFIGURATION_TYPES
     "Debug"
@@ -18,3 +18,4 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 add_subdirectory(coil)
 add_subdirectory(examples)
+add_subdirectory(liblua)
