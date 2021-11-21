@@ -1,15 +1,17 @@
 set(PROJECT_NAME dev)
 
 set(ALL_FILES
-    
-    "basic/Test.h"
-    "basic/Test.cpp"
-    "EnumToString.h"
+    "temp/Test.h"
+    "temp/Test.cpp"
+    "temp/LexerTests.h"
+    "temp/LexerTests.cpp"
 
     "main.cpp"
     
     "common/ExamplesCommon.h"
     "common/ExamplesCommon.cpp"
+    "common/CustomTypeName.h"
+    "common/EnumToString.h"
     
     "basic/BasicExample.h"
     "basic/BasicExample.cpp"
@@ -21,10 +23,6 @@ set(ALL_FILES
     "named/NamedExample.cpp"
     "enums/EnumsExample.h"
     "enums/EnumsExample.cpp"
-
-    "LexerTests.h"
-    "LexerTests.cpp"
-    "CustomTypeName.h"
 )
 
 set (VS2017 OFF)
