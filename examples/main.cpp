@@ -11,6 +11,7 @@
 #include "coil/Bindings.h"
 
 #include "hayai/hayai.hpp"
+#include "sol/sol.hpp"
 
 void help()
 {
@@ -46,20 +47,26 @@ namespace
 #pragma optimize("", off)
 
     coil::Bindings cmd;
-
     coil::ExecutionInput input{ "", "function" };
 
-    BENCHMARK(Scripting, Parse, 10, 100)
+    sol::state lua;
+
+    BENCHMARK(Scripting, Coil, 10, 100)
     {
         cmd.execute("function 3.14 0.16");
     }
 
-    BENCHMARK(Scripting, NoParse, 10, 100)
+    BENCHMARK(Scripting, CoilNoParse, 10, 100)
     {
         cmd.execute(input);
     }
 
-    BENCHMARK(Scripting, DirectFromStrin, 10, 100)
+    BENCHMARK(Scripting, Sol, 10, 100)
+    {
+        lua.script("func(3.14, 0.16)");
+    }
+
+    BENCHMARK(Scripting, DirectFromString, 10, 100)
     {
         using TS = coil::TypeSerializer<float>;
         auto onError = [](auto) {};
@@ -77,6 +84,7 @@ namespace
 int runBanchmark()
 {
     cmd["function"] = &function;
+    lua["func"] = &function;
 
     hayai::ConsoleOutputter consoleOutputter;
 
