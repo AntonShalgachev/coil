@@ -10,6 +10,8 @@
 
 #include "coil/Bindings.h"
 
+#include "hayai/hayai.hpp"
+
 void help()
 {
     std::cout << "Some help" << std::endl;
@@ -34,8 +36,65 @@ void bindExamples(coil::Bindings& bindings, std::tuple<Examples...>& examples, s
     bindExamples(bindings, examples, names, std::make_index_sequence<sizeof...(Examples)>{});
 }
 
+namespace
+{
+#pragma optimize("", off)
+    void function(float, float)
+    {
+
+    }
+#pragma optimize("", off)
+
+    coil::Bindings cmd;
+
+    coil::ExecutionInput input{ "", "function" };
+
+    BENCHMARK(Scripting, Parse, 10, 100)
+    {
+        cmd.execute("function 3.14 0.16");
+    }
+
+    BENCHMARK(Scripting, NoParse, 10, 100)
+    {
+        cmd.execute(input);
+    }
+
+    BENCHMARK(Scripting, DirectFromStrin, 10, 100)
+    {
+        using TS = coil::TypeSerializer<float>;
+        auto onError = [](auto) {};
+        function(TS::fromString("3.14", onError), TS::fromString("0.16", onError));
+    }
+
+    BENCHMARK(Scripting, Direct, 10, 100)
+    {
+        using TS = coil::TypeSerializer<float>;
+        auto onError = [](auto) {};
+        function(3.14f, 0.16f);
+    }
+}
+
+int runBanchmark()
+{
+    cmd["function"] = &function;
+
+    hayai::ConsoleOutputter consoleOutputter;
+
+    hayai::Benchmarker::AddOutputter(consoleOutputter);
+    hayai::Benchmarker::RunAllTests();
+
+    std::getchar();
+
+    return 0;
+}
+
 int main()
 {
+    {
+        runBanchmark();
+        return 0;
+    }
+
     bool shouldExit = false;
 
     coil::Bindings bindings;
