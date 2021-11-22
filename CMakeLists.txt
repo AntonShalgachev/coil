@@ -18,4 +18,5 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 add_subdirectory(coil)
 add_subdirectory(examples)
+# add_subdirectory(tests/compilation_performance)
 add_subdirectory(liblua)
