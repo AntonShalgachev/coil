@@ -26,6 +26,12 @@ namespace coil
     public:
         using UnderlyingIteratorT = decltype(std::declval<ExecutionInput>().namedArguments)::const_iterator;
 
+        using iterator_category = std::forward_iterator_tag;
+        using value_type = NamedArg;
+        using difference_type = UnderlyingIteratorT::difference_type;
+        using pointer = NamedArg*;
+        using reference = NamedArg&;
+
         NamedArgsIterator(UnderlyingIteratorT iterator) : m_iterator(iterator) {}
 
         NamedArg operator*()

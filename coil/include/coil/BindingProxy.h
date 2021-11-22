@@ -27,9 +27,9 @@ namespace coil
             return *this;
         }
 
-        BindingProxy& operator=(nullptr_t) const = delete;
+        BindingProxy& operator=(std::nullptr_t) const = delete;
 
-        BindingProxy& operator=(nullptr_t)
+        BindingProxy& operator=(std::nullptr_t)
         {
             m_bindings.unbind(m_name);
             return *this;
