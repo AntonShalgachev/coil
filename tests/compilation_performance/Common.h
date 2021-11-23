@@ -1,8 +1,11 @@
 #include "coil/Bindings.h"
 #include "sol/sol.hpp"
 
+#if USE_SOL
+using GeneralBindings = sol::state;
+#else
 using GeneralBindings = coil::Bindings;
-//using GeneralBindings = sol::state;
+#endif
 
 template<typename T, typename AnyT>
 void bind(coil::Bindings& bindings, AnyT&& any)

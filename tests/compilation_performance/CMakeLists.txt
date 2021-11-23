@@ -43,6 +43,12 @@ target_compile_options(${PROJECT_NAME} PRIVATE
     "/Zc:__cplusplus"
 )
 
+if(${COIL_COMPILATION_PERFORMANCE_USE_SOL})
+    target_compile_definitions(${PROJECT_NAME} PRIVATE USE_SOL=1)
+else()
+    target_compile_definitions(${PROJECT_NAME} PRIVATE USE_SOL=0)
+endif()
+
 if (${VS2017})
     message(STATUS "Adding _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS")
     target_compile_definitions(${PROJECT_NAME} PUBLIC _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS)
