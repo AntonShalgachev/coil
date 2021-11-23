@@ -10,9 +10,6 @@
 
 #include "coil/Bindings.h"
 
-#include "hayai/hayai.hpp"
-#include "sol/sol.hpp"
-
 void help()
 {
     std::cout << "Some help" << std::endl;
@@ -37,72 +34,8 @@ void bindExamples(coil::Bindings& bindings, std::tuple<Examples...>& examples, s
     bindExamples(bindings, examples, names, std::make_index_sequence<sizeof...(Examples)>{});
 }
 
-namespace
-{
-#pragma optimize("", off)
-    void function(float, float)
-    {
-
-    }
-#pragma optimize("", off)
-
-    coil::Bindings cmd;
-    coil::ExecutionInput input{ "", "function" };
-
-    sol::state lua;
-
-    BENCHMARK(Scripting, Coil, 10, 100)
-    {
-        cmd.execute("function 3.14 0.16");
-    }
-
-    BENCHMARK(Scripting, CoilNoParse, 10, 100)
-    {
-        cmd.execute(input);
-    }
-
-    BENCHMARK(Scripting, Sol, 10, 100)
-    {
-        lua.script("func(3.14, 0.16)");
-    }
-
-    BENCHMARK(Scripting, DirectFromString, 10, 100)
-    {
-        using TS = coil::TypeSerializer<float>;
-        auto onError = [](auto) {};
-        function(TS::fromString("3.14", onError), TS::fromString("0.16", onError));
-    }
-
-    BENCHMARK(Scripting, Direct, 10, 100)
-    {
-        using TS = coil::TypeSerializer<float>;
-        auto onError = [](auto) {};
-        function(3.14f, 0.16f);
-    }
-}
-
-int runBanchmark()
-{
-    cmd["function"] = &function;
-    lua["func"] = &function;
-
-    hayai::ConsoleOutputter consoleOutputter;
-
-    hayai::Benchmarker::AddOutputter(consoleOutputter);
-    hayai::Benchmarker::RunAllTests();
-
-    std::getchar();
-
-    return 0;
-}
-
 int main()
 {
-    {
-        runBanchmark();
-        return 0;
-    }
-
     bool shouldExit = false;
 
     coil::Bindings bindings;
