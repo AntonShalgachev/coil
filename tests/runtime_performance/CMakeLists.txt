@@ -1,28 +1,7 @@
-set(PROJECT_NAME examples)
+set(PROJECT_NAME runtime_performance)
 
 set(ALL_FILES
-    "temp/Test.h"
-    "temp/Test.cpp"
-    "temp/LexerTests.h"
-    "temp/LexerTests.cpp"
-
     "main.cpp"
-    
-    "common/ExamplesCommon.h"
-    "common/ExamplesCommon.cpp"
-    "common/CustomTypeName.h"
-    "common/EnumToString.h"
-    
-    "basic/BasicExample.h"
-    "basic/BasicExample.cpp"
-    "variadic/VariadicExample.h"
-    "variadic/VariadicExample.cpp"
-    "variables/VariablesExample.h"
-    "variables/VariablesExample.cpp"
-    "named/NamedExample.h"
-    "named/NamedExample.cpp"
-    "enums/EnumsExample.h"
-    "enums/EnumsExample.cpp"
 )
 
 set (VS2017 OFF)
@@ -36,6 +15,7 @@ add_executable(${PROJECT_NAME} ${ALL_FILES})
 target_include_directories(${PROJECT_NAME} PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR};"
     "${CMAKE_CURRENT_SOURCE_DIR}/include;"
+    "${CMAKE_CURRENT_SOURCE_DIR}/include/lua"
 )
 
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
@@ -43,7 +23,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES CXX_EXTENSIONS OFF)
 
 set(COMPILE_OPTIONS)
 if(MSVC)
-    set(COMPILE_OPTIONS /W4 /FC)
+    set(COMPILE_OPTIONS /W4 /FC "/Zc:__cplusplus")
 
     if (NOT ${VS2017})
         message(STATUS "Adding /permissive-")
@@ -57,6 +37,12 @@ target_compile_options(${PROJECT_NAME} PRIVATE
     ${COMPILE_OPTIONS}
 )
 
+if(${COIL_COMPILATION_PERFORMANCE_USE_SOL})
+    target_compile_definitions(${PROJECT_NAME} PRIVATE USE_SOL=1)
+else()
+    target_compile_definitions(${PROJECT_NAME} PRIVATE USE_SOL=0)
+endif()
+
 if (${VS2017})
     message(STATUS "Adding _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS")
     target_compile_definitions(${PROJECT_NAME} PUBLIC _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS)
@@ -66,6 +52,11 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
     VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
 )
 
+add_dependencies(${PROJECT_NAME}
+    liblua
+)
+
 target_link_libraries(${PROJECT_NAME}
     libcoil
+    liblua
 )
