@@ -12,26 +12,26 @@ namespace
 #pragma optimize("", off)
 
     coil::Bindings cmd;
-    coil::ExecutionInput input{ "", "func" };
+    coil::ExecutionInput input{ "", "func", {"3.14", "0.16"} };
 
     sol::state lua;
 
-    BENCHMARK(Scripting, Coil, 10, 100)
+    BENCHMARK(Scripting, Coil, 100, 1000)
     {
         cmd.execute("func 3.14 0.16");
     }
 
-    BENCHMARK(Scripting, CoilNoParse, 10, 100)
+    BENCHMARK(Scripting, CoilNoParse, 100, 1000)
     {
         cmd.execute(input);
     }
 
-    BENCHMARK(Scripting, Sol, 10, 100)
+    BENCHMARK(Scripting, Sol, 100, 1000)
     {
         lua.script("func(3.14, 0.16)");
     }
 
-    BENCHMARK(Scripting, DirectFromString, 10, 100)
+    BENCHMARK(Scripting, DirectFromString, 100, 1000)
     {
         using TS = coil::TypeSerializer<float>;
         auto onError = [](auto) {};
