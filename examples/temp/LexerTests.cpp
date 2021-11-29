@@ -18,6 +18,13 @@ namespace
         std::vector<std::string> storage;
     };
 
+    coil::Expected<coil::ExecutionInput, std::string> convert(coil::Expected<std::reference_wrapper<coil::ExecutionInput>, std::string> value)
+    {
+        if (value)
+            return static_cast<coil::ExecutionInput>(*std::move(value));
+        return coil::makeUnexpected(std::move(value).error());
+    }
+
     void dump(std::ostream& os, std::string_view name, coil::Expected<coil::ExecutionInput, std::string> const& self)
     {
         os << name << ":" << std::endl;
@@ -51,7 +58,7 @@ namespace
         std::cout << "Testing '" << str << "'";
 
         Lexer lexer;
-        auto actual = lexer(str);
+        auto actual = convert(lexer(str));
 
         bool passed = false;
         if (actual && expected)
@@ -75,7 +82,7 @@ namespace
         return passed;
     }
 
-    coil::ExecutionInput expects(std::string_view objectName, std::string_view functionName, std::vector<std::string_view> args, std::unordered_map<std::string_view, std::string_view> namedArgs)
+    coil::ExecutionInput expects(std::string_view objectName, std::string_view functionName, std::vector<std::string_view> args, std::vector<std::pair<std::string_view, std::string_view>> namedArgs)
     {
         coil::ExecutionInput input;
         input.objectName = objectName;
@@ -139,7 +146,7 @@ namespace
         {
             auto key = generateNewString(false, false);
             auto value = generateNewString(false, true);
-            input.namedArguments.emplace(key, value);
+            input.namedArguments.emplace_back(key, value);
         }
 
         return inputWithStorage;
