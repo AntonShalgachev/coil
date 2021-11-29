@@ -6,6 +6,8 @@
 
 #include "magic_enum.hpp"
 
+#include <cstdint>
+
 namespace
 {
     enum class ScopedEnum
@@ -183,6 +185,9 @@ namespace
     {
 
     }
+
+    template<typename T>
+    T funcWithType(T v) { return v; }
 }
 
 void compilation_test::run()
@@ -270,6 +275,31 @@ void compilation_test::run()
 
     cmd[""] = &funcScopedEnum;
     cmd[""] = &funcUnscopedEnum;
+
+    cmd[""] = &funcWithType<int>;
+    cmd[""] = &funcWithType<unsigned>;
+    cmd[""] = &funcWithType<short>;
+    cmd[""] = &funcWithType<unsigned short>;
+    cmd[""] = &funcWithType<long>;
+    cmd[""] = &funcWithType<unsigned long>;
+    cmd[""] = &funcWithType<long long>;
+    cmd[""] = &funcWithType<unsigned long long>;
+    cmd[""] = &funcWithType<char>;
+    cmd[""] = &funcWithType<unsigned char>;
+    cmd[""] = &funcWithType<bool>;
+    cmd[""] = &funcWithType<std::uint8_t>;
+    cmd[""] = &funcWithType<std::uint16_t>;
+    cmd[""] = &funcWithType<std::uint32_t>;
+    cmd[""] = &funcWithType<std::uint64_t>;
+    cmd[""] = &funcWithType<std::int8_t>;
+    cmd[""] = &funcWithType<std::int16_t>;
+    cmd[""] = &funcWithType<std::int32_t>;
+    cmd[""] = &funcWithType<std::int64_t>;
+    cmd[""] = &funcWithType<ScopedEnum>;
+    cmd[""] = &funcWithType<UnscopedEnum>;
+    cmd[""] = &funcWithType<std::string>;
+    cmd[""] = &funcWithType<std::string_view>;
+    cmd[""] = &funcWithType<std::optional<float>>;
 
     // Compilation error
     //cmd.bind<Object>("", &variable);
