@@ -8,6 +8,7 @@
 
 #include <algorithm>
 #include <optional>
+#include <charconv>
 
 namespace coil
 {
@@ -54,12 +55,37 @@ namespace coil
         }
     };
 
+    template<typename T>
+    struct TypeSerializer<T, std::enable_if_t<std::is_arithmetic_v<T>>>
+    {
+        template<typename OnError>
+        static T fromString(std::string_view str, OnError&& onError)
+        {
+            auto begin = str.data();
+            auto end = str.data() + str.length();
+
+            T value{};
+            std::from_chars_result result = std::from_chars(begin, end, value);
+            if (result.ptr == end)
+                return value;
+
+            reportConversionError<T>(std::forward<OnError>(onError), str);
+            return T{};
+        }
+
+        static std::string toString(T value)
+        {
+            return std::to_string(value);
+        }
+    };
+
     template<>
     struct TypeSerializer<bool>
     {
         template<typename OnError>
         static bool fromString(std::string_view str, OnError&& onError)
         {
+            // TODO don't create std::string
             std::string lowercaseStr{ str };
             std::transform(lowercaseStr.begin(), lowercaseStr.end(), lowercaseStr.begin(),
                            [](unsigned char c) { return static_cast<unsigned char>(std::tolower(c)); });
