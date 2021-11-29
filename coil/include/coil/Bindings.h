@@ -127,28 +127,26 @@ namespace coil
 
         void removeAllObjects() { m_objects.clear(); }
 
+        ExecutionResult execute(std::string_view command)
+        {
+            return execute(command, m_defaultLexer);
+        }
+
         template<typename InputT, typename LexerT>
         ExecutionResult execute(InputT&& command, LexerT&& lexer)
         {
-            static_assert(std::is_invocable_r_v<Expected<ExecutionInput, std::string>, LexerT, InputT>, "Lexer should be invocable with InputT and it should return ExecutionInput");
+            static_assert(std::is_invocable_v<LexerT, InputT>, "LexerT should be invocable with InputT");
 
-            return execute(lexer(std::forward<InputT>(command)));
-        }
-
-        ExecutionResult execute(std::string_view command)
-        {
-            return execute(command, DefaultLexer{});
-        }
-
-        ExecutionResult execute(Expected<ExecutionInput, std::string> input)
-        {
+            auto input = lexer(std::forward<InputT>(command));
             if (!input)
             {
                 ExecutionResult result;
                 result.errors.push_back(std::string("Syntax error: ") + input.error());
                 return result;
             }
-         
+
+            static_assert(std::is_convertible_v<decltype(*input), ExecutionInput const&>, "The result of invoking LexerT should be convertible to ExecutionInput const&");
+
             return execute(*input);
         }
 
@@ -321,5 +319,6 @@ namespace coil
 
         std::unordered_map<std::string_view, AnyObject> m_objects;
         std::unordered_map<utils::TypeIdT, std::unordered_map<std::string_view, AnyFunctor>> m_functors;
+        DefaultLexer m_defaultLexer;
 	};
 }

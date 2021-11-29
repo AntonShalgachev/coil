@@ -16,9 +16,19 @@ namespace coil
     struct DefaultLexer
     {
     public:
-        Expected<ExecutionInput, std::string> operator()(std::string_view str) const
+        Expected<std::reference_wrapper<ExecutionInput>, std::string> operator()(std::string_view str) const
         {
-            return parse(tokenize(str));
+            m_input.reset();
+            m_tokens.resize(0);
+            m_tokenGroups.resize(0);
+
+            tokenize(str);
+            auto result = parse();
+
+            if (result)
+                return std::ref(m_input);
+
+            return makeUnexpected(std::move(result).error());
         }
 
     private:
@@ -82,21 +92,19 @@ namespace coil
             return TokenType::String;
         }
 
-        std::vector<Token> tokenize(std::string_view str) const
+        void tokenize(std::string_view str) const
         {
-            std::vector<Token> tokens;
-
             std::size_t tokenBegin = std::string_view::npos;
             CharType currentCharType = CharType::Space;
 
-            auto tryAddPreviousToken = [&tokens, &tokenBegin, &currentCharType, &str](std::size_t tokenEnd)
+            auto tryAddPreviousToken = [this, &tokenBegin, &currentCharType, &str](std::size_t tokenEnd)
             {
                 if (tokenBegin == std::string_view::npos)
                     return;
                 if (currentCharType == CharType::Space)
                     return;
-                
-                tokens.push_back(Token{ convertToTokenType(currentCharType), str.substr(tokenBegin, tokenEnd - tokenBegin) });
+
+                m_tokens.push_back(Token{ convertToTokenType(currentCharType), str.substr(tokenBegin, tokenEnd - tokenBegin) });
             };
 
             for (std::size_t i = 0; i < str.size(); i++)
@@ -112,8 +120,6 @@ namespace coil
             }
 
             tryAddPreviousToken(str.size());
-
-            return tokens;
         }
 
         static std::size_t const invalidIndex = static_cast<std::size_t>(-1);
@@ -132,86 +138,87 @@ namespace coil
             }
         };
 
-        Expected<std::vector<TokenGroup>, std::string> groupTokens(std::vector<Token> const& tokens) const
+        Expected<void, std::string> groupTokens() const
         {
-            std::vector<TokenGroup> tokenGroups;
-
-            for (std::size_t i = 0; i < tokens.size(); i++)
+            for (std::size_t i = 0; i < m_tokens.size(); i++)
             {
-                bool const hasPreviousGroup = !tokenGroups.empty();
+                bool const hasPreviousGroup = !m_tokenGroups.empty();
 
-                if (tokens[i].type == TokenType::String)
+                if (m_tokens[i].type == TokenType::String)
                 {
-                    if (hasPreviousGroup && tokenGroups.back().lacksSecondaryToken())
-                        tokenGroups.back().secondaryTokenIndex = i;
+                    if (hasPreviousGroup && m_tokenGroups.back().lacksSecondaryToken())
+                        m_tokenGroups.back().secondaryTokenIndex = i;
                     else
-                        tokenGroups.push_back(TokenGroup{ i, invalidIndex, invalidIndex });
+                        m_tokenGroups.push_back(TokenGroup{ i, invalidIndex, invalidIndex });
                 }
                 else
                 {
-                    std::string_view tokenValue = tokens[i].value;
+                    std::string_view tokenValue = m_tokens[i].value;
 
                     if (!hasPreviousGroup)
                         return makeUnexpected(utils::formatString("Unexpected token '%.*s' at the beginning of the expression", tokenValue.size(), tokenValue.data()));
 
-                    TokenGroup& previousGroup = tokenGroups.back();
+                    TokenGroup& previousGroup = m_tokenGroups.back();
 
                     if (previousGroup.secondaryTokenIndex != invalidIndex)
                         return makeUnexpected(utils::formatString("Unexpected token '%.*s'; previous token group is already complete", tokenValue.size(), tokenValue.data()));
                     if (previousGroup.separatorTokenIndex != invalidIndex)
                         return makeUnexpected(utils::formatString("Unexpected token '%.*s'; previous token group already has a token", tokenValue.size(), tokenValue.data()));
-                    if (i + 1 >= tokens.size())
+                    if (i + 1 >= m_tokens.size())
                         return makeUnexpected(utils::formatString("Unexpected token '%.*s' at the end of the expression", tokenValue.size(), tokenValue.data()));
 
                     previousGroup.separatorTokenIndex = i;
                 }
             }
 
-            return tokenGroups;
+            return {};
         }
 
-        Expected<ExecutionInput, std::string> parse(std::vector<Token> tokens) const
+        Expected<void, std::string> parse() const
         {
-            ExecutionInput input;
-
-            auto tokenGroups = groupTokens(tokens);
+            auto tokenGroups = groupTokens();
 
             if (!tokenGroups)
                 return makeUnexpected(tokenGroups.error());
 
-            for (TokenGroup const& group : *tokenGroups)
+            for (TokenGroup const& group : m_tokenGroups)
             {
                 if (group.lacksSecondaryToken())
                 {
                     // TODO logic error
                 }
 
-                Token const& primaryToken = tokens[group.primaryTokenIndex];
+                Token const& primaryToken = m_tokens[group.primaryTokenIndex];
 
-                TokenType type = group.separatorTokenIndex != invalidIndex ? tokens[group.separatorTokenIndex].type : TokenType::String;
-                std::string_view secondaryTokenValue = group.secondaryTokenIndex != invalidIndex ? tokens[group.secondaryTokenIndex].value : std::string_view{};
+                TokenType type = group.separatorTokenIndex != invalidIndex ? m_tokens[group.separatorTokenIndex].type : TokenType::String;
+                std::string_view secondaryTokenValue = group.secondaryTokenIndex != invalidIndex ? m_tokens[group.secondaryTokenIndex].value : std::string_view{};
 
-                if (input.functionName.empty())
+                if (m_input.functionName.empty())
                 {
                     if (type == TokenType::Dot)
-                        input.setTargetAndName(primaryToken.value, secondaryTokenValue);
+                        m_input.setTargetAndName(primaryToken.value, secondaryTokenValue);
                     else if (type == TokenType::String)
-                        input.functionName = primaryToken.value;
+                        m_input.functionName = primaryToken.value;
                     else
                         return makeUnexpected("Unexpected named argument at the beginning of the expression");
                 }
                 else
                 {
                     if (type == TokenType::Assignment)
-                        input.namedArguments.emplace(primaryToken.value, secondaryTokenValue);
+                        m_input.namedArguments.emplace_back(primaryToken.value, secondaryTokenValue);
                     else if (type == TokenType::String)
-                        input.arguments.emplace_back(primaryToken.value);
+                        m_input.arguments.emplace_back(primaryToken.value);
                     else
                         return makeUnexpected("Unexpected token '.' when the function name has already been defined");
                 }
             }
 
-            return input;
+            return {};
         }
+
+        // TODO not thread safe
+        mutable ExecutionInput m_input;
+        mutable std::vector<Token> m_tokens;
+        mutable std::vector<TokenGroup> m_tokenGroups;
     };
 }
