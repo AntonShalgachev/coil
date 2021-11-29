@@ -142,18 +142,20 @@ namespace coil
 
         ExecutionResult execute(Expected<ExecutionInput, std::string> input)
         {
-            detail::CallContext context;
-
             if (!input)
             {
-                context.result.errors.push_back(std::string("Syntax error: ") + input.error());
+                ExecutionResult result;
+                result.errors.push_back(std::string("Syntax error: ") + input.error());
+                return result;
             }
-            else
-            {
-                context.input = std::move(*input);
-                execute(context);
-            }
+         
+            return execute(*input);
+        }
 
+        ExecutionResult execute(ExecutionInput const& input)
+        {
+            detail::CallContext context{input};
+            execute(context);
             return context.result;
         }
 
