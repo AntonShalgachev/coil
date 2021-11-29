@@ -70,7 +70,13 @@ namespace coil
     class Expected
     {
     public:
-        Expected(T value) : m_data(std::move(value)) {}
+        using ExpectedType = std::conditional_t<std::is_void_v<T>, std::monostate, T>;
+
+        template<typename U = T, typename = std::enable_if_t<std::is_same_v<U, T>>, typename = std::enable_if_t<!std::is_void_v<T>>>
+        Expected(U value) : m_data(std::move(value)) {}
+
+        template<typename = std::enable_if_t<std::is_void_v<T>>>
+        Expected() : m_data(std::monostate{}) {}
 
         template<typename U>
         Expected(detail::Unexpected<U> error) : m_data(std::move(error))
@@ -85,27 +91,30 @@ namespace coil
 
         E const& error() const& { return std::get<detail::Unexpected<E>>(m_data).value(); }
         E& error()& { return std::get<detail::Unexpected<E>>(m_data).value(); }
-        E&& error()&& { return std::get<detail::Unexpected<E>>(std::move(m_data)).value(); }
+        E&& error() && { return std::get<detail::Unexpected<E>>(std::move(m_data)).value(); }
 
-        T const& value() const&
+        template<typename = std::enable_if_t<!std::is_void_v<T>>>
+        ExpectedType const& value() const&
         {
             if (!hasValue())
                 throw BadExpectedAccess<E>(error());
-            return std::get<T>(m_data);
+            return std::get<ExpectedType>(m_data);
         }
 
-        T& value()&
+        template<typename = std::enable_if_t<!std::is_void_v<T>>>
+        ExpectedType& value()&
         {
             if (!hasValue())
                 throw BadExpectedAccess<E>(error());
-            return std::get<T>(m_data);
+            return std::get<ExpectedType>(m_data);
         }
 
-        T&& value()&&
+        template<typename = std::enable_if_t<!std::is_void_v<T>>>
+        ExpectedType&& value() &&
         {
             if (!hasValue())
                 throw BadExpectedAccess<E>(error());
-            return std::get<T>(std::move(m_data));
+            return std::get<ExpectedType>(std::move(m_data));
         }
 
         operator bool() const
@@ -113,39 +122,40 @@ namespace coil
             return hasValue();
         }
 
-        operator T() const& { return value(); }
-        operator T()& { return value(); }
-        operator T()&& { return std::move(value()); }
+        template<typename = std::enable_if_t<!std::is_void_v<T>>>
+        ExpectedType const& operator*() const& { return value(); }
+        template<typename = std::enable_if_t<!std::is_void_v<T>>>
+        ExpectedType& operator*()& { return value(); }
+        template<typename = std::enable_if_t<!std::is_void_v<T>>>
+        ExpectedType&& operator*() && { return std::move(value()); }
 
-        T const& operator*() const& { return value(); }
-        T& operator*()& { return value(); }
-        T&& operator*()&& { return std::move(value()); }
-
-        T const* operator->() const { return &value(); }
-        T* operator->() { return &value(); }
+        template<typename = std::enable_if_t<!std::is_void_v<T>>>
+        ExpectedType const* operator->() const { return &value(); }
+        template<typename = std::enable_if_t<!std::is_void_v<T>>>
+        ExpectedType* operator->() { return &value(); }
 
         template<typename E2>
-        operator Expected<T, E2>() const&
+        operator Expected<ExpectedType, E2>() const&
         {
             if (hasValue()) return value();
             return error();
         }
 
         template<typename E2>
-        operator Expected<T, E2>()&
+        operator Expected<ExpectedType, E2>()&
         {
             if (hasValue()) return value();
             return error();
         }
 
         template<typename E2>
-        operator Expected<T, E2>()&&
+        operator Expected<ExpectedType, E2>() &&
         {
             if (hasValue()) return std::move(value());
             return error();
         }
 
     private:
-        std::variant<T, detail::Unexpected<E>> m_data;
+        std::variant<ExpectedType, detail::Unexpected<E>> m_data;
     };
 }

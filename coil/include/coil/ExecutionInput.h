@@ -11,7 +11,15 @@ namespace coil
         std::string_view objectName;
         std::string_view functionName;
         std::vector<std::string_view> arguments;
-        std::unordered_map<std::string_view, std::string_view> namedArguments;
+        std::vector<std::pair<std::string_view, std::string_view>> namedArguments;
+
+        void reset()
+        {
+            objectName = {};
+            functionName = {};
+            arguments.resize(0);
+            namedArguments.resize(0);
+        }
 
         void setTargetAndName(std::string_view object, std::string_view function)
         {

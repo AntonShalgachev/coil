@@ -12,7 +12,7 @@ namespace
 #pragma optimize("", off)
 
     coil::Bindings cmd;
-    coil::ExecutionInput input{ "", "func", {"3.14", "0.16"} };
+    coil::ExecutionInput cmdInput{ "", "func", {"3.14", "0.16"} };
 
     sol::state lua;
 
@@ -23,7 +23,7 @@ namespace
 
     BENCHMARK(Scripting, CoilNoParse, 100, 1000)
     {
-        cmd.execute(input);
+        cmd.execute(cmdInput);
     }
 
     BENCHMARK(Scripting, Sol, 100, 1000)
