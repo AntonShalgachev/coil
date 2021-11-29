@@ -7,7 +7,9 @@ namespace coil::detail
 {
     struct CallContext
     {
-        ExecutionInput input;
+        CallContext(ExecutionInput const& input) : input(input) {}
+
+        ExecutionInput const& input;
         ExecutionResult result;
     };
 }
