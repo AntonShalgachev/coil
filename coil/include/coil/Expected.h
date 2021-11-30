@@ -72,10 +72,10 @@ namespace coil
     public:
         using ExpectedType = std::conditional_t<std::is_void_v<T>, std::monostate, T>;
 
-        template<typename U = T, typename = std::enable_if_t<std::is_same_v<U, T>>, typename = std::enable_if_t<!std::is_void_v<T>>>
+        template<typename U = T, typename = std::enable_if_t<!std::is_void_v<U>>>
         Expected(U value) : m_data(std::move(value)) {}
 
-        template<typename = std::enable_if_t<std::is_void_v<T>>>
+        template<typename U = T, typename = std::enable_if_t<std::is_void_v<U>>>
         Expected() : m_data(std::monostate{}) {}
 
         template<typename U>
@@ -93,7 +93,7 @@ namespace coil
         E& error()& { return std::get<detail::Unexpected<E>>(m_data).value(); }
         E&& error() && { return std::get<detail::Unexpected<E>>(std::move(m_data)).value(); }
 
-        template<typename = std::enable_if_t<!std::is_void_v<T>>>
+        template<typename U = T, typename = std::enable_if_t<!std::is_void_v<U>>>
         ExpectedType const& value() const&
         {
             if (!hasValue())
@@ -101,7 +101,7 @@ namespace coil
             return std::get<ExpectedType>(m_data);
         }
 
-        template<typename = std::enable_if_t<!std::is_void_v<T>>>
+        template<typename U = T, typename = std::enable_if_t<!std::is_void_v<U>>>
         ExpectedType& value()&
         {
             if (!hasValue())
@@ -109,7 +109,7 @@ namespace coil
             return std::get<ExpectedType>(m_data);
         }
 
-        template<typename = std::enable_if_t<!std::is_void_v<T>>>
+        template<typename U = T, typename = std::enable_if_t<!std::is_void_v<U>>>
         ExpectedType&& value() &&
         {
             if (!hasValue())
@@ -122,16 +122,16 @@ namespace coil
             return hasValue();
         }
 
-        template<typename = std::enable_if_t<!std::is_void_v<T>>>
+        template<typename U = T, typename = std::enable_if_t<!std::is_void_v<U>>>
         ExpectedType const& operator*() const& { return value(); }
-        template<typename = std::enable_if_t<!std::is_void_v<T>>>
+        template<typename U = T, typename = std::enable_if_t<!std::is_void_v<U>>>
         ExpectedType& operator*()& { return value(); }
-        template<typename = std::enable_if_t<!std::is_void_v<T>>>
+        template<typename U = T, typename = std::enable_if_t<!std::is_void_v<U>>>
         ExpectedType&& operator*() && { return std::move(value()); }
 
-        template<typename = std::enable_if_t<!std::is_void_v<T>>>
+        template<typename U = T, typename = std::enable_if_t<!std::is_void_v<U>>>
         ExpectedType const* operator->() const { return &value(); }
-        template<typename = std::enable_if_t<!std::is_void_v<T>>>
+        template<typename U = T, typename = std::enable_if_t<!std::is_void_v<U>>>
         ExpectedType* operator->() { return &value(); }
 
         template<typename E2>
