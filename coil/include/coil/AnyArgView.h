@@ -3,79 +3,40 @@
 #include "TypeSerializer.h"
 #include <string_view>
 #include <vector>
+#include "Expected.h"
 
 namespace coil
 {
     namespace detail
     {
-        struct OnErrorFlag
+        struct ErrorContainer
         {
-        public:
-            void operator()(std::string)
+            void operator()(std::string e)
             {
-                m_flag = true;
+                error = std::move(e);
             }
 
-            operator bool() const
-            {
-                return m_flag;
-            }
-
-        private:
-            bool m_flag = false;
-        };
-
-        struct OnErrorContainer
-        {
-            void operator()(std::string error)
-            {
-                errors.push_back(std::move(error));
-            }
-
-            operator bool() const
-            {
-                return errors.empty();
-            }
-
-            std::vector<std::string> errors;
+            std::optional<std::string> error;
         };
     }
 
-    // TODO Rename class to contain "view" in it
     class AnyArgView
     {
     public:
         AnyArgView(std::string_view value) : m_value(value) {}
 
         template<typename T>
-        std::optional<T> tryGet() const
+        Expected<T, std::string> get() const
         {
-            detail::OnErrorFlag errorFlag;
-            auto val = TypeSerializer<T>::fromString(m_value, errorFlag);
-            if (errorFlag)
-                return {};
-
-            return val;
-        }
-
-        template<typename T>
-        bool is() const
-        {
-            return tryGet<T>().has_value();
-        }
-
-        template<typename T>
-        T as() const
-        {
-            detail::OnErrorContainer onError;
+            detail::ErrorContainer onError;
             auto val = TypeSerializer<T>::fromString(m_value, onError);
-            if (!onError)
-                throw std::invalid_argument(utils::flatten(onError.errors));
+            if (onError.error)
+                return makeUnexpected(*std::move(onError).error);
 
             return val;
         }
 
-        std::string_view const& getRaw() const { return m_value; }
+        std::string_view getRaw() const { return m_value; }
 
     private:
         std::string_view m_value;

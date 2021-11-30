@@ -46,9 +46,9 @@ namespace
     void renameEntity(coil::Context& context, coil::AnyArgView entity, std::string_view newName)
     {
         Entity* target = nullptr;
-        if (auto id = entity.tryGet<std::uint64_t>())
+        if (auto id = entity.get<std::uint64_t>())
             target = getEntityById(*id);
-        else if (auto name = entity.tryGet<std::string_view>())
+        else if (auto name = entity.get<std::string_view>())
             target = getEntityByName(*name);
 
         using namespace std::literals::string_literals;
@@ -77,8 +77,8 @@ namespace
 
         for (std::size_t i = 0; i < args.size(); i += 2)
         {
-            auto optionalId = args[i].tryGet<std::uint64_t>();
-            auto optionalName = args[i + 1].tryGet<std::string_view>();
+            auto optionalId = args[i].get<std::uint64_t>();
+            auto optionalName = args[i + 1].get<std::string_view>();
 
             if (!optionalId)
                 context.reportError("Argument "s + std::to_string(i) + ": expected id, got '"s + std::string{ args[i].getRaw() } + "'"s);

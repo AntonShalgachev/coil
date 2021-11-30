@@ -125,7 +125,7 @@ namespace coil::detail
             }
 
             Context contextArg{ context };
-            NamedArgs namedArgs{ context.input };
+            NamedArgs namedArgs{ context };
             std::tuple<T*, Context, NamedArgs> nonUserArgOptions{ target, contextArg, namedArgs };
 
             static constexpr bool b1 = Traits::template isMethodOfType<T> || Traits::ExplicitTargetTraits::isPresent;
