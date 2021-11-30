@@ -2,23 +2,21 @@
 
 #include "detail/CallContext.h"
 #include "AnyArgView.h"
+#include "Context.h"
 
 namespace coil
 {
-    // TODO rename to NamedArgView
-    class NamedArg
+    class NamedAnyArgView
     {
     public:
-        NamedArg(std::string_view key, std::string_view value) : m_key(key), m_value(value) {}
+        NamedAnyArgView(std::string_view key, std::string_view value) : m_key(key), m_value(value) {}
 
         std::string_view key() const { return m_key; }
-        std::string_view value() const { return m_value; }
-
-        AnyArgView asAny() const { return AnyArgView{m_value}; }
+        AnyArgView value() const { return m_value; }
 
     private:
         std::string_view m_key;
-        std::string_view m_value;
+        AnyArgView m_value;
     };
 
     class NamedArgsIterator
@@ -27,22 +25,22 @@ namespace coil
         using UnderlyingIteratorT = decltype(std::declval<ExecutionInput>().namedArguments)::const_iterator;
 
         using iterator_category = std::forward_iterator_tag;
-        using value_type = NamedArg;
+        using value_type = NamedAnyArgView;
         using difference_type = UnderlyingIteratorT::difference_type;
-        using pointer = NamedArg*;
-        using reference = NamedArg&;
+        using pointer = NamedAnyArgView*;
+        using reference = NamedAnyArgView&;
 
         NamedArgsIterator(UnderlyingIteratorT iterator) : m_iterator(iterator) {}
 
-        NamedArg operator*()
+        NamedAnyArgView operator*()
         {
-            return NamedArg(m_iterator->first, m_iterator->second);
+            return NamedAnyArgView(m_iterator->first, m_iterator->second);
         }
 
         struct NamedArgContainer
         {
-            NamedArg arg;
-            NamedArg* operator->() { return std::addressof(arg); }
+            NamedAnyArgView arg;
+            NamedAnyArgView* operator->() { return std::addressof(arg); }
         };
 
         NamedArgContainer operator->() { return NamedArgContainer{ **this }; }
@@ -70,61 +68,102 @@ namespace coil
     class NamedArgs
     {
     public:
-        using IteratorT = decltype(std::declval<ExecutionInput>().namedArguments)::const_iterator;
+        struct Error
+        {
+            enum class Type
+            {
+                MissingKey,
+                TypeMismatch,
+            };
 
-        NamedArgs(ExecutionInput const& input) : m_input(input) {}
+            Error(Type type, std::string message) : type(type), message(std::move(message)) {}
 
-        template<typename T>
-        std::optional<T> tryGet(std::string_view key) const
+            operator std::string() const& { return message; }
+            operator std::string()& { return message; }
+            operator std::string()&& { return std::move(message); }
+
+            Type type = Type::MissingKey;
+            std::string message;
+        };
+
+        NamedArgs(detail::CallContext& context) : m_context(context) {}
+
+        Expected<AnyArgView, Error> get(std::string_view key) const
         {
             auto it = find(key);
             if (it == end())
-                return {};
+                return makeUnexpected(Error(Error::Type::MissingKey, utils::formatString("Missing named argument '%.*s'", key.size(), key.data())));
 
-            AnyArgView arg{ it->value() };
-            return arg.tryGet<T>();
+            return it->value();
         }
 
         template<typename T>
-        T get(std::string_view key) const
+        Expected<T, Error> get(std::string_view key) const
         {
-            auto it = find(key);
-            if (it == end())
-                throw std::invalid_argument(utils::formatString("Named argument '%.*s' not found", key.length(), key.data()));
+            Expected<AnyArgView, Error> anyArg = get(key);
+            if (!anyArg)
+                return makeUnexpected(std::move(anyArg).error());
 
-            AnyArgView arg{ it->value() };
-            return arg.as<T>();
+            Expected<T, std::string> value = anyArg->get<T>();
+            if (!value)
+                return makeUnexpected(Error(Error::Type::TypeMismatch, std::move(value).error()));
+
+            return *std::move(value);
         }
 
-        bool has(std::string_view key) const
+        enum class ArgType
         {
-            return find(key) != end();
+            Optional,
+            Required,
+        };
+
+        std::optional<AnyArgView> get(std::string_view key, coil::Context& context, ArgType argType = ArgType::Optional) const
+        {
+            if (auto anyArg = get(key))
+                return *anyArg;
+            else if (argType == ArgType::Required)
+                context.reportError(std::move(anyArg));
+
+            return {};
+        }
+
+        template<typename T>
+        std::optional<T> get(std::string_view key, coil::Context& context, ArgType argType = ArgType::Optional, std::optional<T> defaultValue = {}) const
+        {
+            if (auto value = get<T>(key))
+                return *value;
+            else if (argType == ArgType::Optional && value.error().type == coil::NamedArgs::Error::Type::MissingKey)
+                return defaultValue;
+            else
+                context.reportError(std::move(value));
+
+            return {};
         }
 
         std::size_t size() const
         {
-            return m_input.namedArguments.size();
+            return m_context.input.namedArguments.size();
         }
 
         NamedArgsIterator begin() const
         {
-            return m_input.namedArguments.cbegin();
+            return m_context.input.namedArguments.cbegin();
         }
 
         NamedArgsIterator end() const
         {
-            return m_input.namedArguments.cend();
+            return m_context.input.namedArguments.cend();
         }
 
-    private:
         NamedArgsIterator find(std::string_view key) const
         {
-            return std::find_if(begin(), end(), [key](NamedArg const& arg)
+            return std::find_if(begin(), end(), [key](NamedAnyArgView const& arg)
             {
                 return arg.key() == key;
             });
         }
 
-        ExecutionInput const& m_input;
+    private:
+        detail::CallContext& m_context;
     };
 }
