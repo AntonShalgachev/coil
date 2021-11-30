@@ -154,7 +154,7 @@ namespace coil
         {
             detail::CallContext context{input};
             execute(context);
-            return context.result;
+            return std::move(context).result;
         }
 
     private:
@@ -259,14 +259,14 @@ namespace coil
         template<typename T>
         void objectTrampoline(std::any const& anyObject, detail::CallContext& context)
         {
-            auto& typeFunctors = m_functors[utils::typeId<T>()];
+            auto& typeFunctors = m_functors.at(utils::typeId<T>());
 
-            std::string_view functionName = context.input.functionName;
+            std::string_view const& functionName = context.input.functionName;
 
             auto it = typeFunctors.find(functionName);
             if (it == typeFunctors.end())
             {
-                std::string_view typeName = TypeName<T>::name();
+                std::string_view const& typeName = TypeName<T>::name();
 
                 if constexpr (std::is_void_v<T>)
                     context.result.errors.push_back(utils::formatString("No function '%.*s' is registered", functionName.size(), functionName.data()));
@@ -301,7 +301,7 @@ namespace coil
                 return;
             }
 
-            std::string_view objectName = context.input.objectName;
+            std::string_view const& objectName = context.input.objectName;
 
             if (objectName.empty())
                 return objectTrampoline<void>({}, context);
