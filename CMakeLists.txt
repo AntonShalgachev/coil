@@ -10,6 +10,8 @@ set(COIL_RUNTIME_PERFORMANCE OFF CACHE BOOL "Configure the project for runtime p
 set(CMAKE_CONFIGURATION_TYPES
     "Debug"
     "Release"
+    "RelWithDebInfo"
+    "MinSizeRel"
     CACHE STRING "" FORCE
 )
 
