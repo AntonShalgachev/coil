@@ -261,12 +261,12 @@ namespace coil
         {
             auto& typeFunctors = m_functors.at(utils::typeId<T>());
 
-            std::string_view const& functionName = context.input.functionName;
+            auto&& functionName = context.input.functionName;
 
             auto it = typeFunctors.find(functionName);
             if (it == typeFunctors.end())
             {
-                std::string_view const& typeName = TypeName<T>::name();
+                auto&& typeName = TypeName<T>::name();
 
                 if constexpr (std::is_void_v<T>)
                     context.result.errors.push_back(utils::formatString("No function '%.*s' is registered", functionName.size(), functionName.data()));
@@ -301,7 +301,7 @@ namespace coil
                 return;
             }
 
-            std::string_view const& objectName = context.input.objectName;
+            auto&& objectName = context.input.objectName;
 
             if (objectName.empty())
                 return objectTrampoline<void>({}, context);
