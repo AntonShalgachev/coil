@@ -94,26 +94,18 @@ namespace
 
     void prepare()
     {
-        static std::list<std::string> names;
-
-        auto getView = [](std::string value) -> std::string_view
-        {
-            names.push_back(std::move(value));
-            return names.back();
-        };
-
         auto functions = util::generateUniqueFunctions<freeFuncsCount>();
 
         for (std::size_t i = 0; i < freeFuncsCount; i++)
         {
-            std::string_view name = getView("long_function_name_please" + std::to_string(i));
+            auto name = "long_function_name_please" + std::to_string(i);
             cmd[name] = functions[i];
             lua[name] = functions[i];
         }
 
-        auto addObject = [getView](auto&& object, std::size_t index)
+        auto addObject = [](auto&& object, std::size_t index)
         {
-            std::string_view name = getView("long_object_name_please" + std::to_string(index));
+            auto name = "long_object_name_please" + std::to_string(index);
             cmd.addObject(name, &object);
             lua[name] = &object;
         };
@@ -126,7 +118,7 @@ namespace
 
         auto methods = util::generateUniqueMethods<objectsCount, methodsCount>();
 
-        auto addMethods = [getView](auto&& methods)
+        auto addMethods = [](auto&& methods)
         {
             using Traits = coil::utils::FuncTraits<std::decay_t<decltype(methods[0])>>;
 
@@ -136,7 +128,7 @@ namespace
             {
                 auto const& method = methods[i];
 
-                std::string_view name = getView("long_method_name_please" + std::to_string(i));
+                auto name = "long_method_name_please" + std::to_string(i);
                 cmd.bind<Traits::ObjectType>(name, method);
 
                 usertype[name] = method;

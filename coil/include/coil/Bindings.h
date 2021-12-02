@@ -15,19 +15,22 @@
 #include "BindingProxy.h"
 #include "DefaultLexer.h"
 #include "Expected.h"
+#include "GeneralizedString.h"
 
 namespace coil
 {
 	class Bindings
 	{
-	public:
-        BindingProxy<Bindings> operator[](std::string_view name)
+    public:
+        using GeneralizedString = BasicGeneralizedString<std::string>;
+
+        auto operator[](GeneralizedString name)
         {
-            return BindingProxy<Bindings>(*this, name);
+            return BindingProxy<Bindings, GeneralizedString>(*this, std::move(name));
         }
 
         template<typename T, typename Func, typename ObjectPointerT>
-        bool bind(std::string_view name, Func&& func, ObjectPointerT obj)
+        bool bind(GeneralizedString name, Func&& func, ObjectPointerT obj)
         {
             using Traits = utils::FuncTraits<Func>;
             using ObjectT = std::remove_pointer_t<ObjectPointerT>;
@@ -39,38 +42,38 @@ namespace coil
             if constexpr (std::is_const_v<ObjectT>)
                 static_assert(Traits::isConst, "Can't call non-const method on a const object");
 
-            return bind<T>(name, utils::MemberFunctionFunctor<Func, ObjectReferenceT>(std::forward<Func>(func), *obj));
+            return bind<T>(std::move(name), utils::MemberFunctionFunctor<Func, ObjectReferenceT>(std::forward<Func>(func), *obj));
         }
 
         template<typename Func, typename ObjectPointerT>
-        bool bind(std::string_view name, Func&& func, ObjectPointerT obj)
+        bool bind(GeneralizedString name, Func&& func, ObjectPointerT obj)
         {
-            return bind<void>(name, std::forward<Func>(func), obj);
+            return bind<void>(std::move(name), std::forward<Func>(func), obj);
         }
 
         template<typename AnyT>
-        bool bind(std::string_view name, AnyT&& anything)
+        bool bind(GeneralizedString name, AnyT&& anything)
         {
-            return bind<void, AnyT>(name, std::forward<AnyT>(anything));
+            return bind<void, AnyT>(std::move(name), std::forward<AnyT>(anything));
         }
 
         template<typename T, typename AnyT>
-        bool bind(std::string_view name, AnyT&& anything)
+        bool bind(GeneralizedString name, AnyT&& anything)
 		{
             using DecayedAnyT = std::decay_t<AnyT>;
             if constexpr (utils::FuncTraits<DecayedAnyT>::isFunc)
             {
-                return bindFunc<T>(name, std::forward<AnyT>(anything));
+                return bindFunc<T>(std::move(name), std::forward<AnyT>(anything));
             }
             else if constexpr (std::is_member_object_pointer_v<DecayedAnyT>)
             {
                 static_assert(!std::is_void_v<T>, "Pointer to member variable should be bound to non-void type");
-                return bindMemberVariable<T>(name, std::forward<AnyT>(anything));
+                return bindMemberVariable<T>(std::move(name), std::forward<AnyT>(anything));
             }
             else if constexpr (std::is_pointer_v<AnyT> && !std::is_function_v<AnyT>)
             {
                 static_assert(std::is_void_v<T>, "Pointer to variable shouldn't be bound to non-void type");
-                return bindVariable(name, std::forward<AnyT>(anything));
+                return bindVariable(std::move(name), std::forward<AnyT>(anything));
             }
             else
             {
@@ -102,15 +105,15 @@ namespace coil
         }
 
         template<typename T>
-        bool addObject(std::string_view name, T* object)
+        bool addObject(GeneralizedString name, T* object)
 		{
             // TODO allow const objects
 			static_assert(!std::is_const_v<T>, "T shouldn't be const");
 
-			if (name.empty())
+			if (name.getView().empty())
 				return false;
 
-            m_objects.insert_or_assign(name, object);
+            m_objects.insert_or_assign(std::move(name), object);
 
 			return true;
         }
@@ -159,7 +162,7 @@ namespace coil
 
     private:
         template<typename T, typename Func>
-        bool bindFunc(std::string_view name, Func&& func)
+        bool bindFunc(GeneralizedString name, Func&& func)
         {
             // TODO assert that user parameters of Func are either values or const-references
             // TODO assert that Context parameter is non-const reference and is at second optional position
@@ -185,27 +188,27 @@ namespace coil
                 static_assert(std::is_same_v<T, SpecifiedExplicitTarget>, "Explicit target should match the given type T");
             }
 
-            if (name.empty())
+            if (name.getView().empty())
                 return false;
 
             UnqualifiedFunc unqualifiedFunc{ std::move(func) };
 
             auto& typeFunctors = m_functors[utils::typeId<T>()];
-            typeFunctors.insert_or_assign(name, AnyFunctor::create<T, UnqualifiedFunc>(std::move(unqualifiedFunc)));
+            typeFunctors.insert_or_assign(std::move(name), AnyFunctor::create<T, UnqualifiedFunc>(std::move(unqualifiedFunc)));
 
             return true;
         }
 
         template<typename T, typename R>
-        bool bindMemberVariable(std::string_view name, R T::* var)
+        bool bindMemberVariable(GeneralizedString name, R T::* var)
         {
-            return bindFunc<T>(name, utils::MemberVariableWrapper{ var });
+            return bindFunc<T>(std::move(name), utils::MemberVariableWrapper{ var });
         }
 
         template<typename R>
-        bool bindVariable(std::string_view name, R* var)
+        bool bindVariable(GeneralizedString name, R* var)
         {
-            return bindFunc<void>(name, utils::VariableWrapper{ var });
+            return bindFunc<void>(std::move(name), utils::VariableWrapper{ var });
         }
 
         struct AnyObject
@@ -317,8 +320,8 @@ namespace coil
             obj.invokeTrampoline(this, context);
         }
 
-        std::unordered_map<std::string_view, AnyObject> m_objects;
-        std::unordered_map<utils::TypeIdT, std::unordered_map<std::string_view, AnyFunctor>> m_functors;
+        std::unordered_map<GeneralizedString, AnyObject> m_objects;
+        std::unordered_map<utils::TypeIdT, std::unordered_map<GeneralizedString, AnyFunctor>> m_functors;
         DefaultLexer m_defaultLexer;
 	};
 }
