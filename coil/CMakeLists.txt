@@ -27,7 +27,9 @@ set(ALL_FILES
     "include/coil/BindingProxy.h"
     "include/coil/DefaultLexer.h"
     "include/coil/Expected.h"
- "include/coil/TypeName.h")
+    "include/coil/TypeName.h"
+    "include/coil/GeneralizedString.h"
+)
 
 add_library(${PROJECT_NAME} INTERFACE ${ALL_FILES})
 
