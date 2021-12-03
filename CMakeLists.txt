@@ -3,7 +3,9 @@ cmake_minimum_required(VERSION 3.12.0 FATAL_ERROR)
 project(coil LANGUAGES C CXX VERSION 1.0)
 
 set(COIL_COMPILATION_PERFORMANCE OFF CACHE BOOL "Configure the project for compilation performance tests")
+set(COIL_COMPILATION_PERFORMANCE_USE_COIL OFF CACHE BOOL "Whether to use coil library for compilation performance test")
 set(COIL_COMPILATION_PERFORMANCE_USE_SOL OFF CACHE BOOL "Whether to use sol2 library for compilation performance test")
+set(COIL_COMPILATION_PERFORMANCE_USE_OBJECTS OFF CACHE BOOL "Whether to use objects for compilation performance test")
 
 set(COIL_RUNTIME_PERFORMANCE OFF CACHE BOOL "Configure the project for runtime performance tests")
 

@@ -3,11 +3,10 @@ set(PROJECT_NAME dev)
 set(ALL_FILES
     "main.cpp"
     "Common.h"
-
-    "ByValue.cpp"
-    "ByReference.cpp"
-    "ObjectByValue.cpp"
 )
+
+set(GENERATED_FILES)
+add_subdirectory(generated)
 
 set (VS2017 OFF)
 if (CMAKE_CXX_COMPILER MATCHES ".*Visual Studio.*2017.*")
@@ -15,7 +14,7 @@ if (CMAKE_CXX_COMPILER MATCHES ".*Visual Studio.*2017.*")
     set (VS2017 ON)
 endif()
 
-add_executable(${PROJECT_NAME} ${ALL_FILES})
+add_executable(${PROJECT_NAME} ${ALL_FILES} ${GENERATED_FILES})
 
 target_include_directories(${PROJECT_NAME} PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR};"
@@ -45,8 +44,14 @@ target_compile_options(${PROJECT_NAME} PRIVATE
 
 if(${COIL_COMPILATION_PERFORMANCE_USE_SOL})
     target_compile_definitions(${PROJECT_NAME} PRIVATE USE_SOL=1)
-else()
-    target_compile_definitions(${PROJECT_NAME} PRIVATE USE_SOL=0)
+endif()
+
+if(${COIL_COMPILATION_PERFORMANCE_USE_COIL})
+    target_compile_definitions(${PROJECT_NAME} PRIVATE USE_COIL=1)
+endif()
+
+if(${COIL_COMPILATION_PERFORMANCE_USE_OBJECTS})
+    target_compile_definitions(${PROJECT_NAME} PRIVATE USE_OBJECTS=1)
 endif()
 
 if (${VS2017})

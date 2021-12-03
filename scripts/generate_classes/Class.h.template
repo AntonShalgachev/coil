@@ -1,0 +1,31 @@
+\#pragma once
+\#include <vector>
+\#include <string>
+\#include <string_view>
+\#include <optional>
+
+\#include "../../Common.h"
+
+class $name
+{
+public:
+    void work();
+
+\#ifdef DEBUG_BINDINGS
+    void registerBindings(GeneralBindings& bindings);
+\#endif
+
+    static std::optional<float> workInternally(std::vector<std::string> const& values);
+
+private:
+#for $method in $methods
+    #if 'return_index' in $method then $method.args[$method.return_index] else 'void' # ${method.name}($combine($method.args));
+#end for
+};
+
+namespace ns_$name
+{
+#for $method in $methods
+    #if 'return_index' in $method then $method.args[$method.return_index] else 'void' # ${method.name}($combine($method.args));
+#end for
+}
