@@ -53,6 +53,8 @@ namespace
         auto source = namedArgs.get<Source>("source", context, coil::NamedArgs::ArgType::Optional);
         auto type = namedArgs.get<Type>("type", context, coil::NamedArgs::ArgType::Optional);
 
+        // if any of the above arguments didn't have the correct type, then the error would be reported and
+        // the returned value would be an empty std::optional
         if (context.hasErrors())
             return;
 
@@ -78,6 +80,7 @@ namespace
         auto amount = namedArgs.get<std::size_t>("amount", context, coil::NamedArgs::ArgType::Optional, 1);
         auto type = namedArgs.get<Type>("type", context, coil::NamedArgs::ArgType::Optional, Type::Weapon);
 
+        // This might happen if the above arguments exist, but they can't be represented in the specified C++ type
         if (!amount || !type)
             return;
 
@@ -121,7 +124,7 @@ namespace
             return; // the error is already reported
 
         if (auto valueBool = requiredAnyArg->get<bool>())
-            std::cout << "Required: " << *valueBool << std::endl;
+            std::cout << "Required: " << std::boolalpha << *valueBool << std::noboolalpha << std::endl;
         else if (auto valueInt = requiredAnyArg->get<int>())
             std::cout << "Required: " << *valueInt << std::endl;
         else
@@ -131,7 +134,7 @@ namespace
         if (optionalAnyArg)
         {
             if (auto valueBool = optionalAnyArg->get<bool>())
-                std::cout << "Optional: " << *valueBool << std::endl;
+                std::cout << "Optional: " << std::boolalpha << *valueBool << std::noboolalpha << std::endl;
             else if (auto valueInt = optionalAnyArg->get<int>())
                 std::cout << "Optional: " << *valueInt << std::endl;
             else
