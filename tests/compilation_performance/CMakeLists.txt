@@ -1,4 +1,4 @@
-set(PROJECT_NAME dev)
+set(PROJECT_NAME compilation_performance)
 
 set(ALL_FILES
     "main.cpp"
