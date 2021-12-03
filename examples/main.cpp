@@ -7,6 +7,7 @@
 #include "variables/VariablesExample.h"
 #include "named/NamedExample.h"
 #include "enums/EnumsExample.h"
+#include "errors/ErrorsExample.h"
 
 #include "coil/Bindings.h"
 
@@ -51,6 +52,7 @@ int main()
         , VariablesExample
         , NamedExample
         , EnumsExample
+        , ErrorsExample
     >;
 
     std::array<std::string_view, std::tuple_size_v<Examples>> names = {
@@ -59,6 +61,7 @@ int main()
         "variable",
         "named",
         "enums",
+        "errors",
     };
 
     Examples examples;

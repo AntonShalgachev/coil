@@ -23,6 +23,8 @@ set(ALL_FILES
     "named/NamedExample.cpp"
     "enums/EnumsExample.h"
     "enums/EnumsExample.cpp"
+	"errors/ErrorsExample.h"
+	"errors/ErrorsExample.cpp"
 )
 
 set (VS2017 OFF)
