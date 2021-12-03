@@ -1,0 +1,7 @@
+set(GENERATED_FILES
+    #for $c in $classes
+    "\${CMAKE_CURRENT_SOURCE_DIR}/classes/${c.name}.h"
+    "\${CMAKE_CURRENT_SOURCE_DIR}/classes/${c.name}.cpp"
+    #end for
+    PARENT_SCOPE
+)

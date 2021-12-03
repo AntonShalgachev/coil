@@ -91,6 +91,108 @@
           "type": "BOOL"
         }
       ]
+    },
+    {
+      "name": "Debug-Compilation-Perf",
+      "generator": "Ninja",
+      "configurationType": "Debug",
+      "buildRoot": "${projectDir}\\out\\build\\${name}",
+      "installRoot": "${projectDir}\\out\\install\\${name}",
+      "cmakeCommandArgs": "",
+      "buildCommandArgs": "",
+      "ctestCommandArgs": "",
+      "inheritEnvironments": [ "msvc_x64_x64" ],
+      "variables": [
+        {
+          "name": "COIL_COMPILATION_PERFORMANCE",
+          "value": "True",
+          "type": "BOOL"
+        }
+      ]
+    },
+    {
+      "name": "Debug-Compilation-Perf-Sol-Funcs",
+      "generator": "Ninja",
+      "configurationType": "Debug",
+      "buildRoot": "${projectDir}\\out\\build\\${name}",
+      "installRoot": "${projectDir}\\out\\install\\${name}",
+      "cmakeCommandArgs": "",
+      "buildCommandArgs": "",
+      "ctestCommandArgs": "",
+      "inheritEnvironments": [ "msvc_x64_x64" ],
+      "variables": [
+        {
+          "name": "COIL_COMPILATION_PERFORMANCE",
+          "value": "True",
+          "type": "BOOL"
+        },
+        {
+          "name": "COIL_COMPILATION_PERFORMANCE_USE_SOL",
+          "value": "True",
+          "type": "BOOL"
+        }
+      ]
+    },
+    {
+      "name": "Debug-Compilation-Perf-Coil-Funcs",
+      "generator": "Ninja",
+      "configurationType": "Debug",
+      "buildRoot": "${projectDir}\\out\\build\\${name}",
+      "installRoot": "${projectDir}\\out\\install\\${name}",
+      "cmakeCommandArgs": "",
+      "buildCommandArgs": "",
+      "ctestCommandArgs": "",
+      "inheritEnvironments": [ "msvc_x64_x64" ],
+      "variables": [
+        {
+          "name": "COIL_COMPILATION_PERFORMANCE",
+          "value": "True",
+          "type": "BOOL"
+        },
+        {
+          "name": "COIL_COMPILATION_PERFORMANCE_USE_SOL",
+          "value": "False",
+          "type": "BOOL"
+        },
+        {
+          "name": "COIL_COMPILATION_PERFORMANCE_USE_COIL",
+          "value": "True",
+          "type": "BOOL"
+        }
+      ]
+    },
+    {
+      "name": "Debug-Compilation-Perf-Coil-Objects",
+      "generator": "Ninja",
+      "configurationType": "Debug",
+      "buildRoot": "${projectDir}\\out\\build\\${name}",
+      "installRoot": "${projectDir}\\out\\install\\${name}",
+      "cmakeCommandArgs": "",
+      "buildCommandArgs": "",
+      "ctestCommandArgs": "",
+      "inheritEnvironments": [ "msvc_x64_x64" ],
+      "variables": [
+        {
+          "name": "COIL_COMPILATION_PERFORMANCE",
+          "value": "True",
+          "type": "BOOL"
+        },
+        {
+          "name": "COIL_COMPILATION_PERFORMANCE_USE_SOL",
+          "value": "False",
+          "type": "BOOL"
+        },
+        {
+          "name": "COIL_COMPILATION_PERFORMANCE_USE_COIL",
+          "value": "True",
+          "type": "BOOL"
+        },
+        {
+          "name": "COIL_COMPILATION_PERFORMANCE_USE_OBJECTS",
+          "value": "True",
+          "type": "BOOL"
+        }
+      ]
     }
   ]
 }
