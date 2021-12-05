@@ -8,7 +8,6 @@
 #include "../utils/Types.h"
 #include "coil/TypeSerializer.h"
 #include "../utils/FuncTraits.h"
-#include "../utils/FilterTypes.h"
 #include "FuncTraitsEx.h"
 #include "../utils/ElementSelector.h"
 
