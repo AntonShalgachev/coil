@@ -73,7 +73,43 @@ std::optional<float> Class81::workInternally(std::vector<std::string> const& val
     return res;
 }
 
-float Class81::method0(short arg0, float arg1, bool arg2, bool arg3, std::string arg4)
+void Class81::method0(short arg0, short arg1, int arg2, unsigned arg3, float arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+void Class81::method1(bool arg0, short arg1, short arg2, short arg3, bool arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+float Class81::method2(bool arg0, float arg1, unsigned arg2, unsigned arg3, short arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -92,7 +128,7 @@ float Class81::method0(short arg0, float arg1, bool arg2, bool arg3, std::string
 
     return arg1;
 }
-void Class81::method1(std::string const& arg0, float arg1, std::string arg2, bool arg3, std::string const& arg4)
+void Class81::method3(bool arg0, bool arg1, float arg2, short arg3, double arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -110,44 +146,7 @@ void Class81::method1(std::string const& arg0, float arg1, std::string arg2, boo
         std::cout << "null" << std::endl;
 
 }
-bool Class81::method2(double arg0, unsigned arg1, unsigned arg2, std::string arg3, bool arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg4;
-}
-void Class81::method3(std::string_view arg0, float arg1, std::string const& arg2, std::string arg3, unsigned arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-unsigned Class81::method4(unsigned arg0, std::string arg1, std::string arg2, unsigned arg3, unsigned arg4)
+short Class81::method4(short arg0, unsigned arg1, int arg2, double arg3, int arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -166,7 +165,44 @@ unsigned Class81::method4(unsigned arg0, std::string arg1, std::string arg2, uns
 
     return arg0;
 }
-std::string const& Class81::method5(double arg0, bool arg1, std::string const& arg2, unsigned arg3, std::string const& arg4)
+void Class81::method5(float arg0, unsigned arg1, float arg2, unsigned arg3, float arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+double Class81::method6(double arg0, double arg1, unsigned arg2, float arg3, double arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg0;
+}
+bool Class81::method7(unsigned arg0, double arg1, bool arg2, double arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -185,7 +221,7 @@ std::string const& Class81::method5(double arg0, bool arg1, std::string const& a
 
     return arg2;
 }
-void Class81::method6(int arg0, std::string arg1, std::string const& arg2, std::string_view arg3, std::string const& arg4)
+void Class81::method8(float arg0, float arg1, bool arg2, short arg3, int arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -203,7 +239,26 @@ void Class81::method6(int arg0, std::string arg1, std::string const& arg2, std::
         std::cout << "null" << std::endl;
 
 }
-void Class81::method7(std::string const& arg0, bool arg1, float arg2, double arg3, unsigned arg4)
+double Class81::method9(unsigned arg0, double arg1, double arg2, bool arg3, int arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg2;
+}
+void Class81::method10(short arg0, unsigned arg1, unsigned arg2, int arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -221,61 +276,7 @@ void Class81::method7(std::string const& arg0, bool arg1, float arg2, double arg
         std::cout << "null" << std::endl;
 
 }
-void Class81::method8(int arg0, std::string const& arg1, short arg2, short arg3, unsigned arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-void Class81::method9(double arg0, int arg1, float arg2, int arg3, bool arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-void Class81::method10(float arg0, double arg1, std::string const& arg2, bool arg3, int arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-float Class81::method11(std::string const& arg0, float arg1, unsigned arg2, std::string arg3, float arg4)
+bool Class81::method11(int arg0, double arg1, double arg2, float arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -294,7 +295,7 @@ float Class81::method11(std::string const& arg0, float arg1, unsigned arg2, std:
 
     return arg4;
 }
-void Class81::method12(short arg0, bool arg1, std::string_view arg2, float arg3, bool arg4)
+void Class81::method12(bool arg0, double arg1, int arg2, short arg3, unsigned arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -312,7 +313,7 @@ void Class81::method12(short arg0, bool arg1, std::string_view arg2, float arg3,
         std::cout << "null" << std::endl;
 
 }
-void Class81::method13(int arg0, std::string const& arg1, short arg2, std::string_view arg3, bool arg4)
+void Class81::method13(short arg0, bool arg1, unsigned arg2, bool arg3, int arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -330,7 +331,7 @@ void Class81::method13(int arg0, std::string const& arg1, short arg2, std::strin
         std::cout << "null" << std::endl;
 
 }
-double Class81::method14(std::string arg0, float arg1, std::string const& arg2, double arg3, float arg4)
+void Class81::method14(float arg0, int arg1, float arg2, float arg3, double arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -347,10 +348,45 @@ double Class81::method14(std::string arg0, float arg1, std::string const& arg2, 
     else
         std::cout << "null" << std::endl;
 
-    return arg3;
 }
 
-float ns_Class81::method0(short arg0, float arg1, bool arg2, bool arg3, std::string arg4)
+void ns_Class81::method0(short arg0, short arg1, int arg2, unsigned arg3, float arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = Class81::workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+void ns_Class81::method1(bool arg0, short arg1, short arg2, short arg3, bool arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = Class81::workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+float ns_Class81::method2(bool arg0, float arg1, unsigned arg2, unsigned arg3, short arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -369,7 +405,7 @@ float ns_Class81::method0(short arg0, float arg1, bool arg2, bool arg3, std::str
 
     return arg1;
 }
-void ns_Class81::method1(std::string const& arg0, float arg1, std::string arg2, bool arg3, std::string const& arg4)
+void ns_Class81::method3(bool arg0, bool arg1, float arg2, short arg3, double arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -387,44 +423,7 @@ void ns_Class81::method1(std::string const& arg0, float arg1, std::string arg2, 
         std::cout << "null" << std::endl;
 
 }
-bool ns_Class81::method2(double arg0, unsigned arg1, unsigned arg2, std::string arg3, bool arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class81::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg4;
-}
-void ns_Class81::method3(std::string_view arg0, float arg1, std::string const& arg2, std::string arg3, unsigned arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class81::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-unsigned ns_Class81::method4(unsigned arg0, std::string arg1, std::string arg2, unsigned arg3, unsigned arg4)
+short ns_Class81::method4(short arg0, unsigned arg1, int arg2, double arg3, int arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -443,7 +442,44 @@ unsigned ns_Class81::method4(unsigned arg0, std::string arg1, std::string arg2, 
 
     return arg0;
 }
-std::string const& ns_Class81::method5(double arg0, bool arg1, std::string const& arg2, unsigned arg3, std::string const& arg4)
+void ns_Class81::method5(float arg0, unsigned arg1, float arg2, unsigned arg3, float arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = Class81::workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+double ns_Class81::method6(double arg0, double arg1, unsigned arg2, float arg3, double arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = Class81::workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg0;
+}
+bool ns_Class81::method7(unsigned arg0, double arg1, bool arg2, double arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -462,7 +498,7 @@ std::string const& ns_Class81::method5(double arg0, bool arg1, std::string const
 
     return arg2;
 }
-void ns_Class81::method6(int arg0, std::string arg1, std::string const& arg2, std::string_view arg3, std::string const& arg4)
+void ns_Class81::method8(float arg0, float arg1, bool arg2, short arg3, int arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -480,7 +516,26 @@ void ns_Class81::method6(int arg0, std::string arg1, std::string const& arg2, st
         std::cout << "null" << std::endl;
 
 }
-void ns_Class81::method7(std::string const& arg0, bool arg1, float arg2, double arg3, unsigned arg4)
+double ns_Class81::method9(unsigned arg0, double arg1, double arg2, bool arg3, int arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = Class81::workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg2;
+}
+void ns_Class81::method10(short arg0, unsigned arg1, unsigned arg2, int arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -498,61 +553,7 @@ void ns_Class81::method7(std::string const& arg0, bool arg1, float arg2, double 
         std::cout << "null" << std::endl;
 
 }
-void ns_Class81::method8(int arg0, std::string const& arg1, short arg2, short arg3, unsigned arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class81::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-void ns_Class81::method9(double arg0, int arg1, float arg2, int arg3, bool arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class81::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-void ns_Class81::method10(float arg0, double arg1, std::string const& arg2, bool arg3, int arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class81::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-float ns_Class81::method11(std::string const& arg0, float arg1, unsigned arg2, std::string arg3, float arg4)
+bool ns_Class81::method11(int arg0, double arg1, double arg2, float arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -571,7 +572,7 @@ float ns_Class81::method11(std::string const& arg0, float arg1, unsigned arg2, s
 
     return arg4;
 }
-void ns_Class81::method12(short arg0, bool arg1, std::string_view arg2, float arg3, bool arg4)
+void ns_Class81::method12(bool arg0, double arg1, int arg2, short arg3, unsigned arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -589,7 +590,7 @@ void ns_Class81::method12(short arg0, bool arg1, std::string_view arg2, float ar
         std::cout << "null" << std::endl;
 
 }
-void ns_Class81::method13(int arg0, std::string const& arg1, short arg2, std::string_view arg3, bool arg4)
+void ns_Class81::method13(short arg0, bool arg1, unsigned arg2, bool arg3, int arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -607,7 +608,7 @@ void ns_Class81::method13(int arg0, std::string const& arg1, short arg2, std::st
         std::cout << "null" << std::endl;
 
 }
-double ns_Class81::method14(std::string arg0, float arg1, std::string const& arg2, double arg3, float arg4)
+void ns_Class81::method14(float arg0, int arg1, float arg2, float arg3, double arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -624,5 +625,4 @@ double ns_Class81::method14(std::string arg0, float arg1, std::string const& arg
     else
         std::cout << "null" << std::endl;
 
-    return arg3;
 }

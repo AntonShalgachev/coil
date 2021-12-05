@@ -73,26 +73,7 @@ std::optional<float> Class36::workInternally(std::vector<std::string> const& val
     return res;
 }
 
-bool Class36::method0(unsigned arg0, int arg1, float arg2, std::string_view arg3, bool arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg4;
-}
-void Class36::method1(unsigned arg0, std::string arg1, std::string const& arg2, unsigned arg3, std::string arg4)
+void Class36::method0(double arg0, short arg1, int arg2, bool arg3, double arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -110,7 +91,7 @@ void Class36::method1(unsigned arg0, std::string arg1, std::string const& arg2, 
         std::cout << "null" << std::endl;
 
 }
-float Class36::method2(int arg0, unsigned arg1, short arg2, float arg3, float arg4)
+double Class36::method1(double arg0, unsigned arg1, short arg2, double arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -129,26 +110,7 @@ float Class36::method2(int arg0, unsigned arg1, short arg2, float arg3, float ar
 
     return arg3;
 }
-short Class36::method3(std::string const& arg0, unsigned arg1, bool arg2, short arg3, bool arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg3;
-}
-int Class36::method4(int arg0, unsigned arg1, short arg2, std::string const& arg3, double arg4)
+int Class36::method2(int arg0, int arg1, float arg2, bool arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -167,7 +129,7 @@ int Class36::method4(int arg0, unsigned arg1, short arg2, std::string const& arg
 
     return arg0;
 }
-void Class36::method5(float arg0, std::string arg1, unsigned arg2, std::string_view arg3, std::string arg4)
+void Class36::method3(unsigned arg0, int arg1, int arg2, short arg3, double arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -185,61 +147,7 @@ void Class36::method5(float arg0, std::string arg1, unsigned arg2, std::string_v
         std::cout << "null" << std::endl;
 
 }
-void Class36::method6(float arg0, std::string const& arg1, std::string arg2, std::string const& arg3, float arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-void Class36::method7(int arg0, float arg1, unsigned arg2, std::string const& arg3, double arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-void Class36::method8(float arg0, std::string const& arg1, int arg2, std::string_view arg3, std::string const& arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-std::string Class36::method9(short arg0, bool arg1, std::string arg2, short arg3, unsigned arg4)
+short Class36::method4(float arg0, unsigned arg1, short arg2, int arg3, double arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -258,7 +166,7 @@ std::string Class36::method9(short arg0, bool arg1, std::string arg2, short arg3
 
     return arg2;
 }
-void Class36::method10(std::string_view arg0, bool arg1, std::string arg2, std::string arg3, std::string arg4)
+void Class36::method5(short arg0, double arg1, short arg2, double arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -276,7 +184,7 @@ void Class36::method10(std::string_view arg0, bool arg1, std::string arg2, std::
         std::cout << "null" << std::endl;
 
 }
-float Class36::method11(float arg0, unsigned arg1, float arg2, float arg3, unsigned arg4)
+int Class36::method6(short arg0, short arg1, int arg2, double arg3, int arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -293,9 +201,9 @@ float Class36::method11(float arg0, unsigned arg1, float arg2, float arg3, unsig
     else
         std::cout << "null" << std::endl;
 
-    return arg0;
+    return arg2;
 }
-double Class36::method12(float arg0, float arg1, short arg2, double arg3, std::string arg4)
+bool Class36::method7(double arg0, double arg1, float arg2, unsigned arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -307,63 +215,6 @@ double Class36::method12(float arg0, float arg1, short arg2, double arg3, std::s
         strings.push_back(std::to_string(dist(rd)));
 
     auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg3;
-}
-int Class36::method13(short arg0, int arg1, std::string const& arg2, std::string arg3, std::string const& arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg1;
-}
-void Class36::method14(float arg0, unsigned arg1, short arg2, short arg3, unsigned arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-
-bool ns_Class36::method0(unsigned arg0, int arg1, float arg2, std::string_view arg3, bool arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class36::workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
@@ -371,7 +222,139 @@ bool ns_Class36::method0(unsigned arg0, int arg1, float arg2, std::string_view a
 
     return arg4;
 }
-void ns_Class36::method1(unsigned arg0, std::string arg1, std::string const& arg2, unsigned arg3, std::string arg4)
+int Class36::method8(short arg0, short arg1, int arg2, float arg3, int arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg2;
+}
+unsigned Class36::method9(unsigned arg0, short arg1, unsigned arg2, double arg3, int arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg2;
+}
+void Class36::method10(float arg0, bool arg1, short arg2, unsigned arg3, bool arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+unsigned Class36::method11(unsigned arg0, float arg1, short arg2, float arg3, double arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg0;
+}
+int Class36::method12(int arg0, bool arg1, int arg2, short arg3, bool arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg2;
+}
+void Class36::method13(bool arg0, short arg1, unsigned arg2, int arg3, float arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+int Class36::method14(int arg0, int arg1, unsigned arg2, bool arg3, unsigned arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg0;
+}
+
+void ns_Class36::method0(double arg0, short arg1, int arg2, bool arg3, double arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -389,7 +372,7 @@ void ns_Class36::method1(unsigned arg0, std::string arg1, std::string const& arg
         std::cout << "null" << std::endl;
 
 }
-float ns_Class36::method2(int arg0, unsigned arg1, short arg2, float arg3, float arg4)
+double ns_Class36::method1(double arg0, unsigned arg1, short arg2, double arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -408,26 +391,7 @@ float ns_Class36::method2(int arg0, unsigned arg1, short arg2, float arg3, float
 
     return arg3;
 }
-short ns_Class36::method3(std::string const& arg0, unsigned arg1, bool arg2, short arg3, bool arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class36::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg3;
-}
-int ns_Class36::method4(int arg0, unsigned arg1, short arg2, std::string const& arg3, double arg4)
+int ns_Class36::method2(int arg0, int arg1, float arg2, bool arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -446,7 +410,7 @@ int ns_Class36::method4(int arg0, unsigned arg1, short arg2, std::string const& 
 
     return arg0;
 }
-void ns_Class36::method5(float arg0, std::string arg1, unsigned arg2, std::string_view arg3, std::string arg4)
+void ns_Class36::method3(unsigned arg0, int arg1, int arg2, short arg3, double arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -464,61 +428,7 @@ void ns_Class36::method5(float arg0, std::string arg1, unsigned arg2, std::strin
         std::cout << "null" << std::endl;
 
 }
-void ns_Class36::method6(float arg0, std::string const& arg1, std::string arg2, std::string const& arg3, float arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class36::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-void ns_Class36::method7(int arg0, float arg1, unsigned arg2, std::string const& arg3, double arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class36::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-void ns_Class36::method8(float arg0, std::string const& arg1, int arg2, std::string_view arg3, std::string const& arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class36::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-std::string ns_Class36::method9(short arg0, bool arg1, std::string arg2, short arg3, unsigned arg4)
+short ns_Class36::method4(float arg0, unsigned arg1, short arg2, int arg3, double arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -537,7 +447,7 @@ std::string ns_Class36::method9(short arg0, bool arg1, std::string arg2, short a
 
     return arg2;
 }
-void ns_Class36::method10(std::string_view arg0, bool arg1, std::string arg2, std::string arg3, std::string arg4)
+void ns_Class36::method5(short arg0, double arg1, short arg2, double arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -555,7 +465,101 @@ void ns_Class36::method10(std::string_view arg0, bool arg1, std::string arg2, st
         std::cout << "null" << std::endl;
 
 }
-float ns_Class36::method11(float arg0, unsigned arg1, float arg2, float arg3, unsigned arg4)
+int ns_Class36::method6(short arg0, short arg1, int arg2, double arg3, int arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = Class36::workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg2;
+}
+bool ns_Class36::method7(double arg0, double arg1, float arg2, unsigned arg3, bool arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = Class36::workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg4;
+}
+int ns_Class36::method8(short arg0, short arg1, int arg2, float arg3, int arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = Class36::workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg2;
+}
+unsigned ns_Class36::method9(unsigned arg0, short arg1, unsigned arg2, double arg3, int arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = Class36::workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg2;
+}
+void ns_Class36::method10(float arg0, bool arg1, short arg2, unsigned arg3, bool arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = Class36::workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+unsigned ns_Class36::method11(unsigned arg0, float arg1, short arg2, float arg3, double arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -574,7 +578,7 @@ float ns_Class36::method11(float arg0, unsigned arg1, float arg2, float arg3, un
 
     return arg0;
 }
-double ns_Class36::method12(float arg0, float arg1, short arg2, double arg3, std::string arg4)
+int ns_Class36::method12(int arg0, bool arg1, int arg2, short arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -591,9 +595,9 @@ double ns_Class36::method12(float arg0, float arg1, short arg2, double arg3, std
     else
         std::cout << "null" << std::endl;
 
-    return arg3;
+    return arg2;
 }
-int ns_Class36::method13(short arg0, int arg1, std::string const& arg2, std::string arg3, std::string const& arg4)
+void ns_Class36::method13(bool arg0, short arg1, unsigned arg2, int arg3, float arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -610,9 +614,8 @@ int ns_Class36::method13(short arg0, int arg1, std::string const& arg2, std::str
     else
         std::cout << "null" << std::endl;
 
-    return arg1;
 }
-void ns_Class36::method14(float arg0, unsigned arg1, short arg2, short arg3, unsigned arg4)
+int ns_Class36::method14(int arg0, int arg1, unsigned arg2, bool arg3, unsigned arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -629,4 +632,5 @@ void ns_Class36::method14(float arg0, unsigned arg1, short arg2, short arg3, uns
     else
         std::cout << "null" << std::endl;
 
+    return arg0;
 }

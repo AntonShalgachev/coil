@@ -73,7 +73,7 @@ std::optional<float> Class95::workInternally(std::vector<std::string> const& val
     return res;
 }
 
-bool Class95::method0(std::string const& arg0, short arg1, bool arg2, float arg3, bool arg4)
+unsigned Class95::method0(short arg0, float arg1, short arg2, float arg3, unsigned arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -92,7 +92,7 @@ bool Class95::method0(std::string const& arg0, short arg1, bool arg2, float arg3
 
     return arg4;
 }
-void Class95::method1(std::string_view arg0, std::string const& arg1, std::string_view arg2, std::string_view arg3, short arg4)
+void Class95::method1(short arg0, unsigned arg1, double arg2, unsigned arg3, float arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -110,25 +110,7 @@ void Class95::method1(std::string_view arg0, std::string const& arg1, std::strin
         std::cout << "null" << std::endl;
 
 }
-void Class95::method2(short arg0, unsigned arg1, unsigned arg2, bool arg3, std::string_view arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-unsigned Class95::method3(unsigned arg0, float arg1, bool arg2, std::string const& arg3, std::string const& arg4)
+double Class95::method2(double arg0, float arg1, short arg2, double arg3, unsigned arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -147,7 +129,7 @@ unsigned Class95::method3(unsigned arg0, float arg1, bool arg2, std::string cons
 
     return arg0;
 }
-double Class95::method4(float arg0, double arg1, std::string const& arg2, float arg3, short arg4)
+double Class95::method3(unsigned arg0, double arg1, unsigned arg2, double arg3, float arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -166,7 +148,7 @@ double Class95::method4(float arg0, double arg1, std::string const& arg2, float 
 
     return arg1;
 }
-void Class95::method5(std::string arg0, std::string const& arg1, double arg2, std::string_view arg3, double arg4)
+void Class95::method4(float arg0, double arg1, float arg2, int arg3, int arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -184,45 +166,7 @@ void Class95::method5(std::string arg0, std::string const& arg1, double arg2, st
         std::cout << "null" << std::endl;
 
 }
-std::string_view Class95::method6(float arg0, short arg1, bool arg2, std::string_view arg3, double arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg3;
-}
-std::string_view Class95::method7(bool arg0, float arg1, float arg2, float arg3, std::string_view arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg4;
-}
-void Class95::method8(std::string const& arg0, std::string const& arg1, std::string_view arg2, unsigned arg3, std::string arg4)
+void Class95::method5(short arg0, int arg1, bool arg2, int arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -240,7 +184,62 @@ void Class95::method8(std::string const& arg0, std::string const& arg1, std::str
         std::cout << "null" << std::endl;
 
 }
-double Class95::method9(float arg0, double arg1, double arg2, std::string_view arg3, int arg4)
+bool Class95::method6(bool arg0, double arg1, short arg2, double arg3, short arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg0;
+}
+void Class95::method7(short arg0, unsigned arg1, float arg2, bool arg3, double arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+void Class95::method8(short arg0, double arg1, float arg2, double arg3, double arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+short Class95::method9(short arg0, float arg1, short arg2, double arg3, float arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -259,7 +258,7 @@ double Class95::method9(float arg0, double arg1, double arg2, std::string_view a
 
     return arg2;
 }
-float Class95::method10(std::string arg0, int arg1, float arg2, std::string const& arg3, bool arg4)
+double Class95::method10(double arg0, short arg1, float arg2, short arg3, short arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -276,9 +275,9 @@ float Class95::method10(std::string arg0, int arg1, float arg2, std::string cons
     else
         std::cout << "null" << std::endl;
 
-    return arg2;
+    return arg0;
 }
-unsigned Class95::method11(std::string arg0, int arg1, bool arg2, std::string_view arg3, unsigned arg4)
+double Class95::method11(short arg0, double arg1, unsigned arg2, float arg3, unsigned arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -295,27 +294,9 @@ unsigned Class95::method11(std::string arg0, int arg1, bool arg2, std::string_vi
     else
         std::cout << "null" << std::endl;
 
-    return arg4;
+    return arg1;
 }
-void Class95::method12(std::string_view arg0, std::string arg1, std::string arg2, double arg3, bool arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-void Class95::method13(bool arg0, float arg1, short arg2, bool arg3, short arg4)
+void Class95::method12(short arg0, float arg1, unsigned arg2, short arg3, double arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -333,7 +314,7 @@ void Class95::method13(bool arg0, float arg1, short arg2, bool arg3, short arg4)
         std::cout << "null" << std::endl;
 
 }
-std::string_view Class95::method14(int arg0, int arg1, int arg2, short arg3, std::string_view arg4)
+bool Class95::method13(int arg0, bool arg1, float arg2, float arg3, double arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -350,10 +331,28 @@ std::string_view Class95::method14(int arg0, int arg1, int arg2, short arg3, std
     else
         std::cout << "null" << std::endl;
 
-    return arg4;
+    return arg1;
+}
+void Class95::method14(unsigned arg0, double arg1, bool arg2, float arg3, int arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
 }
 
-bool ns_Class95::method0(std::string const& arg0, short arg1, bool arg2, float arg3, bool arg4)
+unsigned ns_Class95::method0(short arg0, float arg1, short arg2, float arg3, unsigned arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -372,7 +371,7 @@ bool ns_Class95::method0(std::string const& arg0, short arg1, bool arg2, float a
 
     return arg4;
 }
-void ns_Class95::method1(std::string_view arg0, std::string const& arg1, std::string_view arg2, std::string_view arg3, short arg4)
+void ns_Class95::method1(short arg0, unsigned arg1, double arg2, unsigned arg3, float arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -390,25 +389,7 @@ void ns_Class95::method1(std::string_view arg0, std::string const& arg1, std::st
         std::cout << "null" << std::endl;
 
 }
-void ns_Class95::method2(short arg0, unsigned arg1, unsigned arg2, bool arg3, std::string_view arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class95::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-unsigned ns_Class95::method3(unsigned arg0, float arg1, bool arg2, std::string const& arg3, std::string const& arg4)
+double ns_Class95::method2(double arg0, float arg1, short arg2, double arg3, unsigned arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -427,7 +408,7 @@ unsigned ns_Class95::method3(unsigned arg0, float arg1, bool arg2, std::string c
 
     return arg0;
 }
-double ns_Class95::method4(float arg0, double arg1, std::string const& arg2, float arg3, short arg4)
+double ns_Class95::method3(unsigned arg0, double arg1, unsigned arg2, double arg3, float arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -446,7 +427,7 @@ double ns_Class95::method4(float arg0, double arg1, std::string const& arg2, flo
 
     return arg1;
 }
-void ns_Class95::method5(std::string arg0, std::string const& arg1, double arg2, std::string_view arg3, double arg4)
+void ns_Class95::method4(float arg0, double arg1, float arg2, int arg3, int arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -464,45 +445,7 @@ void ns_Class95::method5(std::string arg0, std::string const& arg1, double arg2,
         std::cout << "null" << std::endl;
 
 }
-std::string_view ns_Class95::method6(float arg0, short arg1, bool arg2, std::string_view arg3, double arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class95::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg3;
-}
-std::string_view ns_Class95::method7(bool arg0, float arg1, float arg2, float arg3, std::string_view arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class95::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg4;
-}
-void ns_Class95::method8(std::string const& arg0, std::string const& arg1, std::string_view arg2, unsigned arg3, std::string arg4)
+void ns_Class95::method5(short arg0, int arg1, bool arg2, int arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -520,7 +463,62 @@ void ns_Class95::method8(std::string const& arg0, std::string const& arg1, std::
         std::cout << "null" << std::endl;
 
 }
-double ns_Class95::method9(float arg0, double arg1, double arg2, std::string_view arg3, int arg4)
+bool ns_Class95::method6(bool arg0, double arg1, short arg2, double arg3, short arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = Class95::workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg0;
+}
+void ns_Class95::method7(short arg0, unsigned arg1, float arg2, bool arg3, double arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = Class95::workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+void ns_Class95::method8(short arg0, double arg1, float arg2, double arg3, double arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = Class95::workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+short ns_Class95::method9(short arg0, float arg1, short arg2, double arg3, float arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -539,7 +537,7 @@ double ns_Class95::method9(float arg0, double arg1, double arg2, std::string_vie
 
     return arg2;
 }
-float ns_Class95::method10(std::string arg0, int arg1, float arg2, std::string const& arg3, bool arg4)
+double ns_Class95::method10(double arg0, short arg1, float arg2, short arg3, short arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -556,9 +554,9 @@ float ns_Class95::method10(std::string arg0, int arg1, float arg2, std::string c
     else
         std::cout << "null" << std::endl;
 
-    return arg2;
+    return arg0;
 }
-unsigned ns_Class95::method11(std::string arg0, int arg1, bool arg2, std::string_view arg3, unsigned arg4)
+double ns_Class95::method11(short arg0, double arg1, unsigned arg2, float arg3, unsigned arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -575,27 +573,9 @@ unsigned ns_Class95::method11(std::string arg0, int arg1, bool arg2, std::string
     else
         std::cout << "null" << std::endl;
 
-    return arg4;
+    return arg1;
 }
-void ns_Class95::method12(std::string_view arg0, std::string arg1, std::string arg2, double arg3, bool arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class95::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-void ns_Class95::method13(bool arg0, float arg1, short arg2, bool arg3, short arg4)
+void ns_Class95::method12(short arg0, float arg1, unsigned arg2, short arg3, double arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -613,7 +593,7 @@ void ns_Class95::method13(bool arg0, float arg1, short arg2, bool arg3, short ar
         std::cout << "null" << std::endl;
 
 }
-std::string_view ns_Class95::method14(int arg0, int arg1, int arg2, short arg3, std::string_view arg4)
+bool ns_Class95::method13(int arg0, bool arg1, float arg2, float arg3, double arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -630,5 +610,23 @@ std::string_view ns_Class95::method14(int arg0, int arg1, int arg2, short arg3, 
     else
         std::cout << "null" << std::endl;
 
-    return arg4;
+    return arg1;
+}
+void ns_Class95::method14(unsigned arg0, double arg1, bool arg2, float arg3, int arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = Class95::workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
 }

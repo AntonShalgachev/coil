@@ -73,7 +73,7 @@ std::optional<float> Class33::workInternally(std::vector<std::string> const& val
     return res;
 }
 
-void Class33::method0(double arg0, bool arg1, unsigned arg2, std::string const& arg3, float arg4)
+void Class33::method0(int arg0, float arg1, bool arg2, float arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -91,7 +91,7 @@ void Class33::method0(double arg0, bool arg1, unsigned arg2, std::string const& 
         std::cout << "null" << std::endl;
 
 }
-void Class33::method1(unsigned arg0, bool arg1, std::string_view arg2, int arg3, std::string const& arg4)
+void Class33::method1(float arg0, short arg1, float arg2, short arg3, unsigned arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -109,7 +109,7 @@ void Class33::method1(unsigned arg0, bool arg1, std::string_view arg2, int arg3,
         std::cout << "null" << std::endl;
 
 }
-short Class33::method2(std::string arg0, short arg1, unsigned arg2, float arg3, float arg4)
+int Class33::method2(unsigned arg0, short arg1, int arg2, float arg3, short arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -126,28 +126,9 @@ short Class33::method2(std::string arg0, short arg1, unsigned arg2, float arg3, 
     else
         std::cout << "null" << std::endl;
 
-    return arg1;
+    return arg2;
 }
-double Class33::method3(double arg0, int arg1, std::string const& arg2, int arg3, unsigned arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg0;
-}
-void Class33::method4(unsigned arg0, float arg1, float arg2, std::string_view arg3, float arg4)
+void Class33::method3(bool arg0, float arg1, double arg2, bool arg3, unsigned arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -165,7 +146,7 @@ void Class33::method4(unsigned arg0, float arg1, float arg2, std::string_view ar
         std::cout << "null" << std::endl;
 
 }
-void Class33::method5(unsigned arg0, double arg1, bool arg2, short arg3, std::string_view arg4)
+unsigned Class33::method4(bool arg0, bool arg1, unsigned arg2, unsigned arg3, unsigned arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -182,26 +163,9 @@ void Class33::method5(unsigned arg0, double arg1, bool arg2, short arg3, std::st
     else
         std::cout << "null" << std::endl;
 
+    return arg3;
 }
-void Class33::method6(bool arg0, float arg1, unsigned arg2, std::string const& arg3, short arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-std::string Class33::method7(std::string_view arg0, bool arg1, bool arg2, bool arg3, std::string arg4)
+bool Class33::method5(double arg0, int arg1, int arg2, bool arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -220,45 +184,7 @@ std::string Class33::method7(std::string_view arg0, bool arg1, bool arg2, bool a
 
     return arg4;
 }
-short Class33::method8(std::string arg0, int arg1, float arg2, short arg3, bool arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg3;
-}
-float Class33::method9(bool arg0, unsigned arg1, short arg2, float arg3, std::string arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg3;
-}
-void Class33::method10(std::string_view arg0, int arg1, unsigned arg2, int arg3, short arg4)
+void Class33::method6(bool arg0, short arg1, double arg2, int arg3, int arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -276,25 +202,7 @@ void Class33::method10(std::string_view arg0, int arg1, unsigned arg2, int arg3,
         std::cout << "null" << std::endl;
 
 }
-void Class33::method11(short arg0, float arg1, double arg2, std::string const& arg3, std::string const& arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-std::string const& Class33::method12(std::string const& arg0, float arg1, int arg2, bool arg3, short arg4)
+int Class33::method7(int arg0, short arg1, unsigned arg2, bool arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -313,7 +221,26 @@ std::string const& Class33::method12(std::string const& arg0, float arg1, int ar
 
     return arg0;
 }
-void Class33::method13(int arg0, unsigned arg1, std::string const& arg2, short arg3, std::string_view arg4)
+short Class33::method8(unsigned arg0, unsigned arg1, short arg2, short arg3, int arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg3;
+}
+void Class33::method9(double arg0, unsigned arg1, double arg2, bool arg3, float arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -331,7 +258,25 @@ void Class33::method13(int arg0, unsigned arg1, std::string const& arg2, short a
         std::cout << "null" << std::endl;
 
 }
-int Class33::method14(std::string arg0, int arg1, float arg2, bool arg3, float arg4)
+void Class33::method10(float arg0, short arg1, float arg2, bool arg3, double arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+int Class33::method11(float arg0, int arg1, unsigned arg2, int arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -350,8 +295,65 @@ int Class33::method14(std::string arg0, int arg1, float arg2, bool arg3, float a
 
     return arg1;
 }
+unsigned Class33::method12(int arg0, short arg1, unsigned arg2, short arg3, float arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
 
-void ns_Class33::method0(double arg0, bool arg1, unsigned arg2, std::string const& arg3, float arg4)
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg2;
+}
+short Class33::method13(float arg0, double arg1, short arg2, float arg3, unsigned arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg2;
+}
+float Class33::method14(int arg0, unsigned arg1, int arg2, unsigned arg3, float arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg4;
+}
+
+void ns_Class33::method0(int arg0, float arg1, bool arg2, float arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -369,7 +371,7 @@ void ns_Class33::method0(double arg0, bool arg1, unsigned arg2, std::string cons
         std::cout << "null" << std::endl;
 
 }
-void ns_Class33::method1(unsigned arg0, bool arg1, std::string_view arg2, int arg3, std::string const& arg4)
+void ns_Class33::method1(float arg0, short arg1, float arg2, short arg3, unsigned arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -387,7 +389,7 @@ void ns_Class33::method1(unsigned arg0, bool arg1, std::string_view arg2, int ar
         std::cout << "null" << std::endl;
 
 }
-short ns_Class33::method2(std::string arg0, short arg1, unsigned arg2, float arg3, float arg4)
+int ns_Class33::method2(unsigned arg0, short arg1, int arg2, float arg3, short arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -404,28 +406,9 @@ short ns_Class33::method2(std::string arg0, short arg1, unsigned arg2, float arg
     else
         std::cout << "null" << std::endl;
 
-    return arg1;
+    return arg2;
 }
-double ns_Class33::method3(double arg0, int arg1, std::string const& arg2, int arg3, unsigned arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class33::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg0;
-}
-void ns_Class33::method4(unsigned arg0, float arg1, float arg2, std::string_view arg3, float arg4)
+void ns_Class33::method3(bool arg0, float arg1, double arg2, bool arg3, unsigned arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -443,7 +426,7 @@ void ns_Class33::method4(unsigned arg0, float arg1, float arg2, std::string_view
         std::cout << "null" << std::endl;
 
 }
-void ns_Class33::method5(unsigned arg0, double arg1, bool arg2, short arg3, std::string_view arg4)
+unsigned ns_Class33::method4(bool arg0, bool arg1, unsigned arg2, unsigned arg3, unsigned arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -460,26 +443,9 @@ void ns_Class33::method5(unsigned arg0, double arg1, bool arg2, short arg3, std:
     else
         std::cout << "null" << std::endl;
 
+    return arg3;
 }
-void ns_Class33::method6(bool arg0, float arg1, unsigned arg2, std::string const& arg3, short arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class33::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-std::string ns_Class33::method7(std::string_view arg0, bool arg1, bool arg2, bool arg3, std::string arg4)
+bool ns_Class33::method5(double arg0, int arg1, int arg2, bool arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -498,45 +464,7 @@ std::string ns_Class33::method7(std::string_view arg0, bool arg1, bool arg2, boo
 
     return arg4;
 }
-short ns_Class33::method8(std::string arg0, int arg1, float arg2, short arg3, bool arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class33::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg3;
-}
-float ns_Class33::method9(bool arg0, unsigned arg1, short arg2, float arg3, std::string arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class33::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg3;
-}
-void ns_Class33::method10(std::string_view arg0, int arg1, unsigned arg2, int arg3, short arg4)
+void ns_Class33::method6(bool arg0, short arg1, double arg2, int arg3, int arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -554,25 +482,7 @@ void ns_Class33::method10(std::string_view arg0, int arg1, unsigned arg2, int ar
         std::cout << "null" << std::endl;
 
 }
-void ns_Class33::method11(short arg0, float arg1, double arg2, std::string const& arg3, std::string const& arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class33::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-std::string const& ns_Class33::method12(std::string const& arg0, float arg1, int arg2, bool arg3, short arg4)
+int ns_Class33::method7(int arg0, short arg1, unsigned arg2, bool arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -591,7 +501,26 @@ std::string const& ns_Class33::method12(std::string const& arg0, float arg1, int
 
     return arg0;
 }
-void ns_Class33::method13(int arg0, unsigned arg1, std::string const& arg2, short arg3, std::string_view arg4)
+short ns_Class33::method8(unsigned arg0, unsigned arg1, short arg2, short arg3, int arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = Class33::workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg3;
+}
+void ns_Class33::method9(double arg0, unsigned arg1, double arg2, bool arg3, float arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -609,7 +538,25 @@ void ns_Class33::method13(int arg0, unsigned arg1, std::string const& arg2, shor
         std::cout << "null" << std::endl;
 
 }
-int ns_Class33::method14(std::string arg0, int arg1, float arg2, bool arg3, float arg4)
+void ns_Class33::method10(float arg0, short arg1, float arg2, bool arg3, double arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = Class33::workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+int ns_Class33::method11(float arg0, int arg1, unsigned arg2, int arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -627,4 +574,61 @@ int ns_Class33::method14(std::string arg0, int arg1, float arg2, bool arg3, floa
         std::cout << "null" << std::endl;
 
     return arg1;
+}
+unsigned ns_Class33::method12(int arg0, short arg1, unsigned arg2, short arg3, float arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = Class33::workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg2;
+}
+short ns_Class33::method13(float arg0, double arg1, short arg2, float arg3, unsigned arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = Class33::workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg2;
+}
+float ns_Class33::method14(int arg0, unsigned arg1, int arg2, unsigned arg3, float arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = Class33::workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg4;
 }

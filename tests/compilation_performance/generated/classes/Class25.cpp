@@ -73,7 +73,7 @@ std::optional<float> Class25::workInternally(std::vector<std::string> const& val
     return res;
 }
 
-void Class25::method0(std::string_view arg0, double arg1, int arg2, int arg3, std::string arg4)
+void Class25::method0(double arg0, bool arg1, bool arg2, bool arg3, unsigned arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -91,26 +91,7 @@ void Class25::method0(std::string_view arg0, double arg1, int arg2, int arg3, st
         std::cout << "null" << std::endl;
 
 }
-int Class25::method1(std::string const& arg0, int arg1, int arg2, std::string const& arg3, std::string const& arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg2;
-}
-void Class25::method2(unsigned arg0, bool arg1, bool arg2, short arg3, std::string_view arg4)
+void Class25::method1(int arg0, float arg1, int arg2, bool arg3, short arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -128,26 +109,7 @@ void Class25::method2(unsigned arg0, bool arg1, bool arg2, short arg3, std::stri
         std::cout << "null" << std::endl;
 
 }
-unsigned Class25::method3(std::string_view arg0, unsigned arg1, unsigned arg2, std::string arg3, bool arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg1;
-}
-double Class25::method4(unsigned arg0, short arg1, double arg2, double arg3, bool arg4)
+bool Class25::method2(bool arg0, short arg1, int arg2, bool arg3, float arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -166,44 +128,7 @@ double Class25::method4(unsigned arg0, short arg1, double arg2, double arg3, boo
 
     return arg3;
 }
-void Class25::method5(float arg0, std::string const& arg1, std::string_view arg2, double arg3, std::string_view arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-int Class25::method6(std::string_view arg0, int arg1, bool arg2, std::string arg3, int arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg1;
-}
-float Class25::method7(int arg0, std::string const& arg1, float arg2, unsigned arg3, short arg4)
+unsigned Class25::method3(double arg0, unsigned arg1, unsigned arg2, unsigned arg3, double arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -222,7 +147,63 @@ float Class25::method7(int arg0, std::string const& arg1, float arg2, unsigned a
 
     return arg2;
 }
-float Class25::method8(std::string const& arg0, std::string const& arg1, unsigned arg2, float arg3, bool arg4)
+void Class25::method4(short arg0, short arg1, float arg2, short arg3, int arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+short Class25::method5(float arg0, short arg1, double arg2, double arg3, float arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg1;
+}
+float Class25::method6(double arg0, double arg1, float arg2, short arg3, int arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg2;
+}
+int Class25::method7(int arg0, float arg1, short arg2, int arg3, int arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -241,7 +222,7 @@ float Class25::method8(std::string const& arg0, std::string const& arg1, unsigne
 
     return arg3;
 }
-std::string_view Class25::method9(short arg0, std::string arg1, std::string_view arg2, std::string arg3, std::string const& arg4)
+int Class25::method8(unsigned arg0, float arg1, int arg2, unsigned arg3, int arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -260,7 +241,7 @@ std::string_view Class25::method9(short arg0, std::string arg1, std::string_view
 
     return arg2;
 }
-void Class25::method10(bool arg0, int arg1, float arg2, unsigned arg3, float arg4)
+void Class25::method9(float arg0, unsigned arg1, unsigned arg2, short arg3, float arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -278,7 +259,7 @@ void Class25::method10(bool arg0, int arg1, float arg2, unsigned arg3, float arg
         std::cout << "null" << std::endl;
 
 }
-void Class25::method11(double arg0, unsigned arg1, std::string arg2, double arg3, bool arg4)
+unsigned Class25::method10(unsigned arg0, bool arg1, unsigned arg2, double arg3, double arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -290,100 +271,6 @@ void Class25::method11(double arg0, unsigned arg1, std::string arg2, double arg3
         strings.push_back(std::to_string(dist(rd)));
 
     auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-float Class25::method12(short arg0, short arg1, std::string_view arg2, float arg3, float arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg4;
-}
-bool Class25::method13(float arg0, float arg1, double arg2, double arg3, bool arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg4;
-}
-unsigned Class25::method14(int arg0, unsigned arg1, std::string const& arg2, std::string const& arg3, bool arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg1;
-}
-
-void ns_Class25::method0(std::string_view arg0, double arg1, int arg2, int arg3, std::string arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class25::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-int ns_Class25::method1(std::string const& arg0, int arg1, int arg2, std::string const& arg3, std::string const& arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class25::workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
@@ -391,7 +278,82 @@ int ns_Class25::method1(std::string const& arg0, int arg1, int arg2, std::string
 
     return arg2;
 }
-void ns_Class25::method2(unsigned arg0, bool arg1, bool arg2, short arg3, std::string_view arg4)
+double Class25::method11(short arg0, short arg1, unsigned arg2, double arg3, unsigned arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg3;
+}
+unsigned Class25::method12(unsigned arg0, int arg1, unsigned arg2, float arg3, int arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg0;
+}
+void Class25::method13(int arg0, unsigned arg1, short arg2, double arg3, unsigned arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+void Class25::method14(unsigned arg0, double arg1, short arg2, double arg3, unsigned arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+
+void ns_Class25::method0(double arg0, bool arg1, bool arg2, bool arg3, unsigned arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -409,7 +371,7 @@ void ns_Class25::method2(unsigned arg0, bool arg1, bool arg2, short arg3, std::s
         std::cout << "null" << std::endl;
 
 }
-unsigned ns_Class25::method3(std::string_view arg0, unsigned arg1, unsigned arg2, std::string arg3, bool arg4)
+void ns_Class25::method1(int arg0, float arg1, int arg2, bool arg3, short arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -426,9 +388,8 @@ unsigned ns_Class25::method3(std::string_view arg0, unsigned arg1, unsigned arg2
     else
         std::cout << "null" << std::endl;
 
-    return arg1;
 }
-double ns_Class25::method4(unsigned arg0, short arg1, double arg2, double arg3, bool arg4)
+bool ns_Class25::method2(bool arg0, short arg1, int arg2, bool arg3, float arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -447,44 +408,7 @@ double ns_Class25::method4(unsigned arg0, short arg1, double arg2, double arg3, 
 
     return arg3;
 }
-void ns_Class25::method5(float arg0, std::string const& arg1, std::string_view arg2, double arg3, std::string_view arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class25::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-int ns_Class25::method6(std::string_view arg0, int arg1, bool arg2, std::string arg3, int arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class25::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg1;
-}
-float ns_Class25::method7(int arg0, std::string const& arg1, float arg2, unsigned arg3, short arg4)
+unsigned ns_Class25::method3(double arg0, unsigned arg1, unsigned arg2, unsigned arg3, double arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -503,7 +427,63 @@ float ns_Class25::method7(int arg0, std::string const& arg1, float arg2, unsigne
 
     return arg2;
 }
-float ns_Class25::method8(std::string const& arg0, std::string const& arg1, unsigned arg2, float arg3, bool arg4)
+void ns_Class25::method4(short arg0, short arg1, float arg2, short arg3, int arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = Class25::workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+short ns_Class25::method5(float arg0, short arg1, double arg2, double arg3, float arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = Class25::workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg1;
+}
+float ns_Class25::method6(double arg0, double arg1, float arg2, short arg3, int arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = Class25::workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg2;
+}
+int ns_Class25::method7(int arg0, float arg1, short arg2, int arg3, int arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -522,7 +502,7 @@ float ns_Class25::method8(std::string const& arg0, std::string const& arg1, unsi
 
     return arg3;
 }
-std::string_view ns_Class25::method9(short arg0, std::string arg1, std::string_view arg2, std::string arg3, std::string const& arg4)
+int ns_Class25::method8(unsigned arg0, float arg1, int arg2, unsigned arg3, int arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -541,7 +521,7 @@ std::string_view ns_Class25::method9(short arg0, std::string arg1, std::string_v
 
     return arg2;
 }
-void ns_Class25::method10(bool arg0, int arg1, float arg2, unsigned arg3, float arg4)
+void ns_Class25::method9(float arg0, unsigned arg1, unsigned arg2, short arg3, float arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -559,7 +539,64 @@ void ns_Class25::method10(bool arg0, int arg1, float arg2, unsigned arg3, float 
         std::cout << "null" << std::endl;
 
 }
-void ns_Class25::method11(double arg0, unsigned arg1, std::string arg2, double arg3, bool arg4)
+unsigned ns_Class25::method10(unsigned arg0, bool arg1, unsigned arg2, double arg3, double arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = Class25::workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg2;
+}
+double ns_Class25::method11(short arg0, short arg1, unsigned arg2, double arg3, unsigned arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = Class25::workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg3;
+}
+unsigned ns_Class25::method12(unsigned arg0, int arg1, unsigned arg2, float arg3, int arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = Class25::workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg0;
+}
+void ns_Class25::method13(int arg0, unsigned arg1, short arg2, double arg3, unsigned arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -577,7 +614,7 @@ void ns_Class25::method11(double arg0, unsigned arg1, std::string arg2, double a
         std::cout << "null" << std::endl;
 
 }
-float ns_Class25::method12(short arg0, short arg1, std::string_view arg2, float arg3, float arg4)
+void ns_Class25::method14(unsigned arg0, double arg1, short arg2, double arg3, unsigned arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -594,43 +631,4 @@ float ns_Class25::method12(short arg0, short arg1, std::string_view arg2, float 
     else
         std::cout << "null" << std::endl;
 
-    return arg4;
-}
-bool ns_Class25::method13(float arg0, float arg1, double arg2, double arg3, bool arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class25::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg4;
-}
-unsigned ns_Class25::method14(int arg0, unsigned arg1, std::string const& arg2, std::string const& arg3, bool arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class25::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg1;
 }
