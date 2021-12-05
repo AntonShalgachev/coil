@@ -73,25 +73,7 @@ std::optional<float> Class88::workInternally(std::vector<std::string> const& val
     return res;
 }
 
-void Class88::method0(std::string const& arg0, std::string arg1, std::string arg2, std::string_view arg3, std::string_view arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-short Class88::method1(short arg0, short arg1, short arg2, double arg3, short arg4)
+short Class88::method0(unsigned arg0, float arg1, float arg2, float arg3, short arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -110,7 +92,26 @@ short Class88::method1(short arg0, short arg1, short arg2, double arg3, short ar
 
     return arg4;
 }
-void Class88::method2(int arg0, std::string const& arg1, unsigned arg2, unsigned arg3, bool arg4)
+int Class88::method1(int arg0, float arg1, float arg2, float arg3, short arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg0;
+}
+void Class88::method2(double arg0, bool arg1, double arg2, float arg3, float arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -128,44 +129,7 @@ void Class88::method2(int arg0, std::string const& arg1, unsigned arg2, unsigned
         std::cout << "null" << std::endl;
 
 }
-void Class88::method3(unsigned arg0, unsigned arg1, unsigned arg2, bool arg3, bool arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-std::string Class88::method4(std::string const& arg0, std::string arg1, double arg2, std::string const& arg3, short arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg1;
-}
-short Class88::method5(double arg0, short arg1, bool arg2, double arg3, short arg4)
+int Class88::method3(bool arg0, int arg1, short arg2, bool arg3, int arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -184,7 +148,25 @@ short Class88::method5(double arg0, short arg1, bool arg2, double arg3, short ar
 
     return arg4;
 }
-bool Class88::method6(double arg0, bool arg1, std::string arg2, short arg3, int arg4)
+void Class88::method4(double arg0, unsigned arg1, double arg2, double arg3, float arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+double Class88::method5(bool arg0, double arg1, short arg2, unsigned arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -203,26 +185,7 @@ bool Class88::method6(double arg0, bool arg1, std::string arg2, short arg3, int 
 
     return arg1;
 }
-unsigned Class88::method7(std::string const& arg0, bool arg1, double arg2, double arg3, unsigned arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg4;
-}
-void Class88::method8(short arg0, short arg1, unsigned arg2, std::string const& arg3, std::string arg4)
+void Class88::method6(int arg0, double arg1, int arg2, int arg3, double arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -240,7 +203,7 @@ void Class88::method8(short arg0, short arg1, unsigned arg2, std::string const& 
         std::cout << "null" << std::endl;
 
 }
-void Class88::method9(int arg0, bool arg1, std::string const& arg2, bool arg3, short arg4)
+void Class88::method7(unsigned arg0, double arg1, float arg2, int arg3, short arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -258,7 +221,7 @@ void Class88::method9(int arg0, bool arg1, std::string const& arg2, bool arg3, s
         std::cout << "null" << std::endl;
 
 }
-float Class88::method10(float arg0, int arg1, int arg2, float arg3, float arg4)
+double Class88::method8(double arg0, short arg1, short arg2, double arg3, unsigned arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -275,9 +238,9 @@ float Class88::method10(float arg0, int arg1, int arg2, float arg3, float arg4)
     else
         std::cout << "null" << std::endl;
 
-    return arg4;
+    return arg0;
 }
-float Class88::method11(std::string_view arg0, float arg1, double arg2, std::string_view arg3, int arg4)
+void Class88::method9(unsigned arg0, unsigned arg1, short arg2, int arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -294,9 +257,8 @@ float Class88::method11(std::string_view arg0, float arg1, double arg2, std::str
     else
         std::cout << "null" << std::endl;
 
-    return arg1;
 }
-bool Class88::method12(bool arg0, bool arg1, unsigned arg2, short arg3, std::string const& arg4)
+bool Class88::method10(int arg0, bool arg1, bool arg2, short arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -315,7 +277,7 @@ bool Class88::method12(bool arg0, bool arg1, unsigned arg2, short arg3, std::str
 
     return arg1;
 }
-void Class88::method13(bool arg0, float arg1, std::string arg2, float arg3, bool arg4)
+void Class88::method11(bool arg0, double arg1, int arg2, unsigned arg3, short arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -333,7 +295,7 @@ void Class88::method13(bool arg0, float arg1, std::string arg2, float arg3, bool
         std::cout << "null" << std::endl;
 
 }
-std::string_view Class88::method14(std::string const& arg0, double arg1, bool arg2, std::string_view arg3, bool arg4)
+bool Class88::method12(float arg0, short arg1, short arg2, bool arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -352,8 +314,7 @@ std::string_view Class88::method14(std::string const& arg0, double arg1, bool ar
 
     return arg3;
 }
-
-void ns_Class88::method0(std::string const& arg0, std::string arg1, std::string arg2, std::string_view arg3, std::string_view arg4)
+int Class88::method13(int arg0, int arg1, int arg2, int arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -364,14 +325,15 @@ void ns_Class88::method0(std::string const& arg0, std::string arg1, std::string 
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class88::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
+    return arg3;
 }
-short ns_Class88::method1(short arg0, short arg1, short arg2, double arg3, short arg4)
+void Class88::method14(unsigned arg0, float arg1, unsigned arg2, short arg3, double arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -382,70 +344,15 @@ short ns_Class88::method1(short arg0, short arg1, short arg2, double arg3, short
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class88::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg4;
-}
-void ns_Class88::method2(int arg0, std::string const& arg1, unsigned arg2, unsigned arg3, bool arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class88::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
 }
-void ns_Class88::method3(unsigned arg0, unsigned arg1, unsigned arg2, bool arg3, bool arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
 
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class88::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-std::string ns_Class88::method4(std::string const& arg0, std::string arg1, double arg2, std::string const& arg3, short arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class88::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg1;
-}
-short ns_Class88::method5(double arg0, short arg1, bool arg2, double arg3, short arg4)
+short ns_Class88::method0(unsigned arg0, float arg1, float arg2, float arg3, short arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -464,7 +371,7 @@ short ns_Class88::method5(double arg0, short arg1, bool arg2, double arg3, short
 
     return arg4;
 }
-bool ns_Class88::method6(double arg0, bool arg1, std::string arg2, short arg3, int arg4)
+int ns_Class88::method1(int arg0, float arg1, float arg2, float arg3, short arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -481,28 +388,9 @@ bool ns_Class88::method6(double arg0, bool arg1, std::string arg2, short arg3, i
     else
         std::cout << "null" << std::endl;
 
-    return arg1;
+    return arg0;
 }
-unsigned ns_Class88::method7(std::string const& arg0, bool arg1, double arg2, double arg3, unsigned arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class88::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg4;
-}
-void ns_Class88::method8(short arg0, short arg1, unsigned arg2, std::string const& arg3, std::string arg4)
+void ns_Class88::method2(double arg0, bool arg1, double arg2, float arg3, float arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -520,25 +408,7 @@ void ns_Class88::method8(short arg0, short arg1, unsigned arg2, std::string cons
         std::cout << "null" << std::endl;
 
 }
-void ns_Class88::method9(int arg0, bool arg1, std::string const& arg2, bool arg3, short arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class88::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-float ns_Class88::method10(float arg0, int arg1, int arg2, float arg3, float arg4)
+int ns_Class88::method3(bool arg0, int arg1, short arg2, bool arg3, int arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -557,7 +427,25 @@ float ns_Class88::method10(float arg0, int arg1, int arg2, float arg3, float arg
 
     return arg4;
 }
-float ns_Class88::method11(std::string_view arg0, float arg1, double arg2, std::string_view arg3, int arg4)
+void ns_Class88::method4(double arg0, unsigned arg1, double arg2, double arg3, float arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = Class88::workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+double ns_Class88::method5(bool arg0, double arg1, short arg2, unsigned arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -576,7 +464,80 @@ float ns_Class88::method11(std::string_view arg0, float arg1, double arg2, std::
 
     return arg1;
 }
-bool ns_Class88::method12(bool arg0, bool arg1, unsigned arg2, short arg3, std::string const& arg4)
+void ns_Class88::method6(int arg0, double arg1, int arg2, int arg3, double arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = Class88::workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+void ns_Class88::method7(unsigned arg0, double arg1, float arg2, int arg3, short arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = Class88::workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+double ns_Class88::method8(double arg0, short arg1, short arg2, double arg3, unsigned arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = Class88::workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg0;
+}
+void ns_Class88::method9(unsigned arg0, unsigned arg1, short arg2, int arg3, bool arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = Class88::workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+bool ns_Class88::method10(int arg0, bool arg1, bool arg2, short arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -595,7 +556,7 @@ bool ns_Class88::method12(bool arg0, bool arg1, unsigned arg2, short arg3, std::
 
     return arg1;
 }
-void ns_Class88::method13(bool arg0, float arg1, std::string arg2, float arg3, bool arg4)
+void ns_Class88::method11(bool arg0, double arg1, int arg2, unsigned arg3, short arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -613,7 +574,7 @@ void ns_Class88::method13(bool arg0, float arg1, std::string arg2, float arg3, b
         std::cout << "null" << std::endl;
 
 }
-std::string_view ns_Class88::method14(std::string const& arg0, double arg1, bool arg2, std::string_view arg3, bool arg4)
+bool ns_Class88::method12(float arg0, short arg1, short arg2, bool arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -631,4 +592,41 @@ std::string_view ns_Class88::method14(std::string const& arg0, double arg1, bool
         std::cout << "null" << std::endl;
 
     return arg3;
+}
+int ns_Class88::method13(int arg0, int arg1, int arg2, int arg3, bool arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = Class88::workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg3;
+}
+void ns_Class88::method14(unsigned arg0, float arg1, unsigned arg2, short arg3, double arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = Class88::workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
 }

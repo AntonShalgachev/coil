@@ -114,7 +114,7 @@ def main():
     methods_count_max = 15
     args_count_min = 5
     args_count_max = 5
-    types = DEFAULT_TYPES
+    types = ['int', 'float', 'double', 'bool', 'short', 'unsigned']
     destination = '../../tests/compilation_performance/generated'
 
     class_generator = ClassGenerator(methods_count_min, methods_count_max, args_count_min, args_count_max, types)

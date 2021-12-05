@@ -18,38 +18,38 @@ public:
     static std::optional<float> workInternally(std::vector<std::string> const& values);
 
 private:
-    std::string method0(std::string arg0, double arg1, float arg2, std::string arg3, bool arg4);
-    void method1(unsigned arg0, int arg1, short arg2, short arg3, std::string_view arg4);
-    void method2(short arg0, std::string_view arg1, std::string const& arg2, std::string_view arg3, short arg4);
-    bool method3(bool arg0, bool arg1, bool arg2, bool arg3, std::string arg4);
-    std::string const& method4(std::string arg0, std::string const& arg1, std::string const& arg2, std::string const& arg3, std::string const& arg4);
-    void method5(unsigned arg0, int arg1, std::string arg2, double arg3, double arg4);
-    float method6(unsigned arg0, float arg1, std::string arg2, bool arg3, float arg4);
-    double method7(double arg0, double arg1, std::string const& arg2, bool arg3, float arg4);
-    void method8(double arg0, int arg1, unsigned arg2, unsigned arg3, bool arg4);
-    float method9(int arg0, float arg1, int arg2, std::string_view arg3, std::string arg4);
-    void method10(double arg0, std::string const& arg1, float arg2, unsigned arg3, float arg4);
-    double method11(unsigned arg0, double arg1, std::string const& arg2, unsigned arg3, short arg4);
-    short method12(int arg0, int arg1, short arg2, bool arg3, double arg4);
-    void method13(std::string const& arg0, int arg1, int arg2, double arg3, int arg4);
-    short method14(std::string arg0, unsigned arg1, short arg2, unsigned arg3, std::string arg4);
+    void method0(bool arg0, short arg1, short arg2, int arg3, float arg4);
+    void method1(double arg0, short arg1, short arg2, float arg3, double arg4);
+    double method2(short arg0, int arg1, unsigned arg2, double arg3, float arg4);
+    void method3(int arg0, short arg1, int arg2, double arg3, bool arg4);
+    unsigned method4(unsigned arg0, bool arg1, bool arg2, float arg3, bool arg4);
+    int method5(bool arg0, float arg1, short arg2, int arg3, bool arg4);
+    float method6(float arg0, bool arg1, double arg2, bool arg3, int arg4);
+    int method7(float arg0, bool arg1, int arg2, short arg3, short arg4);
+    void method8(short arg0, short arg1, unsigned arg2, short arg3, int arg4);
+    bool method9(bool arg0, short arg1, bool arg2, double arg3, int arg4);
+    unsigned method10(short arg0, double arg1, unsigned arg2, unsigned arg3, int arg4);
+    double method11(int arg0, double arg1, double arg2, int arg3, short arg4);
+    unsigned method12(bool arg0, unsigned arg1, short arg2, unsigned arg3, int arg4);
+    unsigned method13(short arg0, unsigned arg1, double arg2, int arg3, float arg4);
+    void method14(float arg0, float arg1, short arg2, float arg3, int arg4);
 };
 
 namespace ns_Class74
 {
-    std::string method0(std::string arg0, double arg1, float arg2, std::string arg3, bool arg4);
-    void method1(unsigned arg0, int arg1, short arg2, short arg3, std::string_view arg4);
-    void method2(short arg0, std::string_view arg1, std::string const& arg2, std::string_view arg3, short arg4);
-    bool method3(bool arg0, bool arg1, bool arg2, bool arg3, std::string arg4);
-    std::string const& method4(std::string arg0, std::string const& arg1, std::string const& arg2, std::string const& arg3, std::string const& arg4);
-    void method5(unsigned arg0, int arg1, std::string arg2, double arg3, double arg4);
-    float method6(unsigned arg0, float arg1, std::string arg2, bool arg3, float arg4);
-    double method7(double arg0, double arg1, std::string const& arg2, bool arg3, float arg4);
-    void method8(double arg0, int arg1, unsigned arg2, unsigned arg3, bool arg4);
-    float method9(int arg0, float arg1, int arg2, std::string_view arg3, std::string arg4);
-    void method10(double arg0, std::string const& arg1, float arg2, unsigned arg3, float arg4);
-    double method11(unsigned arg0, double arg1, std::string const& arg2, unsigned arg3, short arg4);
-    short method12(int arg0, int arg1, short arg2, bool arg3, double arg4);
-    void method13(std::string const& arg0, int arg1, int arg2, double arg3, int arg4);
-    short method14(std::string arg0, unsigned arg1, short arg2, unsigned arg3, std::string arg4);
+    void method0(bool arg0, short arg1, short arg2, int arg3, float arg4);
+    void method1(double arg0, short arg1, short arg2, float arg3, double arg4);
+    double method2(short arg0, int arg1, unsigned arg2, double arg3, float arg4);
+    void method3(int arg0, short arg1, int arg2, double arg3, bool arg4);
+    unsigned method4(unsigned arg0, bool arg1, bool arg2, float arg3, bool arg4);
+    int method5(bool arg0, float arg1, short arg2, int arg3, bool arg4);
+    float method6(float arg0, bool arg1, double arg2, bool arg3, int arg4);
+    int method7(float arg0, bool arg1, int arg2, short arg3, short arg4);
+    void method8(short arg0, short arg1, unsigned arg2, short arg3, int arg4);
+    bool method9(bool arg0, short arg1, bool arg2, double arg3, int arg4);
+    unsigned method10(short arg0, double arg1, unsigned arg2, unsigned arg3, int arg4);
+    double method11(int arg0, double arg1, double arg2, int arg3, short arg4);
+    unsigned method12(bool arg0, unsigned arg1, short arg2, unsigned arg3, int arg4);
+    unsigned method13(short arg0, unsigned arg1, double arg2, int arg3, float arg4);
+    void method14(float arg0, float arg1, short arg2, float arg3, int arg4);
 }
