@@ -1,6 +1,7 @@
 #pragma once
 #include "coil/utils/TypeListTraits.h"
 #include "ArgumentTraits.h"
+#include "coil/utils/FilterTypes.h"
 
 namespace coil::detail
 {
