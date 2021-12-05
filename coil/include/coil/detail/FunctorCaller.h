@@ -114,7 +114,7 @@ namespace coil::detail
             using UserArgTypes = typename Traits::UserArgumentTypes;
             using UserArgIndicesType = typename UserArgTypes::IndicesType;
 
-            if (!validateArguments<UserArgTypes>(context))
+            if (!validateArguments(context))
                 return;
 
             if (!context.input.namedArguments.empty() && !Traits::NamedArgsTraits::isPresent)
@@ -180,9 +180,10 @@ namespace coil::detail
             }
         }
 
-        template<typename ArgTypes>
         static bool validateArguments(CallContext& context)
         {
+            using ArgTypes = typename Traits::UserArgumentTypes;
+
             auto const& arguments = context.input.arguments;
             std::size_t const actualArgsCount = arguments.size();
 
