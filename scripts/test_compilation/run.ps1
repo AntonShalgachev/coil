@@ -6,11 +6,13 @@ function Measure-Build {
         [switch]$UseObjects = $false
     )
 
-    if (Test-Path -Path build) {
-        Remove-Item build -Recurse -Force
+    $buildFolder = "build_temp"
+
+    if (Test-Path -Path $buildFolder) {
+        Remove-Item $buildFolder -Recurse -Force
     }
-    mkdir build | Out-Null
-    Push-Location build
+    mkdir $buildFolder | Out-Null
+    Push-Location $buildFolder
     
     Write-Host "Measuring Coil=$UseCoil Sol=$UseSol Objects=$UseObjects..."
 
@@ -34,6 +36,10 @@ function Measure-Build {
     Write-Host
 
     Pop-Location
+    if (Test-Path -Path $buildFolder) {
+        Remove-Item $buildFolder -Recurse -Force
+    }
+    
     return $durations
 }
 
