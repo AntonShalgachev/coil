@@ -1,3 +1,5 @@
+# Generated with seed '88005553535'
+
 set(GENERATED_FILES
     "${CMAKE_CURRENT_SOURCE_DIR}/classes/Class0.h"
     "${CMAKE_CURRENT_SOURCE_DIR}/classes/Class0.cpp"

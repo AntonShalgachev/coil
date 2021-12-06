@@ -18,13 +18,16 @@ DEFAULT_TYPES = ['int', 'float', 'double', 'bool', 'short', 'unsigned', 'std::st
 
 
 class ClassGenerator:
-    def __init__(self, methods_count_min=3, methods_count_max=50, args_count_min=0, args_count_max=5, types=DEFAULT_TYPES):
+    def __init__(self, methods_count_min=3, methods_count_max=50, args_count_min=0, args_count_max=5, types=DEFAULT_TYPES, seed=0):
         self._methods_count_min = methods_count_min
         self._methods_count_max = methods_count_max
         self._args_count_min = args_count_min
         self._args_count_max = args_count_max
         self._types = types
 
+        random.seed(seed)
+        self.seed = seed
+        
         self._next_index = 0
 
     def generate(self):
@@ -64,9 +67,9 @@ class SourceWriter:
     def __init__(self, destination):
         self._destination = destination
 
-    def write(self, classes, name_key='name'):
+    def write(self, seed, classes, name_key='name'):
         self._clear_destination()
-        self._write_cmake(classes)
+        self._write_cmake(seed, classes)
         for c in classes:
             self._write_source(c, '.h', name_key)
             self._write_source(c, '.cpp', name_key)
@@ -94,12 +97,12 @@ class SourceWriter:
         with open(source_path, 'w') as fp:
             fp.write(str(t))
 
-    def _write_cmake(self, classes):
+    def _write_cmake(self, seed, classes):
         output_folder = self._get_and_create_folder('.')
         template_name = 'CMakeLists.txt.template'
         source_name = 'CMakeLists.txt'
 
-        t = Template(file=template_name, searchList={'classes':classes})
+        t = Template(file=template_name, searchList={'classes':classes, 'seed':seed})
         
         source_path = os.path.join(output_folder, source_name)
 
@@ -108,6 +111,7 @@ class SourceWriter:
 
 
 def main():
+    seed = 88005553535
     classes_count_min = 100
     classes_count_max = 100
     methods_count_min = 15
@@ -117,7 +121,7 @@ def main():
     types = ['int', 'float', 'double', 'bool', 'short', 'unsigned']
     destination = '../../tests/compilation_performance/generated'
 
-    class_generator = ClassGenerator(methods_count_min, methods_count_max, args_count_min, args_count_max, types)
+    class_generator = ClassGenerator(methods_count_min, methods_count_max, args_count_min, args_count_max, types, seed)
     
     classes = []
     classes_count = random.randint(classes_count_min, classes_count_max)
@@ -125,7 +129,7 @@ def main():
         classes.append(class_generator.generate())
 
     writer = SourceWriter(destination)
-    writer.write(classes)
+    writer.write(class_generator.seed, classes)
 
 
 if __name__ == '__main__':
