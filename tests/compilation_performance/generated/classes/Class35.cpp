@@ -1,7 +1,5 @@
+#include "../../pch.h"
 #include "Class35.h"
-#include <sstream>
-#include <iostream>
-#include <random>
 
 void Class35::work()
 {

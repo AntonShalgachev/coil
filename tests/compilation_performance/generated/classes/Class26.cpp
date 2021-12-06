@@ -1,7 +1,5 @@
+#include "../../pch.h"
 #include "Class26.h"
-#include <sstream>
-#include <iostream>
-#include <random>
 
 void Class26::work()
 {

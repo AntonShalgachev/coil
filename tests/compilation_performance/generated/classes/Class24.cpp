@@ -1,7 +1,5 @@
+#include "../../pch.h"
 #include "Class24.h"
-#include <sstream>
-#include <iostream>
-#include <random>
 
 void Class24::work()
 {
