@@ -1,7 +1,5 @@
+#include "../../pch.h"
 #include "Class86.h"
-#include <sstream>
-#include <iostream>
-#include <random>
 
 void Class86::work()
 {

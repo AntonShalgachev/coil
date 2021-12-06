@@ -1,7 +1,5 @@
 #if USE_SOL
 
-#include "sol/sol.hpp"
-#include "coil/utils/MemberFunctionFunctor.h"
 using GeneralBindings = sol::state;
 
 template<typename T, typename AnyT>
@@ -21,7 +19,6 @@ void bind(sol::state& bindings, std::string_view name, Func&& func, ObjectPointe
 
 #elif USE_COIL
 
-#include "coil/Bindings.h"
 using GeneralBindings = coil::Bindings;
 
 template<typename T, typename AnyT>

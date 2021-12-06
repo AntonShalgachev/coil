@@ -1,7 +1,5 @@
+#include "../../pch.h"
 #include "Class93.h"
-#include <sstream>
-#include <iostream>
-#include <random>
 
 void Class93::work()
 {

@@ -1,7 +1,5 @@
+#include "../../pch.h"
 #include "Class51.h"
-#include <sstream>
-#include <iostream>
-#include <random>
 
 void Class51::work()
 {
