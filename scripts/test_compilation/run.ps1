@@ -1,9 +1,15 @@
+Function IIf($If, $IfTrue, $IfFalse) {
+    If ($If) {If ($IfTrue -is "ScriptBlock") {&$IfTrue} Else {$IfTrue}}
+    Else {If ($IfFalse -is "ScriptBlock") {&$IfFalse} Else {$IfFalse}}
+}
+
 function Measure-Build {
     param (
         [int]$Count = 1,
         [switch]$UseCoil = $false,
         [switch]$UseSol = $false,
-        [switch]$UseObjects = $false
+        [switch]$UseObjects = $false,
+        [switch]$UseClang = $false
     )
 
     $buildFolder = "build_temp"
@@ -14,13 +20,20 @@ function Measure-Build {
     mkdir $buildFolder | Out-Null
     Push-Location $buildFolder
     
-    Write-Host "Measuring Coil=$UseCoil Sol=$UseSol Objects=$UseObjects..."
+    Write-Host "Measuring with [$(IIf $UseCoil "Coil" "-") $(IIf $UseSol "Sol" "-") $(IIf $UseObjects "Objects" "-") $(IIf $UseClang "Clang" "-")]"
 
     $coil = [int]$UseCoil.IsPresent
     $sol = [int]$UseSol.IsPresent
     $objects = [int]$UseObjects.IsPresent
     
     Write-Host "Running CMake..."
+    if ($UseClang) {
+        $env:CC="clang-cl"
+        $env:CXX="clang-cl"
+    } else {
+        $env:CC=""
+        $env:CXX=""
+    }
     Invoke-Expression "cmake -DCOIL_COMPILATION_PERFORMANCE=1 -DCOIL_COMPILATION_PERFORMANCE_USE_COIL=$coil -DCOIL_COMPILATION_PERFORMANCE_USE_SOL=$sol -DCOIL_COMPILATION_PERFORMANCE_USE_OBJECTS=$objects -GNinja .." | Out-Null
     
     $durations = @()
