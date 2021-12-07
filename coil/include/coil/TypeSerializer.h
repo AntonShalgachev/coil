@@ -148,21 +148,6 @@ namespace coil
         }
     };
 
-    //template<>
-    //struct TypeSerializer<char const*>
-    //{
-    //    template<typename OnError>
-    //    static char const* fromString(std::string_view str, OnError&&)
-    //    {
-    //        return str.c_str();
-    //    }
-
-    //    static std::string toString(char const* const& value)
-    //    {
-    //        return std::string{ value };
-    //    }
-    //};
-
     template<typename T>
     struct TypeSerializer<std::optional<T>>
     {
