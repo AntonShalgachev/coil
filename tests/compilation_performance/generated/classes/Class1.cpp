@@ -1,4 +1,3 @@
-#include "../../pch.h"
 #include "Class1.h"
 
 void Class1::work()
@@ -15,6 +14,12 @@ void Class1::work()
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
+
+    // To trigger some template instantiations
+    std::unordered_map<std::string_view, std::map<double, float>> functors;
+    functors.insert_or_assign("foo", std::map<double, float>{});
+    auto& innerMap = functors["bar"];
+    innerMap.insert_or_assign(3.14, 3.14f);
 }
 
 #ifdef DEBUG_BINDINGS
@@ -68,7 +73,15 @@ std::optional<float> Class1::workInternally(std::vector<std::string> const& valu
         res += value;
     }
 
-    return res;
+    std::stringstream ss;
+    ss << res;
+
+    std::string str = ss.str();
+
+    float result = 0.0f;
+    std::from_chars(str.data(), str.data() + str.size(), result);
+
+    return result;
 }
 
 bool Class1::method0(bool arg0, double arg1, double arg2, float arg3, bool arg4)

@@ -1,4 +1,3 @@
-#include "../../pch.h"
 #include "Class59.h"
 
 void Class59::work()
@@ -15,6 +14,12 @@ void Class59::work()
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
+
+    // To trigger some template instantiations
+    std::unordered_map<std::string_view, std::map<double, float>> functors;
+    functors.insert_or_assign("foo", std::map<double, float>{});
+    auto& innerMap = functors["bar"];
+    innerMap.insert_or_assign(3.14, 3.14f);
 }
 
 #ifdef DEBUG_BINDINGS
@@ -68,7 +73,15 @@ std::optional<float> Class59::workInternally(std::vector<std::string> const& val
         res += value;
     }
 
-    return res;
+    std::stringstream ss;
+    ss << res;
+
+    std::string str = ss.str();
+
+    float result = 0.0f;
+    std::from_chars(str.data(), str.data() + str.size(), result);
+
+    return result;
 }
 
 void Class59::method0(double arg0, short arg1, short arg2, double arg3, bool arg4)
