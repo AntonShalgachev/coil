@@ -1,4 +1,3 @@
-#include "../../pch.h"
 #include "Class23.h"
 
 void Class23::work()
@@ -15,6 +14,12 @@ void Class23::work()
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
+
+    // To trigger some template instantiations
+    std::unordered_map<std::string_view, std::map<double, float>> functors;
+    functors.insert_or_assign("foo", std::map<double, float>{});
+    auto& innerMap = functors["bar"];
+    innerMap.insert_or_assign(3.14, 3.14f);
 }
 
 #ifdef DEBUG_BINDINGS
@@ -68,7 +73,15 @@ std::optional<float> Class23::workInternally(std::vector<std::string> const& val
         res += value;
     }
 
-    return res;
+    std::stringstream ss;
+    ss << res;
+
+    std::string str = ss.str();
+
+    float result = 0.0f;
+    std::from_chars(str.data(), str.data() + str.size(), result);
+
+    return result;
 }
 
 float Class23::method0(float arg0, float arg1, float arg2, bool arg3, short arg4)

@@ -42,7 +42,6 @@ endif()
 
 target_compile_options(${PROJECT_NAME} PRIVATE
     ${COMPILE_OPTIONS}
-    "/Zc:__cplusplus"
 )
 
 if(${COIL_COMPILATION_PERFORMANCE_USE_SOL})
@@ -66,11 +65,14 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
     VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
 )
 
-add_dependencies(${PROJECT_NAME}
-    liblua
-)
+if (${COIL_COMPILATION_PERFORMANCE_USE_SOL})
+    add_dependencies(${PROJECT_NAME} liblua)
+endif()
 
-target_link_libraries(${PROJECT_NAME}
-    libcoil
-    liblua
-)
+set (LINK_LIBS libcoil)
+
+if (${COIL_COMPILATION_PERFORMANCE_USE_SOL})
+    list(APPEND LINK_LIBS liblua)
+endif()
+
+target_link_libraries(${PROJECT_NAME} ${LINK_LIBS})
