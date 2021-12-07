@@ -85,15 +85,28 @@ namespace coil
         template<typename OnError>
         static bool fromString(std::string_view str, OnError&& onError)
         {
-            // TODO don't create std::string
-            std::string lowercaseStr{ str };
-            std::transform(lowercaseStr.begin(), lowercaseStr.end(), lowercaseStr.begin(),
-                           [](unsigned char c) { return static_cast<unsigned char>(std::tolower(c)); });
+            auto equalCaseInsensitive = [](std::string_view a, std::string_view b)
+            {
+                std::size_t const length = a.length();
+                if (b.length() != length)
+                    return false;
 
-            if (lowercaseStr == "0" || lowercaseStr == "false")
-                return false;
-            if (lowercaseStr == "1" || lowercaseStr == "true")
+                for (std::size_t i = 0; i < a.length(); i++)
+                    if (std::tolower(a[i]) != std::tolower(b[i]))
+                        return false;
+
                 return true;
+            };
+
+            if (str == "1")
+                return true;
+            if (str == "0")
+                return false;
+
+            if (equalCaseInsensitive(str, "true"))
+                return true;
+            if (equalCaseInsensitive(str, "false"))
+                return false;
 
             reportConversionError<bool>(std::forward<OnError>(onError), str);
             return false;
