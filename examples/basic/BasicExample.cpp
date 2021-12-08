@@ -59,7 +59,9 @@ void BasicExample::run()
 
     common::printSectionHeader("Boolean arguments can be passed in any format:");
     common::executeCommand(bindings, "invert true");
+    common::executeCommand(bindings, "invert True");
     common::executeCommand(bindings, "invert 0");
+    common::executeCommand(bindings, "invert FALSE");
 
     common::printSectionHeader("Functions with return values:");
     common::executeCommand(bindings, "add 3.14 2.72");
