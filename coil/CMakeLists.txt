@@ -7,10 +7,7 @@ set(ALL_FILES
     "include/coil/utils/MemberFunctionFunctor.h"
     "include/coil/utils/VariableWrapper.h"
     "include/coil/utils/TypeId.h"
-    
     "include/coil/utils/TrueIndices.h"
-    
-    "include/coil/utils/ElementSelector.h"
 
     "include/coil/Bindings.h"
     "include/coil/ExecutionResult.h"

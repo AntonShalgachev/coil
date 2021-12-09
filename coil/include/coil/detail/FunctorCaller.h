@@ -7,9 +7,8 @@
 #include "CallContext.h"
 #include "../utils/Types.h"
 #include "coil/TypeSerializer.h"
-#include "../utils/FuncTraits.h"
 #include "FuncTraitsEx.h"
-#include "../utils/ElementSelector.h"
+#include "coil/utils/TrueIndices.h"
 
 namespace coil::detail
 {
@@ -127,10 +126,8 @@ namespace coil::detail
             static constexpr bool b2 = Traits::hasContext;
             static constexpr bool b3 = Traits::hasNamedArgs;
 
-            std::tuple<T*, Context, NamedArgs> nonUserArgOptions{ target, Context{context}, NamedArgs{context} };
-            // TODO don't create this tuple, pass arguments directly
-            auto nonUserArgs = utils::ElementSelector<b1, b2, b3>::select(nonUserArgOptions);
-            using NonUserArgIndices = std::make_index_sequence<std::tuple_size_v<decltype(nonUserArgs)>>;
+            std::tuple<T*, Context, NamedArgs> nonUserArgs{ target, Context{context}, NamedArgs{context} };
+            using NonUserArgIndices = utils::TrueIndicesT<b1, b2, b3>;
 
             unpackAndInvoke(func, context, nonUserArgs, NonUserArgIndices{}, UserArgTypes{}, UserArgIndicesType{});
         }
