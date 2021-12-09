@@ -175,17 +175,13 @@ namespace coil
             using FuncTraits = detail::FuncTraitsEx<UnqualifiedFunc>;
 
             if constexpr (std::is_void_v<T>)
-            {
                 static_assert(!std::is_member_function_pointer_v<UnqualifiedFunc>, "Func shouldn't be a member function");
-            }
 
-            using ExplicitTargetTrait = typename FuncTraits::ExplicitTargetTraits;
-            if constexpr (ExplicitTargetTrait::isPresent)
+            if constexpr (FuncTraits::hasTarget)
             {
-                static_assert(!std::is_same_v<T, typename FuncTraits::ObjectType>, "Explicit target shouldn't be used on member functions of the same type");
                 static_assert(!std::is_void_v<T>, "Can't have explicit target for bindings without target");
-                using SpecifiedExplicitTarget = std::decay_t<std::remove_pointer_t<typename ExplicitTargetTrait::Type>>;
-                static_assert(std::is_same_v<T, SpecifiedExplicitTarget>, "Explicit target should match the given type T");
+                static_assert(!std::is_same_v<T, typename FuncTraits::ObjectType>, "Explicit target shouldn't be used on member functions of the same type");
+                static_assert(std::is_same_v<T, std::decay_t<typename FuncTraits::ExplicitTargetType>>, "Explicit target should be either T* or T const*");
             }
 
             if (name.getView().empty())

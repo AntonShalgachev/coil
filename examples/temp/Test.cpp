@@ -121,6 +121,11 @@ namespace
         return val * 2.0f;
     }
 
+    float freeFuncWithConstTarget(Object const*, float val)
+    {
+        return val * 2.0f;
+    }
+
     [[maybe_unused]] float freeFuncWithWrongTarget(SecondObject*, float val)
     {
         return val * 2.0f;
@@ -251,6 +256,7 @@ void compilation_test::run()
     cmd.bind<Object>("", lambdaWithTarget);
     cmd.bind<Object>("", lambdaWithTargetContext);
     cmd.bind<Object>("", &freeFuncWithTarget);
+    cmd.bind<Object>("", &freeFuncWithConstTarget);
     cmd.bind<Object>("", &freeFuncWithTargetContext);
     cmd.bind<Object>("", &freeFuncWithoutArgsWithTarget);
     cmd.bind<Object>("", &freeFuncWithoutArgsWithTargetContext);

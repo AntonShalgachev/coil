@@ -117,20 +117,18 @@ namespace coil::detail
             if (!validateArguments(context))
                 return;
 
-            if (!context.input.namedArguments.empty() && !Traits::NamedArgsTraits::isPresent)
+            if (!context.input.namedArguments.empty() && !Traits::hasNamedArgs)
             {
                 context.result.errors.push_back("The function doesn't support named arguments");
                 return;
             }
 
-            Context contextArg{ context };
-            NamedArgs namedArgs{ context };
-            std::tuple<T*, Context, NamedArgs> nonUserArgOptions{ target, contextArg, namedArgs };
+            static constexpr bool b1 = Traits::template isMethodOfType<T> || Traits::hasTarget;
+            static constexpr bool b2 = Traits::hasContext;
+            static constexpr bool b3 = Traits::hasNamedArgs;
 
-            static constexpr bool b1 = Traits::template isMethodOfType<T> || Traits::ExplicitTargetTraits::isPresent;
-            static constexpr bool b2 = Traits::ContextTraits::isPresent;
-            static constexpr bool b3 = Traits::NamedArgsTraits::isPresent;
-
+            std::tuple<T*, Context, NamedArgs> nonUserArgOptions{ target, Context{context}, NamedArgs{context} };
+            // TODO don't create this tuple, pass arguments directly
             auto nonUserArgs = utils::ElementSelector<b1, b2, b3>::select(nonUserArgOptions);
             using NonUserArgIndices = std::make_index_sequence<std::tuple_size_v<decltype(nonUserArgs)>>;
 
