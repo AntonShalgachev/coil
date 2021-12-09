@@ -113,7 +113,7 @@ namespace coil
 			if (name.getView().empty())
 				return false;
 
-            m_objects.insert_or_assign(std::move(name), object);
+            m_objects.insert_or_assign(std::move(name), AnyObject{ object, &Bindings::objectTrampoline<T> });
 
 			return true;
         }
@@ -190,7 +190,7 @@ namespace coil
             UnqualifiedFunc unqualifiedFunc{ std::move(func) };
 
             auto& typeFunctors = m_functors[utils::typeId<T>()];
-            typeFunctors.insert_or_assign(std::move(name), AnyFunctor::create<T, UnqualifiedFunc>(std::move(unqualifiedFunc)));
+            typeFunctors.insert_or_assign(std::move(name), AnyFunctor{ std::move(unqualifiedFunc), &Bindings::functorTrampoline<T, UnqualifiedFunc> });
 
             return true;
         }
@@ -211,73 +211,59 @@ namespace coil
         {
             using TrampolineT = void(Bindings::*)(std::any const&, detail::CallContext&);
 
-            template<typename T>
-            AnyObject(T* object)
-                : object(object)
-                , trampoline(&Bindings::objectTrampoline<T>)
+            AnyObject(std::any object, TrampolineT trampoline)
+                : m_object(std::move(object))
+                , m_trampoline(trampoline)
             {
 
             }
 
             void invokeTrampoline(Bindings* self, detail::CallContext& context) const
             {
-                std::invoke(trampoline, self, object, context);
+                std::invoke(m_trampoline, self, m_object, context);
             }
 
-            std::any object;
-            TrampolineT trampoline;
+        private:
+            std::any m_object;
+            TrampolineT m_trampoline;
         };
 
         struct AnyFunctor
         {
+        public:
             using TrampolineT = void(Bindings::*)(std::any const&, std::any&, detail::CallContext&);
 
-            template<typename T, typename Func>
-            AnyFunctor(Func&& func, utils::Types<T>)
-                : functor(std::forward<Func>(func))
-                , trampoline(&Bindings::functorTrampoline<T, Func>)
+            AnyFunctor(std::any functor, TrampolineT trampoline)
+                : functor(std::move(functor))
+                , m_trampoline(trampoline)
             {
 
-            }
-
-            template<typename T, typename Func>
-            static AnyFunctor create(Func&& func)
-            {
-                return AnyFunctor(std::forward<Func>(func), utils::Types<T>{});
             }
 
             void invokeTrampoline(Bindings* self, std::any const& anyObject, detail::CallContext& context)
             {
-                std::invoke(trampoline, self, anyObject, functor, context);
+                std::invoke(m_trampoline, self, anyObject, functor, context);
             }
 
+        private:
             std::any functor;
-            TrampolineT trampoline;
+            TrampolineT m_trampoline;
         };
 
         template<typename T>
         void objectTrampoline(std::any const& anyObject, detail::CallContext& context)
         {
-            auto& typeFunctors = m_functors.at(utils::typeId<T>());
-
             auto&& functionName = context.input.functionName;
 
-            auto it = typeFunctors.find(functionName);
-            if (it == typeFunctors.end())
-            {
-                auto&& typeName = TypeName<T>::name();
+            auto& typeFunctors = m_functors.at(utils::typeId<T>());
+            if (auto it = typeFunctors.find(functionName); it != typeFunctors.end())
+                return it->second.invokeTrampoline(this, anyObject, context);
 
-                if constexpr (std::is_void_v<T>)
-                    context.result.errors.push_back(utils::formatString("No function '%.*s' is registered", functionName.size(), functionName.data()));
-                else
-                    context.result.errors.push_back(utils::formatString("No function '%.*s' is registered for type '%.*s'", functionName.size(), functionName.data(), typeName.size(), typeName.data()));
-
-                return;
-            }
-
-            AnyFunctor& anyFunctor = it->second;
-
-            anyFunctor.invokeTrampoline(this, anyObject, context);
+            auto&& typeName = TypeName<T>::name();
+            if constexpr (std::is_void_v<T>)
+                context.result.errors.push_back(utils::formatString("No function '%.*s' is registered", functionName.size(), functionName.data()));
+            else
+                context.result.errors.push_back(utils::formatString("No function '%.*s' is registered for type '%.*s'", functionName.size(), functionName.data(), typeName.size(), typeName.data()));
         }
 
         template<typename T, typename FuncT>
