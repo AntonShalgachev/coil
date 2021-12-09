@@ -159,8 +159,6 @@ namespace coil::detail
 
             try
             {
-                static_assert(std::is_invocable_v<Func, Args...>, "Cannot invoke Func with given arguments");
-
                 if constexpr (std::is_void_v<R>)
                 {
                     std::invoke(func, std::forward<Args>(args)...);
