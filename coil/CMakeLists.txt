@@ -7,9 +7,9 @@ set(ALL_FILES
     "include/coil/utils/MemberFunctionFunctor.h"
     "include/coil/utils/VariableWrapper.h"
     "include/coil/utils/TypeId.h"
-    "include/coil/utils/FilterTypes.h"
+    
     "include/coil/utils/TrueIndices.h"
-    "include/coil/utils/TypeListTraits.h"
+    
     "include/coil/utils/ElementSelector.h"
 
     "include/coil/Bindings.h"
@@ -23,7 +23,7 @@ set(ALL_FILES
     "include/coil/detail/FunctorCaller.h"
     "include/coil/detail/CallContext.h"
     "include/coil/detail/FuncTraitsEx.h"
-    "include/coil/detail/ArgumentTraits.h"
+    
     "include/coil/BindingProxy.h"
     "include/coil/DefaultLexer.h"
     "include/coil/Expected.h"
