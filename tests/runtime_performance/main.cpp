@@ -122,14 +122,14 @@ namespace
         {
             using Traits = coil::utils::FuncTraits<std::decay_t<decltype(methods[0])>>;
 
-            auto usertype = lua.new_usertype<Traits::ObjectType>("Object", sol::no_constructor);
+            auto usertype = lua.new_usertype<typename Traits::ObjectType>("Object", sol::no_constructor);
 
             for (std::size_t i = 0; i < methods.size(); i++)
             {
                 auto const& method = methods[i];
 
                 auto name = "long_method_name_please" + std::to_string(i);
-                cmd.bind<Traits::ObjectType>(name, method);
+                cmd.bind<typename Traits::ObjectType>(name, method);
 
                 usertype[name] = method;
             }
