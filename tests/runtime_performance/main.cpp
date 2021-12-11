@@ -9,22 +9,22 @@ namespace user
     {
     public:
         template<std::size_t J>
-        void method(float, float)
+        double method(float, float)
         {
-
+            return 3.14;
         }
     };
 
     template<std::size_t I>
-    void function(float, float)
+    double function(float, float)
     {
-
+        return 3.14;
     }
 }
 
 namespace util
 {
-    using FuncT = void(*)(float, float);
+    using FuncT = decltype(&user::function<0>);
 
     template<std::size_t... Is>
     std::vector<FuncT> generateUniqueFunctionsImpl(std::index_sequence<Is...>)
@@ -51,7 +51,7 @@ namespace util
     }
 
     template<std::size_t I>
-    using MethodT = void(user::Object<I>::*)(float ,float);
+    using MethodT = decltype(&user::Object<I>::template method<0>);
 
     template<std::size_t I, std::size_t... Js>
     std::vector<MethodT<I>> generateUniqueMethodsForTypeImpl(std::index_sequence<Js...>)
