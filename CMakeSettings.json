@@ -68,7 +68,7 @@
       "inheritEnvironments": [ "msvc_x64_x64" ],
       "variables": [
         {
-          "name": "COIL_RUNTIME_PERFORMANCE",
+          "name": "TEST_RUNTIME_PERF",
           "value": "True",
           "type": "BOOL"
         }
@@ -86,7 +86,7 @@
       "inheritEnvironments": [ "clang_cl_x64_x64" ],
       "variables": [
         {
-          "name": "COIL_RUNTIME_PERFORMANCE",
+          "name": "TEST_RUNTIME_PERF",
           "value": "True",
           "type": "BOOL"
         }
@@ -104,7 +104,7 @@
       "inheritEnvironments": [ "msvc_x64_x64" ],
       "variables": [
         {
-          "name": "COIL_COMPILATION_PERFORMANCE",
+          "name": "TEST_COMP_PERF",
           "value": "True",
           "type": "BOOL"
         }
@@ -122,12 +122,12 @@
       "inheritEnvironments": [ "msvc_x64_x64" ],
       "variables": [
         {
-          "name": "COIL_COMPILATION_PERFORMANCE",
+          "name": "TEST_COMP_PERF",
           "value": "True",
           "type": "BOOL"
         },
         {
-          "name": "COIL_COMPILATION_PERFORMANCE_USE_SOL",
+          "name": "TEST_COMP_PERF_USE_SOL",
           "value": "True",
           "type": "BOOL"
         }
@@ -145,17 +145,17 @@
       "inheritEnvironments": [ "msvc_x64_x64" ],
       "variables": [
         {
-          "name": "COIL_COMPILATION_PERFORMANCE",
+          "name": "TEST_COMP_PERF",
           "value": "True",
           "type": "BOOL"
         },
         {
-          "name": "COIL_COMPILATION_PERFORMANCE_USE_SOL",
+          "name": "TEST_COMP_PERF_USE_SOL",
           "value": "False",
           "type": "BOOL"
         },
         {
-          "name": "COIL_COMPILATION_PERFORMANCE_USE_COIL",
+          "name": "TEST_COMP_PERF_USE_COIL",
           "value": "True",
           "type": "BOOL"
         }
@@ -173,22 +173,22 @@
       "inheritEnvironments": [ "msvc_x64_x64" ],
       "variables": [
         {
-          "name": "COIL_COMPILATION_PERFORMANCE",
+          "name": "TEST_COMP_PERF",
           "value": "True",
           "type": "BOOL"
         },
         {
-          "name": "COIL_COMPILATION_PERFORMANCE_USE_SOL",
+          "name": "TEST_COMP_PERF_USE_SOL",
           "value": "False",
           "type": "BOOL"
         },
         {
-          "name": "COIL_COMPILATION_PERFORMANCE_USE_COIL",
+          "name": "TEST_COMP_PERF_USE_COIL",
           "value": "True",
           "type": "BOOL"
         },
         {
-          "name": "COIL_COMPILATION_PERFORMANCE_USE_OBJECTS",
+          "name": "TEST_COMP_PERF_USE_OBJECTS",
           "value": "True",
           "type": "BOOL"
         }
