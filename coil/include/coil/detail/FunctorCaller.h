@@ -122,12 +122,12 @@ namespace coil::detail
                 return;
             }
 
-            static constexpr bool b1 = Traits::template isMethodOfType<T> || Traits::hasTarget;
-            static constexpr bool b2 = Traits::hasContext;
-            static constexpr bool b3 = Traits::hasNamedArgs;
+            static constexpr bool hasTarget = Traits::template isMethodOfType<T> || Traits::hasTarget;
+            static constexpr bool hasContext = Traits::hasContext;
+            static constexpr bool hasNamedArgs = Traits::hasNamedArgs;
 
             std::tuple<T*, Context, NamedArgs> nonUserArgs{ target, Context{context}, NamedArgs{context} };
-            using NonUserArgIndices = utils::TrueIndicesT<b1, b2, b3>;
+            using NonUserArgIndices = utils::TrueIndicesT<hasTarget, hasContext, hasNamedArgs>;
 
             unpackAndInvoke(func, context, nonUserArgs, NonUserArgIndices{}, UserArgTypes{}, UserArgIndicesType{});
         }
