@@ -1,12 +1,23 @@
-#include "Test.h"
 #include "coil/Bindings.h"
 #include "coil/AnyArgView.h"
 
-#include "common/ExamplesCommon.h"
+namespace coil
+{
+    template<typename EnumT>
+    struct TypeSerializer<EnumT, std::enable_if_t<std::is_enum_v<EnumT>>>
+    {
+        template<typename OnError>
+        static EnumT fromString(std::string_view str, [[maybe_unused]] OnError&& onError)
+        {
+            return EnumT{};
+        }
 
-#include "magic_enum.hpp"
-
-#include <cstdint>
+        static std::string_view toString(EnumT const& value)
+        {
+            return "";
+        }
+    };
+}
 
 namespace
 {
@@ -106,22 +117,22 @@ namespace
         }
     };
 
-    float freeFunc(float val)
+    [[maybe_unused]] float freeFunc(float val)
     {
         return val * 2.0f;
     }
 
-    float freeFuncWithContext(coil::Context&, float val)
+    [[maybe_unused]] float freeFuncWithContext(coil::Context&, float val)
     {
         return val * 2.0f;
     }
 
-    float freeFuncWithTarget(Object*, float val)
+    [[maybe_unused]] float freeFuncWithTarget(Object*, float val)
     {
         return val * 2.0f;
     }
 
-    float freeFuncWithConstTarget(Object const*, float val)
+    [[maybe_unused]] float freeFuncWithConstTarget(Object const*, float val)
     {
         return val * 2.0f;
     }
@@ -131,75 +142,74 @@ namespace
         return val * 2.0f;
     }
 
-    float freeFuncWithTargetContext(Object*, coil::Context&, float val)
+    [[maybe_unused]] float freeFuncWithTargetContext(Object*, coil::Context&, float val)
     {
         return val * 2.0f;
     }
 
-    void freeFuncWithoutArgs()
+    [[maybe_unused]] void freeFuncWithoutArgs()
     {
 
     }
 
-    void freeFuncWithoutArgsWithTarget(Object*)
+    [[maybe_unused]] void freeFuncWithoutArgsWithTarget(Object*)
     {
 
     }
 
-    void freeFuncWithoutArgsWithTargetContext(Object*, coil::Context&)
+    [[maybe_unused]] void freeFuncWithoutArgsWithTargetContext(Object*, coil::Context&)
     {
 
     }
 
-    void freeFuncWithoutArgsWithContext(coil::Context&)
+    [[maybe_unused]] void freeFuncWithoutArgsWithContext(coil::Context&)
     {
 
     }
 
-    std::size_t funcVariadicVector(float, std::string const&, std::vector<coil::AnyArgView> const& args)
-    {
-        return args.size();
-    }
-
-    std::size_t funcFloatVector(float, std::string const&, std::vector<float> const& args)
+    [[maybe_unused]] std::size_t funcVariadicVector(float, std::string const&, std::vector<coil::AnyArgView> const& args)
     {
         return args.size();
     }
 
-    float funcOptional(float, std::string const&, std::optional<float> arg)
+    [[maybe_unused]] std::size_t funcFloatVector(float, std::string const&, std::vector<float> const& args)
+    {
+        return args.size();
+    }
+
+    [[maybe_unused]] float funcOptional(float, std::string const&, std::optional<float> arg)
     {
         return arg.value_or(0.0f);
     }
 
-    ScopedEnum funcScopedEnum(ScopedEnum val)
+    [[maybe_unused]] ScopedEnum funcScopedEnum(ScopedEnum val)
     {
         return val;
     }
 
-    UnscopedEnum funcUnscopedEnum(UnscopedEnum val)
+    [[maybe_unused]] UnscopedEnum funcUnscopedEnum(UnscopedEnum val)
     {
         return val;
     }
 
-    void funcNamedArgs(coil::NamedArgs)
+    [[maybe_unused]] void funcNamedArgs(coil::NamedArgs)
     {
 
     }
 
-    void funcTargetNamedArgs(Object*, coil::NamedArgs)
+    [[maybe_unused]] void funcTargetNamedArgs(Object*, coil::NamedArgs)
     {
 
     }
 
     template<typename T>
-    T funcWithType(T v) { return v; }
+    [[maybe_unused]] T funcWithType(T v) { return v; }
 }
 
-void compilation_test::run()
+int main()
 {
-    [[maybe_unused]] coil::Bindings cmd;
-
     [[maybe_unused]] Object object;
+    [[maybe_unused]] float variable = 2.0f;
 
     [[maybe_unused]] auto lambda = [](float val)
     {
@@ -222,8 +232,8 @@ void compilation_test::run()
     [[maybe_unused]] FunctorWithTarget functorWithTarget;
     [[maybe_unused]] FunctorWithTargetContext functorWithTargetContext;
     [[maybe_unused]] FunctorWithContext functorWithContext;
-
-    float variable = 2.0f;
+    
+    [[maybe_unused]] coil::Bindings cmd;
 
     cmd.addObject("obj", &object);
 
@@ -264,6 +274,7 @@ void compilation_test::run()
     cmd.bind<Object>("", [](Object const*) {});
     cmd.bind<Object>("", &freeFuncWithoutArgs);
     cmd.bind<Object>("", &freeFunc);
+    cmd.bind<Object>("", &variable);
     cmd.bind<Object>("", []() {});
     cmd.bind<Object>("", [](int) {});
     cmd.bind<Object>("", &Object::staticFuncWithTarget);
@@ -306,15 +317,4 @@ void compilation_test::run()
     cmd[""] = &funcWithType<std::string>;
     cmd[""] = &funcWithType<std::string_view>;
     cmd[""] = &funcWithType<std::optional<float>>;
-
-    // Compilation error
-    //cmd.bind<Object>("", &variable);
-    //cmd.bind<Object>("", [](int*) {});
-    //cmd.bind<Object>("", &Object::memberFuncWithTarget);
-    //cmd.bind<Object>("", &Object::memberFuncWithTargetContext);
-    //cmd.bind<Object>("", &freeFuncWithWrongTarget);
-
-    //cmd[""] = &Object::memberFunc;
-    //cmd[""] = &freeFuncWithTarget;
-    //cmd[""] = &Object::memberVariable;
 }

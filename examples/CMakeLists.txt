@@ -1,8 +1,6 @@
 set(PROJECT_NAME examples)
 
 set(ALL_FILES
-    "temp/Test.h"
-    "temp/Test.cpp"
     "temp/LexerTests.h"
     "temp/LexerTests.cpp"
 
