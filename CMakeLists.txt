@@ -2,7 +2,8 @@ cmake_minimum_required(VERSION 3.12.0 FATAL_ERROR)
 
 project(coil LANGUAGES C CXX VERSION 1.0)
 
-set(RUN_CMAKE_TESTS OFF CACHE BOOL "Run CMake tests")
+set(CMAKE_TESTS OFF CACHE BOOL "Add CMake tests")
+set(RUN_CMAKE_COMPILATION_TEST OFF CACHE BOOL "Run compilation test in CMake")
 
 set(TEST_COMP_PERF OFF CACHE BOOL "Configure the project for compilation performance tests")
 set(TEST_COMP_PERF_USE_COIL OFF CACHE BOOL "Whether to use coil library for compilation performance test")
@@ -37,8 +38,11 @@ if (${TEST_COMP_PERF})
 elseif(${TEST_RUNTIME_PERF})
     add_subdirectory(tests/runtime_performance)
     add_subdirectory(liblua)
-elseif(${RUN_CMAKE_TESTS})
-    add_subdirectory(tests/cmake_tests)
 else()
     add_subdirectory(examples)
+endif()
+
+if(${CMAKE_TESTS})
+    enable_testing()
+    add_subdirectory(tests/cmake_tests)
 endif()

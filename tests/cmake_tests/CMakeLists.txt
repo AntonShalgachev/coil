@@ -26,15 +26,38 @@ function(validate_compilation SOURCE_FILE EXPECTED_RESULT EXPECTED_OUTPUT)
     endif()
 endfunction()
 
-message(STATUS "")
-message(STATUS "Performing compilation tests...")
+if(RUN_CMAKE_COMPILATION_TEST)
+    message(STATUS "")
+    message(STATUS "Performing compilation tests...")
 
-validate_compilation(compilation/Valid.cpp TRUE "")
-validate_compilation(compilation/WrongExplicitTarget.cpp FALSE "Explicit target should be either T* or T const*")
-validate_compilation(compilation/TargetOnMemberFunction.cpp FALSE "Explicit target shouldn't be used on member functions of the same type")
-validate_compilation(compilation/ExplicitTargetOnVoid.cpp FALSE "Can't have explicit target for bindings without target")
-validate_compilation(compilation/MemberFunctionOnVoid.cpp FALSE "Func shouldn't be a member function")
-validate_compilation(compilation/MemberVariableOnVoid.cpp FALSE "Pointer to member variable should be bound to non-void type")
+    validate_compilation(compilation/Valid.cpp TRUE "")
+    validate_compilation(compilation/WrongExplicitTarget.cpp FALSE "Explicit target should be either T* or T const*")
+    validate_compilation(compilation/TargetOnMemberFunction.cpp FALSE "Explicit target shouldn't be used on member functions of the same type")
+    validate_compilation(compilation/ExplicitTargetOnVoid.cpp FALSE "Can't have explicit target for bindings without target")
+    validate_compilation(compilation/MemberFunctionOnVoid.cpp FALSE "Func shouldn't be a member function")
+    validate_compilation(compilation/MemberVariableOnVoid.cpp FALSE "Pointer to member variable should be bound to non-void type")
 
-message(STATUS "All tests finished")
-message(STATUS "")
+    message(STATUS "All tests finished")
+    message(STATUS "")
+endif()
+
+include(CTest)
+enable_testing()
+
+include(FetchContent)
+
+FetchContent_Declare(
+    googletest
+    GIT_REPOSITORY https://github.com/google/googletest.git
+    GIT_TAG        release-1.11.0
+)
+
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+
+message(STATUS "Fetching googletest from GitHub...")
+FetchContent_MakeAvailable(googletest)
+
+add_executable(coil-test runtime/main.cpp)
+target_link_libraries(coil-test PRIVATE gtest_main)
+add_test(NAME coil-test
+         COMMAND coil-test)
