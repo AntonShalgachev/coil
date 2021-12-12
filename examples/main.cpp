@@ -58,7 +58,7 @@ int main()
     std::array<std::string_view, std::tuple_size_v<Examples>> names = {
         "basic",
         "variadic",
-        "variable",
+        "variables",
         "named",
         "enums",
         "errors",

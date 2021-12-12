@@ -67,11 +67,13 @@ namespace coil
             }
             else if constexpr (std::is_member_object_pointer_v<DecayedAnyT>)
             {
+                // TODO disallow variadic args (e.g. vector, optional)
                 static_assert(!std::is_void_v<T>, "Pointer to member variable should be bound to non-void type");
                 return bindMemberVariable<T>(std::move(name), std::forward<AnyT>(anything));
             }
             else if constexpr (std::is_pointer_v<AnyT> && !std::is_function_v<AnyT>)
             {
+                // TODO disallow variadic args (e.g. vector, optional)
                 return bindVariable<T>(std::move(name), std::forward<AnyT>(anything));
             }
             else
