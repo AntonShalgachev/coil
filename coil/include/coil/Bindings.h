@@ -30,7 +30,7 @@ namespace coil
         }
 
         template<typename T, typename Func, typename ObjectPointerT>
-        bool bind(GeneralizedString name, Func&& func, ObjectPointerT obj)
+        void bind(GeneralizedString name, Func&& func, ObjectPointerT obj)
         {
             using Traits = utils::FuncTraits<Func>;
             using ObjectT = std::remove_pointer_t<ObjectPointerT>;
@@ -46,19 +46,19 @@ namespace coil
         }
 
         template<typename Func, typename ObjectPointerT>
-        bool bind(GeneralizedString name, Func&& func, ObjectPointerT obj)
+        void bind(GeneralizedString name, Func&& func, ObjectPointerT obj)
         {
             return bind<void>(std::move(name), std::forward<Func>(func), obj);
         }
 
         template<typename AnyT>
-        bool bind(GeneralizedString name, AnyT&& anything)
+        void bind(GeneralizedString name, AnyT&& anything)
         {
             return bind<void, AnyT>(std::move(name), std::forward<AnyT>(anything));
         }
 
         template<typename T, typename AnyT>
-        bool bind(GeneralizedString name, AnyT&& anything)
+        void bind(GeneralizedString name, AnyT&& anything)
 		{
             using DecayedAnyT = std::decay_t<AnyT>;
             if constexpr (utils::FuncTraits<DecayedAnyT>::isFunc)
@@ -84,18 +84,16 @@ namespace coil
             }
         }
 
-        bool unbind(std::string_view name) { return unbind<void>(name); }
+        void unbind(std::string_view name) { return unbind<void>(name); }
 
         template<typename T>
-        bool unbind(std::string_view name)
+        void unbind(std::string_view name)
 		{
 			if (name.empty())
-				return false;
+				return;
 
             if (auto it = m_functors.find(utils::typeId<T>()); it != m_functors.end())
                 it->second.erase(name);
-
-			return true;
         }
 
         void unbindAll() { return unbindAll<void>(); }
@@ -108,27 +106,23 @@ namespace coil
         }
 
         template<typename T>
-        bool addObject(GeneralizedString name, T* object)
+        void addObject(GeneralizedString name, T* object)
 		{
             // TODO allow const objects
 			static_assert(!std::is_const_v<T>, "T shouldn't be const");
 
 			if (name.getView().empty())
-				return false;
+				return;
 
             m_objects.insert_or_assign(std::move(name), AnyObject{ object, &Bindings::objectTrampoline<T> });
-
-			return true;
         }
 
-        bool removeObject(std::string_view name)
+        void removeObject(std::string_view name)
         {
             if (name.empty())
-                return false;
+                return;
 
             m_objects.erase(name);
-
-            return true;
         }
 
         void removeAllObjects() { m_objects.clear(); }
@@ -165,7 +159,7 @@ namespace coil
 
     private:
         template<typename T, typename Func>
-        bool bindFunc(GeneralizedString name, Func&& func)
+        void bindFunc(GeneralizedString name, Func&& func)
         {
             // TODO assert that user parameters of Func are either values or const-references
             // TODO assert that Context parameter is non-const reference and is at second optional position
@@ -188,24 +182,22 @@ namespace coil
             }
 
             if (name.getView().empty())
-                return false;
+                return;
 
             UnqualifiedFunc unqualifiedFunc{ std::move(func) };
 
             auto& typeFunctors = m_functors[utils::typeId<T>()];
             typeFunctors.insert_or_assign(std::move(name), AnyFunctor{ std::move(unqualifiedFunc), &Bindings::functorTrampoline<T, UnqualifiedFunc> });
-
-            return true;
         }
 
         template<typename T, typename R>
-        bool bindMemberVariable(GeneralizedString name, R T::* var)
+        void bindMemberVariable(GeneralizedString name, R T::* var)
         {
             return bindFunc<T>(std::move(name), utils::MemberVariableWrapper{ var });
         }
 
         template<typename T, typename R>
-        bool bindVariable(GeneralizedString name, R* var)
+        void bindVariable(GeneralizedString name, R* var)
         {
             return bindFunc<T>(std::move(name), utils::VariableWrapper{ var });
         }
