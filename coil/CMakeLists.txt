@@ -26,6 +26,7 @@ set(ALL_FILES
     "include/coil/Expected.h"
     "include/coil/TypeName.h"
     "include/coil/GeneralizedString.h"
+    "include/coil/Property.h"
 )
 
 add_library(${PROJECT_NAME} INTERFACE ${ALL_FILES})
