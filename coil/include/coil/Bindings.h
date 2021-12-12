@@ -72,11 +72,12 @@ namespace coil
             }
             else if constexpr (std::is_pointer_v<AnyT> && !std::is_function_v<AnyT>)
             {
-                static_assert(std::is_void_v<T>, "Pointer to variable shouldn't be bound to non-void type");
-                return bindVariable(std::move(name), std::forward<AnyT>(anything));
+                return bindVariable<T>(std::move(name), std::forward<AnyT>(anything));
             }
             else
             {
+                // TODO add more descriptive message for various types:
+                // rvalue, reference to variable, objects without operator()
                 static_assert(sizeof(AnyT) == -1, "Unsupported type AnyT");
             }
         }
@@ -201,10 +202,10 @@ namespace coil
             return bindFunc<T>(std::move(name), utils::MemberVariableWrapper{ var });
         }
 
-        template<typename R>
+        template<typename T, typename R>
         bool bindVariable(GeneralizedString name, R* var)
         {
-            return bindFunc<void>(std::move(name), utils::VariableWrapper{ var });
+            return bindFunc<T>(std::move(name), utils::VariableWrapper{ var });
         }
 
         struct AnyObject
