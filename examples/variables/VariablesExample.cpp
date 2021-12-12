@@ -10,6 +10,7 @@ void VariablesExample::run()
 
     // TODO add enum variable
     // TODO add member variables
+    // TODO add property example
 
     float timeScale = 1.0f;
     std::string city = "Moscow";

@@ -1,5 +1,6 @@
 #include "coil/Bindings.h"
 #include "coil/AnyArgView.h"
+#include "coil/Property.h"
 
 namespace coil
 {
@@ -75,6 +76,16 @@ namespace
         static float staticFuncWithContext(coil::Context&, float val)
         {
             return val * 2.0f;
+        }
+
+        void set(float value)
+        {
+            memberVariable = value;
+        }
+
+        float get() const
+        {
+            return memberVariable;
         }
 
         float memberVariable = 2.0f;
@@ -204,6 +215,15 @@ namespace
 
     template<typename T>
     [[maybe_unused]] T funcWithType(T v) { return v; }
+
+    [[maybe_unused]] void setVariable(float value)
+    {
+    }
+
+    [[maybe_unused]] float getVariable()
+    {
+        return 1.0f;
+    }
 }
 
 int main()
@@ -317,4 +337,19 @@ int main()
     cmd[""] = &funcWithType<std::string>;
     cmd[""] = &funcWithType<std::string_view>;
     cmd[""] = &funcWithType<std::optional<float>>;
+
+    cmd.bind<Object>("", coil::createProperty(&Object::get, &Object::set));
+    cmd.bind<Object>("", coil::createProperty([](Object*) { return 1.0f; }, [](Object*, float) {}));
+    cmd.bind<Object>("", coil::createProperty(&Object::get, [](Object*, float) {}));
+    cmd.bind<Object>("", coil::createProperty([](Object*) { return 1.0f; }, & Object::set));
+
+    cmd.bind<Object>("", coil::createProperty(&getVariable, &setVariable));
+    cmd.bind<Object>("", coil::createProperty([]() { return 1.0f; }, [](float) {}));
+    cmd.bind<Object>("", coil::createProperty(&getVariable, [](float) {}));
+    cmd.bind<Object>("", coil::createProperty([]() { return 1.0f; }, & setVariable));
+
+    cmd[""] = coil::createProperty(&getVariable, &setVariable);
+    cmd[""] = coil::createProperty([]() { return 1.0f; }, [](float) {});
+    cmd[""] = coil::createProperty(&getVariable, [](float) {});
+    cmd[""] = coil::createProperty([]() { return 1.0f; }, & setVariable);
 }
