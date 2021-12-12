@@ -111,6 +111,8 @@ namespace coil
             // TODO allow const objects
 			static_assert(!std::is_const_v<T>, "T shouldn't be const");
 
+            // TODO validate for nullptr
+
 			if (name.getView().empty())
 				return;
 
@@ -250,7 +252,7 @@ namespace coil
         {
             auto&& functionName = context.input.functionName;
 
-            auto& typeFunctors = m_functors.at(utils::typeId<T>());
+            auto& typeFunctors = m_functors[utils::typeId<T>()];
             if (auto it = typeFunctors.find(functionName); it != typeFunctors.end())
                 return it->second.invokeTrampoline(this, anyObject, context);
 
@@ -266,9 +268,32 @@ namespace coil
         {
             FuncT* functor = std::any_cast<FuncT>(&anyFunctor);
 
+            if (!functor)
+            {
+                auto&& typeName = TypeName<FuncT>::name();
+                context.result.errors.push_back(utils::formatString("Internal error: anyFunctor is not of type '%.*s'", typeName.size(), typeName.data()));
+                return;
+            }
+
             T* object = nullptr;
             if constexpr (!std::is_void_v<T>)
-                object = std::any_cast<T*>(anyObject);
+            {
+                auto maybeObject = std::any_cast<T*>(&anyObject);
+                if (!maybeObject)
+                {
+                    auto&& typeName = TypeName<T>::name();
+                    context.result.errors.push_back(utils::formatString("Internal error: anyObject is not of type '%.*s'", typeName.size(), typeName.data()));
+                    return;
+                }
+
+                object = *maybeObject;
+
+                if (!object)
+                {
+                    context.result.errors.push_back("Internal error: object is nullptr");
+                    return;
+                }
+            }
 
             detail::FunctorCaller<FuncT>::template call<T>(*functor, context, object);
         }
