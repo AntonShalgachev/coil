@@ -134,6 +134,40 @@ namespace coil
         template<typename U = T, typename = std::enable_if_t<!std::is_void_v<U>>>
         ExpectedType* operator->() { return &value(); }
 
+        template<typename T2, typename E2>
+        bool operator==(Expected<T2, E2> const& rhs) const
+        {
+            static_assert(std::is_void_v<T> == std::is_void_v<T2>, "Can't compare void with non-void type");
+
+            if constexpr (std::is_void_v<T>)
+            {
+                if (hasValue() && rhs.hasValue())
+                    return true;
+            }
+            else
+            {
+                if (hasValue() && rhs.hasValue())
+                    return value() == rhs.value();
+            }
+
+            if (!hasValue() && !rhs.hasValue())
+                return error() == rhs.error();
+
+            return false;
+        }
+
+        template<typename T2>
+        bool operator==(T2 const& rhs) const
+        {
+            return hasValue() && value() == rhs;
+        }
+
+        template<typename E2>
+        bool operator==(detail::Unexpected<E2> const& rhs) const
+        {
+            return !hasValue() && error() == rhs.value();
+        }
+
         template<typename E2>
         operator Expected<ExpectedType, E2>() const&
         {
