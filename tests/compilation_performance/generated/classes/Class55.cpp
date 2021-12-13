@@ -41,111 +41,111 @@ void Class55::registerBindings(GeneralBindings& bindings)
     ::bind<Class55>(bindings, "method13", &Class55::method13);
     ::bind<Class55>(bindings, "method14", &Class55::method14);
 
-    bindings["Class55_function0"] = [](coil::Context context, coil::NamedArgs args, float arg0, int arg1, float arg2, short arg3, float arg4)
-    {
-        context.reportError("Task failed successfully");
-        args.get("key");
-        args.get<float>("key");
-        args.get<float>("key", context, coil::NamedArgs::ArgType::Optional);
-        return Class55::function0(arg0, arg1, arg2, arg3, arg4);
-    };
-    bindings["Class55_function1"] = [](coil::Context context, coil::NamedArgs args, bool arg0, bool arg1, unsigned arg2, double arg3, bool arg4)
+    bindings["Class55_function0"] = [](coil::Context context, coil::NamedArgs args, bool arg0, double arg1, double arg2, int arg3, short arg4)
     {
         context.reportError("Task failed successfully");
         args.get("key");
         args.get<bool>("key");
         args.get<bool>("key", context, coil::NamedArgs::ArgType::Optional);
-        return Class55::function1(arg0, arg1, arg2, arg3, arg4);
+        return Class55::function0(arg0, arg1, arg2, arg3, arg4);
     };
-    bindings["Class55_function2"] = [](coil::Context context, coil::NamedArgs args, float arg0, short arg1, double arg2, float arg3, float arg4)
-    {
-        context.reportError("Task failed successfully");
-        args.get("key");
-        args.get<float>("key");
-        args.get<float>("key", context, coil::NamedArgs::ArgType::Optional);
-        return Class55::function2(arg0, arg1, arg2, arg3, arg4);
-    };
-    bindings["Class55_function3"] = [](coil::Context context, coil::NamedArgs args, unsigned arg0, short arg1, double arg2, float arg3, short arg4)
-    {
-        context.reportError("Task failed successfully");
-        args.get("key");
-        args.get<unsigned>("key");
-        args.get<unsigned>("key", context, coil::NamedArgs::ArgType::Optional);
-        return Class55::function3(arg0, arg1, arg2, arg3, arg4);
-    };
-    bindings["Class55_function4"] = [](coil::Context context, coil::NamedArgs args, short arg0, short arg1, short arg2, unsigned arg3, double arg4)
-    {
-        context.reportError("Task failed successfully");
-        args.get("key");
-        args.get<short>("key");
-        args.get<short>("key", context, coil::NamedArgs::ArgType::Optional);
-        return Class55::function4(arg0, arg1, arg2, arg3, arg4);
-    };
-    bindings["Class55_function5"] = [](coil::Context context, coil::NamedArgs args, float arg0, double arg1, int arg2, bool arg3, unsigned arg4)
-    {
-        context.reportError("Task failed successfully");
-        args.get("key");
-        args.get<float>("key");
-        args.get<float>("key", context, coil::NamedArgs::ArgType::Optional);
-        return Class55::function5(arg0, arg1, arg2, arg3, arg4);
-    };
-    bindings["Class55_function6"] = [](coil::Context context, coil::NamedArgs args, unsigned arg0, bool arg1, double arg2, bool arg3, float arg4)
-    {
-        context.reportError("Task failed successfully");
-        args.get("key");
-        args.get<unsigned>("key");
-        args.get<unsigned>("key", context, coil::NamedArgs::ArgType::Optional);
-        return Class55::function6(arg0, arg1, arg2, arg3, arg4);
-    };
-    bindings["Class55_function7"] = [](coil::Context context, coil::NamedArgs args, float arg0, unsigned arg1, double arg2, unsigned arg3, double arg4)
-    {
-        context.reportError("Task failed successfully");
-        args.get("key");
-        args.get<float>("key");
-        args.get<float>("key", context, coil::NamedArgs::ArgType::Optional);
-        return Class55::function7(arg0, arg1, arg2, arg3, arg4);
-    };
-    bindings["Class55_function8"] = [](coil::Context context, coil::NamedArgs args, unsigned arg0, double arg1, float arg2, short arg3, float arg4)
-    {
-        context.reportError("Task failed successfully");
-        args.get("key");
-        args.get<unsigned>("key");
-        args.get<unsigned>("key", context, coil::NamedArgs::ArgType::Optional);
-        return Class55::function8(arg0, arg1, arg2, arg3, arg4);
-    };
-    bindings["Class55_function9"] = [](coil::Context context, coil::NamedArgs args, double arg0, float arg1, short arg2, double arg3, float arg4)
+    bindings["Class55_function1"] = [](coil::Context context, coil::NamedArgs args, double arg0, int arg1, float arg2, double arg3, short arg4)
     {
         context.reportError("Task failed successfully");
         args.get("key");
         args.get<double>("key");
         args.get<double>("key", context, coil::NamedArgs::ArgType::Optional);
-        return Class55::function9(arg0, arg1, arg2, arg3, arg4);
+        return Class55::function1(arg0, arg1, arg2, arg3, arg4);
     };
-    bindings["Class55_function10"] = [](coil::Context context, coil::NamedArgs args, float arg0, int arg1, short arg2, double arg3, float arg4)
+    bindings["Class55_function2"] = [](coil::Context context, coil::NamedArgs args, double arg0, int arg1, double arg2, short arg3, unsigned arg4)
+    {
+        context.reportError("Task failed successfully");
+        args.get("key");
+        args.get<double>("key");
+        args.get<double>("key", context, coil::NamedArgs::ArgType::Optional);
+        return Class55::function2(arg0, arg1, arg2, arg3, arg4);
+    };
+    bindings["Class55_function3"] = [](coil::Context context, coil::NamedArgs args, double arg0, float arg1, float arg2, float arg3, unsigned arg4)
+    {
+        context.reportError("Task failed successfully");
+        args.get("key");
+        args.get<double>("key");
+        args.get<double>("key", context, coil::NamedArgs::ArgType::Optional);
+        return Class55::function3(arg0, arg1, arg2, arg3, arg4);
+    };
+    bindings["Class55_function4"] = [](coil::Context context, coil::NamedArgs args, double arg0, bool arg1, double arg2, unsigned arg3, unsigned arg4)
+    {
+        context.reportError("Task failed successfully");
+        args.get("key");
+        args.get<double>("key");
+        args.get<double>("key", context, coil::NamedArgs::ArgType::Optional);
+        return Class55::function4(arg0, arg1, arg2, arg3, arg4);
+    };
+    bindings["Class55_function5"] = [](coil::Context context, coil::NamedArgs args, bool arg0, float arg1, int arg2, bool arg3, short arg4)
+    {
+        context.reportError("Task failed successfully");
+        args.get("key");
+        args.get<bool>("key");
+        args.get<bool>("key", context, coil::NamedArgs::ArgType::Optional);
+        return Class55::function5(arg0, arg1, arg2, arg3, arg4);
+    };
+    bindings["Class55_function6"] = [](coil::Context context, coil::NamedArgs args, bool arg0, float arg1, bool arg2, short arg3, int arg4)
+    {
+        context.reportError("Task failed successfully");
+        args.get("key");
+        args.get<bool>("key");
+        args.get<bool>("key", context, coil::NamedArgs::ArgType::Optional);
+        return Class55::function6(arg0, arg1, arg2, arg3, arg4);
+    };
+    bindings["Class55_function7"] = [](coil::Context context, coil::NamedArgs args, int arg0, int arg1, int arg2, float arg3, unsigned arg4)
+    {
+        context.reportError("Task failed successfully");
+        args.get("key");
+        args.get<int>("key");
+        args.get<int>("key", context, coil::NamedArgs::ArgType::Optional);
+        return Class55::function7(arg0, arg1, arg2, arg3, arg4);
+    };
+    bindings["Class55_function8"] = [](coil::Context context, coil::NamedArgs args, double arg0, float arg1, float arg2, unsigned arg3, short arg4)
+    {
+        context.reportError("Task failed successfully");
+        args.get("key");
+        args.get<double>("key");
+        args.get<double>("key", context, coil::NamedArgs::ArgType::Optional);
+        return Class55::function8(arg0, arg1, arg2, arg3, arg4);
+    };
+    bindings["Class55_function9"] = [](coil::Context context, coil::NamedArgs args, float arg0, bool arg1, unsigned arg2, double arg3, int arg4)
     {
         context.reportError("Task failed successfully");
         args.get("key");
         args.get<float>("key");
         args.get<float>("key", context, coil::NamedArgs::ArgType::Optional);
+        return Class55::function9(arg0, arg1, arg2, arg3, arg4);
+    };
+    bindings["Class55_function10"] = [](coil::Context context, coil::NamedArgs args, int arg0, float arg1, bool arg2, float arg3, float arg4)
+    {
+        context.reportError("Task failed successfully");
+        args.get("key");
+        args.get<int>("key");
+        args.get<int>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class55::function10(arg0, arg1, arg2, arg3, arg4);
     };
-    bindings["Class55_function11"] = [](coil::Context context, coil::NamedArgs args, bool arg0, float arg1, float arg2, bool arg3, short arg4)
+    bindings["Class55_function11"] = [](coil::Context context, coil::NamedArgs args, short arg0, float arg1, double arg2, int arg3, double arg4)
     {
         context.reportError("Task failed successfully");
         args.get("key");
-        args.get<bool>("key");
-        args.get<bool>("key", context, coil::NamedArgs::ArgType::Optional);
+        args.get<short>("key");
+        args.get<short>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class55::function11(arg0, arg1, arg2, arg3, arg4);
     };
-    bindings["Class55_function12"] = [](coil::Context context, coil::NamedArgs args, bool arg0, int arg1, short arg2, bool arg3, double arg4)
+    bindings["Class55_function12"] = [](coil::Context context, coil::NamedArgs args, short arg0, bool arg1, double arg2, short arg3, int arg4)
     {
         context.reportError("Task failed successfully");
         args.get("key");
-        args.get<bool>("key");
-        args.get<bool>("key", context, coil::NamedArgs::ArgType::Optional);
+        args.get<short>("key");
+        args.get<short>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class55::function12(arg0, arg1, arg2, arg3, arg4);
     };
-    bindings["Class55_function13"] = [](coil::Context context, coil::NamedArgs args, float arg0, short arg1, bool arg2, float arg3, unsigned arg4)
+    bindings["Class55_function13"] = [](coil::Context context, coil::NamedArgs args, float arg0, double arg1, short arg2, int arg3, double arg4)
     {
         context.reportError("Task failed successfully");
         args.get("key");
@@ -153,12 +153,12 @@ void Class55::registerBindings(GeneralBindings& bindings)
         args.get<float>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class55::function13(arg0, arg1, arg2, arg3, arg4);
     };
-    bindings["Class55_function14"] = [](coil::Context context, coil::NamedArgs args, int arg0, double arg1, int arg2, bool arg3, unsigned arg4)
+    bindings["Class55_function14"] = [](coil::Context context, coil::NamedArgs args, float arg0, short arg1, double arg2, float arg3, bool arg4)
     {
         context.reportError("Task failed successfully");
         args.get("key");
-        args.get<int>("key");
-        args.get<int>("key", context, coil::NamedArgs::ArgType::Optional);
+        args.get<float>("key");
+        args.get<float>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class55::function14(arg0, arg1, arg2, arg3, arg4);
     };
 }
@@ -187,7 +187,7 @@ std::optional<float> Class55::workInternally(std::vector<std::string> const& val
     return result;
 }
 
-void Class55::method0(int arg0, bool arg1, bool arg2, bool arg3, bool arg4)
+void Class55::method0(int arg0, unsigned arg1, bool arg2, int arg3, unsigned arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -205,7 +205,7 @@ void Class55::method0(int arg0, bool arg1, bool arg2, bool arg3, bool arg4)
         std::cout << "null" << std::endl;
 
 }
-void Class55::method1(bool arg0, int arg1, bool arg2, double arg3, unsigned arg4)
+void Class55::method1(short arg0, bool arg1, float arg2, unsigned arg3, float arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -223,98 +223,7 @@ void Class55::method1(bool arg0, int arg1, bool arg2, double arg3, unsigned arg4
         std::cout << "null" << std::endl;
 
 }
-double Class55::method2(double arg0, int arg1, float arg2, short arg3, float arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg0;
-}
-void Class55::method3(short arg0, short arg1, double arg2, short arg3, int arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-void Class55::method4(float arg0, unsigned arg1, int arg2, short arg3, int arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-void Class55::method5(double arg0, bool arg1, bool arg2, unsigned arg3, float arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-void Class55::method6(double arg0, short arg1, unsigned arg2, int arg3, int arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-short Class55::method7(short arg0, unsigned arg1, float arg2, short arg3, float arg4)
+double Class55::method2(short arg0, unsigned arg1, float arg2, double arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -333,7 +242,7 @@ short Class55::method7(short arg0, unsigned arg1, float arg2, short arg3, float 
 
     return arg3;
 }
-void Class55::method8(float arg0, bool arg1, short arg2, double arg3, bool arg4)
+void Class55::method3(float arg0, bool arg1, short arg2, int arg3, unsigned arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -351,44 +260,7 @@ void Class55::method8(float arg0, bool arg1, short arg2, double arg3, bool arg4)
         std::cout << "null" << std::endl;
 
 }
-void Class55::method9(int arg0, unsigned arg1, double arg2, short arg3, float arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-bool Class55::method10(bool arg0, float arg1, bool arg2, int arg3, short arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg2;
-}
-bool Class55::method11(bool arg0, unsigned arg1, unsigned arg2, double arg3, double arg4)
+double Class55::method4(double arg0, int arg1, double arg2, double arg3, short arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -407,7 +279,7 @@ bool Class55::method11(bool arg0, unsigned arg1, unsigned arg2, double arg3, dou
 
     return arg0;
 }
-short Class55::method12(short arg0, bool arg1, double arg2, unsigned arg3, bool arg4)
+double Class55::method5(double arg0, short arg1, unsigned arg2, double arg3, float arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -426,63 +298,7 @@ short Class55::method12(short arg0, bool arg1, double arg2, unsigned arg3, bool 
 
     return arg0;
 }
-bool Class55::method13(double arg0, bool arg1, double arg2, bool arg3, float arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg3;
-}
-void Class55::method14(double arg0, float arg1, float arg2, short arg3, double arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-
-void Class55::function0(float arg0, int arg1, float arg2, short arg3, float arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-bool Class55::function1(bool arg0, bool arg1, unsigned arg2, double arg3, bool arg4)
+short Class55::method6(unsigned arg0, short arg1, short arg2, unsigned arg3, short arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -501,7 +317,26 @@ bool Class55::function1(bool arg0, bool arg1, unsigned arg2, double arg3, bool a
 
     return arg1;
 }
-void Class55::function2(float arg0, short arg1, double arg2, float arg3, float arg4)
+int Class55::method7(int arg0, bool arg1, short arg2, bool arg3, int arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg0;
+}
+void Class55::method8(short arg0, short arg1, int arg2, float arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -519,7 +354,7 @@ void Class55::function2(float arg0, short arg1, double arg2, float arg3, float a
         std::cout << "null" << std::endl;
 
 }
-void Class55::function3(unsigned arg0, short arg1, double arg2, float arg3, short arg4)
+void Class55::method9(int arg0, int arg1, unsigned arg2, double arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -537,7 +372,7 @@ void Class55::function3(unsigned arg0, short arg1, double arg2, float arg3, shor
         std::cout << "null" << std::endl;
 
 }
-void Class55::function4(short arg0, short arg1, short arg2, unsigned arg3, double arg4)
+void Class55::method10(bool arg0, float arg1, bool arg2, bool arg3, double arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -555,26 +390,7 @@ void Class55::function4(short arg0, short arg1, short arg2, unsigned arg3, doubl
         std::cout << "null" << std::endl;
 
 }
-bool Class55::function5(float arg0, double arg1, int arg2, bool arg3, unsigned arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg3;
-}
-float Class55::function6(unsigned arg0, bool arg1, double arg2, bool arg3, float arg4)
+bool Class55::method11(double arg0, short arg1, float arg2, double arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -593,7 +409,227 @@ float Class55::function6(unsigned arg0, bool arg1, double arg2, bool arg3, float
 
     return arg4;
 }
-unsigned Class55::function7(float arg0, unsigned arg1, double arg2, unsigned arg3, double arg4)
+void Class55::method12(unsigned arg0, float arg1, bool arg2, double arg3, short arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+void Class55::method13(bool arg0, double arg1, short arg2, float arg3, float arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+void Class55::method14(unsigned arg0, double arg1, unsigned arg2, int arg3, float arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+
+short Class55::function0(bool arg0, double arg1, double arg2, int arg3, short arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg4;
+}
+void Class55::function1(double arg0, int arg1, float arg2, double arg3, short arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+void Class55::function2(double arg0, int arg1, double arg2, short arg3, unsigned arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+void Class55::function3(double arg0, float arg1, float arg2, float arg3, unsigned arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+double Class55::function4(double arg0, bool arg1, double arg2, unsigned arg3, unsigned arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg2;
+}
+void Class55::function5(bool arg0, float arg1, int arg2, bool arg3, short arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+void Class55::function6(bool arg0, float arg1, bool arg2, short arg3, int arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+unsigned Class55::function7(int arg0, int arg1, int arg2, float arg3, unsigned arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg4;
+}
+void Class55::function8(double arg0, float arg1, float arg2, unsigned arg3, short arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+bool Class55::function9(float arg0, bool arg1, unsigned arg2, double arg3, int arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -612,7 +648,7 @@ unsigned Class55::function7(float arg0, unsigned arg1, double arg2, unsigned arg
 
     return arg1;
 }
-void Class55::function8(unsigned arg0, double arg1, float arg2, short arg3, float arg4)
+int Class55::function10(int arg0, float arg1, bool arg2, float arg3, float arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -629,44 +665,9 @@ void Class55::function8(unsigned arg0, double arg1, float arg2, short arg3, floa
     else
         std::cout << "null" << std::endl;
 
+    return arg0;
 }
-void Class55::function9(double arg0, float arg1, short arg2, double arg3, float arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-void Class55::function10(float arg0, int arg1, short arg2, double arg3, float arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-bool Class55::function11(bool arg0, float arg1, float arg2, bool arg3, short arg4)
+int Class55::function11(short arg0, float arg1, double arg2, int arg3, double arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -685,26 +686,7 @@ bool Class55::function11(bool arg0, float arg1, float arg2, bool arg3, short arg
 
     return arg3;
 }
-int Class55::function12(bool arg0, int arg1, short arg2, bool arg3, double arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg1;
-}
-void Class55::function13(float arg0, short arg1, bool arg2, float arg3, unsigned arg4)
+void Class55::function12(short arg0, bool arg1, double arg2, short arg3, int arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -722,7 +704,7 @@ void Class55::function13(float arg0, short arg1, bool arg2, float arg3, unsigned
         std::cout << "null" << std::endl;
 
 }
-void Class55::function14(int arg0, double arg1, int arg2, bool arg3, unsigned arg4)
+void Class55::function13(float arg0, double arg1, short arg2, int arg3, double arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -739,4 +721,23 @@ void Class55::function14(int arg0, double arg1, int arg2, bool arg3, unsigned ar
     else
         std::cout << "null" << std::endl;
 
+}
+bool Class55::function14(float arg0, short arg1, double arg2, float arg3, bool arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg4;
 }
