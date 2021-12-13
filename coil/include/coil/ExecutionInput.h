@@ -32,12 +32,12 @@ namespace coil
             return std::tie(objectName, functionName, arguments, namedArguments);
         }
 
-        bool operator==(ExecutionInput const& rhs)
+        bool operator==(ExecutionInput const& rhs) const
         {
             return tie() == rhs.tie();
         }
 
-        bool operator!=(ExecutionInput const& rhs)
+        bool operator!=(ExecutionInput const& rhs) const
         {
             return !(*this == rhs);
         }
