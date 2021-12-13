@@ -35,5 +35,5 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 message(STATUS "Fetching googletest from GitHub...")
 FetchContent_MakeAvailable(googletest)
 
-add_test(NAME coil-test
-         COMMAND coil-test)
+add_test(NAME ${PROJECT_NAME}
+         COMMAND ${PROJECT_NAME})
