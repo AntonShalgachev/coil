@@ -41,21 +41,126 @@ void Class94::registerBindings(GeneralBindings& bindings)
     ::bind<Class94>(bindings, "method13", &Class94::method13);
     ::bind<Class94>(bindings, "method14", &Class94::method14);
 
-    bindings["Class94_function0"] = &Class94::function0;
-    bindings["Class94_function1"] = &Class94::function1;
-    bindings["Class94_function2"] = &Class94::function2;
-    bindings["Class94_function3"] = &Class94::function3;
-    bindings["Class94_function4"] = &Class94::function4;
-    bindings["Class94_function5"] = &Class94::function5;
-    bindings["Class94_function6"] = &Class94::function6;
-    bindings["Class94_function7"] = &Class94::function7;
-    bindings["Class94_function8"] = &Class94::function8;
-    bindings["Class94_function9"] = &Class94::function9;
-    bindings["Class94_function10"] = &Class94::function10;
-    bindings["Class94_function11"] = &Class94::function11;
-    bindings["Class94_function12"] = &Class94::function12;
-    bindings["Class94_function13"] = &Class94::function13;
-    bindings["Class94_function14"] = &Class94::function14;
+    bindings["Class94_function0"] = [](coil::Context context, coil::NamedArgs args, bool arg0, int arg1, unsigned arg2, short arg3, double arg4)
+    {
+        context.reportError("Task failed successfully");
+        args.get("key");
+        args.get<bool>("key");
+        args.get<bool>("key", context, coil::NamedArgs::ArgType::Optional);
+        return Class94::function0(arg0, arg1, arg2, arg3, arg4);
+    };
+    bindings["Class94_function1"] = [](coil::Context context, coil::NamedArgs args, short arg0, double arg1, short arg2, short arg3, bool arg4)
+    {
+        context.reportError("Task failed successfully");
+        args.get("key");
+        args.get<short>("key");
+        args.get<short>("key", context, coil::NamedArgs::ArgType::Optional);
+        return Class94::function1(arg0, arg1, arg2, arg3, arg4);
+    };
+    bindings["Class94_function2"] = [](coil::Context context, coil::NamedArgs args, double arg0, int arg1, int arg2, short arg3, int arg4)
+    {
+        context.reportError("Task failed successfully");
+        args.get("key");
+        args.get<double>("key");
+        args.get<double>("key", context, coil::NamedArgs::ArgType::Optional);
+        return Class94::function2(arg0, arg1, arg2, arg3, arg4);
+    };
+    bindings["Class94_function3"] = [](coil::Context context, coil::NamedArgs args, short arg0, int arg1, unsigned arg2, int arg3, float arg4)
+    {
+        context.reportError("Task failed successfully");
+        args.get("key");
+        args.get<short>("key");
+        args.get<short>("key", context, coil::NamedArgs::ArgType::Optional);
+        return Class94::function3(arg0, arg1, arg2, arg3, arg4);
+    };
+    bindings["Class94_function4"] = [](coil::Context context, coil::NamedArgs args, unsigned arg0, double arg1, int arg2, unsigned arg3, short arg4)
+    {
+        context.reportError("Task failed successfully");
+        args.get("key");
+        args.get<unsigned>("key");
+        args.get<unsigned>("key", context, coil::NamedArgs::ArgType::Optional);
+        return Class94::function4(arg0, arg1, arg2, arg3, arg4);
+    };
+    bindings["Class94_function5"] = [](coil::Context context, coil::NamedArgs args, unsigned arg0, double arg1, int arg2, bool arg3, unsigned arg4)
+    {
+        context.reportError("Task failed successfully");
+        args.get("key");
+        args.get<unsigned>("key");
+        args.get<unsigned>("key", context, coil::NamedArgs::ArgType::Optional);
+        return Class94::function5(arg0, arg1, arg2, arg3, arg4);
+    };
+    bindings["Class94_function6"] = [](coil::Context context, coil::NamedArgs args, int arg0, bool arg1, float arg2, float arg3, unsigned arg4)
+    {
+        context.reportError("Task failed successfully");
+        args.get("key");
+        args.get<int>("key");
+        args.get<int>("key", context, coil::NamedArgs::ArgType::Optional);
+        return Class94::function6(arg0, arg1, arg2, arg3, arg4);
+    };
+    bindings["Class94_function7"] = [](coil::Context context, coil::NamedArgs args, double arg0, int arg1, double arg2, int arg3, double arg4)
+    {
+        context.reportError("Task failed successfully");
+        args.get("key");
+        args.get<double>("key");
+        args.get<double>("key", context, coil::NamedArgs::ArgType::Optional);
+        return Class94::function7(arg0, arg1, arg2, arg3, arg4);
+    };
+    bindings["Class94_function8"] = [](coil::Context context, coil::NamedArgs args, short arg0, bool arg1, int arg2, short arg3, bool arg4)
+    {
+        context.reportError("Task failed successfully");
+        args.get("key");
+        args.get<short>("key");
+        args.get<short>("key", context, coil::NamedArgs::ArgType::Optional);
+        return Class94::function8(arg0, arg1, arg2, arg3, arg4);
+    };
+    bindings["Class94_function9"] = [](coil::Context context, coil::NamedArgs args, short arg0, int arg1, short arg2, bool arg3, bool arg4)
+    {
+        context.reportError("Task failed successfully");
+        args.get("key");
+        args.get<short>("key");
+        args.get<short>("key", context, coil::NamedArgs::ArgType::Optional);
+        return Class94::function9(arg0, arg1, arg2, arg3, arg4);
+    };
+    bindings["Class94_function10"] = [](coil::Context context, coil::NamedArgs args, int arg0, double arg1, bool arg2, double arg3, bool arg4)
+    {
+        context.reportError("Task failed successfully");
+        args.get("key");
+        args.get<int>("key");
+        args.get<int>("key", context, coil::NamedArgs::ArgType::Optional);
+        return Class94::function10(arg0, arg1, arg2, arg3, arg4);
+    };
+    bindings["Class94_function11"] = [](coil::Context context, coil::NamedArgs args, short arg0, double arg1, float arg2, bool arg3, int arg4)
+    {
+        context.reportError("Task failed successfully");
+        args.get("key");
+        args.get<short>("key");
+        args.get<short>("key", context, coil::NamedArgs::ArgType::Optional);
+        return Class94::function11(arg0, arg1, arg2, arg3, arg4);
+    };
+    bindings["Class94_function12"] = [](coil::Context context, coil::NamedArgs args, int arg0, bool arg1, double arg2, short arg3, short arg4)
+    {
+        context.reportError("Task failed successfully");
+        args.get("key");
+        args.get<int>("key");
+        args.get<int>("key", context, coil::NamedArgs::ArgType::Optional);
+        return Class94::function12(arg0, arg1, arg2, arg3, arg4);
+    };
+    bindings["Class94_function13"] = [](coil::Context context, coil::NamedArgs args, double arg0, bool arg1, int arg2, double arg3, double arg4)
+    {
+        context.reportError("Task failed successfully");
+        args.get("key");
+        args.get<double>("key");
+        args.get<double>("key", context, coil::NamedArgs::ArgType::Optional);
+        return Class94::function13(arg0, arg1, arg2, arg3, arg4);
+    };
+    bindings["Class94_function14"] = [](coil::Context context, coil::NamedArgs args, bool arg0, float arg1, double arg2, int arg3, float arg4)
+    {
+        context.reportError("Task failed successfully");
+        args.get("key");
+        args.get<bool>("key");
+        args.get<bool>("key", context, coil::NamedArgs::ArgType::Optional);
+        return Class94::function14(arg0, arg1, arg2, arg3, arg4);
+    };
 }
 #endif
 
