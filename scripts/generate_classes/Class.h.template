@@ -1,6 +1,12 @@
 \#pragma once
 
+// Generated with seed '$seed'
+
 \#include "../../Common.h"
+
+#for $include_index in $includes
+\#include "Class${include_index}.h"
+#end for
 
 class $name
 {

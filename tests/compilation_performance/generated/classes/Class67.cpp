@@ -84,7 +84,7 @@ std::optional<float> Class67::workInternally(std::vector<std::string> const& val
     return result;
 }
 
-void Class67::method0(short arg0, float arg1, int arg2, bool arg3, int arg4)
+void Class67::method0(unsigned arg0, bool arg1, int arg2, unsigned arg3, float arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -102,7 +102,7 @@ void Class67::method0(short arg0, float arg1, int arg2, bool arg3, int arg4)
         std::cout << "null" << std::endl;
 
 }
-void Class67::method1(int arg0, int arg1, double arg2, double arg3, unsigned arg4)
+void Class67::method1(double arg0, bool arg1, double arg2, short arg3, float arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -120,7 +120,7 @@ void Class67::method1(int arg0, int arg1, double arg2, double arg3, unsigned arg
         std::cout << "null" << std::endl;
 
 }
-short Class67::method2(bool arg0, short arg1, int arg2, unsigned arg3, unsigned arg4)
+int Class67::method2(double arg0, short arg1, double arg2, int arg3, int arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -137,9 +137,9 @@ short Class67::method2(bool arg0, short arg1, int arg2, unsigned arg3, unsigned 
     else
         std::cout << "null" << std::endl;
 
-    return arg1;
+    return arg4;
 }
-void Class67::method3(float arg0, short arg1, bool arg2, int arg3, short arg4)
+void Class67::method3(float arg0, short arg1, double arg2, float arg3, unsigned arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -157,7 +157,7 @@ void Class67::method3(float arg0, short arg1, bool arg2, int arg3, short arg4)
         std::cout << "null" << std::endl;
 
 }
-double Class67::method4(float arg0, bool arg1, double arg2, unsigned arg3, unsigned arg4)
+unsigned Class67::method4(float arg0, double arg1, unsigned arg2, bool arg3, double arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -176,7 +176,7 @@ double Class67::method4(float arg0, bool arg1, double arg2, unsigned arg3, unsig
 
     return arg2;
 }
-bool Class67::method5(bool arg0, short arg1, int arg2, int arg3, bool arg4)
+bool Class67::method5(float arg0, unsigned arg1, double arg2, int arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -193,9 +193,28 @@ bool Class67::method5(bool arg0, short arg1, int arg2, int arg3, bool arg4)
     else
         std::cout << "null" << std::endl;
 
-    return arg0;
+    return arg4;
 }
-bool Class67::method6(short arg0, bool arg1, short arg2, double arg3, int arg4)
+float Class67::method6(double arg0, bool arg1, double arg2, float arg3, float arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg4;
+}
+bool Class67::method7(double arg0, bool arg1, double arg2, unsigned arg3, unsigned arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -214,7 +233,7 @@ bool Class67::method6(short arg0, bool arg1, short arg2, double arg3, int arg4)
 
     return arg1;
 }
-void Class67::method7(bool arg0, float arg1, short arg2, double arg3, double arg4)
+void Class67::method8(unsigned arg0, short arg1, float arg2, bool arg3, int arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -232,26 +251,7 @@ void Class67::method7(bool arg0, float arg1, short arg2, double arg3, double arg
         std::cout << "null" << std::endl;
 
 }
-unsigned Class67::method8(unsigned arg0, bool arg1, unsigned arg2, short arg3, double arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg0;
-}
-void Class67::method9(double arg0, short arg1, int arg2, int arg3, float arg4)
+void Class67::method9(float arg0, float arg1, bool arg2, int arg3, float arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -269,7 +269,7 @@ void Class67::method9(double arg0, short arg1, int arg2, int arg3, float arg4)
         std::cout << "null" << std::endl;
 
 }
-bool Class67::method10(bool arg0, unsigned arg1, bool arg2, double arg3, int arg4)
+double Class67::method10(bool arg0, float arg1, double arg2, bool arg3, int arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -286,9 +286,9 @@ bool Class67::method10(bool arg0, unsigned arg1, bool arg2, double arg3, int arg
     else
         std::cout << "null" << std::endl;
 
-    return arg0;
+    return arg2;
 }
-int Class67::method11(int arg0, int arg1, float arg2, double arg3, int arg4)
+bool Class67::method11(bool arg0, bool arg1, int arg2, double arg3, float arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -307,7 +307,7 @@ int Class67::method11(int arg0, int arg1, float arg2, double arg3, int arg4)
 
     return arg0;
 }
-unsigned Class67::method12(unsigned arg0, bool arg1, short arg2, double arg3, short arg4)
+bool Class67::method12(short arg0, bool arg1, unsigned arg2, int arg3, unsigned arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -319,98 +319,6 @@ unsigned Class67::method12(unsigned arg0, bool arg1, short arg2, double arg3, sh
         strings.push_back(std::to_string(dist(rd)));
 
     auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg0;
-}
-void Class67::method13(short arg0, bool arg1, bool arg2, double arg3, int arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-void Class67::method14(bool arg0, int arg1, unsigned arg2, short arg3, double arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-
-void ns_Class67::method0(short arg0, float arg1, int arg2, bool arg3, int arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class67::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-void ns_Class67::method1(int arg0, int arg1, double arg2, double arg3, unsigned arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class67::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-short ns_Class67::method2(bool arg0, short arg1, int arg2, unsigned arg3, unsigned arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class67::workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
@@ -418,7 +326,45 @@ short ns_Class67::method2(bool arg0, short arg1, int arg2, unsigned arg3, unsign
 
     return arg1;
 }
-void ns_Class67::method3(float arg0, short arg1, bool arg2, int arg3, short arg4)
+unsigned Class67::method13(unsigned arg0, bool arg1, unsigned arg2, unsigned arg3, int arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg0;
+}
+void Class67::method14(short arg0, float arg1, double arg2, float arg3, int arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+
+void ns_Class67::method0(unsigned arg0, bool arg1, int arg2, unsigned arg3, float arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -436,7 +382,62 @@ void ns_Class67::method3(float arg0, short arg1, bool arg2, int arg3, short arg4
         std::cout << "null" << std::endl;
 
 }
-double ns_Class67::method4(float arg0, bool arg1, double arg2, unsigned arg3, unsigned arg4)
+void ns_Class67::method1(double arg0, bool arg1, double arg2, short arg3, float arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = Class67::workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+int ns_Class67::method2(double arg0, short arg1, double arg2, int arg3, int arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = Class67::workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg4;
+}
+void ns_Class67::method3(float arg0, short arg1, double arg2, float arg3, unsigned arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = Class67::workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+unsigned ns_Class67::method4(float arg0, double arg1, unsigned arg2, bool arg3, double arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -455,7 +456,7 @@ double ns_Class67::method4(float arg0, bool arg1, double arg2, unsigned arg3, un
 
     return arg2;
 }
-bool ns_Class67::method5(bool arg0, short arg1, int arg2, int arg3, bool arg4)
+bool ns_Class67::method5(float arg0, unsigned arg1, double arg2, int arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -472,9 +473,28 @@ bool ns_Class67::method5(bool arg0, short arg1, int arg2, int arg3, bool arg4)
     else
         std::cout << "null" << std::endl;
 
-    return arg0;
+    return arg4;
 }
-bool ns_Class67::method6(short arg0, bool arg1, short arg2, double arg3, int arg4)
+float ns_Class67::method6(double arg0, bool arg1, double arg2, float arg3, float arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = Class67::workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg4;
+}
+bool ns_Class67::method7(double arg0, bool arg1, double arg2, unsigned arg3, unsigned arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -493,7 +513,7 @@ bool ns_Class67::method6(short arg0, bool arg1, short arg2, double arg3, int arg
 
     return arg1;
 }
-void ns_Class67::method7(bool arg0, float arg1, short arg2, double arg3, double arg4)
+void ns_Class67::method8(unsigned arg0, short arg1, float arg2, bool arg3, int arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -511,26 +531,7 @@ void ns_Class67::method7(bool arg0, float arg1, short arg2, double arg3, double 
         std::cout << "null" << std::endl;
 
 }
-unsigned ns_Class67::method8(unsigned arg0, bool arg1, unsigned arg2, short arg3, double arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class67::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg0;
-}
-void ns_Class67::method9(double arg0, short arg1, int arg2, int arg3, float arg4)
+void ns_Class67::method9(float arg0, float arg1, bool arg2, int arg3, float arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -548,7 +549,7 @@ void ns_Class67::method9(double arg0, short arg1, int arg2, int arg3, float arg4
         std::cout << "null" << std::endl;
 
 }
-bool ns_Class67::method10(bool arg0, unsigned arg1, bool arg2, double arg3, int arg4)
+double ns_Class67::method10(bool arg0, float arg1, double arg2, bool arg3, int arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -565,9 +566,9 @@ bool ns_Class67::method10(bool arg0, unsigned arg1, bool arg2, double arg3, int 
     else
         std::cout << "null" << std::endl;
 
-    return arg0;
+    return arg2;
 }
-int ns_Class67::method11(int arg0, int arg1, float arg2, double arg3, int arg4)
+bool ns_Class67::method11(bool arg0, bool arg1, int arg2, double arg3, float arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -586,7 +587,26 @@ int ns_Class67::method11(int arg0, int arg1, float arg2, double arg3, int arg4)
 
     return arg0;
 }
-unsigned ns_Class67::method12(unsigned arg0, bool arg1, short arg2, double arg3, short arg4)
+bool ns_Class67::method12(short arg0, bool arg1, unsigned arg2, int arg3, unsigned arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = Class67::workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg1;
+}
+unsigned ns_Class67::method13(unsigned arg0, bool arg1, unsigned arg2, unsigned arg3, int arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -605,25 +625,7 @@ unsigned ns_Class67::method12(unsigned arg0, bool arg1, short arg2, double arg3,
 
     return arg0;
 }
-void ns_Class67::method13(short arg0, bool arg1, bool arg2, double arg3, int arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class67::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-void ns_Class67::method14(bool arg0, int arg1, unsigned arg2, short arg3, double arg4)
+void ns_Class67::method14(short arg0, float arg1, double arg2, float arg3, int arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     

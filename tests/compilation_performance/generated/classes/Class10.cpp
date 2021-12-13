@@ -84,7 +84,7 @@ std::optional<float> Class10::workInternally(std::vector<std::string> const& val
     return result;
 }
 
-float Class10::method0(double arg0, short arg1, int arg2, float arg3, short arg4)
+int Class10::method0(float arg0, bool arg1, short arg2, int arg3, float arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -103,7 +103,7 @@ float Class10::method0(double arg0, short arg1, int arg2, float arg3, short arg4
 
     return arg3;
 }
-void Class10::method1(short arg0, int arg1, double arg2, float arg3, double arg4)
+void Class10::method1(unsigned arg0, unsigned arg1, short arg2, float arg3, unsigned arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -121,80 +121,7 @@ void Class10::method1(short arg0, int arg1, double arg2, float arg3, double arg4
         std::cout << "null" << std::endl;
 
 }
-void Class10::method2(int arg0, short arg1, int arg2, double arg3, int arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-void Class10::method3(bool arg0, short arg1, short arg2, double arg3, unsigned arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-void Class10::method4(double arg0, bool arg1, short arg2, int arg3, bool arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-float Class10::method5(short arg0, double arg1, float arg2, unsigned arg3, float arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg2;
-}
-int Class10::method6(bool arg0, double arg1, unsigned arg2, short arg3, int arg4)
+double Class10::method2(short arg0, bool arg1, float arg2, bool arg3, double arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -213,7 +140,7 @@ int Class10::method6(bool arg0, double arg1, unsigned arg2, short arg3, int arg4
 
     return arg4;
 }
-void Class10::method7(double arg0, double arg1, double arg2, int arg3, double arg4)
+unsigned Class10::method3(unsigned arg0, unsigned arg1, short arg2, unsigned arg3, unsigned arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -230,8 +157,9 @@ void Class10::method7(double arg0, double arg1, double arg2, int arg3, double ar
     else
         std::cout << "null" << std::endl;
 
+    return arg1;
 }
-void Class10::method8(double arg0, double arg1, unsigned arg2, bool arg3, int arg4)
+short Class10::method4(short arg0, float arg1, short arg2, float arg3, short arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -248,8 +176,28 @@ void Class10::method8(double arg0, double arg1, unsigned arg2, bool arg3, int ar
     else
         std::cout << "null" << std::endl;
 
+    return arg2;
 }
-float Class10::method9(float arg0, short arg1, bool arg2, double arg3, double arg4)
+bool Class10::method5(double arg0, bool arg1, float arg2, unsigned arg3, float arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg1;
+}
+bool Class10::method6(bool arg0, float arg1, unsigned arg2, bool arg3, short arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -268,7 +216,7 @@ float Class10::method9(float arg0, short arg1, bool arg2, double arg3, double ar
 
     return arg0;
 }
-void Class10::method10(unsigned arg0, bool arg1, double arg2, double arg3, unsigned arg4)
+void Class10::method7(bool arg0, int arg1, float arg2, float arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -286,7 +234,26 @@ void Class10::method10(unsigned arg0, bool arg1, double arg2, double arg3, unsig
         std::cout << "null" << std::endl;
 
 }
-void Class10::method11(bool arg0, double arg1, int arg2, bool arg3, bool arg4)
+float Class10::method8(double arg0, unsigned arg1, int arg2, float arg3, float arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg4;
+}
+void Class10::method9(int arg0, int arg1, double arg2, bool arg3, float arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -304,7 +271,45 @@ void Class10::method11(bool arg0, double arg1, int arg2, bool arg3, bool arg4)
         std::cout << "null" << std::endl;
 
 }
-void Class10::method12(unsigned arg0, int arg1, double arg2, float arg3, bool arg4)
+short Class10::method10(int arg0, unsigned arg1, bool arg2, float arg3, short arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg4;
+}
+short Class10::method11(int arg0, unsigned arg1, double arg2, float arg3, short arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg4;
+}
+void Class10::method12(unsigned arg0, bool arg1, int arg2, short arg3, double arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -322,7 +327,26 @@ void Class10::method12(unsigned arg0, int arg1, double arg2, float arg3, bool ar
         std::cout << "null" << std::endl;
 
 }
-void Class10::method13(bool arg0, double arg1, float arg2, short arg3, unsigned arg4)
+unsigned Class10::method13(double arg0, bool arg1, unsigned arg2, unsigned arg3, int arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg3;
+}
+void Class10::method14(unsigned arg0, int arg1, short arg2, float arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -340,26 +364,8 @@ void Class10::method13(bool arg0, double arg1, float arg2, short arg3, unsigned 
         std::cout << "null" << std::endl;
 
 }
-void Class10::method14(bool arg0, unsigned arg1, bool arg2, float arg3, bool arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
 
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-
-float ns_Class10::method0(double arg0, short arg1, int arg2, float arg3, short arg4)
+int ns_Class10::method0(float arg0, bool arg1, short arg2, int arg3, float arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -378,7 +384,7 @@ float ns_Class10::method0(double arg0, short arg1, int arg2, float arg3, short a
 
     return arg3;
 }
-void ns_Class10::method1(short arg0, int arg1, double arg2, float arg3, double arg4)
+void ns_Class10::method1(unsigned arg0, unsigned arg1, short arg2, float arg3, unsigned arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -396,80 +402,7 @@ void ns_Class10::method1(short arg0, int arg1, double arg2, float arg3, double a
         std::cout << "null" << std::endl;
 
 }
-void ns_Class10::method2(int arg0, short arg1, int arg2, double arg3, int arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class10::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-void ns_Class10::method3(bool arg0, short arg1, short arg2, double arg3, unsigned arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class10::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-void ns_Class10::method4(double arg0, bool arg1, short arg2, int arg3, bool arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class10::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-float ns_Class10::method5(short arg0, double arg1, float arg2, unsigned arg3, float arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class10::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg2;
-}
-int ns_Class10::method6(bool arg0, double arg1, unsigned arg2, short arg3, int arg4)
+double ns_Class10::method2(short arg0, bool arg1, float arg2, bool arg3, double arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -488,7 +421,7 @@ int ns_Class10::method6(bool arg0, double arg1, unsigned arg2, short arg3, int a
 
     return arg4;
 }
-void ns_Class10::method7(double arg0, double arg1, double arg2, int arg3, double arg4)
+unsigned ns_Class10::method3(unsigned arg0, unsigned arg1, short arg2, unsigned arg3, unsigned arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -505,8 +438,9 @@ void ns_Class10::method7(double arg0, double arg1, double arg2, int arg3, double
     else
         std::cout << "null" << std::endl;
 
+    return arg1;
 }
-void ns_Class10::method8(double arg0, double arg1, unsigned arg2, bool arg3, int arg4)
+short ns_Class10::method4(short arg0, float arg1, short arg2, float arg3, short arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -523,8 +457,28 @@ void ns_Class10::method8(double arg0, double arg1, unsigned arg2, bool arg3, int
     else
         std::cout << "null" << std::endl;
 
+    return arg2;
 }
-float ns_Class10::method9(float arg0, short arg1, bool arg2, double arg3, double arg4)
+bool ns_Class10::method5(double arg0, bool arg1, float arg2, unsigned arg3, float arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = Class10::workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg1;
+}
+bool ns_Class10::method6(bool arg0, float arg1, unsigned arg2, bool arg3, short arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -543,7 +497,7 @@ float ns_Class10::method9(float arg0, short arg1, bool arg2, double arg3, double
 
     return arg0;
 }
-void ns_Class10::method10(unsigned arg0, bool arg1, double arg2, double arg3, unsigned arg4)
+void ns_Class10::method7(bool arg0, int arg1, float arg2, float arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -561,7 +515,26 @@ void ns_Class10::method10(unsigned arg0, bool arg1, double arg2, double arg3, un
         std::cout << "null" << std::endl;
 
 }
-void ns_Class10::method11(bool arg0, double arg1, int arg2, bool arg3, bool arg4)
+float ns_Class10::method8(double arg0, unsigned arg1, int arg2, float arg3, float arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = Class10::workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg4;
+}
+void ns_Class10::method9(int arg0, int arg1, double arg2, bool arg3, float arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -579,7 +552,45 @@ void ns_Class10::method11(bool arg0, double arg1, int arg2, bool arg3, bool arg4
         std::cout << "null" << std::endl;
 
 }
-void ns_Class10::method12(unsigned arg0, int arg1, double arg2, float arg3, bool arg4)
+short ns_Class10::method10(int arg0, unsigned arg1, bool arg2, float arg3, short arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = Class10::workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg4;
+}
+short ns_Class10::method11(int arg0, unsigned arg1, double arg2, float arg3, short arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = Class10::workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg4;
+}
+void ns_Class10::method12(unsigned arg0, bool arg1, int arg2, short arg3, double arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -597,7 +608,7 @@ void ns_Class10::method12(unsigned arg0, int arg1, double arg2, float arg3, bool
         std::cout << "null" << std::endl;
 
 }
-void ns_Class10::method13(bool arg0, double arg1, float arg2, short arg3, unsigned arg4)
+unsigned ns_Class10::method13(double arg0, bool arg1, unsigned arg2, unsigned arg3, int arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -614,8 +625,9 @@ void ns_Class10::method13(bool arg0, double arg1, float arg2, short arg3, unsign
     else
         std::cout << "null" << std::endl;
 
+    return arg3;
 }
-void ns_Class10::method14(bool arg0, unsigned arg1, bool arg2, float arg3, bool arg4)
+void ns_Class10::method14(unsigned arg0, int arg1, short arg2, float arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     

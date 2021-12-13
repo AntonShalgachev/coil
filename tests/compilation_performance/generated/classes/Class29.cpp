@@ -84,7 +84,7 @@ std::optional<float> Class29::workInternally(std::vector<std::string> const& val
     return result;
 }
 
-void Class29::method0(float arg0, unsigned arg1, float arg2, int arg3, int arg4)
+void Class29::method0(bool arg0, unsigned arg1, float arg2, bool arg3, double arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -102,7 +102,7 @@ void Class29::method0(float arg0, unsigned arg1, float arg2, int arg3, int arg4)
         std::cout << "null" << std::endl;
 
 }
-int Class29::method1(double arg0, float arg1, short arg2, double arg3, int arg4)
+double Class29::method1(double arg0, float arg1, double arg2, double arg3, double arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -121,7 +121,45 @@ int Class29::method1(double arg0, float arg1, short arg2, double arg3, int arg4)
 
     return arg4;
 }
-void Class29::method2(int arg0, bool arg1, float arg2, int arg3, int arg4)
+float Class29::method2(bool arg0, float arg1, float arg2, double arg3, unsigned arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg2;
+}
+float Class29::method3(float arg0, int arg1, bool arg2, double arg3, unsigned arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg0;
+}
+void Class29::method4(double arg0, unsigned arg1, float arg2, short arg3, double arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -139,7 +177,7 @@ void Class29::method2(int arg0, bool arg1, float arg2, int arg3, int arg4)
         std::cout << "null" << std::endl;
 
 }
-short Class29::method3(double arg0, double arg1, unsigned arg2, short arg3, float arg4)
+unsigned Class29::method5(short arg0, bool arg1, double arg2, unsigned arg3, float arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -158,26 +196,7 @@ short Class29::method3(double arg0, double arg1, unsigned arg2, short arg3, floa
 
     return arg3;
 }
-float Class29::method4(float arg0, float arg1, float arg2, int arg3, short arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg2;
-}
-void Class29::method5(bool arg0, short arg1, float arg2, bool arg3, int arg4)
+void Class29::method6(int arg0, float arg1, short arg2, double arg3, int arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -195,26 +214,7 @@ void Class29::method5(bool arg0, short arg1, float arg2, bool arg3, int arg4)
         std::cout << "null" << std::endl;
 
 }
-unsigned Class29::method6(bool arg0, short arg1, unsigned arg2, double arg3, short arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg2;
-}
-void Class29::method7(short arg0, short arg1, float arg2, double arg3, short arg4)
+void Class29::method7(double arg0, float arg1, int arg2, unsigned arg3, short arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -232,7 +232,7 @@ void Class29::method7(short arg0, short arg1, float arg2, double arg3, short arg
         std::cout << "null" << std::endl;
 
 }
-void Class29::method8(unsigned arg0, int arg1, unsigned arg2, bool arg3, unsigned arg4)
+float Class29::method8(float arg0, int arg1, float arg2, short arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -249,8 +249,9 @@ void Class29::method8(unsigned arg0, int arg1, unsigned arg2, bool arg3, unsigne
     else
         std::cout << "null" << std::endl;
 
+    return arg0;
 }
-bool Class29::method9(unsigned arg0, bool arg1, double arg2, unsigned arg3, double arg4)
+float Class29::method9(short arg0, float arg1, double arg2, int arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -269,7 +270,26 @@ bool Class29::method9(unsigned arg0, bool arg1, double arg2, unsigned arg3, doub
 
     return arg1;
 }
-void Class29::method10(double arg0, bool arg1, int arg2, short arg3, short arg4)
+unsigned Class29::method10(int arg0, bool arg1, unsigned arg2, int arg3, int arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg2;
+}
+void Class29::method11(float arg0, bool arg1, unsigned arg2, double arg3, short arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -287,7 +307,7 @@ void Class29::method10(double arg0, bool arg1, int arg2, short arg3, short arg4)
         std::cout << "null" << std::endl;
 
 }
-void Class29::method11(int arg0, short arg1, unsigned arg2, int arg3, float arg4)
+void Class29::method12(short arg0, short arg1, int arg2, float arg3, double arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -305,7 +325,7 @@ void Class29::method11(int arg0, short arg1, unsigned arg2, int arg3, float arg4
         std::cout << "null" << std::endl;
 
 }
-float Class29::method12(float arg0, unsigned arg1, float arg2, short arg3, float arg4)
+void Class29::method13(unsigned arg0, unsigned arg1, double arg2, bool arg3, unsigned arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -317,6 +337,62 @@ float Class29::method12(float arg0, unsigned arg1, float arg2, short arg3, float
         strings.push_back(std::to_string(dist(rd)));
 
     auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+unsigned Class29::method14(float arg0, unsigned arg1, bool arg2, float arg3, float arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg1;
+}
+
+void ns_Class29::method0(bool arg0, unsigned arg1, float arg2, bool arg3, double arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = Class29::workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+double ns_Class29::method1(double arg0, float arg1, double arg2, double arg3, double arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = Class29::workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
@@ -324,7 +400,7 @@ float Class29::method12(float arg0, unsigned arg1, float arg2, short arg3, float
 
     return arg4;
 }
-void Class29::method13(double arg0, bool arg1, double arg2, float arg3, double arg4)
+float ns_Class29::method2(bool arg0, float arg1, float arg2, double arg3, unsigned arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -335,14 +411,15 @@ void Class29::method13(double arg0, bool arg1, double arg2, float arg3, double a
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = workInternally(strings);
+    auto result = Class29::workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
+    return arg2;
 }
-void Class29::method14(unsigned arg0, float arg1, short arg2, unsigned arg3, float arg4)
+float ns_Class29::method3(float arg0, int arg1, bool arg2, double arg3, unsigned arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -353,15 +430,15 @@ void Class29::method14(unsigned arg0, float arg1, short arg2, unsigned arg3, flo
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = workInternally(strings);
+    auto result = Class29::workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
+    return arg0;
 }
-
-void ns_Class29::method0(float arg0, unsigned arg1, float arg2, int arg3, int arg4)
+void ns_Class29::method4(double arg0, unsigned arg1, float arg2, short arg3, double arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -379,44 +456,7 @@ void ns_Class29::method0(float arg0, unsigned arg1, float arg2, int arg3, int ar
         std::cout << "null" << std::endl;
 
 }
-int ns_Class29::method1(double arg0, float arg1, short arg2, double arg3, int arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class29::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg4;
-}
-void ns_Class29::method2(int arg0, bool arg1, float arg2, int arg3, int arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class29::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-short ns_Class29::method3(double arg0, double arg1, unsigned arg2, short arg3, float arg4)
+unsigned ns_Class29::method5(short arg0, bool arg1, double arg2, unsigned arg3, float arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -435,26 +475,7 @@ short ns_Class29::method3(double arg0, double arg1, unsigned arg2, short arg3, f
 
     return arg3;
 }
-float ns_Class29::method4(float arg0, float arg1, float arg2, int arg3, short arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class29::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg2;
-}
-void ns_Class29::method5(bool arg0, short arg1, float arg2, bool arg3, int arg4)
+void ns_Class29::method6(int arg0, float arg1, short arg2, double arg3, int arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -472,26 +493,7 @@ void ns_Class29::method5(bool arg0, short arg1, float arg2, bool arg3, int arg4)
         std::cout << "null" << std::endl;
 
 }
-unsigned ns_Class29::method6(bool arg0, short arg1, unsigned arg2, double arg3, short arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class29::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg2;
-}
-void ns_Class29::method7(short arg0, short arg1, float arg2, double arg3, short arg4)
+void ns_Class29::method7(double arg0, float arg1, int arg2, unsigned arg3, short arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -509,7 +511,7 @@ void ns_Class29::method7(short arg0, short arg1, float arg2, double arg3, short 
         std::cout << "null" << std::endl;
 
 }
-void ns_Class29::method8(unsigned arg0, int arg1, unsigned arg2, bool arg3, unsigned arg4)
+float ns_Class29::method8(float arg0, int arg1, float arg2, short arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -526,8 +528,9 @@ void ns_Class29::method8(unsigned arg0, int arg1, unsigned arg2, bool arg3, unsi
     else
         std::cout << "null" << std::endl;
 
+    return arg0;
 }
-bool ns_Class29::method9(unsigned arg0, bool arg1, double arg2, unsigned arg3, double arg4)
+float ns_Class29::method9(short arg0, float arg1, double arg2, int arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -546,7 +549,26 @@ bool ns_Class29::method9(unsigned arg0, bool arg1, double arg2, unsigned arg3, d
 
     return arg1;
 }
-void ns_Class29::method10(double arg0, bool arg1, int arg2, short arg3, short arg4)
+unsigned ns_Class29::method10(int arg0, bool arg1, unsigned arg2, int arg3, int arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = Class29::workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg2;
+}
+void ns_Class29::method11(float arg0, bool arg1, unsigned arg2, double arg3, short arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -564,7 +586,7 @@ void ns_Class29::method10(double arg0, bool arg1, int arg2, short arg3, short ar
         std::cout << "null" << std::endl;
 
 }
-void ns_Class29::method11(int arg0, short arg1, unsigned arg2, int arg3, float arg4)
+void ns_Class29::method12(short arg0, short arg1, int arg2, float arg3, double arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -582,26 +604,7 @@ void ns_Class29::method11(int arg0, short arg1, unsigned arg2, int arg3, float a
         std::cout << "null" << std::endl;
 
 }
-float ns_Class29::method12(float arg0, unsigned arg1, float arg2, short arg3, float arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class29::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg4;
-}
-void ns_Class29::method13(double arg0, bool arg1, double arg2, float arg3, double arg4)
+void ns_Class29::method13(unsigned arg0, unsigned arg1, double arg2, bool arg3, unsigned arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -619,7 +622,7 @@ void ns_Class29::method13(double arg0, bool arg1, double arg2, float arg3, doubl
         std::cout << "null" << std::endl;
 
 }
-void ns_Class29::method14(unsigned arg0, float arg1, short arg2, unsigned arg3, float arg4)
+unsigned ns_Class29::method14(float arg0, unsigned arg1, bool arg2, float arg3, float arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -636,4 +639,5 @@ void ns_Class29::method14(unsigned arg0, float arg1, short arg2, unsigned arg3, 
     else
         std::cout << "null" << std::endl;
 
+    return arg1;
 }
