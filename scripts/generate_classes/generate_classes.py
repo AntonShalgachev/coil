@@ -27,6 +27,10 @@ class ClassGenerator:
         self._types = types
         self._seed = seed
 
+        self._methods_seed_offset = 1000
+        self._functions_seed_offset = 10000
+        self._includes_seed_offset = 100000
+
     def generate(self):
         classes = []
         for i in range(self._classes_count):
@@ -41,17 +45,19 @@ class ClassGenerator:
     def _generate_class(self, class_index):
         name  = 'Class' + str(class_index)
 
-        seed = self._seed + class_index
-        random.seed(seed)
+        base_seed = self._seed + class_index
 
+        random.seed(base_seed + self._methods_seed_offset)
         methods = []
         for i in range(self._methods_count):
             methods.append(self._generate_method('method', i))
             
+        random.seed(base_seed + self._functions_seed_offset)
         functions = []
         for i in range(self._functions_count):
             functions.append(self._generate_method('function', i))
 
+        random.seed(base_seed + self._includes_seed_offset)
         includes = random.sample(range(self._classes_count), self._includes_count)
         includes = [x for x in includes if x != class_index] # don't include self
         includes.sort()
@@ -60,7 +66,7 @@ class ClassGenerator:
         desc['name'] = name
         desc['methods'] = methods
         desc['functions'] = functions
-        desc['seed'] = seed
+        desc['seed'] = base_seed
         desc['includes'] = includes
         return desc
 
