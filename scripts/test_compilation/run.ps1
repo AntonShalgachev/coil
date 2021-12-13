@@ -11,7 +11,6 @@ function Measure-SingleBuild {
     param (
         [int]$Count = 1,
         [switch]$UseCoil = $false,
-        [switch]$UseObjects = $false,
         [switch]$UseClang = $false
     )
 
@@ -24,10 +23,9 @@ function Measure-SingleBuild {
     Push-Location $buildFolder
 
     $compilerName = Get-CompilerName $UseClang.IsPresent    
-    Write-Host "Measuring with [$compilerName $(IIf $UseCoil "Coil" "-") $(IIf $UseObjects "Objects" "-")]"
+    Write-Host "Measuring with [$compilerName $(IIf $UseCoil "Coil" "-")]"
 
     $coil = [int]$UseCoil.IsPresent
-    $objects = [int]$UseObjects.IsPresent
     
     Write-Host "Running CMake..."
     if ($UseClang) {
@@ -37,7 +35,7 @@ function Measure-SingleBuild {
         $env:CC=""
         $env:CXX=""
     }
-    Invoke-Expression "cmake -DTEST_COMP_PERF=1 -DTEST_COMP_PERF_USE_COIL=$coil -DTEST_COMP_PERF_USE_OBJECTS=$objects -GNinja .." | Out-Null
+    Invoke-Expression "cmake -DTEST_COMP_PERF=1 -DTEST_COMP_PERF_USE_COIL=$coil -GNinja .." | Out-Null
 
     Write-Host "Building 0/$Count (will be discarded)..."
     ninja | Out-Null
@@ -101,12 +99,10 @@ function Measure-Builds {
 
     $base = Measure-SingleBuild -Count $Count -UseClang:$UseClang
     $coil = Measure-SingleBuild -Count $Count -UseCoil -UseClang:$UseClang
-    $coilWithObjects = Measure-SingleBuild -Count $Count -UseObjects -UseCoil -UseClang:$UseClang
 
     return @(
         @("Base ($compilerName)", $base),
-        @("Coil ($compilerName)", $coil),
-        @("Coil with objects ($compilerName)", $coilWithObjects)
+        @("Coil ($compilerName)", $coil)
     )
 }
 

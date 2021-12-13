@@ -8,7 +8,6 @@ set(RUN_CMAKE_COMPILATION_TEST OFF CACHE BOOL "Run compilation test in CMake")
 set(TEST_COMP_PERF OFF CACHE BOOL "Configure the project for compilation performance tests")
 set(TEST_COMP_PERF_USE_COIL OFF CACHE BOOL "Whether to use coil library for compilation performance test")
 set(TEST_COMP_PERF_USE_SOL OFF CACHE BOOL "Whether to use sol2 library for compilation performance test")
-set(TEST_COMP_PERF_USE_OBJECTS OFF CACHE BOOL "Whether to use objects for compilation performance test")
 
 set(TEST_RUNTIME_PERF OFF CACHE BOOL "Configure the project for runtime performance tests")
 

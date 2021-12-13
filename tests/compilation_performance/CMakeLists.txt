@@ -52,10 +52,6 @@ if(${TEST_COMP_PERF_USE_COIL})
     target_compile_definitions(${PROJECT_NAME} PRIVATE USE_COIL=1)
 endif()
 
-if(${TEST_COMP_PERF_USE_OBJECTS})
-    target_compile_definitions(${PROJECT_NAME} PRIVATE USE_OBJECTS=1)
-endif()
-
 if (${VS2017})
     message(STATUS "Adding _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS")
     target_compile_definitions(${PROJECT_NAME} PUBLIC _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS)

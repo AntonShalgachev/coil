@@ -132,30 +132,7 @@
       ]
     },
     {
-      "name": "Debug-Compilation-Perf-Sol-Funcs",
-      "generator": "Ninja",
-      "configurationType": "Debug",
-      "buildRoot": "${projectDir}\\out\\build\\${name}",
-      "installRoot": "${projectDir}\\out\\install\\${name}",
-      "cmakeCommandArgs": "",
-      "buildCommandArgs": "",
-      "ctestCommandArgs": "",
-      "inheritEnvironments": [ "msvc_x64_x64" ],
-      "variables": [
-        {
-          "name": "TEST_COMP_PERF",
-          "value": "True",
-          "type": "BOOL"
-        },
-        {
-          "name": "TEST_COMP_PERF_USE_SOL",
-          "value": "True",
-          "type": "BOOL"
-        }
-      ]
-    },
-    {
-      "name": "Debug-Compilation-Perf-Coil-Funcs",
+      "name": "Debug-Compilation-Perf-Coil",
       "generator": "Ninja",
       "configurationType": "Debug",
       "buildRoot": "${projectDir}\\out\\build\\${name}",
@@ -177,39 +154,6 @@
         },
         {
           "name": "TEST_COMP_PERF_USE_COIL",
-          "value": "True",
-          "type": "BOOL"
-        }
-      ]
-    },
-    {
-      "name": "Debug-Compilation-Perf-Coil-Objects",
-      "generator": "Ninja",
-      "configurationType": "Debug",
-      "buildRoot": "${projectDir}\\out\\build\\${name}",
-      "installRoot": "${projectDir}\\out\\install\\${name}",
-      "cmakeCommandArgs": "",
-      "buildCommandArgs": "",
-      "ctestCommandArgs": "",
-      "inheritEnvironments": [ "msvc_x64_x64" ],
-      "variables": [
-        {
-          "name": "TEST_COMP_PERF",
-          "value": "True",
-          "type": "BOOL"
-        },
-        {
-          "name": "TEST_COMP_PERF_USE_SOL",
-          "value": "False",
-          "type": "BOOL"
-        },
-        {
-          "name": "TEST_COMP_PERF_USE_COIL",
-          "value": "True",
-          "type": "BOOL"
-        },
-        {
-          "name": "TEST_COMP_PERF_USE_OBJECTS",
           "value": "True",
           "type": "BOOL"
         }
