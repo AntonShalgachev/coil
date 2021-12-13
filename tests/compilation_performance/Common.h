@@ -1,3 +1,5 @@
+#pragma once
+
 #if USE_SOL
 
 using GeneralBindings = sol::state;
