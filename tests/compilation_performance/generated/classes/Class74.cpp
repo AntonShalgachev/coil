@@ -41,6 +41,22 @@ void Class74::registerBindings(GeneralBindings& bindings)
     ::bind<Class74>(bindings, "method13", &Class74::method13);
     ::bind<Class74>(bindings, "method14", &Class74::method14);
 
+    ::bind<Class74>(bindings, "memberVariable0", &Class74::memberVariable0);
+    ::bind<Class74>(bindings, "memberVariable1", &Class74::memberVariable1);
+    ::bind<Class74>(bindings, "memberVariable2", &Class74::memberVariable2);
+    ::bind<Class74>(bindings, "memberVariable3", &Class74::memberVariable3);
+    ::bind<Class74>(bindings, "memberVariable4", &Class74::memberVariable4);
+    ::bind<Class74>(bindings, "memberVariable5", &Class74::memberVariable5);
+    ::bind<Class74>(bindings, "memberVariable6", &Class74::memberVariable6);
+    ::bind<Class74>(bindings, "memberVariable7", &Class74::memberVariable7);
+    ::bind<Class74>(bindings, "memberVariable8", &Class74::memberVariable8);
+    ::bind<Class74>(bindings, "memberVariable9", &Class74::memberVariable9);
+    ::bind<Class74>(bindings, "memberVariable10", &Class74::memberVariable10);
+    ::bind<Class74>(bindings, "memberVariable11", &Class74::memberVariable11);
+    ::bind<Class74>(bindings, "memberVariable12", &Class74::memberVariable12);
+    ::bind<Class74>(bindings, "memberVariable13", &Class74::memberVariable13);
+    ::bind<Class74>(bindings, "memberVariable14", &Class74::memberVariable14);
+
     bindings["Class74_function0"] = [](coil::Context context, coil::NamedArgs args, int arg0, short arg1, short arg2, double arg3, int arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class74::registerBindings(GeneralBindings& bindings)
         args.get<short>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class74::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class74_variable0"] = &Class74::variable0;
+    bindings["Class74_variable1"] = &Class74::variable1;
+    bindings["Class74_variable2"] = &Class74::variable2;
+    bindings["Class74_variable3"] = &Class74::variable3;
+    bindings["Class74_variable4"] = &Class74::variable4;
+    bindings["Class74_variable5"] = &Class74::variable5;
+    bindings["Class74_variable6"] = &Class74::variable6;
+    bindings["Class74_variable7"] = &Class74::variable7;
+    bindings["Class74_variable8"] = &Class74::variable8;
+    bindings["Class74_variable9"] = &Class74::variable9;
+    bindings["Class74_variable10"] = &Class74::variable10;
+    bindings["Class74_variable11"] = &Class74::variable11;
+    bindings["Class74_variable12"] = &Class74::variable12;
+    bindings["Class74_variable13"] = &Class74::variable13;
+    bindings["Class74_variable14"] = &Class74::variable14;
 }
 #endif
 

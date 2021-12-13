@@ -41,6 +41,22 @@ void Class32::registerBindings(GeneralBindings& bindings)
     ::bind<Class32>(bindings, "method13", &Class32::method13);
     ::bind<Class32>(bindings, "method14", &Class32::method14);
 
+    ::bind<Class32>(bindings, "memberVariable0", &Class32::memberVariable0);
+    ::bind<Class32>(bindings, "memberVariable1", &Class32::memberVariable1);
+    ::bind<Class32>(bindings, "memberVariable2", &Class32::memberVariable2);
+    ::bind<Class32>(bindings, "memberVariable3", &Class32::memberVariable3);
+    ::bind<Class32>(bindings, "memberVariable4", &Class32::memberVariable4);
+    ::bind<Class32>(bindings, "memberVariable5", &Class32::memberVariable5);
+    ::bind<Class32>(bindings, "memberVariable6", &Class32::memberVariable6);
+    ::bind<Class32>(bindings, "memberVariable7", &Class32::memberVariable7);
+    ::bind<Class32>(bindings, "memberVariable8", &Class32::memberVariable8);
+    ::bind<Class32>(bindings, "memberVariable9", &Class32::memberVariable9);
+    ::bind<Class32>(bindings, "memberVariable10", &Class32::memberVariable10);
+    ::bind<Class32>(bindings, "memberVariable11", &Class32::memberVariable11);
+    ::bind<Class32>(bindings, "memberVariable12", &Class32::memberVariable12);
+    ::bind<Class32>(bindings, "memberVariable13", &Class32::memberVariable13);
+    ::bind<Class32>(bindings, "memberVariable14", &Class32::memberVariable14);
+
     bindings["Class32_function0"] = [](coil::Context context, coil::NamedArgs args, bool arg0, double arg1, short arg2, bool arg3, unsigned arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class32::registerBindings(GeneralBindings& bindings)
         args.get<double>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class32::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class32_variable0"] = &Class32::variable0;
+    bindings["Class32_variable1"] = &Class32::variable1;
+    bindings["Class32_variable2"] = &Class32::variable2;
+    bindings["Class32_variable3"] = &Class32::variable3;
+    bindings["Class32_variable4"] = &Class32::variable4;
+    bindings["Class32_variable5"] = &Class32::variable5;
+    bindings["Class32_variable6"] = &Class32::variable6;
+    bindings["Class32_variable7"] = &Class32::variable7;
+    bindings["Class32_variable8"] = &Class32::variable8;
+    bindings["Class32_variable9"] = &Class32::variable9;
+    bindings["Class32_variable10"] = &Class32::variable10;
+    bindings["Class32_variable11"] = &Class32::variable11;
+    bindings["Class32_variable12"] = &Class32::variable12;
+    bindings["Class32_variable13"] = &Class32::variable13;
+    bindings["Class32_variable14"] = &Class32::variable14;
 }
 #endif
 

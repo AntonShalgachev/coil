@@ -41,6 +41,22 @@ void Class68::registerBindings(GeneralBindings& bindings)
     ::bind<Class68>(bindings, "method13", &Class68::method13);
     ::bind<Class68>(bindings, "method14", &Class68::method14);
 
+    ::bind<Class68>(bindings, "memberVariable0", &Class68::memberVariable0);
+    ::bind<Class68>(bindings, "memberVariable1", &Class68::memberVariable1);
+    ::bind<Class68>(bindings, "memberVariable2", &Class68::memberVariable2);
+    ::bind<Class68>(bindings, "memberVariable3", &Class68::memberVariable3);
+    ::bind<Class68>(bindings, "memberVariable4", &Class68::memberVariable4);
+    ::bind<Class68>(bindings, "memberVariable5", &Class68::memberVariable5);
+    ::bind<Class68>(bindings, "memberVariable6", &Class68::memberVariable6);
+    ::bind<Class68>(bindings, "memberVariable7", &Class68::memberVariable7);
+    ::bind<Class68>(bindings, "memberVariable8", &Class68::memberVariable8);
+    ::bind<Class68>(bindings, "memberVariable9", &Class68::memberVariable9);
+    ::bind<Class68>(bindings, "memberVariable10", &Class68::memberVariable10);
+    ::bind<Class68>(bindings, "memberVariable11", &Class68::memberVariable11);
+    ::bind<Class68>(bindings, "memberVariable12", &Class68::memberVariable12);
+    ::bind<Class68>(bindings, "memberVariable13", &Class68::memberVariable13);
+    ::bind<Class68>(bindings, "memberVariable14", &Class68::memberVariable14);
+
     bindings["Class68_function0"] = [](coil::Context context, coil::NamedArgs args, int arg0, short arg1, double arg2, short arg3, short arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class68::registerBindings(GeneralBindings& bindings)
         args.get<int>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class68::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class68_variable0"] = &Class68::variable0;
+    bindings["Class68_variable1"] = &Class68::variable1;
+    bindings["Class68_variable2"] = &Class68::variable2;
+    bindings["Class68_variable3"] = &Class68::variable3;
+    bindings["Class68_variable4"] = &Class68::variable4;
+    bindings["Class68_variable5"] = &Class68::variable5;
+    bindings["Class68_variable6"] = &Class68::variable6;
+    bindings["Class68_variable7"] = &Class68::variable7;
+    bindings["Class68_variable8"] = &Class68::variable8;
+    bindings["Class68_variable9"] = &Class68::variable9;
+    bindings["Class68_variable10"] = &Class68::variable10;
+    bindings["Class68_variable11"] = &Class68::variable11;
+    bindings["Class68_variable12"] = &Class68::variable12;
+    bindings["Class68_variable13"] = &Class68::variable13;
+    bindings["Class68_variable14"] = &Class68::variable14;
 }
 #endif
 

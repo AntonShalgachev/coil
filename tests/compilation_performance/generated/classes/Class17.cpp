@@ -41,6 +41,22 @@ void Class17::registerBindings(GeneralBindings& bindings)
     ::bind<Class17>(bindings, "method13", &Class17::method13);
     ::bind<Class17>(bindings, "method14", &Class17::method14);
 
+    ::bind<Class17>(bindings, "memberVariable0", &Class17::memberVariable0);
+    ::bind<Class17>(bindings, "memberVariable1", &Class17::memberVariable1);
+    ::bind<Class17>(bindings, "memberVariable2", &Class17::memberVariable2);
+    ::bind<Class17>(bindings, "memberVariable3", &Class17::memberVariable3);
+    ::bind<Class17>(bindings, "memberVariable4", &Class17::memberVariable4);
+    ::bind<Class17>(bindings, "memberVariable5", &Class17::memberVariable5);
+    ::bind<Class17>(bindings, "memberVariable6", &Class17::memberVariable6);
+    ::bind<Class17>(bindings, "memberVariable7", &Class17::memberVariable7);
+    ::bind<Class17>(bindings, "memberVariable8", &Class17::memberVariable8);
+    ::bind<Class17>(bindings, "memberVariable9", &Class17::memberVariable9);
+    ::bind<Class17>(bindings, "memberVariable10", &Class17::memberVariable10);
+    ::bind<Class17>(bindings, "memberVariable11", &Class17::memberVariable11);
+    ::bind<Class17>(bindings, "memberVariable12", &Class17::memberVariable12);
+    ::bind<Class17>(bindings, "memberVariable13", &Class17::memberVariable13);
+    ::bind<Class17>(bindings, "memberVariable14", &Class17::memberVariable14);
+
     bindings["Class17_function0"] = [](coil::Context context, coil::NamedArgs args, bool arg0, bool arg1, double arg2, short arg3, unsigned arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class17::registerBindings(GeneralBindings& bindings)
         args.get<short>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class17::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class17_variable0"] = &Class17::variable0;
+    bindings["Class17_variable1"] = &Class17::variable1;
+    bindings["Class17_variable2"] = &Class17::variable2;
+    bindings["Class17_variable3"] = &Class17::variable3;
+    bindings["Class17_variable4"] = &Class17::variable4;
+    bindings["Class17_variable5"] = &Class17::variable5;
+    bindings["Class17_variable6"] = &Class17::variable6;
+    bindings["Class17_variable7"] = &Class17::variable7;
+    bindings["Class17_variable8"] = &Class17::variable8;
+    bindings["Class17_variable9"] = &Class17::variable9;
+    bindings["Class17_variable10"] = &Class17::variable10;
+    bindings["Class17_variable11"] = &Class17::variable11;
+    bindings["Class17_variable12"] = &Class17::variable12;
+    bindings["Class17_variable13"] = &Class17::variable13;
+    bindings["Class17_variable14"] = &Class17::variable14;
 }
 #endif
 

@@ -41,6 +41,22 @@ void Class38::registerBindings(GeneralBindings& bindings)
     ::bind<Class38>(bindings, "method13", &Class38::method13);
     ::bind<Class38>(bindings, "method14", &Class38::method14);
 
+    ::bind<Class38>(bindings, "memberVariable0", &Class38::memberVariable0);
+    ::bind<Class38>(bindings, "memberVariable1", &Class38::memberVariable1);
+    ::bind<Class38>(bindings, "memberVariable2", &Class38::memberVariable2);
+    ::bind<Class38>(bindings, "memberVariable3", &Class38::memberVariable3);
+    ::bind<Class38>(bindings, "memberVariable4", &Class38::memberVariable4);
+    ::bind<Class38>(bindings, "memberVariable5", &Class38::memberVariable5);
+    ::bind<Class38>(bindings, "memberVariable6", &Class38::memberVariable6);
+    ::bind<Class38>(bindings, "memberVariable7", &Class38::memberVariable7);
+    ::bind<Class38>(bindings, "memberVariable8", &Class38::memberVariable8);
+    ::bind<Class38>(bindings, "memberVariable9", &Class38::memberVariable9);
+    ::bind<Class38>(bindings, "memberVariable10", &Class38::memberVariable10);
+    ::bind<Class38>(bindings, "memberVariable11", &Class38::memberVariable11);
+    ::bind<Class38>(bindings, "memberVariable12", &Class38::memberVariable12);
+    ::bind<Class38>(bindings, "memberVariable13", &Class38::memberVariable13);
+    ::bind<Class38>(bindings, "memberVariable14", &Class38::memberVariable14);
+
     bindings["Class38_function0"] = [](coil::Context context, coil::NamedArgs args, double arg0, double arg1, bool arg2, float arg3, float arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class38::registerBindings(GeneralBindings& bindings)
         args.get<bool>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class38::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class38_variable0"] = &Class38::variable0;
+    bindings["Class38_variable1"] = &Class38::variable1;
+    bindings["Class38_variable2"] = &Class38::variable2;
+    bindings["Class38_variable3"] = &Class38::variable3;
+    bindings["Class38_variable4"] = &Class38::variable4;
+    bindings["Class38_variable5"] = &Class38::variable5;
+    bindings["Class38_variable6"] = &Class38::variable6;
+    bindings["Class38_variable7"] = &Class38::variable7;
+    bindings["Class38_variable8"] = &Class38::variable8;
+    bindings["Class38_variable9"] = &Class38::variable9;
+    bindings["Class38_variable10"] = &Class38::variable10;
+    bindings["Class38_variable11"] = &Class38::variable11;
+    bindings["Class38_variable12"] = &Class38::variable12;
+    bindings["Class38_variable13"] = &Class38::variable13;
+    bindings["Class38_variable14"] = &Class38::variable14;
 }
 #endif
 

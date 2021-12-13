@@ -41,6 +41,22 @@ void Class78::registerBindings(GeneralBindings& bindings)
     ::bind<Class78>(bindings, "method13", &Class78::method13);
     ::bind<Class78>(bindings, "method14", &Class78::method14);
 
+    ::bind<Class78>(bindings, "memberVariable0", &Class78::memberVariable0);
+    ::bind<Class78>(bindings, "memberVariable1", &Class78::memberVariable1);
+    ::bind<Class78>(bindings, "memberVariable2", &Class78::memberVariable2);
+    ::bind<Class78>(bindings, "memberVariable3", &Class78::memberVariable3);
+    ::bind<Class78>(bindings, "memberVariable4", &Class78::memberVariable4);
+    ::bind<Class78>(bindings, "memberVariable5", &Class78::memberVariable5);
+    ::bind<Class78>(bindings, "memberVariable6", &Class78::memberVariable6);
+    ::bind<Class78>(bindings, "memberVariable7", &Class78::memberVariable7);
+    ::bind<Class78>(bindings, "memberVariable8", &Class78::memberVariable8);
+    ::bind<Class78>(bindings, "memberVariable9", &Class78::memberVariable9);
+    ::bind<Class78>(bindings, "memberVariable10", &Class78::memberVariable10);
+    ::bind<Class78>(bindings, "memberVariable11", &Class78::memberVariable11);
+    ::bind<Class78>(bindings, "memberVariable12", &Class78::memberVariable12);
+    ::bind<Class78>(bindings, "memberVariable13", &Class78::memberVariable13);
+    ::bind<Class78>(bindings, "memberVariable14", &Class78::memberVariable14);
+
     bindings["Class78_function0"] = [](coil::Context context, coil::NamedArgs args, short arg0, int arg1, bool arg2, double arg3, float arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class78::registerBindings(GeneralBindings& bindings)
         args.get<short>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class78::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class78_variable0"] = &Class78::variable0;
+    bindings["Class78_variable1"] = &Class78::variable1;
+    bindings["Class78_variable2"] = &Class78::variable2;
+    bindings["Class78_variable3"] = &Class78::variable3;
+    bindings["Class78_variable4"] = &Class78::variable4;
+    bindings["Class78_variable5"] = &Class78::variable5;
+    bindings["Class78_variable6"] = &Class78::variable6;
+    bindings["Class78_variable7"] = &Class78::variable7;
+    bindings["Class78_variable8"] = &Class78::variable8;
+    bindings["Class78_variable9"] = &Class78::variable9;
+    bindings["Class78_variable10"] = &Class78::variable10;
+    bindings["Class78_variable11"] = &Class78::variable11;
+    bindings["Class78_variable12"] = &Class78::variable12;
+    bindings["Class78_variable13"] = &Class78::variable13;
+    bindings["Class78_variable14"] = &Class78::variable14;
 }
 #endif
 

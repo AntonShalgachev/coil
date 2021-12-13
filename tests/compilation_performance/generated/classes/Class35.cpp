@@ -41,6 +41,22 @@ void Class35::registerBindings(GeneralBindings& bindings)
     ::bind<Class35>(bindings, "method13", &Class35::method13);
     ::bind<Class35>(bindings, "method14", &Class35::method14);
 
+    ::bind<Class35>(bindings, "memberVariable0", &Class35::memberVariable0);
+    ::bind<Class35>(bindings, "memberVariable1", &Class35::memberVariable1);
+    ::bind<Class35>(bindings, "memberVariable2", &Class35::memberVariable2);
+    ::bind<Class35>(bindings, "memberVariable3", &Class35::memberVariable3);
+    ::bind<Class35>(bindings, "memberVariable4", &Class35::memberVariable4);
+    ::bind<Class35>(bindings, "memberVariable5", &Class35::memberVariable5);
+    ::bind<Class35>(bindings, "memberVariable6", &Class35::memberVariable6);
+    ::bind<Class35>(bindings, "memberVariable7", &Class35::memberVariable7);
+    ::bind<Class35>(bindings, "memberVariable8", &Class35::memberVariable8);
+    ::bind<Class35>(bindings, "memberVariable9", &Class35::memberVariable9);
+    ::bind<Class35>(bindings, "memberVariable10", &Class35::memberVariable10);
+    ::bind<Class35>(bindings, "memberVariable11", &Class35::memberVariable11);
+    ::bind<Class35>(bindings, "memberVariable12", &Class35::memberVariable12);
+    ::bind<Class35>(bindings, "memberVariable13", &Class35::memberVariable13);
+    ::bind<Class35>(bindings, "memberVariable14", &Class35::memberVariable14);
+
     bindings["Class35_function0"] = [](coil::Context context, coil::NamedArgs args, int arg0, int arg1, unsigned arg2, unsigned arg3, double arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class35::registerBindings(GeneralBindings& bindings)
         args.get<double>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class35::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class35_variable0"] = &Class35::variable0;
+    bindings["Class35_variable1"] = &Class35::variable1;
+    bindings["Class35_variable2"] = &Class35::variable2;
+    bindings["Class35_variable3"] = &Class35::variable3;
+    bindings["Class35_variable4"] = &Class35::variable4;
+    bindings["Class35_variable5"] = &Class35::variable5;
+    bindings["Class35_variable6"] = &Class35::variable6;
+    bindings["Class35_variable7"] = &Class35::variable7;
+    bindings["Class35_variable8"] = &Class35::variable8;
+    bindings["Class35_variable9"] = &Class35::variable9;
+    bindings["Class35_variable10"] = &Class35::variable10;
+    bindings["Class35_variable11"] = &Class35::variable11;
+    bindings["Class35_variable12"] = &Class35::variable12;
+    bindings["Class35_variable13"] = &Class35::variable13;
+    bindings["Class35_variable14"] = &Class35::variable14;
 }
 #endif
 

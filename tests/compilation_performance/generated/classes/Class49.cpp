@@ -41,6 +41,22 @@ void Class49::registerBindings(GeneralBindings& bindings)
     ::bind<Class49>(bindings, "method13", &Class49::method13);
     ::bind<Class49>(bindings, "method14", &Class49::method14);
 
+    ::bind<Class49>(bindings, "memberVariable0", &Class49::memberVariable0);
+    ::bind<Class49>(bindings, "memberVariable1", &Class49::memberVariable1);
+    ::bind<Class49>(bindings, "memberVariable2", &Class49::memberVariable2);
+    ::bind<Class49>(bindings, "memberVariable3", &Class49::memberVariable3);
+    ::bind<Class49>(bindings, "memberVariable4", &Class49::memberVariable4);
+    ::bind<Class49>(bindings, "memberVariable5", &Class49::memberVariable5);
+    ::bind<Class49>(bindings, "memberVariable6", &Class49::memberVariable6);
+    ::bind<Class49>(bindings, "memberVariable7", &Class49::memberVariable7);
+    ::bind<Class49>(bindings, "memberVariable8", &Class49::memberVariable8);
+    ::bind<Class49>(bindings, "memberVariable9", &Class49::memberVariable9);
+    ::bind<Class49>(bindings, "memberVariable10", &Class49::memberVariable10);
+    ::bind<Class49>(bindings, "memberVariable11", &Class49::memberVariable11);
+    ::bind<Class49>(bindings, "memberVariable12", &Class49::memberVariable12);
+    ::bind<Class49>(bindings, "memberVariable13", &Class49::memberVariable13);
+    ::bind<Class49>(bindings, "memberVariable14", &Class49::memberVariable14);
+
     bindings["Class49_function0"] = [](coil::Context context, coil::NamedArgs args, double arg0, short arg1, short arg2, float arg3, double arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class49::registerBindings(GeneralBindings& bindings)
         args.get<float>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class49::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class49_variable0"] = &Class49::variable0;
+    bindings["Class49_variable1"] = &Class49::variable1;
+    bindings["Class49_variable2"] = &Class49::variable2;
+    bindings["Class49_variable3"] = &Class49::variable3;
+    bindings["Class49_variable4"] = &Class49::variable4;
+    bindings["Class49_variable5"] = &Class49::variable5;
+    bindings["Class49_variable6"] = &Class49::variable6;
+    bindings["Class49_variable7"] = &Class49::variable7;
+    bindings["Class49_variable8"] = &Class49::variable8;
+    bindings["Class49_variable9"] = &Class49::variable9;
+    bindings["Class49_variable10"] = &Class49::variable10;
+    bindings["Class49_variable11"] = &Class49::variable11;
+    bindings["Class49_variable12"] = &Class49::variable12;
+    bindings["Class49_variable13"] = &Class49::variable13;
+    bindings["Class49_variable14"] = &Class49::variable14;
 }
 #endif
 

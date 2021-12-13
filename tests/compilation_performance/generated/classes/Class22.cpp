@@ -41,6 +41,22 @@ void Class22::registerBindings(GeneralBindings& bindings)
     ::bind<Class22>(bindings, "method13", &Class22::method13);
     ::bind<Class22>(bindings, "method14", &Class22::method14);
 
+    ::bind<Class22>(bindings, "memberVariable0", &Class22::memberVariable0);
+    ::bind<Class22>(bindings, "memberVariable1", &Class22::memberVariable1);
+    ::bind<Class22>(bindings, "memberVariable2", &Class22::memberVariable2);
+    ::bind<Class22>(bindings, "memberVariable3", &Class22::memberVariable3);
+    ::bind<Class22>(bindings, "memberVariable4", &Class22::memberVariable4);
+    ::bind<Class22>(bindings, "memberVariable5", &Class22::memberVariable5);
+    ::bind<Class22>(bindings, "memberVariable6", &Class22::memberVariable6);
+    ::bind<Class22>(bindings, "memberVariable7", &Class22::memberVariable7);
+    ::bind<Class22>(bindings, "memberVariable8", &Class22::memberVariable8);
+    ::bind<Class22>(bindings, "memberVariable9", &Class22::memberVariable9);
+    ::bind<Class22>(bindings, "memberVariable10", &Class22::memberVariable10);
+    ::bind<Class22>(bindings, "memberVariable11", &Class22::memberVariable11);
+    ::bind<Class22>(bindings, "memberVariable12", &Class22::memberVariable12);
+    ::bind<Class22>(bindings, "memberVariable13", &Class22::memberVariable13);
+    ::bind<Class22>(bindings, "memberVariable14", &Class22::memberVariable14);
+
     bindings["Class22_function0"] = [](coil::Context context, coil::NamedArgs args, double arg0, short arg1, double arg2, float arg3, unsigned arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class22::registerBindings(GeneralBindings& bindings)
         args.get<short>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class22::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class22_variable0"] = &Class22::variable0;
+    bindings["Class22_variable1"] = &Class22::variable1;
+    bindings["Class22_variable2"] = &Class22::variable2;
+    bindings["Class22_variable3"] = &Class22::variable3;
+    bindings["Class22_variable4"] = &Class22::variable4;
+    bindings["Class22_variable5"] = &Class22::variable5;
+    bindings["Class22_variable6"] = &Class22::variable6;
+    bindings["Class22_variable7"] = &Class22::variable7;
+    bindings["Class22_variable8"] = &Class22::variable8;
+    bindings["Class22_variable9"] = &Class22::variable9;
+    bindings["Class22_variable10"] = &Class22::variable10;
+    bindings["Class22_variable11"] = &Class22::variable11;
+    bindings["Class22_variable12"] = &Class22::variable12;
+    bindings["Class22_variable13"] = &Class22::variable13;
+    bindings["Class22_variable14"] = &Class22::variable14;
 }
 #endif
 

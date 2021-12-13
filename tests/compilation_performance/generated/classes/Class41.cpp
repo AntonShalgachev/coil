@@ -41,6 +41,22 @@ void Class41::registerBindings(GeneralBindings& bindings)
     ::bind<Class41>(bindings, "method13", &Class41::method13);
     ::bind<Class41>(bindings, "method14", &Class41::method14);
 
+    ::bind<Class41>(bindings, "memberVariable0", &Class41::memberVariable0);
+    ::bind<Class41>(bindings, "memberVariable1", &Class41::memberVariable1);
+    ::bind<Class41>(bindings, "memberVariable2", &Class41::memberVariable2);
+    ::bind<Class41>(bindings, "memberVariable3", &Class41::memberVariable3);
+    ::bind<Class41>(bindings, "memberVariable4", &Class41::memberVariable4);
+    ::bind<Class41>(bindings, "memberVariable5", &Class41::memberVariable5);
+    ::bind<Class41>(bindings, "memberVariable6", &Class41::memberVariable6);
+    ::bind<Class41>(bindings, "memberVariable7", &Class41::memberVariable7);
+    ::bind<Class41>(bindings, "memberVariable8", &Class41::memberVariable8);
+    ::bind<Class41>(bindings, "memberVariable9", &Class41::memberVariable9);
+    ::bind<Class41>(bindings, "memberVariable10", &Class41::memberVariable10);
+    ::bind<Class41>(bindings, "memberVariable11", &Class41::memberVariable11);
+    ::bind<Class41>(bindings, "memberVariable12", &Class41::memberVariable12);
+    ::bind<Class41>(bindings, "memberVariable13", &Class41::memberVariable13);
+    ::bind<Class41>(bindings, "memberVariable14", &Class41::memberVariable14);
+
     bindings["Class41_function0"] = [](coil::Context context, coil::NamedArgs args, double arg0, short arg1, double arg2, unsigned arg3, bool arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class41::registerBindings(GeneralBindings& bindings)
         args.get<short>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class41::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class41_variable0"] = &Class41::variable0;
+    bindings["Class41_variable1"] = &Class41::variable1;
+    bindings["Class41_variable2"] = &Class41::variable2;
+    bindings["Class41_variable3"] = &Class41::variable3;
+    bindings["Class41_variable4"] = &Class41::variable4;
+    bindings["Class41_variable5"] = &Class41::variable5;
+    bindings["Class41_variable6"] = &Class41::variable6;
+    bindings["Class41_variable7"] = &Class41::variable7;
+    bindings["Class41_variable8"] = &Class41::variable8;
+    bindings["Class41_variable9"] = &Class41::variable9;
+    bindings["Class41_variable10"] = &Class41::variable10;
+    bindings["Class41_variable11"] = &Class41::variable11;
+    bindings["Class41_variable12"] = &Class41::variable12;
+    bindings["Class41_variable13"] = &Class41::variable13;
+    bindings["Class41_variable14"] = &Class41::variable14;
 }
 #endif
 

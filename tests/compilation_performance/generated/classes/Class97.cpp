@@ -41,6 +41,22 @@ void Class97::registerBindings(GeneralBindings& bindings)
     ::bind<Class97>(bindings, "method13", &Class97::method13);
     ::bind<Class97>(bindings, "method14", &Class97::method14);
 
+    ::bind<Class97>(bindings, "memberVariable0", &Class97::memberVariable0);
+    ::bind<Class97>(bindings, "memberVariable1", &Class97::memberVariable1);
+    ::bind<Class97>(bindings, "memberVariable2", &Class97::memberVariable2);
+    ::bind<Class97>(bindings, "memberVariable3", &Class97::memberVariable3);
+    ::bind<Class97>(bindings, "memberVariable4", &Class97::memberVariable4);
+    ::bind<Class97>(bindings, "memberVariable5", &Class97::memberVariable5);
+    ::bind<Class97>(bindings, "memberVariable6", &Class97::memberVariable6);
+    ::bind<Class97>(bindings, "memberVariable7", &Class97::memberVariable7);
+    ::bind<Class97>(bindings, "memberVariable8", &Class97::memberVariable8);
+    ::bind<Class97>(bindings, "memberVariable9", &Class97::memberVariable9);
+    ::bind<Class97>(bindings, "memberVariable10", &Class97::memberVariable10);
+    ::bind<Class97>(bindings, "memberVariable11", &Class97::memberVariable11);
+    ::bind<Class97>(bindings, "memberVariable12", &Class97::memberVariable12);
+    ::bind<Class97>(bindings, "memberVariable13", &Class97::memberVariable13);
+    ::bind<Class97>(bindings, "memberVariable14", &Class97::memberVariable14);
+
     bindings["Class97_function0"] = [](coil::Context context, coil::NamedArgs args, int arg0, bool arg1, int arg2, double arg3, unsigned arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class97::registerBindings(GeneralBindings& bindings)
         args.get<int>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class97::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class97_variable0"] = &Class97::variable0;
+    bindings["Class97_variable1"] = &Class97::variable1;
+    bindings["Class97_variable2"] = &Class97::variable2;
+    bindings["Class97_variable3"] = &Class97::variable3;
+    bindings["Class97_variable4"] = &Class97::variable4;
+    bindings["Class97_variable5"] = &Class97::variable5;
+    bindings["Class97_variable6"] = &Class97::variable6;
+    bindings["Class97_variable7"] = &Class97::variable7;
+    bindings["Class97_variable8"] = &Class97::variable8;
+    bindings["Class97_variable9"] = &Class97::variable9;
+    bindings["Class97_variable10"] = &Class97::variable10;
+    bindings["Class97_variable11"] = &Class97::variable11;
+    bindings["Class97_variable12"] = &Class97::variable12;
+    bindings["Class97_variable13"] = &Class97::variable13;
+    bindings["Class97_variable14"] = &Class97::variable14;
 }
 #endif
 

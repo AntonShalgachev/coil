@@ -41,6 +41,22 @@ void Class27::registerBindings(GeneralBindings& bindings)
     ::bind<Class27>(bindings, "method13", &Class27::method13);
     ::bind<Class27>(bindings, "method14", &Class27::method14);
 
+    ::bind<Class27>(bindings, "memberVariable0", &Class27::memberVariable0);
+    ::bind<Class27>(bindings, "memberVariable1", &Class27::memberVariable1);
+    ::bind<Class27>(bindings, "memberVariable2", &Class27::memberVariable2);
+    ::bind<Class27>(bindings, "memberVariable3", &Class27::memberVariable3);
+    ::bind<Class27>(bindings, "memberVariable4", &Class27::memberVariable4);
+    ::bind<Class27>(bindings, "memberVariable5", &Class27::memberVariable5);
+    ::bind<Class27>(bindings, "memberVariable6", &Class27::memberVariable6);
+    ::bind<Class27>(bindings, "memberVariable7", &Class27::memberVariable7);
+    ::bind<Class27>(bindings, "memberVariable8", &Class27::memberVariable8);
+    ::bind<Class27>(bindings, "memberVariable9", &Class27::memberVariable9);
+    ::bind<Class27>(bindings, "memberVariable10", &Class27::memberVariable10);
+    ::bind<Class27>(bindings, "memberVariable11", &Class27::memberVariable11);
+    ::bind<Class27>(bindings, "memberVariable12", &Class27::memberVariable12);
+    ::bind<Class27>(bindings, "memberVariable13", &Class27::memberVariable13);
+    ::bind<Class27>(bindings, "memberVariable14", &Class27::memberVariable14);
+
     bindings["Class27_function0"] = [](coil::Context context, coil::NamedArgs args, short arg0, short arg1, unsigned arg2, int arg3, double arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class27::registerBindings(GeneralBindings& bindings)
         args.get<int>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class27::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class27_variable0"] = &Class27::variable0;
+    bindings["Class27_variable1"] = &Class27::variable1;
+    bindings["Class27_variable2"] = &Class27::variable2;
+    bindings["Class27_variable3"] = &Class27::variable3;
+    bindings["Class27_variable4"] = &Class27::variable4;
+    bindings["Class27_variable5"] = &Class27::variable5;
+    bindings["Class27_variable6"] = &Class27::variable6;
+    bindings["Class27_variable7"] = &Class27::variable7;
+    bindings["Class27_variable8"] = &Class27::variable8;
+    bindings["Class27_variable9"] = &Class27::variable9;
+    bindings["Class27_variable10"] = &Class27::variable10;
+    bindings["Class27_variable11"] = &Class27::variable11;
+    bindings["Class27_variable12"] = &Class27::variable12;
+    bindings["Class27_variable13"] = &Class27::variable13;
+    bindings["Class27_variable14"] = &Class27::variable14;
 }
 #endif
 

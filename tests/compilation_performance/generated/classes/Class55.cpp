@@ -41,6 +41,22 @@ void Class55::registerBindings(GeneralBindings& bindings)
     ::bind<Class55>(bindings, "method13", &Class55::method13);
     ::bind<Class55>(bindings, "method14", &Class55::method14);
 
+    ::bind<Class55>(bindings, "memberVariable0", &Class55::memberVariable0);
+    ::bind<Class55>(bindings, "memberVariable1", &Class55::memberVariable1);
+    ::bind<Class55>(bindings, "memberVariable2", &Class55::memberVariable2);
+    ::bind<Class55>(bindings, "memberVariable3", &Class55::memberVariable3);
+    ::bind<Class55>(bindings, "memberVariable4", &Class55::memberVariable4);
+    ::bind<Class55>(bindings, "memberVariable5", &Class55::memberVariable5);
+    ::bind<Class55>(bindings, "memberVariable6", &Class55::memberVariable6);
+    ::bind<Class55>(bindings, "memberVariable7", &Class55::memberVariable7);
+    ::bind<Class55>(bindings, "memberVariable8", &Class55::memberVariable8);
+    ::bind<Class55>(bindings, "memberVariable9", &Class55::memberVariable9);
+    ::bind<Class55>(bindings, "memberVariable10", &Class55::memberVariable10);
+    ::bind<Class55>(bindings, "memberVariable11", &Class55::memberVariable11);
+    ::bind<Class55>(bindings, "memberVariable12", &Class55::memberVariable12);
+    ::bind<Class55>(bindings, "memberVariable13", &Class55::memberVariable13);
+    ::bind<Class55>(bindings, "memberVariable14", &Class55::memberVariable14);
+
     bindings["Class55_function0"] = [](coil::Context context, coil::NamedArgs args, bool arg0, double arg1, double arg2, int arg3, short arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class55::registerBindings(GeneralBindings& bindings)
         args.get<float>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class55::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class55_variable0"] = &Class55::variable0;
+    bindings["Class55_variable1"] = &Class55::variable1;
+    bindings["Class55_variable2"] = &Class55::variable2;
+    bindings["Class55_variable3"] = &Class55::variable3;
+    bindings["Class55_variable4"] = &Class55::variable4;
+    bindings["Class55_variable5"] = &Class55::variable5;
+    bindings["Class55_variable6"] = &Class55::variable6;
+    bindings["Class55_variable7"] = &Class55::variable7;
+    bindings["Class55_variable8"] = &Class55::variable8;
+    bindings["Class55_variable9"] = &Class55::variable9;
+    bindings["Class55_variable10"] = &Class55::variable10;
+    bindings["Class55_variable11"] = &Class55::variable11;
+    bindings["Class55_variable12"] = &Class55::variable12;
+    bindings["Class55_variable13"] = &Class55::variable13;
+    bindings["Class55_variable14"] = &Class55::variable14;
 }
 #endif
 

@@ -41,6 +41,22 @@ void Class33::registerBindings(GeneralBindings& bindings)
     ::bind<Class33>(bindings, "method13", &Class33::method13);
     ::bind<Class33>(bindings, "method14", &Class33::method14);
 
+    ::bind<Class33>(bindings, "memberVariable0", &Class33::memberVariable0);
+    ::bind<Class33>(bindings, "memberVariable1", &Class33::memberVariable1);
+    ::bind<Class33>(bindings, "memberVariable2", &Class33::memberVariable2);
+    ::bind<Class33>(bindings, "memberVariable3", &Class33::memberVariable3);
+    ::bind<Class33>(bindings, "memberVariable4", &Class33::memberVariable4);
+    ::bind<Class33>(bindings, "memberVariable5", &Class33::memberVariable5);
+    ::bind<Class33>(bindings, "memberVariable6", &Class33::memberVariable6);
+    ::bind<Class33>(bindings, "memberVariable7", &Class33::memberVariable7);
+    ::bind<Class33>(bindings, "memberVariable8", &Class33::memberVariable8);
+    ::bind<Class33>(bindings, "memberVariable9", &Class33::memberVariable9);
+    ::bind<Class33>(bindings, "memberVariable10", &Class33::memberVariable10);
+    ::bind<Class33>(bindings, "memberVariable11", &Class33::memberVariable11);
+    ::bind<Class33>(bindings, "memberVariable12", &Class33::memberVariable12);
+    ::bind<Class33>(bindings, "memberVariable13", &Class33::memberVariable13);
+    ::bind<Class33>(bindings, "memberVariable14", &Class33::memberVariable14);
+
     bindings["Class33_function0"] = [](coil::Context context, coil::NamedArgs args, float arg0, double arg1, int arg2, double arg3, int arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class33::registerBindings(GeneralBindings& bindings)
         args.get<short>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class33::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class33_variable0"] = &Class33::variable0;
+    bindings["Class33_variable1"] = &Class33::variable1;
+    bindings["Class33_variable2"] = &Class33::variable2;
+    bindings["Class33_variable3"] = &Class33::variable3;
+    bindings["Class33_variable4"] = &Class33::variable4;
+    bindings["Class33_variable5"] = &Class33::variable5;
+    bindings["Class33_variable6"] = &Class33::variable6;
+    bindings["Class33_variable7"] = &Class33::variable7;
+    bindings["Class33_variable8"] = &Class33::variable8;
+    bindings["Class33_variable9"] = &Class33::variable9;
+    bindings["Class33_variable10"] = &Class33::variable10;
+    bindings["Class33_variable11"] = &Class33::variable11;
+    bindings["Class33_variable12"] = &Class33::variable12;
+    bindings["Class33_variable13"] = &Class33::variable13;
+    bindings["Class33_variable14"] = &Class33::variable14;
 }
 #endif
 

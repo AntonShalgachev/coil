@@ -41,6 +41,22 @@ void Class40::registerBindings(GeneralBindings& bindings)
     ::bind<Class40>(bindings, "method13", &Class40::method13);
     ::bind<Class40>(bindings, "method14", &Class40::method14);
 
+    ::bind<Class40>(bindings, "memberVariable0", &Class40::memberVariable0);
+    ::bind<Class40>(bindings, "memberVariable1", &Class40::memberVariable1);
+    ::bind<Class40>(bindings, "memberVariable2", &Class40::memberVariable2);
+    ::bind<Class40>(bindings, "memberVariable3", &Class40::memberVariable3);
+    ::bind<Class40>(bindings, "memberVariable4", &Class40::memberVariable4);
+    ::bind<Class40>(bindings, "memberVariable5", &Class40::memberVariable5);
+    ::bind<Class40>(bindings, "memberVariable6", &Class40::memberVariable6);
+    ::bind<Class40>(bindings, "memberVariable7", &Class40::memberVariable7);
+    ::bind<Class40>(bindings, "memberVariable8", &Class40::memberVariable8);
+    ::bind<Class40>(bindings, "memberVariable9", &Class40::memberVariable9);
+    ::bind<Class40>(bindings, "memberVariable10", &Class40::memberVariable10);
+    ::bind<Class40>(bindings, "memberVariable11", &Class40::memberVariable11);
+    ::bind<Class40>(bindings, "memberVariable12", &Class40::memberVariable12);
+    ::bind<Class40>(bindings, "memberVariable13", &Class40::memberVariable13);
+    ::bind<Class40>(bindings, "memberVariable14", &Class40::memberVariable14);
+
     bindings["Class40_function0"] = [](coil::Context context, coil::NamedArgs args, float arg0, double arg1, short arg2, unsigned arg3, bool arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class40::registerBindings(GeneralBindings& bindings)
         args.get<float>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class40::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class40_variable0"] = &Class40::variable0;
+    bindings["Class40_variable1"] = &Class40::variable1;
+    bindings["Class40_variable2"] = &Class40::variable2;
+    bindings["Class40_variable3"] = &Class40::variable3;
+    bindings["Class40_variable4"] = &Class40::variable4;
+    bindings["Class40_variable5"] = &Class40::variable5;
+    bindings["Class40_variable6"] = &Class40::variable6;
+    bindings["Class40_variable7"] = &Class40::variable7;
+    bindings["Class40_variable8"] = &Class40::variable8;
+    bindings["Class40_variable9"] = &Class40::variable9;
+    bindings["Class40_variable10"] = &Class40::variable10;
+    bindings["Class40_variable11"] = &Class40::variable11;
+    bindings["Class40_variable12"] = &Class40::variable12;
+    bindings["Class40_variable13"] = &Class40::variable13;
+    bindings["Class40_variable14"] = &Class40::variable14;
 }
 #endif
 

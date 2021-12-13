@@ -53,6 +53,22 @@ private:
     void method13(float arg0, unsigned arg1, int arg2, bool arg3, double arg4);
     void method14(int arg0, unsigned arg1, short arg2, float arg3, unsigned arg4);
 
+    double memberVariable0{};
+    float memberVariable1{};
+    int memberVariable2{};
+    short memberVariable3{};
+    bool memberVariable4{};
+    short memberVariable5{};
+    float memberVariable6{};
+    bool memberVariable7{};
+    short memberVariable8{};
+    unsigned memberVariable9{};
+    float memberVariable10{};
+    bool memberVariable11{};
+    double memberVariable12{};
+    float memberVariable13{};
+    double memberVariable14{};
+
     static void function0(float arg0, bool arg1, double arg2, double arg3, bool arg4);
     static void function1(short arg0, double arg1, unsigned arg2, short arg3, double arg4);
     static int function2(float arg0, int arg1, float arg2, float arg3, bool arg4);
@@ -68,4 +84,20 @@ private:
     static bool function12(short arg0, bool arg1, int arg2, float arg3, double arg4);
     static float function13(int arg0, float arg1, unsigned arg2, short arg3, unsigned arg4);
     static bool function14(bool arg0, short arg1, bool arg2, short arg3, unsigned arg4);
+
+    inline static short variable0{};
+    inline static int variable1{};
+    inline static bool variable2{};
+    inline static short variable3{};
+    inline static bool variable4{};
+    inline static float variable5{};
+    inline static float variable6{};
+    inline static float variable7{};
+    inline static unsigned variable8{};
+    inline static unsigned variable9{};
+    inline static float variable10{};
+    inline static int variable11{};
+    inline static unsigned variable12{};
+    inline static bool variable13{};
+    inline static float variable14{};
 };

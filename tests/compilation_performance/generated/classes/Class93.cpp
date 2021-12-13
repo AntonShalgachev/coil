@@ -41,6 +41,22 @@ void Class93::registerBindings(GeneralBindings& bindings)
     ::bind<Class93>(bindings, "method13", &Class93::method13);
     ::bind<Class93>(bindings, "method14", &Class93::method14);
 
+    ::bind<Class93>(bindings, "memberVariable0", &Class93::memberVariable0);
+    ::bind<Class93>(bindings, "memberVariable1", &Class93::memberVariable1);
+    ::bind<Class93>(bindings, "memberVariable2", &Class93::memberVariable2);
+    ::bind<Class93>(bindings, "memberVariable3", &Class93::memberVariable3);
+    ::bind<Class93>(bindings, "memberVariable4", &Class93::memberVariable4);
+    ::bind<Class93>(bindings, "memberVariable5", &Class93::memberVariable5);
+    ::bind<Class93>(bindings, "memberVariable6", &Class93::memberVariable6);
+    ::bind<Class93>(bindings, "memberVariable7", &Class93::memberVariable7);
+    ::bind<Class93>(bindings, "memberVariable8", &Class93::memberVariable8);
+    ::bind<Class93>(bindings, "memberVariable9", &Class93::memberVariable9);
+    ::bind<Class93>(bindings, "memberVariable10", &Class93::memberVariable10);
+    ::bind<Class93>(bindings, "memberVariable11", &Class93::memberVariable11);
+    ::bind<Class93>(bindings, "memberVariable12", &Class93::memberVariable12);
+    ::bind<Class93>(bindings, "memberVariable13", &Class93::memberVariable13);
+    ::bind<Class93>(bindings, "memberVariable14", &Class93::memberVariable14);
+
     bindings["Class93_function0"] = [](coil::Context context, coil::NamedArgs args, unsigned arg0, int arg1, unsigned arg2, short arg3, bool arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class93::registerBindings(GeneralBindings& bindings)
         args.get<bool>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class93::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class93_variable0"] = &Class93::variable0;
+    bindings["Class93_variable1"] = &Class93::variable1;
+    bindings["Class93_variable2"] = &Class93::variable2;
+    bindings["Class93_variable3"] = &Class93::variable3;
+    bindings["Class93_variable4"] = &Class93::variable4;
+    bindings["Class93_variable5"] = &Class93::variable5;
+    bindings["Class93_variable6"] = &Class93::variable6;
+    bindings["Class93_variable7"] = &Class93::variable7;
+    bindings["Class93_variable8"] = &Class93::variable8;
+    bindings["Class93_variable9"] = &Class93::variable9;
+    bindings["Class93_variable10"] = &Class93::variable10;
+    bindings["Class93_variable11"] = &Class93::variable11;
+    bindings["Class93_variable12"] = &Class93::variable12;
+    bindings["Class93_variable13"] = &Class93::variable13;
+    bindings["Class93_variable14"] = &Class93::variable14;
 }
 #endif
 

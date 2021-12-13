@@ -41,6 +41,22 @@ void Class25::registerBindings(GeneralBindings& bindings)
     ::bind<Class25>(bindings, "method13", &Class25::method13);
     ::bind<Class25>(bindings, "method14", &Class25::method14);
 
+    ::bind<Class25>(bindings, "memberVariable0", &Class25::memberVariable0);
+    ::bind<Class25>(bindings, "memberVariable1", &Class25::memberVariable1);
+    ::bind<Class25>(bindings, "memberVariable2", &Class25::memberVariable2);
+    ::bind<Class25>(bindings, "memberVariable3", &Class25::memberVariable3);
+    ::bind<Class25>(bindings, "memberVariable4", &Class25::memberVariable4);
+    ::bind<Class25>(bindings, "memberVariable5", &Class25::memberVariable5);
+    ::bind<Class25>(bindings, "memberVariable6", &Class25::memberVariable6);
+    ::bind<Class25>(bindings, "memberVariable7", &Class25::memberVariable7);
+    ::bind<Class25>(bindings, "memberVariable8", &Class25::memberVariable8);
+    ::bind<Class25>(bindings, "memberVariable9", &Class25::memberVariable9);
+    ::bind<Class25>(bindings, "memberVariable10", &Class25::memberVariable10);
+    ::bind<Class25>(bindings, "memberVariable11", &Class25::memberVariable11);
+    ::bind<Class25>(bindings, "memberVariable12", &Class25::memberVariable12);
+    ::bind<Class25>(bindings, "memberVariable13", &Class25::memberVariable13);
+    ::bind<Class25>(bindings, "memberVariable14", &Class25::memberVariable14);
+
     bindings["Class25_function0"] = [](coil::Context context, coil::NamedArgs args, double arg0, short arg1, unsigned arg2, short arg3, bool arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class25::registerBindings(GeneralBindings& bindings)
         args.get<bool>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class25::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class25_variable0"] = &Class25::variable0;
+    bindings["Class25_variable1"] = &Class25::variable1;
+    bindings["Class25_variable2"] = &Class25::variable2;
+    bindings["Class25_variable3"] = &Class25::variable3;
+    bindings["Class25_variable4"] = &Class25::variable4;
+    bindings["Class25_variable5"] = &Class25::variable5;
+    bindings["Class25_variable6"] = &Class25::variable6;
+    bindings["Class25_variable7"] = &Class25::variable7;
+    bindings["Class25_variable8"] = &Class25::variable8;
+    bindings["Class25_variable9"] = &Class25::variable9;
+    bindings["Class25_variable10"] = &Class25::variable10;
+    bindings["Class25_variable11"] = &Class25::variable11;
+    bindings["Class25_variable12"] = &Class25::variable12;
+    bindings["Class25_variable13"] = &Class25::variable13;
+    bindings["Class25_variable14"] = &Class25::variable14;
 }
 #endif
 

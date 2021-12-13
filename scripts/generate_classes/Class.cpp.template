@@ -29,6 +29,10 @@ void $name::registerBindings(GeneralBindings& bindings)
     ::bind<$name>(bindings, "${method.name}", &$name::${method.name});
 #end for
 
+#for $variable in $member_variables
+    ::bind<$name>(bindings, "${variable.name}", &${name}::${variable.name});
+#end for
+
 #for $function in $functions
     bindings["${name}_${function.name}"] = [](coil::Context context, coil::NamedArgs args, $combine($function.args))
     {
@@ -38,6 +42,10 @@ void $name::registerBindings(GeneralBindings& bindings)
         args.get<$function.args[0]>("key", context, coil::NamedArgs::ArgType::Optional);
         return $name::${function.name}(#echo ', '.join($arg_names($method.args))#);
     };
+#end for
+
+#for $variable in $variables
+    bindings["${name}_${variable.name}"] = &${name}::${variable.name};
 #end for
 }
 \#endif

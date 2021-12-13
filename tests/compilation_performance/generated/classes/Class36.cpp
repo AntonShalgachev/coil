@@ -41,6 +41,22 @@ void Class36::registerBindings(GeneralBindings& bindings)
     ::bind<Class36>(bindings, "method13", &Class36::method13);
     ::bind<Class36>(bindings, "method14", &Class36::method14);
 
+    ::bind<Class36>(bindings, "memberVariable0", &Class36::memberVariable0);
+    ::bind<Class36>(bindings, "memberVariable1", &Class36::memberVariable1);
+    ::bind<Class36>(bindings, "memberVariable2", &Class36::memberVariable2);
+    ::bind<Class36>(bindings, "memberVariable3", &Class36::memberVariable3);
+    ::bind<Class36>(bindings, "memberVariable4", &Class36::memberVariable4);
+    ::bind<Class36>(bindings, "memberVariable5", &Class36::memberVariable5);
+    ::bind<Class36>(bindings, "memberVariable6", &Class36::memberVariable6);
+    ::bind<Class36>(bindings, "memberVariable7", &Class36::memberVariable7);
+    ::bind<Class36>(bindings, "memberVariable8", &Class36::memberVariable8);
+    ::bind<Class36>(bindings, "memberVariable9", &Class36::memberVariable9);
+    ::bind<Class36>(bindings, "memberVariable10", &Class36::memberVariable10);
+    ::bind<Class36>(bindings, "memberVariable11", &Class36::memberVariable11);
+    ::bind<Class36>(bindings, "memberVariable12", &Class36::memberVariable12);
+    ::bind<Class36>(bindings, "memberVariable13", &Class36::memberVariable13);
+    ::bind<Class36>(bindings, "memberVariable14", &Class36::memberVariable14);
+
     bindings["Class36_function0"] = [](coil::Context context, coil::NamedArgs args, short arg0, unsigned arg1, double arg2, float arg3, double arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class36::registerBindings(GeneralBindings& bindings)
         args.get<int>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class36::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class36_variable0"] = &Class36::variable0;
+    bindings["Class36_variable1"] = &Class36::variable1;
+    bindings["Class36_variable2"] = &Class36::variable2;
+    bindings["Class36_variable3"] = &Class36::variable3;
+    bindings["Class36_variable4"] = &Class36::variable4;
+    bindings["Class36_variable5"] = &Class36::variable5;
+    bindings["Class36_variable6"] = &Class36::variable6;
+    bindings["Class36_variable7"] = &Class36::variable7;
+    bindings["Class36_variable8"] = &Class36::variable8;
+    bindings["Class36_variable9"] = &Class36::variable9;
+    bindings["Class36_variable10"] = &Class36::variable10;
+    bindings["Class36_variable11"] = &Class36::variable11;
+    bindings["Class36_variable12"] = &Class36::variable12;
+    bindings["Class36_variable13"] = &Class36::variable13;
+    bindings["Class36_variable14"] = &Class36::variable14;
 }
 #endif
 

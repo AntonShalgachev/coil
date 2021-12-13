@@ -41,6 +41,22 @@ void Class92::registerBindings(GeneralBindings& bindings)
     ::bind<Class92>(bindings, "method13", &Class92::method13);
     ::bind<Class92>(bindings, "method14", &Class92::method14);
 
+    ::bind<Class92>(bindings, "memberVariable0", &Class92::memberVariable0);
+    ::bind<Class92>(bindings, "memberVariable1", &Class92::memberVariable1);
+    ::bind<Class92>(bindings, "memberVariable2", &Class92::memberVariable2);
+    ::bind<Class92>(bindings, "memberVariable3", &Class92::memberVariable3);
+    ::bind<Class92>(bindings, "memberVariable4", &Class92::memberVariable4);
+    ::bind<Class92>(bindings, "memberVariable5", &Class92::memberVariable5);
+    ::bind<Class92>(bindings, "memberVariable6", &Class92::memberVariable6);
+    ::bind<Class92>(bindings, "memberVariable7", &Class92::memberVariable7);
+    ::bind<Class92>(bindings, "memberVariable8", &Class92::memberVariable8);
+    ::bind<Class92>(bindings, "memberVariable9", &Class92::memberVariable9);
+    ::bind<Class92>(bindings, "memberVariable10", &Class92::memberVariable10);
+    ::bind<Class92>(bindings, "memberVariable11", &Class92::memberVariable11);
+    ::bind<Class92>(bindings, "memberVariable12", &Class92::memberVariable12);
+    ::bind<Class92>(bindings, "memberVariable13", &Class92::memberVariable13);
+    ::bind<Class92>(bindings, "memberVariable14", &Class92::memberVariable14);
+
     bindings["Class92_function0"] = [](coil::Context context, coil::NamedArgs args, short arg0, bool arg1, int arg2, bool arg3, bool arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class92::registerBindings(GeneralBindings& bindings)
         args.get<short>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class92::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class92_variable0"] = &Class92::variable0;
+    bindings["Class92_variable1"] = &Class92::variable1;
+    bindings["Class92_variable2"] = &Class92::variable2;
+    bindings["Class92_variable3"] = &Class92::variable3;
+    bindings["Class92_variable4"] = &Class92::variable4;
+    bindings["Class92_variable5"] = &Class92::variable5;
+    bindings["Class92_variable6"] = &Class92::variable6;
+    bindings["Class92_variable7"] = &Class92::variable7;
+    bindings["Class92_variable8"] = &Class92::variable8;
+    bindings["Class92_variable9"] = &Class92::variable9;
+    bindings["Class92_variable10"] = &Class92::variable10;
+    bindings["Class92_variable11"] = &Class92::variable11;
+    bindings["Class92_variable12"] = &Class92::variable12;
+    bindings["Class92_variable13"] = &Class92::variable13;
+    bindings["Class92_variable14"] = &Class92::variable14;
 }
 #endif
 

@@ -41,6 +41,22 @@ void Class52::registerBindings(GeneralBindings& bindings)
     ::bind<Class52>(bindings, "method13", &Class52::method13);
     ::bind<Class52>(bindings, "method14", &Class52::method14);
 
+    ::bind<Class52>(bindings, "memberVariable0", &Class52::memberVariable0);
+    ::bind<Class52>(bindings, "memberVariable1", &Class52::memberVariable1);
+    ::bind<Class52>(bindings, "memberVariable2", &Class52::memberVariable2);
+    ::bind<Class52>(bindings, "memberVariable3", &Class52::memberVariable3);
+    ::bind<Class52>(bindings, "memberVariable4", &Class52::memberVariable4);
+    ::bind<Class52>(bindings, "memberVariable5", &Class52::memberVariable5);
+    ::bind<Class52>(bindings, "memberVariable6", &Class52::memberVariable6);
+    ::bind<Class52>(bindings, "memberVariable7", &Class52::memberVariable7);
+    ::bind<Class52>(bindings, "memberVariable8", &Class52::memberVariable8);
+    ::bind<Class52>(bindings, "memberVariable9", &Class52::memberVariable9);
+    ::bind<Class52>(bindings, "memberVariable10", &Class52::memberVariable10);
+    ::bind<Class52>(bindings, "memberVariable11", &Class52::memberVariable11);
+    ::bind<Class52>(bindings, "memberVariable12", &Class52::memberVariable12);
+    ::bind<Class52>(bindings, "memberVariable13", &Class52::memberVariable13);
+    ::bind<Class52>(bindings, "memberVariable14", &Class52::memberVariable14);
+
     bindings["Class52_function0"] = [](coil::Context context, coil::NamedArgs args, int arg0, unsigned arg1, int arg2, double arg3, unsigned arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class52::registerBindings(GeneralBindings& bindings)
         args.get<int>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class52::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class52_variable0"] = &Class52::variable0;
+    bindings["Class52_variable1"] = &Class52::variable1;
+    bindings["Class52_variable2"] = &Class52::variable2;
+    bindings["Class52_variable3"] = &Class52::variable3;
+    bindings["Class52_variable4"] = &Class52::variable4;
+    bindings["Class52_variable5"] = &Class52::variable5;
+    bindings["Class52_variable6"] = &Class52::variable6;
+    bindings["Class52_variable7"] = &Class52::variable7;
+    bindings["Class52_variable8"] = &Class52::variable8;
+    bindings["Class52_variable9"] = &Class52::variable9;
+    bindings["Class52_variable10"] = &Class52::variable10;
+    bindings["Class52_variable11"] = &Class52::variable11;
+    bindings["Class52_variable12"] = &Class52::variable12;
+    bindings["Class52_variable13"] = &Class52::variable13;
+    bindings["Class52_variable14"] = &Class52::variable14;
 }
 #endif
 

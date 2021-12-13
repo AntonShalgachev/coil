@@ -41,6 +41,22 @@ void Class29::registerBindings(GeneralBindings& bindings)
     ::bind<Class29>(bindings, "method13", &Class29::method13);
     ::bind<Class29>(bindings, "method14", &Class29::method14);
 
+    ::bind<Class29>(bindings, "memberVariable0", &Class29::memberVariable0);
+    ::bind<Class29>(bindings, "memberVariable1", &Class29::memberVariable1);
+    ::bind<Class29>(bindings, "memberVariable2", &Class29::memberVariable2);
+    ::bind<Class29>(bindings, "memberVariable3", &Class29::memberVariable3);
+    ::bind<Class29>(bindings, "memberVariable4", &Class29::memberVariable4);
+    ::bind<Class29>(bindings, "memberVariable5", &Class29::memberVariable5);
+    ::bind<Class29>(bindings, "memberVariable6", &Class29::memberVariable6);
+    ::bind<Class29>(bindings, "memberVariable7", &Class29::memberVariable7);
+    ::bind<Class29>(bindings, "memberVariable8", &Class29::memberVariable8);
+    ::bind<Class29>(bindings, "memberVariable9", &Class29::memberVariable9);
+    ::bind<Class29>(bindings, "memberVariable10", &Class29::memberVariable10);
+    ::bind<Class29>(bindings, "memberVariable11", &Class29::memberVariable11);
+    ::bind<Class29>(bindings, "memberVariable12", &Class29::memberVariable12);
+    ::bind<Class29>(bindings, "memberVariable13", &Class29::memberVariable13);
+    ::bind<Class29>(bindings, "memberVariable14", &Class29::memberVariable14);
+
     bindings["Class29_function0"] = [](coil::Context context, coil::NamedArgs args, int arg0, float arg1, float arg2, float arg3, double arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class29::registerBindings(GeneralBindings& bindings)
         args.get<double>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class29::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class29_variable0"] = &Class29::variable0;
+    bindings["Class29_variable1"] = &Class29::variable1;
+    bindings["Class29_variable2"] = &Class29::variable2;
+    bindings["Class29_variable3"] = &Class29::variable3;
+    bindings["Class29_variable4"] = &Class29::variable4;
+    bindings["Class29_variable5"] = &Class29::variable5;
+    bindings["Class29_variable6"] = &Class29::variable6;
+    bindings["Class29_variable7"] = &Class29::variable7;
+    bindings["Class29_variable8"] = &Class29::variable8;
+    bindings["Class29_variable9"] = &Class29::variable9;
+    bindings["Class29_variable10"] = &Class29::variable10;
+    bindings["Class29_variable11"] = &Class29::variable11;
+    bindings["Class29_variable12"] = &Class29::variable12;
+    bindings["Class29_variable13"] = &Class29::variable13;
+    bindings["Class29_variable14"] = &Class29::variable14;
 }
 #endif
 

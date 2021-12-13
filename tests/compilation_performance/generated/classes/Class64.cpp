@@ -41,6 +41,22 @@ void Class64::registerBindings(GeneralBindings& bindings)
     ::bind<Class64>(bindings, "method13", &Class64::method13);
     ::bind<Class64>(bindings, "method14", &Class64::method14);
 
+    ::bind<Class64>(bindings, "memberVariable0", &Class64::memberVariable0);
+    ::bind<Class64>(bindings, "memberVariable1", &Class64::memberVariable1);
+    ::bind<Class64>(bindings, "memberVariable2", &Class64::memberVariable2);
+    ::bind<Class64>(bindings, "memberVariable3", &Class64::memberVariable3);
+    ::bind<Class64>(bindings, "memberVariable4", &Class64::memberVariable4);
+    ::bind<Class64>(bindings, "memberVariable5", &Class64::memberVariable5);
+    ::bind<Class64>(bindings, "memberVariable6", &Class64::memberVariable6);
+    ::bind<Class64>(bindings, "memberVariable7", &Class64::memberVariable7);
+    ::bind<Class64>(bindings, "memberVariable8", &Class64::memberVariable8);
+    ::bind<Class64>(bindings, "memberVariable9", &Class64::memberVariable9);
+    ::bind<Class64>(bindings, "memberVariable10", &Class64::memberVariable10);
+    ::bind<Class64>(bindings, "memberVariable11", &Class64::memberVariable11);
+    ::bind<Class64>(bindings, "memberVariable12", &Class64::memberVariable12);
+    ::bind<Class64>(bindings, "memberVariable13", &Class64::memberVariable13);
+    ::bind<Class64>(bindings, "memberVariable14", &Class64::memberVariable14);
+
     bindings["Class64_function0"] = [](coil::Context context, coil::NamedArgs args, bool arg0, double arg1, float arg2, unsigned arg3, int arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class64::registerBindings(GeneralBindings& bindings)
         args.get<unsigned>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class64::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class64_variable0"] = &Class64::variable0;
+    bindings["Class64_variable1"] = &Class64::variable1;
+    bindings["Class64_variable2"] = &Class64::variable2;
+    bindings["Class64_variable3"] = &Class64::variable3;
+    bindings["Class64_variable4"] = &Class64::variable4;
+    bindings["Class64_variable5"] = &Class64::variable5;
+    bindings["Class64_variable6"] = &Class64::variable6;
+    bindings["Class64_variable7"] = &Class64::variable7;
+    bindings["Class64_variable8"] = &Class64::variable8;
+    bindings["Class64_variable9"] = &Class64::variable9;
+    bindings["Class64_variable10"] = &Class64::variable10;
+    bindings["Class64_variable11"] = &Class64::variable11;
+    bindings["Class64_variable12"] = &Class64::variable12;
+    bindings["Class64_variable13"] = &Class64::variable13;
+    bindings["Class64_variable14"] = &Class64::variable14;
 }
 #endif
 

@@ -41,6 +41,22 @@ void Class19::registerBindings(GeneralBindings& bindings)
     ::bind<Class19>(bindings, "method13", &Class19::method13);
     ::bind<Class19>(bindings, "method14", &Class19::method14);
 
+    ::bind<Class19>(bindings, "memberVariable0", &Class19::memberVariable0);
+    ::bind<Class19>(bindings, "memberVariable1", &Class19::memberVariable1);
+    ::bind<Class19>(bindings, "memberVariable2", &Class19::memberVariable2);
+    ::bind<Class19>(bindings, "memberVariable3", &Class19::memberVariable3);
+    ::bind<Class19>(bindings, "memberVariable4", &Class19::memberVariable4);
+    ::bind<Class19>(bindings, "memberVariable5", &Class19::memberVariable5);
+    ::bind<Class19>(bindings, "memberVariable6", &Class19::memberVariable6);
+    ::bind<Class19>(bindings, "memberVariable7", &Class19::memberVariable7);
+    ::bind<Class19>(bindings, "memberVariable8", &Class19::memberVariable8);
+    ::bind<Class19>(bindings, "memberVariable9", &Class19::memberVariable9);
+    ::bind<Class19>(bindings, "memberVariable10", &Class19::memberVariable10);
+    ::bind<Class19>(bindings, "memberVariable11", &Class19::memberVariable11);
+    ::bind<Class19>(bindings, "memberVariable12", &Class19::memberVariable12);
+    ::bind<Class19>(bindings, "memberVariable13", &Class19::memberVariable13);
+    ::bind<Class19>(bindings, "memberVariable14", &Class19::memberVariable14);
+
     bindings["Class19_function0"] = [](coil::Context context, coil::NamedArgs args, double arg0, float arg1, unsigned arg2, int arg3, unsigned arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class19::registerBindings(GeneralBindings& bindings)
         args.get<int>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class19::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class19_variable0"] = &Class19::variable0;
+    bindings["Class19_variable1"] = &Class19::variable1;
+    bindings["Class19_variable2"] = &Class19::variable2;
+    bindings["Class19_variable3"] = &Class19::variable3;
+    bindings["Class19_variable4"] = &Class19::variable4;
+    bindings["Class19_variable5"] = &Class19::variable5;
+    bindings["Class19_variable6"] = &Class19::variable6;
+    bindings["Class19_variable7"] = &Class19::variable7;
+    bindings["Class19_variable8"] = &Class19::variable8;
+    bindings["Class19_variable9"] = &Class19::variable9;
+    bindings["Class19_variable10"] = &Class19::variable10;
+    bindings["Class19_variable11"] = &Class19::variable11;
+    bindings["Class19_variable12"] = &Class19::variable12;
+    bindings["Class19_variable13"] = &Class19::variable13;
+    bindings["Class19_variable14"] = &Class19::variable14;
 }
 #endif
 

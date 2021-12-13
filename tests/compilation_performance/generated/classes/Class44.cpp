@@ -41,6 +41,22 @@ void Class44::registerBindings(GeneralBindings& bindings)
     ::bind<Class44>(bindings, "method13", &Class44::method13);
     ::bind<Class44>(bindings, "method14", &Class44::method14);
 
+    ::bind<Class44>(bindings, "memberVariable0", &Class44::memberVariable0);
+    ::bind<Class44>(bindings, "memberVariable1", &Class44::memberVariable1);
+    ::bind<Class44>(bindings, "memberVariable2", &Class44::memberVariable2);
+    ::bind<Class44>(bindings, "memberVariable3", &Class44::memberVariable3);
+    ::bind<Class44>(bindings, "memberVariable4", &Class44::memberVariable4);
+    ::bind<Class44>(bindings, "memberVariable5", &Class44::memberVariable5);
+    ::bind<Class44>(bindings, "memberVariable6", &Class44::memberVariable6);
+    ::bind<Class44>(bindings, "memberVariable7", &Class44::memberVariable7);
+    ::bind<Class44>(bindings, "memberVariable8", &Class44::memberVariable8);
+    ::bind<Class44>(bindings, "memberVariable9", &Class44::memberVariable9);
+    ::bind<Class44>(bindings, "memberVariable10", &Class44::memberVariable10);
+    ::bind<Class44>(bindings, "memberVariable11", &Class44::memberVariable11);
+    ::bind<Class44>(bindings, "memberVariable12", &Class44::memberVariable12);
+    ::bind<Class44>(bindings, "memberVariable13", &Class44::memberVariable13);
+    ::bind<Class44>(bindings, "memberVariable14", &Class44::memberVariable14);
+
     bindings["Class44_function0"] = [](coil::Context context, coil::NamedArgs args, short arg0, unsigned arg1, unsigned arg2, float arg3, double arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class44::registerBindings(GeneralBindings& bindings)
         args.get<unsigned>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class44::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class44_variable0"] = &Class44::variable0;
+    bindings["Class44_variable1"] = &Class44::variable1;
+    bindings["Class44_variable2"] = &Class44::variable2;
+    bindings["Class44_variable3"] = &Class44::variable3;
+    bindings["Class44_variable4"] = &Class44::variable4;
+    bindings["Class44_variable5"] = &Class44::variable5;
+    bindings["Class44_variable6"] = &Class44::variable6;
+    bindings["Class44_variable7"] = &Class44::variable7;
+    bindings["Class44_variable8"] = &Class44::variable8;
+    bindings["Class44_variable9"] = &Class44::variable9;
+    bindings["Class44_variable10"] = &Class44::variable10;
+    bindings["Class44_variable11"] = &Class44::variable11;
+    bindings["Class44_variable12"] = &Class44::variable12;
+    bindings["Class44_variable13"] = &Class44::variable13;
+    bindings["Class44_variable14"] = &Class44::variable14;
 }
 #endif
 

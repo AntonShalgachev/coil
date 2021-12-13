@@ -41,6 +41,22 @@ void Class39::registerBindings(GeneralBindings& bindings)
     ::bind<Class39>(bindings, "method13", &Class39::method13);
     ::bind<Class39>(bindings, "method14", &Class39::method14);
 
+    ::bind<Class39>(bindings, "memberVariable0", &Class39::memberVariable0);
+    ::bind<Class39>(bindings, "memberVariable1", &Class39::memberVariable1);
+    ::bind<Class39>(bindings, "memberVariable2", &Class39::memberVariable2);
+    ::bind<Class39>(bindings, "memberVariable3", &Class39::memberVariable3);
+    ::bind<Class39>(bindings, "memberVariable4", &Class39::memberVariable4);
+    ::bind<Class39>(bindings, "memberVariable5", &Class39::memberVariable5);
+    ::bind<Class39>(bindings, "memberVariable6", &Class39::memberVariable6);
+    ::bind<Class39>(bindings, "memberVariable7", &Class39::memberVariable7);
+    ::bind<Class39>(bindings, "memberVariable8", &Class39::memberVariable8);
+    ::bind<Class39>(bindings, "memberVariable9", &Class39::memberVariable9);
+    ::bind<Class39>(bindings, "memberVariable10", &Class39::memberVariable10);
+    ::bind<Class39>(bindings, "memberVariable11", &Class39::memberVariable11);
+    ::bind<Class39>(bindings, "memberVariable12", &Class39::memberVariable12);
+    ::bind<Class39>(bindings, "memberVariable13", &Class39::memberVariable13);
+    ::bind<Class39>(bindings, "memberVariable14", &Class39::memberVariable14);
+
     bindings["Class39_function0"] = [](coil::Context context, coil::NamedArgs args, double arg0, float arg1, float arg2, int arg3, float arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class39::registerBindings(GeneralBindings& bindings)
         args.get<int>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class39::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class39_variable0"] = &Class39::variable0;
+    bindings["Class39_variable1"] = &Class39::variable1;
+    bindings["Class39_variable2"] = &Class39::variable2;
+    bindings["Class39_variable3"] = &Class39::variable3;
+    bindings["Class39_variable4"] = &Class39::variable4;
+    bindings["Class39_variable5"] = &Class39::variable5;
+    bindings["Class39_variable6"] = &Class39::variable6;
+    bindings["Class39_variable7"] = &Class39::variable7;
+    bindings["Class39_variable8"] = &Class39::variable8;
+    bindings["Class39_variable9"] = &Class39::variable9;
+    bindings["Class39_variable10"] = &Class39::variable10;
+    bindings["Class39_variable11"] = &Class39::variable11;
+    bindings["Class39_variable12"] = &Class39::variable12;
+    bindings["Class39_variable13"] = &Class39::variable13;
+    bindings["Class39_variable14"] = &Class39::variable14;
 }
 #endif
 

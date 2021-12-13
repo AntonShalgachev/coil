@@ -41,6 +41,22 @@ void Class13::registerBindings(GeneralBindings& bindings)
     ::bind<Class13>(bindings, "method13", &Class13::method13);
     ::bind<Class13>(bindings, "method14", &Class13::method14);
 
+    ::bind<Class13>(bindings, "memberVariable0", &Class13::memberVariable0);
+    ::bind<Class13>(bindings, "memberVariable1", &Class13::memberVariable1);
+    ::bind<Class13>(bindings, "memberVariable2", &Class13::memberVariable2);
+    ::bind<Class13>(bindings, "memberVariable3", &Class13::memberVariable3);
+    ::bind<Class13>(bindings, "memberVariable4", &Class13::memberVariable4);
+    ::bind<Class13>(bindings, "memberVariable5", &Class13::memberVariable5);
+    ::bind<Class13>(bindings, "memberVariable6", &Class13::memberVariable6);
+    ::bind<Class13>(bindings, "memberVariable7", &Class13::memberVariable7);
+    ::bind<Class13>(bindings, "memberVariable8", &Class13::memberVariable8);
+    ::bind<Class13>(bindings, "memberVariable9", &Class13::memberVariable9);
+    ::bind<Class13>(bindings, "memberVariable10", &Class13::memberVariable10);
+    ::bind<Class13>(bindings, "memberVariable11", &Class13::memberVariable11);
+    ::bind<Class13>(bindings, "memberVariable12", &Class13::memberVariable12);
+    ::bind<Class13>(bindings, "memberVariable13", &Class13::memberVariable13);
+    ::bind<Class13>(bindings, "memberVariable14", &Class13::memberVariable14);
+
     bindings["Class13_function0"] = [](coil::Context context, coil::NamedArgs args, double arg0, int arg1, short arg2, short arg3, unsigned arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class13::registerBindings(GeneralBindings& bindings)
         args.get<int>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class13::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class13_variable0"] = &Class13::variable0;
+    bindings["Class13_variable1"] = &Class13::variable1;
+    bindings["Class13_variable2"] = &Class13::variable2;
+    bindings["Class13_variable3"] = &Class13::variable3;
+    bindings["Class13_variable4"] = &Class13::variable4;
+    bindings["Class13_variable5"] = &Class13::variable5;
+    bindings["Class13_variable6"] = &Class13::variable6;
+    bindings["Class13_variable7"] = &Class13::variable7;
+    bindings["Class13_variable8"] = &Class13::variable8;
+    bindings["Class13_variable9"] = &Class13::variable9;
+    bindings["Class13_variable10"] = &Class13::variable10;
+    bindings["Class13_variable11"] = &Class13::variable11;
+    bindings["Class13_variable12"] = &Class13::variable12;
+    bindings["Class13_variable13"] = &Class13::variable13;
+    bindings["Class13_variable14"] = &Class13::variable14;
 }
 #endif
 

@@ -41,6 +41,22 @@ void Class83::registerBindings(GeneralBindings& bindings)
     ::bind<Class83>(bindings, "method13", &Class83::method13);
     ::bind<Class83>(bindings, "method14", &Class83::method14);
 
+    ::bind<Class83>(bindings, "memberVariable0", &Class83::memberVariable0);
+    ::bind<Class83>(bindings, "memberVariable1", &Class83::memberVariable1);
+    ::bind<Class83>(bindings, "memberVariable2", &Class83::memberVariable2);
+    ::bind<Class83>(bindings, "memberVariable3", &Class83::memberVariable3);
+    ::bind<Class83>(bindings, "memberVariable4", &Class83::memberVariable4);
+    ::bind<Class83>(bindings, "memberVariable5", &Class83::memberVariable5);
+    ::bind<Class83>(bindings, "memberVariable6", &Class83::memberVariable6);
+    ::bind<Class83>(bindings, "memberVariable7", &Class83::memberVariable7);
+    ::bind<Class83>(bindings, "memberVariable8", &Class83::memberVariable8);
+    ::bind<Class83>(bindings, "memberVariable9", &Class83::memberVariable9);
+    ::bind<Class83>(bindings, "memberVariable10", &Class83::memberVariable10);
+    ::bind<Class83>(bindings, "memberVariable11", &Class83::memberVariable11);
+    ::bind<Class83>(bindings, "memberVariable12", &Class83::memberVariable12);
+    ::bind<Class83>(bindings, "memberVariable13", &Class83::memberVariable13);
+    ::bind<Class83>(bindings, "memberVariable14", &Class83::memberVariable14);
+
     bindings["Class83_function0"] = [](coil::Context context, coil::NamedArgs args, bool arg0, double arg1, float arg2, int arg3, bool arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class83::registerBindings(GeneralBindings& bindings)
         args.get<bool>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class83::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class83_variable0"] = &Class83::variable0;
+    bindings["Class83_variable1"] = &Class83::variable1;
+    bindings["Class83_variable2"] = &Class83::variable2;
+    bindings["Class83_variable3"] = &Class83::variable3;
+    bindings["Class83_variable4"] = &Class83::variable4;
+    bindings["Class83_variable5"] = &Class83::variable5;
+    bindings["Class83_variable6"] = &Class83::variable6;
+    bindings["Class83_variable7"] = &Class83::variable7;
+    bindings["Class83_variable8"] = &Class83::variable8;
+    bindings["Class83_variable9"] = &Class83::variable9;
+    bindings["Class83_variable10"] = &Class83::variable10;
+    bindings["Class83_variable11"] = &Class83::variable11;
+    bindings["Class83_variable12"] = &Class83::variable12;
+    bindings["Class83_variable13"] = &Class83::variable13;
+    bindings["Class83_variable14"] = &Class83::variable14;
 }
 #endif
 

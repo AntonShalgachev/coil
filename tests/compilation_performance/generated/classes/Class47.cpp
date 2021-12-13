@@ -41,6 +41,22 @@ void Class47::registerBindings(GeneralBindings& bindings)
     ::bind<Class47>(bindings, "method13", &Class47::method13);
     ::bind<Class47>(bindings, "method14", &Class47::method14);
 
+    ::bind<Class47>(bindings, "memberVariable0", &Class47::memberVariable0);
+    ::bind<Class47>(bindings, "memberVariable1", &Class47::memberVariable1);
+    ::bind<Class47>(bindings, "memberVariable2", &Class47::memberVariable2);
+    ::bind<Class47>(bindings, "memberVariable3", &Class47::memberVariable3);
+    ::bind<Class47>(bindings, "memberVariable4", &Class47::memberVariable4);
+    ::bind<Class47>(bindings, "memberVariable5", &Class47::memberVariable5);
+    ::bind<Class47>(bindings, "memberVariable6", &Class47::memberVariable6);
+    ::bind<Class47>(bindings, "memberVariable7", &Class47::memberVariable7);
+    ::bind<Class47>(bindings, "memberVariable8", &Class47::memberVariable8);
+    ::bind<Class47>(bindings, "memberVariable9", &Class47::memberVariable9);
+    ::bind<Class47>(bindings, "memberVariable10", &Class47::memberVariable10);
+    ::bind<Class47>(bindings, "memberVariable11", &Class47::memberVariable11);
+    ::bind<Class47>(bindings, "memberVariable12", &Class47::memberVariable12);
+    ::bind<Class47>(bindings, "memberVariable13", &Class47::memberVariable13);
+    ::bind<Class47>(bindings, "memberVariable14", &Class47::memberVariable14);
+
     bindings["Class47_function0"] = [](coil::Context context, coil::NamedArgs args, double arg0, unsigned arg1, float arg2, double arg3, bool arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class47::registerBindings(GeneralBindings& bindings)
         args.get<float>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class47::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class47_variable0"] = &Class47::variable0;
+    bindings["Class47_variable1"] = &Class47::variable1;
+    bindings["Class47_variable2"] = &Class47::variable2;
+    bindings["Class47_variable3"] = &Class47::variable3;
+    bindings["Class47_variable4"] = &Class47::variable4;
+    bindings["Class47_variable5"] = &Class47::variable5;
+    bindings["Class47_variable6"] = &Class47::variable6;
+    bindings["Class47_variable7"] = &Class47::variable7;
+    bindings["Class47_variable8"] = &Class47::variable8;
+    bindings["Class47_variable9"] = &Class47::variable9;
+    bindings["Class47_variable10"] = &Class47::variable10;
+    bindings["Class47_variable11"] = &Class47::variable11;
+    bindings["Class47_variable12"] = &Class47::variable12;
+    bindings["Class47_variable13"] = &Class47::variable13;
+    bindings["Class47_variable14"] = &Class47::variable14;
 }
 #endif
 

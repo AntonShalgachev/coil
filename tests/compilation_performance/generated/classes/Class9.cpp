@@ -41,6 +41,22 @@ void Class9::registerBindings(GeneralBindings& bindings)
     ::bind<Class9>(bindings, "method13", &Class9::method13);
     ::bind<Class9>(bindings, "method14", &Class9::method14);
 
+    ::bind<Class9>(bindings, "memberVariable0", &Class9::memberVariable0);
+    ::bind<Class9>(bindings, "memberVariable1", &Class9::memberVariable1);
+    ::bind<Class9>(bindings, "memberVariable2", &Class9::memberVariable2);
+    ::bind<Class9>(bindings, "memberVariable3", &Class9::memberVariable3);
+    ::bind<Class9>(bindings, "memberVariable4", &Class9::memberVariable4);
+    ::bind<Class9>(bindings, "memberVariable5", &Class9::memberVariable5);
+    ::bind<Class9>(bindings, "memberVariable6", &Class9::memberVariable6);
+    ::bind<Class9>(bindings, "memberVariable7", &Class9::memberVariable7);
+    ::bind<Class9>(bindings, "memberVariable8", &Class9::memberVariable8);
+    ::bind<Class9>(bindings, "memberVariable9", &Class9::memberVariable9);
+    ::bind<Class9>(bindings, "memberVariable10", &Class9::memberVariable10);
+    ::bind<Class9>(bindings, "memberVariable11", &Class9::memberVariable11);
+    ::bind<Class9>(bindings, "memberVariable12", &Class9::memberVariable12);
+    ::bind<Class9>(bindings, "memberVariable13", &Class9::memberVariable13);
+    ::bind<Class9>(bindings, "memberVariable14", &Class9::memberVariable14);
+
     bindings["Class9_function0"] = [](coil::Context context, coil::NamedArgs args, int arg0, unsigned arg1, double arg2, short arg3, float arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class9::registerBindings(GeneralBindings& bindings)
         args.get<double>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class9::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class9_variable0"] = &Class9::variable0;
+    bindings["Class9_variable1"] = &Class9::variable1;
+    bindings["Class9_variable2"] = &Class9::variable2;
+    bindings["Class9_variable3"] = &Class9::variable3;
+    bindings["Class9_variable4"] = &Class9::variable4;
+    bindings["Class9_variable5"] = &Class9::variable5;
+    bindings["Class9_variable6"] = &Class9::variable6;
+    bindings["Class9_variable7"] = &Class9::variable7;
+    bindings["Class9_variable8"] = &Class9::variable8;
+    bindings["Class9_variable9"] = &Class9::variable9;
+    bindings["Class9_variable10"] = &Class9::variable10;
+    bindings["Class9_variable11"] = &Class9::variable11;
+    bindings["Class9_variable12"] = &Class9::variable12;
+    bindings["Class9_variable13"] = &Class9::variable13;
+    bindings["Class9_variable14"] = &Class9::variable14;
 }
 #endif
 

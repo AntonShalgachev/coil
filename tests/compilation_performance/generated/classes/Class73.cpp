@@ -41,6 +41,22 @@ void Class73::registerBindings(GeneralBindings& bindings)
     ::bind<Class73>(bindings, "method13", &Class73::method13);
     ::bind<Class73>(bindings, "method14", &Class73::method14);
 
+    ::bind<Class73>(bindings, "memberVariable0", &Class73::memberVariable0);
+    ::bind<Class73>(bindings, "memberVariable1", &Class73::memberVariable1);
+    ::bind<Class73>(bindings, "memberVariable2", &Class73::memberVariable2);
+    ::bind<Class73>(bindings, "memberVariable3", &Class73::memberVariable3);
+    ::bind<Class73>(bindings, "memberVariable4", &Class73::memberVariable4);
+    ::bind<Class73>(bindings, "memberVariable5", &Class73::memberVariable5);
+    ::bind<Class73>(bindings, "memberVariable6", &Class73::memberVariable6);
+    ::bind<Class73>(bindings, "memberVariable7", &Class73::memberVariable7);
+    ::bind<Class73>(bindings, "memberVariable8", &Class73::memberVariable8);
+    ::bind<Class73>(bindings, "memberVariable9", &Class73::memberVariable9);
+    ::bind<Class73>(bindings, "memberVariable10", &Class73::memberVariable10);
+    ::bind<Class73>(bindings, "memberVariable11", &Class73::memberVariable11);
+    ::bind<Class73>(bindings, "memberVariable12", &Class73::memberVariable12);
+    ::bind<Class73>(bindings, "memberVariable13", &Class73::memberVariable13);
+    ::bind<Class73>(bindings, "memberVariable14", &Class73::memberVariable14);
+
     bindings["Class73_function0"] = [](coil::Context context, coil::NamedArgs args, unsigned arg0, double arg1, unsigned arg2, bool arg3, int arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class73::registerBindings(GeneralBindings& bindings)
         args.get<int>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class73::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class73_variable0"] = &Class73::variable0;
+    bindings["Class73_variable1"] = &Class73::variable1;
+    bindings["Class73_variable2"] = &Class73::variable2;
+    bindings["Class73_variable3"] = &Class73::variable3;
+    bindings["Class73_variable4"] = &Class73::variable4;
+    bindings["Class73_variable5"] = &Class73::variable5;
+    bindings["Class73_variable6"] = &Class73::variable6;
+    bindings["Class73_variable7"] = &Class73::variable7;
+    bindings["Class73_variable8"] = &Class73::variable8;
+    bindings["Class73_variable9"] = &Class73::variable9;
+    bindings["Class73_variable10"] = &Class73::variable10;
+    bindings["Class73_variable11"] = &Class73::variable11;
+    bindings["Class73_variable12"] = &Class73::variable12;
+    bindings["Class73_variable13"] = &Class73::variable13;
+    bindings["Class73_variable14"] = &Class73::variable14;
 }
 #endif
 

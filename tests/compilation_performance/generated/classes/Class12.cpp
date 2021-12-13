@@ -41,6 +41,22 @@ void Class12::registerBindings(GeneralBindings& bindings)
     ::bind<Class12>(bindings, "method13", &Class12::method13);
     ::bind<Class12>(bindings, "method14", &Class12::method14);
 
+    ::bind<Class12>(bindings, "memberVariable0", &Class12::memberVariable0);
+    ::bind<Class12>(bindings, "memberVariable1", &Class12::memberVariable1);
+    ::bind<Class12>(bindings, "memberVariable2", &Class12::memberVariable2);
+    ::bind<Class12>(bindings, "memberVariable3", &Class12::memberVariable3);
+    ::bind<Class12>(bindings, "memberVariable4", &Class12::memberVariable4);
+    ::bind<Class12>(bindings, "memberVariable5", &Class12::memberVariable5);
+    ::bind<Class12>(bindings, "memberVariable6", &Class12::memberVariable6);
+    ::bind<Class12>(bindings, "memberVariable7", &Class12::memberVariable7);
+    ::bind<Class12>(bindings, "memberVariable8", &Class12::memberVariable8);
+    ::bind<Class12>(bindings, "memberVariable9", &Class12::memberVariable9);
+    ::bind<Class12>(bindings, "memberVariable10", &Class12::memberVariable10);
+    ::bind<Class12>(bindings, "memberVariable11", &Class12::memberVariable11);
+    ::bind<Class12>(bindings, "memberVariable12", &Class12::memberVariable12);
+    ::bind<Class12>(bindings, "memberVariable13", &Class12::memberVariable13);
+    ::bind<Class12>(bindings, "memberVariable14", &Class12::memberVariable14);
+
     bindings["Class12_function0"] = [](coil::Context context, coil::NamedArgs args, int arg0, int arg1, double arg2, float arg3, double arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class12::registerBindings(GeneralBindings& bindings)
         args.get<bool>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class12::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class12_variable0"] = &Class12::variable0;
+    bindings["Class12_variable1"] = &Class12::variable1;
+    bindings["Class12_variable2"] = &Class12::variable2;
+    bindings["Class12_variable3"] = &Class12::variable3;
+    bindings["Class12_variable4"] = &Class12::variable4;
+    bindings["Class12_variable5"] = &Class12::variable5;
+    bindings["Class12_variable6"] = &Class12::variable6;
+    bindings["Class12_variable7"] = &Class12::variable7;
+    bindings["Class12_variable8"] = &Class12::variable8;
+    bindings["Class12_variable9"] = &Class12::variable9;
+    bindings["Class12_variable10"] = &Class12::variable10;
+    bindings["Class12_variable11"] = &Class12::variable11;
+    bindings["Class12_variable12"] = &Class12::variable12;
+    bindings["Class12_variable13"] = &Class12::variable13;
+    bindings["Class12_variable14"] = &Class12::variable14;
 }
 #endif
 
