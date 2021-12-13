@@ -24,7 +24,15 @@ private:
     #if 'return_index' in $method then $method.args[$method.return_index] else 'void' # ${method.name}($combine($method.args));
 #end for
 
+#for $member_variable in $member_variables
+    $member_variable.type $member_variable.name{};
+#end for
+
 #for $function in $functions
     static #if 'return_index' in $function then $function.args[$function.return_index] else 'void' # ${function.name}($combine($function.args));
+#end for
+
+#for $variable in $variables
+    inline static $variable.type $variable.name{};
 #end for
 };

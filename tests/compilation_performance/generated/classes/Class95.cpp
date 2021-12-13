@@ -41,6 +41,22 @@ void Class95::registerBindings(GeneralBindings& bindings)
     ::bind<Class95>(bindings, "method13", &Class95::method13);
     ::bind<Class95>(bindings, "method14", &Class95::method14);
 
+    ::bind<Class95>(bindings, "memberVariable0", &Class95::memberVariable0);
+    ::bind<Class95>(bindings, "memberVariable1", &Class95::memberVariable1);
+    ::bind<Class95>(bindings, "memberVariable2", &Class95::memberVariable2);
+    ::bind<Class95>(bindings, "memberVariable3", &Class95::memberVariable3);
+    ::bind<Class95>(bindings, "memberVariable4", &Class95::memberVariable4);
+    ::bind<Class95>(bindings, "memberVariable5", &Class95::memberVariable5);
+    ::bind<Class95>(bindings, "memberVariable6", &Class95::memberVariable6);
+    ::bind<Class95>(bindings, "memberVariable7", &Class95::memberVariable7);
+    ::bind<Class95>(bindings, "memberVariable8", &Class95::memberVariable8);
+    ::bind<Class95>(bindings, "memberVariable9", &Class95::memberVariable9);
+    ::bind<Class95>(bindings, "memberVariable10", &Class95::memberVariable10);
+    ::bind<Class95>(bindings, "memberVariable11", &Class95::memberVariable11);
+    ::bind<Class95>(bindings, "memberVariable12", &Class95::memberVariable12);
+    ::bind<Class95>(bindings, "memberVariable13", &Class95::memberVariable13);
+    ::bind<Class95>(bindings, "memberVariable14", &Class95::memberVariable14);
+
     bindings["Class95_function0"] = [](coil::Context context, coil::NamedArgs args, float arg0, double arg1, int arg2, float arg3, bool arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class95::registerBindings(GeneralBindings& bindings)
         args.get<float>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class95::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class95_variable0"] = &Class95::variable0;
+    bindings["Class95_variable1"] = &Class95::variable1;
+    bindings["Class95_variable2"] = &Class95::variable2;
+    bindings["Class95_variable3"] = &Class95::variable3;
+    bindings["Class95_variable4"] = &Class95::variable4;
+    bindings["Class95_variable5"] = &Class95::variable5;
+    bindings["Class95_variable6"] = &Class95::variable6;
+    bindings["Class95_variable7"] = &Class95::variable7;
+    bindings["Class95_variable8"] = &Class95::variable8;
+    bindings["Class95_variable9"] = &Class95::variable9;
+    bindings["Class95_variable10"] = &Class95::variable10;
+    bindings["Class95_variable11"] = &Class95::variable11;
+    bindings["Class95_variable12"] = &Class95::variable12;
+    bindings["Class95_variable13"] = &Class95::variable13;
+    bindings["Class95_variable14"] = &Class95::variable14;
 }
 #endif
 

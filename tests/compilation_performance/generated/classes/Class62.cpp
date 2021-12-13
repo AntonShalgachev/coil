@@ -41,6 +41,22 @@ void Class62::registerBindings(GeneralBindings& bindings)
     ::bind<Class62>(bindings, "method13", &Class62::method13);
     ::bind<Class62>(bindings, "method14", &Class62::method14);
 
+    ::bind<Class62>(bindings, "memberVariable0", &Class62::memberVariable0);
+    ::bind<Class62>(bindings, "memberVariable1", &Class62::memberVariable1);
+    ::bind<Class62>(bindings, "memberVariable2", &Class62::memberVariable2);
+    ::bind<Class62>(bindings, "memberVariable3", &Class62::memberVariable3);
+    ::bind<Class62>(bindings, "memberVariable4", &Class62::memberVariable4);
+    ::bind<Class62>(bindings, "memberVariable5", &Class62::memberVariable5);
+    ::bind<Class62>(bindings, "memberVariable6", &Class62::memberVariable6);
+    ::bind<Class62>(bindings, "memberVariable7", &Class62::memberVariable7);
+    ::bind<Class62>(bindings, "memberVariable8", &Class62::memberVariable8);
+    ::bind<Class62>(bindings, "memberVariable9", &Class62::memberVariable9);
+    ::bind<Class62>(bindings, "memberVariable10", &Class62::memberVariable10);
+    ::bind<Class62>(bindings, "memberVariable11", &Class62::memberVariable11);
+    ::bind<Class62>(bindings, "memberVariable12", &Class62::memberVariable12);
+    ::bind<Class62>(bindings, "memberVariable13", &Class62::memberVariable13);
+    ::bind<Class62>(bindings, "memberVariable14", &Class62::memberVariable14);
+
     bindings["Class62_function0"] = [](coil::Context context, coil::NamedArgs args, short arg0, short arg1, unsigned arg2, unsigned arg3, unsigned arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class62::registerBindings(GeneralBindings& bindings)
         args.get<double>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class62::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class62_variable0"] = &Class62::variable0;
+    bindings["Class62_variable1"] = &Class62::variable1;
+    bindings["Class62_variable2"] = &Class62::variable2;
+    bindings["Class62_variable3"] = &Class62::variable3;
+    bindings["Class62_variable4"] = &Class62::variable4;
+    bindings["Class62_variable5"] = &Class62::variable5;
+    bindings["Class62_variable6"] = &Class62::variable6;
+    bindings["Class62_variable7"] = &Class62::variable7;
+    bindings["Class62_variable8"] = &Class62::variable8;
+    bindings["Class62_variable9"] = &Class62::variable9;
+    bindings["Class62_variable10"] = &Class62::variable10;
+    bindings["Class62_variable11"] = &Class62::variable11;
+    bindings["Class62_variable12"] = &Class62::variable12;
+    bindings["Class62_variable13"] = &Class62::variable13;
+    bindings["Class62_variable14"] = &Class62::variable14;
 }
 #endif
 

@@ -41,6 +41,22 @@ void Class30::registerBindings(GeneralBindings& bindings)
     ::bind<Class30>(bindings, "method13", &Class30::method13);
     ::bind<Class30>(bindings, "method14", &Class30::method14);
 
+    ::bind<Class30>(bindings, "memberVariable0", &Class30::memberVariable0);
+    ::bind<Class30>(bindings, "memberVariable1", &Class30::memberVariable1);
+    ::bind<Class30>(bindings, "memberVariable2", &Class30::memberVariable2);
+    ::bind<Class30>(bindings, "memberVariable3", &Class30::memberVariable3);
+    ::bind<Class30>(bindings, "memberVariable4", &Class30::memberVariable4);
+    ::bind<Class30>(bindings, "memberVariable5", &Class30::memberVariable5);
+    ::bind<Class30>(bindings, "memberVariable6", &Class30::memberVariable6);
+    ::bind<Class30>(bindings, "memberVariable7", &Class30::memberVariable7);
+    ::bind<Class30>(bindings, "memberVariable8", &Class30::memberVariable8);
+    ::bind<Class30>(bindings, "memberVariable9", &Class30::memberVariable9);
+    ::bind<Class30>(bindings, "memberVariable10", &Class30::memberVariable10);
+    ::bind<Class30>(bindings, "memberVariable11", &Class30::memberVariable11);
+    ::bind<Class30>(bindings, "memberVariable12", &Class30::memberVariable12);
+    ::bind<Class30>(bindings, "memberVariable13", &Class30::memberVariable13);
+    ::bind<Class30>(bindings, "memberVariable14", &Class30::memberVariable14);
+
     bindings["Class30_function0"] = [](coil::Context context, coil::NamedArgs args, unsigned arg0, bool arg1, double arg2, short arg3, double arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class30::registerBindings(GeneralBindings& bindings)
         args.get<unsigned>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class30::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class30_variable0"] = &Class30::variable0;
+    bindings["Class30_variable1"] = &Class30::variable1;
+    bindings["Class30_variable2"] = &Class30::variable2;
+    bindings["Class30_variable3"] = &Class30::variable3;
+    bindings["Class30_variable4"] = &Class30::variable4;
+    bindings["Class30_variable5"] = &Class30::variable5;
+    bindings["Class30_variable6"] = &Class30::variable6;
+    bindings["Class30_variable7"] = &Class30::variable7;
+    bindings["Class30_variable8"] = &Class30::variable8;
+    bindings["Class30_variable9"] = &Class30::variable9;
+    bindings["Class30_variable10"] = &Class30::variable10;
+    bindings["Class30_variable11"] = &Class30::variable11;
+    bindings["Class30_variable12"] = &Class30::variable12;
+    bindings["Class30_variable13"] = &Class30::variable13;
+    bindings["Class30_variable14"] = &Class30::variable14;
 }
 #endif
 

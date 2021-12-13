@@ -41,6 +41,22 @@ void Class45::registerBindings(GeneralBindings& bindings)
     ::bind<Class45>(bindings, "method13", &Class45::method13);
     ::bind<Class45>(bindings, "method14", &Class45::method14);
 
+    ::bind<Class45>(bindings, "memberVariable0", &Class45::memberVariable0);
+    ::bind<Class45>(bindings, "memberVariable1", &Class45::memberVariable1);
+    ::bind<Class45>(bindings, "memberVariable2", &Class45::memberVariable2);
+    ::bind<Class45>(bindings, "memberVariable3", &Class45::memberVariable3);
+    ::bind<Class45>(bindings, "memberVariable4", &Class45::memberVariable4);
+    ::bind<Class45>(bindings, "memberVariable5", &Class45::memberVariable5);
+    ::bind<Class45>(bindings, "memberVariable6", &Class45::memberVariable6);
+    ::bind<Class45>(bindings, "memberVariable7", &Class45::memberVariable7);
+    ::bind<Class45>(bindings, "memberVariable8", &Class45::memberVariable8);
+    ::bind<Class45>(bindings, "memberVariable9", &Class45::memberVariable9);
+    ::bind<Class45>(bindings, "memberVariable10", &Class45::memberVariable10);
+    ::bind<Class45>(bindings, "memberVariable11", &Class45::memberVariable11);
+    ::bind<Class45>(bindings, "memberVariable12", &Class45::memberVariable12);
+    ::bind<Class45>(bindings, "memberVariable13", &Class45::memberVariable13);
+    ::bind<Class45>(bindings, "memberVariable14", &Class45::memberVariable14);
+
     bindings["Class45_function0"] = [](coil::Context context, coil::NamedArgs args, int arg0, float arg1, int arg2, unsigned arg3, short arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class45::registerBindings(GeneralBindings& bindings)
         args.get<short>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class45::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class45_variable0"] = &Class45::variable0;
+    bindings["Class45_variable1"] = &Class45::variable1;
+    bindings["Class45_variable2"] = &Class45::variable2;
+    bindings["Class45_variable3"] = &Class45::variable3;
+    bindings["Class45_variable4"] = &Class45::variable4;
+    bindings["Class45_variable5"] = &Class45::variable5;
+    bindings["Class45_variable6"] = &Class45::variable6;
+    bindings["Class45_variable7"] = &Class45::variable7;
+    bindings["Class45_variable8"] = &Class45::variable8;
+    bindings["Class45_variable9"] = &Class45::variable9;
+    bindings["Class45_variable10"] = &Class45::variable10;
+    bindings["Class45_variable11"] = &Class45::variable11;
+    bindings["Class45_variable12"] = &Class45::variable12;
+    bindings["Class45_variable13"] = &Class45::variable13;
+    bindings["Class45_variable14"] = &Class45::variable14;
 }
 #endif
 

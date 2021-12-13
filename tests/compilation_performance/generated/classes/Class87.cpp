@@ -41,6 +41,22 @@ void Class87::registerBindings(GeneralBindings& bindings)
     ::bind<Class87>(bindings, "method13", &Class87::method13);
     ::bind<Class87>(bindings, "method14", &Class87::method14);
 
+    ::bind<Class87>(bindings, "memberVariable0", &Class87::memberVariable0);
+    ::bind<Class87>(bindings, "memberVariable1", &Class87::memberVariable1);
+    ::bind<Class87>(bindings, "memberVariable2", &Class87::memberVariable2);
+    ::bind<Class87>(bindings, "memberVariable3", &Class87::memberVariable3);
+    ::bind<Class87>(bindings, "memberVariable4", &Class87::memberVariable4);
+    ::bind<Class87>(bindings, "memberVariable5", &Class87::memberVariable5);
+    ::bind<Class87>(bindings, "memberVariable6", &Class87::memberVariable6);
+    ::bind<Class87>(bindings, "memberVariable7", &Class87::memberVariable7);
+    ::bind<Class87>(bindings, "memberVariable8", &Class87::memberVariable8);
+    ::bind<Class87>(bindings, "memberVariable9", &Class87::memberVariable9);
+    ::bind<Class87>(bindings, "memberVariable10", &Class87::memberVariable10);
+    ::bind<Class87>(bindings, "memberVariable11", &Class87::memberVariable11);
+    ::bind<Class87>(bindings, "memberVariable12", &Class87::memberVariable12);
+    ::bind<Class87>(bindings, "memberVariable13", &Class87::memberVariable13);
+    ::bind<Class87>(bindings, "memberVariable14", &Class87::memberVariable14);
+
     bindings["Class87_function0"] = [](coil::Context context, coil::NamedArgs args, float arg0, double arg1, double arg2, double arg3, int arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class87::registerBindings(GeneralBindings& bindings)
         args.get<short>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class87::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class87_variable0"] = &Class87::variable0;
+    bindings["Class87_variable1"] = &Class87::variable1;
+    bindings["Class87_variable2"] = &Class87::variable2;
+    bindings["Class87_variable3"] = &Class87::variable3;
+    bindings["Class87_variable4"] = &Class87::variable4;
+    bindings["Class87_variable5"] = &Class87::variable5;
+    bindings["Class87_variable6"] = &Class87::variable6;
+    bindings["Class87_variable7"] = &Class87::variable7;
+    bindings["Class87_variable8"] = &Class87::variable8;
+    bindings["Class87_variable9"] = &Class87::variable9;
+    bindings["Class87_variable10"] = &Class87::variable10;
+    bindings["Class87_variable11"] = &Class87::variable11;
+    bindings["Class87_variable12"] = &Class87::variable12;
+    bindings["Class87_variable13"] = &Class87::variable13;
+    bindings["Class87_variable14"] = &Class87::variable14;
 }
 #endif
 

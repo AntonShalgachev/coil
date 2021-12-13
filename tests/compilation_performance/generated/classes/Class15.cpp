@@ -41,6 +41,22 @@ void Class15::registerBindings(GeneralBindings& bindings)
     ::bind<Class15>(bindings, "method13", &Class15::method13);
     ::bind<Class15>(bindings, "method14", &Class15::method14);
 
+    ::bind<Class15>(bindings, "memberVariable0", &Class15::memberVariable0);
+    ::bind<Class15>(bindings, "memberVariable1", &Class15::memberVariable1);
+    ::bind<Class15>(bindings, "memberVariable2", &Class15::memberVariable2);
+    ::bind<Class15>(bindings, "memberVariable3", &Class15::memberVariable3);
+    ::bind<Class15>(bindings, "memberVariable4", &Class15::memberVariable4);
+    ::bind<Class15>(bindings, "memberVariable5", &Class15::memberVariable5);
+    ::bind<Class15>(bindings, "memberVariable6", &Class15::memberVariable6);
+    ::bind<Class15>(bindings, "memberVariable7", &Class15::memberVariable7);
+    ::bind<Class15>(bindings, "memberVariable8", &Class15::memberVariable8);
+    ::bind<Class15>(bindings, "memberVariable9", &Class15::memberVariable9);
+    ::bind<Class15>(bindings, "memberVariable10", &Class15::memberVariable10);
+    ::bind<Class15>(bindings, "memberVariable11", &Class15::memberVariable11);
+    ::bind<Class15>(bindings, "memberVariable12", &Class15::memberVariable12);
+    ::bind<Class15>(bindings, "memberVariable13", &Class15::memberVariable13);
+    ::bind<Class15>(bindings, "memberVariable14", &Class15::memberVariable14);
+
     bindings["Class15_function0"] = [](coil::Context context, coil::NamedArgs args, bool arg0, bool arg1, short arg2, int arg3, double arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class15::registerBindings(GeneralBindings& bindings)
         args.get<unsigned>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class15::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class15_variable0"] = &Class15::variable0;
+    bindings["Class15_variable1"] = &Class15::variable1;
+    bindings["Class15_variable2"] = &Class15::variable2;
+    bindings["Class15_variable3"] = &Class15::variable3;
+    bindings["Class15_variable4"] = &Class15::variable4;
+    bindings["Class15_variable5"] = &Class15::variable5;
+    bindings["Class15_variable6"] = &Class15::variable6;
+    bindings["Class15_variable7"] = &Class15::variable7;
+    bindings["Class15_variable8"] = &Class15::variable8;
+    bindings["Class15_variable9"] = &Class15::variable9;
+    bindings["Class15_variable10"] = &Class15::variable10;
+    bindings["Class15_variable11"] = &Class15::variable11;
+    bindings["Class15_variable12"] = &Class15::variable12;
+    bindings["Class15_variable13"] = &Class15::variable13;
+    bindings["Class15_variable14"] = &Class15::variable14;
 }
 #endif
 

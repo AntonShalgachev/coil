@@ -41,6 +41,22 @@ void Class42::registerBindings(GeneralBindings& bindings)
     ::bind<Class42>(bindings, "method13", &Class42::method13);
     ::bind<Class42>(bindings, "method14", &Class42::method14);
 
+    ::bind<Class42>(bindings, "memberVariable0", &Class42::memberVariable0);
+    ::bind<Class42>(bindings, "memberVariable1", &Class42::memberVariable1);
+    ::bind<Class42>(bindings, "memberVariable2", &Class42::memberVariable2);
+    ::bind<Class42>(bindings, "memberVariable3", &Class42::memberVariable3);
+    ::bind<Class42>(bindings, "memberVariable4", &Class42::memberVariable4);
+    ::bind<Class42>(bindings, "memberVariable5", &Class42::memberVariable5);
+    ::bind<Class42>(bindings, "memberVariable6", &Class42::memberVariable6);
+    ::bind<Class42>(bindings, "memberVariable7", &Class42::memberVariable7);
+    ::bind<Class42>(bindings, "memberVariable8", &Class42::memberVariable8);
+    ::bind<Class42>(bindings, "memberVariable9", &Class42::memberVariable9);
+    ::bind<Class42>(bindings, "memberVariable10", &Class42::memberVariable10);
+    ::bind<Class42>(bindings, "memberVariable11", &Class42::memberVariable11);
+    ::bind<Class42>(bindings, "memberVariable12", &Class42::memberVariable12);
+    ::bind<Class42>(bindings, "memberVariable13", &Class42::memberVariable13);
+    ::bind<Class42>(bindings, "memberVariable14", &Class42::memberVariable14);
+
     bindings["Class42_function0"] = [](coil::Context context, coil::NamedArgs args, bool arg0, float arg1, short arg2, int arg3, bool arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class42::registerBindings(GeneralBindings& bindings)
         args.get<unsigned>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class42::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class42_variable0"] = &Class42::variable0;
+    bindings["Class42_variable1"] = &Class42::variable1;
+    bindings["Class42_variable2"] = &Class42::variable2;
+    bindings["Class42_variable3"] = &Class42::variable3;
+    bindings["Class42_variable4"] = &Class42::variable4;
+    bindings["Class42_variable5"] = &Class42::variable5;
+    bindings["Class42_variable6"] = &Class42::variable6;
+    bindings["Class42_variable7"] = &Class42::variable7;
+    bindings["Class42_variable8"] = &Class42::variable8;
+    bindings["Class42_variable9"] = &Class42::variable9;
+    bindings["Class42_variable10"] = &Class42::variable10;
+    bindings["Class42_variable11"] = &Class42::variable11;
+    bindings["Class42_variable12"] = &Class42::variable12;
+    bindings["Class42_variable13"] = &Class42::variable13;
+    bindings["Class42_variable14"] = &Class42::variable14;
 }
 #endif
 

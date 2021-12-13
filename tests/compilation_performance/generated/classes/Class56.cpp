@@ -41,6 +41,22 @@ void Class56::registerBindings(GeneralBindings& bindings)
     ::bind<Class56>(bindings, "method13", &Class56::method13);
     ::bind<Class56>(bindings, "method14", &Class56::method14);
 
+    ::bind<Class56>(bindings, "memberVariable0", &Class56::memberVariable0);
+    ::bind<Class56>(bindings, "memberVariable1", &Class56::memberVariable1);
+    ::bind<Class56>(bindings, "memberVariable2", &Class56::memberVariable2);
+    ::bind<Class56>(bindings, "memberVariable3", &Class56::memberVariable3);
+    ::bind<Class56>(bindings, "memberVariable4", &Class56::memberVariable4);
+    ::bind<Class56>(bindings, "memberVariable5", &Class56::memberVariable5);
+    ::bind<Class56>(bindings, "memberVariable6", &Class56::memberVariable6);
+    ::bind<Class56>(bindings, "memberVariable7", &Class56::memberVariable7);
+    ::bind<Class56>(bindings, "memberVariable8", &Class56::memberVariable8);
+    ::bind<Class56>(bindings, "memberVariable9", &Class56::memberVariable9);
+    ::bind<Class56>(bindings, "memberVariable10", &Class56::memberVariable10);
+    ::bind<Class56>(bindings, "memberVariable11", &Class56::memberVariable11);
+    ::bind<Class56>(bindings, "memberVariable12", &Class56::memberVariable12);
+    ::bind<Class56>(bindings, "memberVariable13", &Class56::memberVariable13);
+    ::bind<Class56>(bindings, "memberVariable14", &Class56::memberVariable14);
+
     bindings["Class56_function0"] = [](coil::Context context, coil::NamedArgs args, float arg0, double arg1, unsigned arg2, int arg3, short arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class56::registerBindings(GeneralBindings& bindings)
         args.get<float>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class56::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class56_variable0"] = &Class56::variable0;
+    bindings["Class56_variable1"] = &Class56::variable1;
+    bindings["Class56_variable2"] = &Class56::variable2;
+    bindings["Class56_variable3"] = &Class56::variable3;
+    bindings["Class56_variable4"] = &Class56::variable4;
+    bindings["Class56_variable5"] = &Class56::variable5;
+    bindings["Class56_variable6"] = &Class56::variable6;
+    bindings["Class56_variable7"] = &Class56::variable7;
+    bindings["Class56_variable8"] = &Class56::variable8;
+    bindings["Class56_variable9"] = &Class56::variable9;
+    bindings["Class56_variable10"] = &Class56::variable10;
+    bindings["Class56_variable11"] = &Class56::variable11;
+    bindings["Class56_variable12"] = &Class56::variable12;
+    bindings["Class56_variable13"] = &Class56::variable13;
+    bindings["Class56_variable14"] = &Class56::variable14;
 }
 #endif
 

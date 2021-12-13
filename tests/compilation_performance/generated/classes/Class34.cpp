@@ -41,6 +41,22 @@ void Class34::registerBindings(GeneralBindings& bindings)
     ::bind<Class34>(bindings, "method13", &Class34::method13);
     ::bind<Class34>(bindings, "method14", &Class34::method14);
 
+    ::bind<Class34>(bindings, "memberVariable0", &Class34::memberVariable0);
+    ::bind<Class34>(bindings, "memberVariable1", &Class34::memberVariable1);
+    ::bind<Class34>(bindings, "memberVariable2", &Class34::memberVariable2);
+    ::bind<Class34>(bindings, "memberVariable3", &Class34::memberVariable3);
+    ::bind<Class34>(bindings, "memberVariable4", &Class34::memberVariable4);
+    ::bind<Class34>(bindings, "memberVariable5", &Class34::memberVariable5);
+    ::bind<Class34>(bindings, "memberVariable6", &Class34::memberVariable6);
+    ::bind<Class34>(bindings, "memberVariable7", &Class34::memberVariable7);
+    ::bind<Class34>(bindings, "memberVariable8", &Class34::memberVariable8);
+    ::bind<Class34>(bindings, "memberVariable9", &Class34::memberVariable9);
+    ::bind<Class34>(bindings, "memberVariable10", &Class34::memberVariable10);
+    ::bind<Class34>(bindings, "memberVariable11", &Class34::memberVariable11);
+    ::bind<Class34>(bindings, "memberVariable12", &Class34::memberVariable12);
+    ::bind<Class34>(bindings, "memberVariable13", &Class34::memberVariable13);
+    ::bind<Class34>(bindings, "memberVariable14", &Class34::memberVariable14);
+
     bindings["Class34_function0"] = [](coil::Context context, coil::NamedArgs args, float arg0, int arg1, short arg2, double arg3, float arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class34::registerBindings(GeneralBindings& bindings)
         args.get<bool>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class34::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class34_variable0"] = &Class34::variable0;
+    bindings["Class34_variable1"] = &Class34::variable1;
+    bindings["Class34_variable2"] = &Class34::variable2;
+    bindings["Class34_variable3"] = &Class34::variable3;
+    bindings["Class34_variable4"] = &Class34::variable4;
+    bindings["Class34_variable5"] = &Class34::variable5;
+    bindings["Class34_variable6"] = &Class34::variable6;
+    bindings["Class34_variable7"] = &Class34::variable7;
+    bindings["Class34_variable8"] = &Class34::variable8;
+    bindings["Class34_variable9"] = &Class34::variable9;
+    bindings["Class34_variable10"] = &Class34::variable10;
+    bindings["Class34_variable11"] = &Class34::variable11;
+    bindings["Class34_variable12"] = &Class34::variable12;
+    bindings["Class34_variable13"] = &Class34::variable13;
+    bindings["Class34_variable14"] = &Class34::variable14;
 }
 #endif
 

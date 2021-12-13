@@ -41,6 +41,22 @@ void Class94::registerBindings(GeneralBindings& bindings)
     ::bind<Class94>(bindings, "method13", &Class94::method13);
     ::bind<Class94>(bindings, "method14", &Class94::method14);
 
+    ::bind<Class94>(bindings, "memberVariable0", &Class94::memberVariable0);
+    ::bind<Class94>(bindings, "memberVariable1", &Class94::memberVariable1);
+    ::bind<Class94>(bindings, "memberVariable2", &Class94::memberVariable2);
+    ::bind<Class94>(bindings, "memberVariable3", &Class94::memberVariable3);
+    ::bind<Class94>(bindings, "memberVariable4", &Class94::memberVariable4);
+    ::bind<Class94>(bindings, "memberVariable5", &Class94::memberVariable5);
+    ::bind<Class94>(bindings, "memberVariable6", &Class94::memberVariable6);
+    ::bind<Class94>(bindings, "memberVariable7", &Class94::memberVariable7);
+    ::bind<Class94>(bindings, "memberVariable8", &Class94::memberVariable8);
+    ::bind<Class94>(bindings, "memberVariable9", &Class94::memberVariable9);
+    ::bind<Class94>(bindings, "memberVariable10", &Class94::memberVariable10);
+    ::bind<Class94>(bindings, "memberVariable11", &Class94::memberVariable11);
+    ::bind<Class94>(bindings, "memberVariable12", &Class94::memberVariable12);
+    ::bind<Class94>(bindings, "memberVariable13", &Class94::memberVariable13);
+    ::bind<Class94>(bindings, "memberVariable14", &Class94::memberVariable14);
+
     bindings["Class94_function0"] = [](coil::Context context, coil::NamedArgs args, bool arg0, double arg1, float arg2, int arg3, float arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class94::registerBindings(GeneralBindings& bindings)
         args.get<int>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class94::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class94_variable0"] = &Class94::variable0;
+    bindings["Class94_variable1"] = &Class94::variable1;
+    bindings["Class94_variable2"] = &Class94::variable2;
+    bindings["Class94_variable3"] = &Class94::variable3;
+    bindings["Class94_variable4"] = &Class94::variable4;
+    bindings["Class94_variable5"] = &Class94::variable5;
+    bindings["Class94_variable6"] = &Class94::variable6;
+    bindings["Class94_variable7"] = &Class94::variable7;
+    bindings["Class94_variable8"] = &Class94::variable8;
+    bindings["Class94_variable9"] = &Class94::variable9;
+    bindings["Class94_variable10"] = &Class94::variable10;
+    bindings["Class94_variable11"] = &Class94::variable11;
+    bindings["Class94_variable12"] = &Class94::variable12;
+    bindings["Class94_variable13"] = &Class94::variable13;
+    bindings["Class94_variable14"] = &Class94::variable14;
 }
 #endif
 

@@ -41,6 +41,22 @@ void Class26::registerBindings(GeneralBindings& bindings)
     ::bind<Class26>(bindings, "method13", &Class26::method13);
     ::bind<Class26>(bindings, "method14", &Class26::method14);
 
+    ::bind<Class26>(bindings, "memberVariable0", &Class26::memberVariable0);
+    ::bind<Class26>(bindings, "memberVariable1", &Class26::memberVariable1);
+    ::bind<Class26>(bindings, "memberVariable2", &Class26::memberVariable2);
+    ::bind<Class26>(bindings, "memberVariable3", &Class26::memberVariable3);
+    ::bind<Class26>(bindings, "memberVariable4", &Class26::memberVariable4);
+    ::bind<Class26>(bindings, "memberVariable5", &Class26::memberVariable5);
+    ::bind<Class26>(bindings, "memberVariable6", &Class26::memberVariable6);
+    ::bind<Class26>(bindings, "memberVariable7", &Class26::memberVariable7);
+    ::bind<Class26>(bindings, "memberVariable8", &Class26::memberVariable8);
+    ::bind<Class26>(bindings, "memberVariable9", &Class26::memberVariable9);
+    ::bind<Class26>(bindings, "memberVariable10", &Class26::memberVariable10);
+    ::bind<Class26>(bindings, "memberVariable11", &Class26::memberVariable11);
+    ::bind<Class26>(bindings, "memberVariable12", &Class26::memberVariable12);
+    ::bind<Class26>(bindings, "memberVariable13", &Class26::memberVariable13);
+    ::bind<Class26>(bindings, "memberVariable14", &Class26::memberVariable14);
+
     bindings["Class26_function0"] = [](coil::Context context, coil::NamedArgs args, unsigned arg0, unsigned arg1, bool arg2, int arg3, float arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class26::registerBindings(GeneralBindings& bindings)
         args.get<int>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class26::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class26_variable0"] = &Class26::variable0;
+    bindings["Class26_variable1"] = &Class26::variable1;
+    bindings["Class26_variable2"] = &Class26::variable2;
+    bindings["Class26_variable3"] = &Class26::variable3;
+    bindings["Class26_variable4"] = &Class26::variable4;
+    bindings["Class26_variable5"] = &Class26::variable5;
+    bindings["Class26_variable6"] = &Class26::variable6;
+    bindings["Class26_variable7"] = &Class26::variable7;
+    bindings["Class26_variable8"] = &Class26::variable8;
+    bindings["Class26_variable9"] = &Class26::variable9;
+    bindings["Class26_variable10"] = &Class26::variable10;
+    bindings["Class26_variable11"] = &Class26::variable11;
+    bindings["Class26_variable12"] = &Class26::variable12;
+    bindings["Class26_variable13"] = &Class26::variable13;
+    bindings["Class26_variable14"] = &Class26::variable14;
 }
 #endif
 

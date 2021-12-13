@@ -41,6 +41,22 @@ void Class88::registerBindings(GeneralBindings& bindings)
     ::bind<Class88>(bindings, "method13", &Class88::method13);
     ::bind<Class88>(bindings, "method14", &Class88::method14);
 
+    ::bind<Class88>(bindings, "memberVariable0", &Class88::memberVariable0);
+    ::bind<Class88>(bindings, "memberVariable1", &Class88::memberVariable1);
+    ::bind<Class88>(bindings, "memberVariable2", &Class88::memberVariable2);
+    ::bind<Class88>(bindings, "memberVariable3", &Class88::memberVariable3);
+    ::bind<Class88>(bindings, "memberVariable4", &Class88::memberVariable4);
+    ::bind<Class88>(bindings, "memberVariable5", &Class88::memberVariable5);
+    ::bind<Class88>(bindings, "memberVariable6", &Class88::memberVariable6);
+    ::bind<Class88>(bindings, "memberVariable7", &Class88::memberVariable7);
+    ::bind<Class88>(bindings, "memberVariable8", &Class88::memberVariable8);
+    ::bind<Class88>(bindings, "memberVariable9", &Class88::memberVariable9);
+    ::bind<Class88>(bindings, "memberVariable10", &Class88::memberVariable10);
+    ::bind<Class88>(bindings, "memberVariable11", &Class88::memberVariable11);
+    ::bind<Class88>(bindings, "memberVariable12", &Class88::memberVariable12);
+    ::bind<Class88>(bindings, "memberVariable13", &Class88::memberVariable13);
+    ::bind<Class88>(bindings, "memberVariable14", &Class88::memberVariable14);
+
     bindings["Class88_function0"] = [](coil::Context context, coil::NamedArgs args, double arg0, float arg1, double arg2, bool arg3, double arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class88::registerBindings(GeneralBindings& bindings)
         args.get<bool>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class88::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class88_variable0"] = &Class88::variable0;
+    bindings["Class88_variable1"] = &Class88::variable1;
+    bindings["Class88_variable2"] = &Class88::variable2;
+    bindings["Class88_variable3"] = &Class88::variable3;
+    bindings["Class88_variable4"] = &Class88::variable4;
+    bindings["Class88_variable5"] = &Class88::variable5;
+    bindings["Class88_variable6"] = &Class88::variable6;
+    bindings["Class88_variable7"] = &Class88::variable7;
+    bindings["Class88_variable8"] = &Class88::variable8;
+    bindings["Class88_variable9"] = &Class88::variable9;
+    bindings["Class88_variable10"] = &Class88::variable10;
+    bindings["Class88_variable11"] = &Class88::variable11;
+    bindings["Class88_variable12"] = &Class88::variable12;
+    bindings["Class88_variable13"] = &Class88::variable13;
+    bindings["Class88_variable14"] = &Class88::variable14;
 }
 #endif
 

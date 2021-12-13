@@ -41,6 +41,22 @@ void Class31::registerBindings(GeneralBindings& bindings)
     ::bind<Class31>(bindings, "method13", &Class31::method13);
     ::bind<Class31>(bindings, "method14", &Class31::method14);
 
+    ::bind<Class31>(bindings, "memberVariable0", &Class31::memberVariable0);
+    ::bind<Class31>(bindings, "memberVariable1", &Class31::memberVariable1);
+    ::bind<Class31>(bindings, "memberVariable2", &Class31::memberVariable2);
+    ::bind<Class31>(bindings, "memberVariable3", &Class31::memberVariable3);
+    ::bind<Class31>(bindings, "memberVariable4", &Class31::memberVariable4);
+    ::bind<Class31>(bindings, "memberVariable5", &Class31::memberVariable5);
+    ::bind<Class31>(bindings, "memberVariable6", &Class31::memberVariable6);
+    ::bind<Class31>(bindings, "memberVariable7", &Class31::memberVariable7);
+    ::bind<Class31>(bindings, "memberVariable8", &Class31::memberVariable8);
+    ::bind<Class31>(bindings, "memberVariable9", &Class31::memberVariable9);
+    ::bind<Class31>(bindings, "memberVariable10", &Class31::memberVariable10);
+    ::bind<Class31>(bindings, "memberVariable11", &Class31::memberVariable11);
+    ::bind<Class31>(bindings, "memberVariable12", &Class31::memberVariable12);
+    ::bind<Class31>(bindings, "memberVariable13", &Class31::memberVariable13);
+    ::bind<Class31>(bindings, "memberVariable14", &Class31::memberVariable14);
+
     bindings["Class31_function0"] = [](coil::Context context, coil::NamedArgs args, int arg0, float arg1, double arg2, double arg3, int arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class31::registerBindings(GeneralBindings& bindings)
         args.get<double>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class31::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class31_variable0"] = &Class31::variable0;
+    bindings["Class31_variable1"] = &Class31::variable1;
+    bindings["Class31_variable2"] = &Class31::variable2;
+    bindings["Class31_variable3"] = &Class31::variable3;
+    bindings["Class31_variable4"] = &Class31::variable4;
+    bindings["Class31_variable5"] = &Class31::variable5;
+    bindings["Class31_variable6"] = &Class31::variable6;
+    bindings["Class31_variable7"] = &Class31::variable7;
+    bindings["Class31_variable8"] = &Class31::variable8;
+    bindings["Class31_variable9"] = &Class31::variable9;
+    bindings["Class31_variable10"] = &Class31::variable10;
+    bindings["Class31_variable11"] = &Class31::variable11;
+    bindings["Class31_variable12"] = &Class31::variable12;
+    bindings["Class31_variable13"] = &Class31::variable13;
+    bindings["Class31_variable14"] = &Class31::variable14;
 }
 #endif
 

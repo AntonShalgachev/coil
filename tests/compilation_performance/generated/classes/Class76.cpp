@@ -41,6 +41,22 @@ void Class76::registerBindings(GeneralBindings& bindings)
     ::bind<Class76>(bindings, "method13", &Class76::method13);
     ::bind<Class76>(bindings, "method14", &Class76::method14);
 
+    ::bind<Class76>(bindings, "memberVariable0", &Class76::memberVariable0);
+    ::bind<Class76>(bindings, "memberVariable1", &Class76::memberVariable1);
+    ::bind<Class76>(bindings, "memberVariable2", &Class76::memberVariable2);
+    ::bind<Class76>(bindings, "memberVariable3", &Class76::memberVariable3);
+    ::bind<Class76>(bindings, "memberVariable4", &Class76::memberVariable4);
+    ::bind<Class76>(bindings, "memberVariable5", &Class76::memberVariable5);
+    ::bind<Class76>(bindings, "memberVariable6", &Class76::memberVariable6);
+    ::bind<Class76>(bindings, "memberVariable7", &Class76::memberVariable7);
+    ::bind<Class76>(bindings, "memberVariable8", &Class76::memberVariable8);
+    ::bind<Class76>(bindings, "memberVariable9", &Class76::memberVariable9);
+    ::bind<Class76>(bindings, "memberVariable10", &Class76::memberVariable10);
+    ::bind<Class76>(bindings, "memberVariable11", &Class76::memberVariable11);
+    ::bind<Class76>(bindings, "memberVariable12", &Class76::memberVariable12);
+    ::bind<Class76>(bindings, "memberVariable13", &Class76::memberVariable13);
+    ::bind<Class76>(bindings, "memberVariable14", &Class76::memberVariable14);
+
     bindings["Class76_function0"] = [](coil::Context context, coil::NamedArgs args, unsigned arg0, short arg1, short arg2, float arg3, bool arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class76::registerBindings(GeneralBindings& bindings)
         args.get<bool>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class76::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class76_variable0"] = &Class76::variable0;
+    bindings["Class76_variable1"] = &Class76::variable1;
+    bindings["Class76_variable2"] = &Class76::variable2;
+    bindings["Class76_variable3"] = &Class76::variable3;
+    bindings["Class76_variable4"] = &Class76::variable4;
+    bindings["Class76_variable5"] = &Class76::variable5;
+    bindings["Class76_variable6"] = &Class76::variable6;
+    bindings["Class76_variable7"] = &Class76::variable7;
+    bindings["Class76_variable8"] = &Class76::variable8;
+    bindings["Class76_variable9"] = &Class76::variable9;
+    bindings["Class76_variable10"] = &Class76::variable10;
+    bindings["Class76_variable11"] = &Class76::variable11;
+    bindings["Class76_variable12"] = &Class76::variable12;
+    bindings["Class76_variable13"] = &Class76::variable13;
+    bindings["Class76_variable14"] = &Class76::variable14;
 }
 #endif
 

@@ -41,6 +41,22 @@ void Class71::registerBindings(GeneralBindings& bindings)
     ::bind<Class71>(bindings, "method13", &Class71::method13);
     ::bind<Class71>(bindings, "method14", &Class71::method14);
 
+    ::bind<Class71>(bindings, "memberVariable0", &Class71::memberVariable0);
+    ::bind<Class71>(bindings, "memberVariable1", &Class71::memberVariable1);
+    ::bind<Class71>(bindings, "memberVariable2", &Class71::memberVariable2);
+    ::bind<Class71>(bindings, "memberVariable3", &Class71::memberVariable3);
+    ::bind<Class71>(bindings, "memberVariable4", &Class71::memberVariable4);
+    ::bind<Class71>(bindings, "memberVariable5", &Class71::memberVariable5);
+    ::bind<Class71>(bindings, "memberVariable6", &Class71::memberVariable6);
+    ::bind<Class71>(bindings, "memberVariable7", &Class71::memberVariable7);
+    ::bind<Class71>(bindings, "memberVariable8", &Class71::memberVariable8);
+    ::bind<Class71>(bindings, "memberVariable9", &Class71::memberVariable9);
+    ::bind<Class71>(bindings, "memberVariable10", &Class71::memberVariable10);
+    ::bind<Class71>(bindings, "memberVariable11", &Class71::memberVariable11);
+    ::bind<Class71>(bindings, "memberVariable12", &Class71::memberVariable12);
+    ::bind<Class71>(bindings, "memberVariable13", &Class71::memberVariable13);
+    ::bind<Class71>(bindings, "memberVariable14", &Class71::memberVariable14);
+
     bindings["Class71_function0"] = [](coil::Context context, coil::NamedArgs args, int arg0, unsigned arg1, int arg2, bool arg3, bool arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class71::registerBindings(GeneralBindings& bindings)
         args.get<double>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class71::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class71_variable0"] = &Class71::variable0;
+    bindings["Class71_variable1"] = &Class71::variable1;
+    bindings["Class71_variable2"] = &Class71::variable2;
+    bindings["Class71_variable3"] = &Class71::variable3;
+    bindings["Class71_variable4"] = &Class71::variable4;
+    bindings["Class71_variable5"] = &Class71::variable5;
+    bindings["Class71_variable6"] = &Class71::variable6;
+    bindings["Class71_variable7"] = &Class71::variable7;
+    bindings["Class71_variable8"] = &Class71::variable8;
+    bindings["Class71_variable9"] = &Class71::variable9;
+    bindings["Class71_variable10"] = &Class71::variable10;
+    bindings["Class71_variable11"] = &Class71::variable11;
+    bindings["Class71_variable12"] = &Class71::variable12;
+    bindings["Class71_variable13"] = &Class71::variable13;
+    bindings["Class71_variable14"] = &Class71::variable14;
 }
 #endif
 

@@ -41,6 +41,22 @@ void Class24::registerBindings(GeneralBindings& bindings)
     ::bind<Class24>(bindings, "method13", &Class24::method13);
     ::bind<Class24>(bindings, "method14", &Class24::method14);
 
+    ::bind<Class24>(bindings, "memberVariable0", &Class24::memberVariable0);
+    ::bind<Class24>(bindings, "memberVariable1", &Class24::memberVariable1);
+    ::bind<Class24>(bindings, "memberVariable2", &Class24::memberVariable2);
+    ::bind<Class24>(bindings, "memberVariable3", &Class24::memberVariable3);
+    ::bind<Class24>(bindings, "memberVariable4", &Class24::memberVariable4);
+    ::bind<Class24>(bindings, "memberVariable5", &Class24::memberVariable5);
+    ::bind<Class24>(bindings, "memberVariable6", &Class24::memberVariable6);
+    ::bind<Class24>(bindings, "memberVariable7", &Class24::memberVariable7);
+    ::bind<Class24>(bindings, "memberVariable8", &Class24::memberVariable8);
+    ::bind<Class24>(bindings, "memberVariable9", &Class24::memberVariable9);
+    ::bind<Class24>(bindings, "memberVariable10", &Class24::memberVariable10);
+    ::bind<Class24>(bindings, "memberVariable11", &Class24::memberVariable11);
+    ::bind<Class24>(bindings, "memberVariable12", &Class24::memberVariable12);
+    ::bind<Class24>(bindings, "memberVariable13", &Class24::memberVariable13);
+    ::bind<Class24>(bindings, "memberVariable14", &Class24::memberVariable14);
+
     bindings["Class24_function0"] = [](coil::Context context, coil::NamedArgs args, unsigned arg0, bool arg1, float arg2, double arg3, short arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class24::registerBindings(GeneralBindings& bindings)
         args.get<short>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class24::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class24_variable0"] = &Class24::variable0;
+    bindings["Class24_variable1"] = &Class24::variable1;
+    bindings["Class24_variable2"] = &Class24::variable2;
+    bindings["Class24_variable3"] = &Class24::variable3;
+    bindings["Class24_variable4"] = &Class24::variable4;
+    bindings["Class24_variable5"] = &Class24::variable5;
+    bindings["Class24_variable6"] = &Class24::variable6;
+    bindings["Class24_variable7"] = &Class24::variable7;
+    bindings["Class24_variable8"] = &Class24::variable8;
+    bindings["Class24_variable9"] = &Class24::variable9;
+    bindings["Class24_variable10"] = &Class24::variable10;
+    bindings["Class24_variable11"] = &Class24::variable11;
+    bindings["Class24_variable12"] = &Class24::variable12;
+    bindings["Class24_variable13"] = &Class24::variable13;
+    bindings["Class24_variable14"] = &Class24::variable14;
 }
 #endif
 

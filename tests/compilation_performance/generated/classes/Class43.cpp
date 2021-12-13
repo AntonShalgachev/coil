@@ -41,6 +41,22 @@ void Class43::registerBindings(GeneralBindings& bindings)
     ::bind<Class43>(bindings, "method13", &Class43::method13);
     ::bind<Class43>(bindings, "method14", &Class43::method14);
 
+    ::bind<Class43>(bindings, "memberVariable0", &Class43::memberVariable0);
+    ::bind<Class43>(bindings, "memberVariable1", &Class43::memberVariable1);
+    ::bind<Class43>(bindings, "memberVariable2", &Class43::memberVariable2);
+    ::bind<Class43>(bindings, "memberVariable3", &Class43::memberVariable3);
+    ::bind<Class43>(bindings, "memberVariable4", &Class43::memberVariable4);
+    ::bind<Class43>(bindings, "memberVariable5", &Class43::memberVariable5);
+    ::bind<Class43>(bindings, "memberVariable6", &Class43::memberVariable6);
+    ::bind<Class43>(bindings, "memberVariable7", &Class43::memberVariable7);
+    ::bind<Class43>(bindings, "memberVariable8", &Class43::memberVariable8);
+    ::bind<Class43>(bindings, "memberVariable9", &Class43::memberVariable9);
+    ::bind<Class43>(bindings, "memberVariable10", &Class43::memberVariable10);
+    ::bind<Class43>(bindings, "memberVariable11", &Class43::memberVariable11);
+    ::bind<Class43>(bindings, "memberVariable12", &Class43::memberVariable12);
+    ::bind<Class43>(bindings, "memberVariable13", &Class43::memberVariable13);
+    ::bind<Class43>(bindings, "memberVariable14", &Class43::memberVariable14);
+
     bindings["Class43_function0"] = [](coil::Context context, coil::NamedArgs args, bool arg0, short arg1, float arg2, int arg3, float arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class43::registerBindings(GeneralBindings& bindings)
         args.get<short>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class43::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class43_variable0"] = &Class43::variable0;
+    bindings["Class43_variable1"] = &Class43::variable1;
+    bindings["Class43_variable2"] = &Class43::variable2;
+    bindings["Class43_variable3"] = &Class43::variable3;
+    bindings["Class43_variable4"] = &Class43::variable4;
+    bindings["Class43_variable5"] = &Class43::variable5;
+    bindings["Class43_variable6"] = &Class43::variable6;
+    bindings["Class43_variable7"] = &Class43::variable7;
+    bindings["Class43_variable8"] = &Class43::variable8;
+    bindings["Class43_variable9"] = &Class43::variable9;
+    bindings["Class43_variable10"] = &Class43::variable10;
+    bindings["Class43_variable11"] = &Class43::variable11;
+    bindings["Class43_variable12"] = &Class43::variable12;
+    bindings["Class43_variable13"] = &Class43::variable13;
+    bindings["Class43_variable14"] = &Class43::variable14;
 }
 #endif
 

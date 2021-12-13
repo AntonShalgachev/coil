@@ -41,6 +41,22 @@ void Class28::registerBindings(GeneralBindings& bindings)
     ::bind<Class28>(bindings, "method13", &Class28::method13);
     ::bind<Class28>(bindings, "method14", &Class28::method14);
 
+    ::bind<Class28>(bindings, "memberVariable0", &Class28::memberVariable0);
+    ::bind<Class28>(bindings, "memberVariable1", &Class28::memberVariable1);
+    ::bind<Class28>(bindings, "memberVariable2", &Class28::memberVariable2);
+    ::bind<Class28>(bindings, "memberVariable3", &Class28::memberVariable3);
+    ::bind<Class28>(bindings, "memberVariable4", &Class28::memberVariable4);
+    ::bind<Class28>(bindings, "memberVariable5", &Class28::memberVariable5);
+    ::bind<Class28>(bindings, "memberVariable6", &Class28::memberVariable6);
+    ::bind<Class28>(bindings, "memberVariable7", &Class28::memberVariable7);
+    ::bind<Class28>(bindings, "memberVariable8", &Class28::memberVariable8);
+    ::bind<Class28>(bindings, "memberVariable9", &Class28::memberVariable9);
+    ::bind<Class28>(bindings, "memberVariable10", &Class28::memberVariable10);
+    ::bind<Class28>(bindings, "memberVariable11", &Class28::memberVariable11);
+    ::bind<Class28>(bindings, "memberVariable12", &Class28::memberVariable12);
+    ::bind<Class28>(bindings, "memberVariable13", &Class28::memberVariable13);
+    ::bind<Class28>(bindings, "memberVariable14", &Class28::memberVariable14);
+
     bindings["Class28_function0"] = [](coil::Context context, coil::NamedArgs args, double arg0, short arg1, bool arg2, float arg3, unsigned arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class28::registerBindings(GeneralBindings& bindings)
         args.get<int>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class28::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class28_variable0"] = &Class28::variable0;
+    bindings["Class28_variable1"] = &Class28::variable1;
+    bindings["Class28_variable2"] = &Class28::variable2;
+    bindings["Class28_variable3"] = &Class28::variable3;
+    bindings["Class28_variable4"] = &Class28::variable4;
+    bindings["Class28_variable5"] = &Class28::variable5;
+    bindings["Class28_variable6"] = &Class28::variable6;
+    bindings["Class28_variable7"] = &Class28::variable7;
+    bindings["Class28_variable8"] = &Class28::variable8;
+    bindings["Class28_variable9"] = &Class28::variable9;
+    bindings["Class28_variable10"] = &Class28::variable10;
+    bindings["Class28_variable11"] = &Class28::variable11;
+    bindings["Class28_variable12"] = &Class28::variable12;
+    bindings["Class28_variable13"] = &Class28::variable13;
+    bindings["Class28_variable14"] = &Class28::variable14;
 }
 #endif
 

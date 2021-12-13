@@ -41,6 +41,22 @@ void Class48::registerBindings(GeneralBindings& bindings)
     ::bind<Class48>(bindings, "method13", &Class48::method13);
     ::bind<Class48>(bindings, "method14", &Class48::method14);
 
+    ::bind<Class48>(bindings, "memberVariable0", &Class48::memberVariable0);
+    ::bind<Class48>(bindings, "memberVariable1", &Class48::memberVariable1);
+    ::bind<Class48>(bindings, "memberVariable2", &Class48::memberVariable2);
+    ::bind<Class48>(bindings, "memberVariable3", &Class48::memberVariable3);
+    ::bind<Class48>(bindings, "memberVariable4", &Class48::memberVariable4);
+    ::bind<Class48>(bindings, "memberVariable5", &Class48::memberVariable5);
+    ::bind<Class48>(bindings, "memberVariable6", &Class48::memberVariable6);
+    ::bind<Class48>(bindings, "memberVariable7", &Class48::memberVariable7);
+    ::bind<Class48>(bindings, "memberVariable8", &Class48::memberVariable8);
+    ::bind<Class48>(bindings, "memberVariable9", &Class48::memberVariable9);
+    ::bind<Class48>(bindings, "memberVariable10", &Class48::memberVariable10);
+    ::bind<Class48>(bindings, "memberVariable11", &Class48::memberVariable11);
+    ::bind<Class48>(bindings, "memberVariable12", &Class48::memberVariable12);
+    ::bind<Class48>(bindings, "memberVariable13", &Class48::memberVariable13);
+    ::bind<Class48>(bindings, "memberVariable14", &Class48::memberVariable14);
+
     bindings["Class48_function0"] = [](coil::Context context, coil::NamedArgs args, unsigned arg0, int arg1, short arg2, int arg3, int arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class48::registerBindings(GeneralBindings& bindings)
         args.get<unsigned>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class48::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class48_variable0"] = &Class48::variable0;
+    bindings["Class48_variable1"] = &Class48::variable1;
+    bindings["Class48_variable2"] = &Class48::variable2;
+    bindings["Class48_variable3"] = &Class48::variable3;
+    bindings["Class48_variable4"] = &Class48::variable4;
+    bindings["Class48_variable5"] = &Class48::variable5;
+    bindings["Class48_variable6"] = &Class48::variable6;
+    bindings["Class48_variable7"] = &Class48::variable7;
+    bindings["Class48_variable8"] = &Class48::variable8;
+    bindings["Class48_variable9"] = &Class48::variable9;
+    bindings["Class48_variable10"] = &Class48::variable10;
+    bindings["Class48_variable11"] = &Class48::variable11;
+    bindings["Class48_variable12"] = &Class48::variable12;
+    bindings["Class48_variable13"] = &Class48::variable13;
+    bindings["Class48_variable14"] = &Class48::variable14;
 }
 #endif
 

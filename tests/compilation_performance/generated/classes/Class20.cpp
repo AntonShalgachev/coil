@@ -41,6 +41,22 @@ void Class20::registerBindings(GeneralBindings& bindings)
     ::bind<Class20>(bindings, "method13", &Class20::method13);
     ::bind<Class20>(bindings, "method14", &Class20::method14);
 
+    ::bind<Class20>(bindings, "memberVariable0", &Class20::memberVariable0);
+    ::bind<Class20>(bindings, "memberVariable1", &Class20::memberVariable1);
+    ::bind<Class20>(bindings, "memberVariable2", &Class20::memberVariable2);
+    ::bind<Class20>(bindings, "memberVariable3", &Class20::memberVariable3);
+    ::bind<Class20>(bindings, "memberVariable4", &Class20::memberVariable4);
+    ::bind<Class20>(bindings, "memberVariable5", &Class20::memberVariable5);
+    ::bind<Class20>(bindings, "memberVariable6", &Class20::memberVariable6);
+    ::bind<Class20>(bindings, "memberVariable7", &Class20::memberVariable7);
+    ::bind<Class20>(bindings, "memberVariable8", &Class20::memberVariable8);
+    ::bind<Class20>(bindings, "memberVariable9", &Class20::memberVariable9);
+    ::bind<Class20>(bindings, "memberVariable10", &Class20::memberVariable10);
+    ::bind<Class20>(bindings, "memberVariable11", &Class20::memberVariable11);
+    ::bind<Class20>(bindings, "memberVariable12", &Class20::memberVariable12);
+    ::bind<Class20>(bindings, "memberVariable13", &Class20::memberVariable13);
+    ::bind<Class20>(bindings, "memberVariable14", &Class20::memberVariable14);
+
     bindings["Class20_function0"] = [](coil::Context context, coil::NamedArgs args, short arg0, bool arg1, short arg2, unsigned arg3, unsigned arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class20::registerBindings(GeneralBindings& bindings)
         args.get<short>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class20::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class20_variable0"] = &Class20::variable0;
+    bindings["Class20_variable1"] = &Class20::variable1;
+    bindings["Class20_variable2"] = &Class20::variable2;
+    bindings["Class20_variable3"] = &Class20::variable3;
+    bindings["Class20_variable4"] = &Class20::variable4;
+    bindings["Class20_variable5"] = &Class20::variable5;
+    bindings["Class20_variable6"] = &Class20::variable6;
+    bindings["Class20_variable7"] = &Class20::variable7;
+    bindings["Class20_variable8"] = &Class20::variable8;
+    bindings["Class20_variable9"] = &Class20::variable9;
+    bindings["Class20_variable10"] = &Class20::variable10;
+    bindings["Class20_variable11"] = &Class20::variable11;
+    bindings["Class20_variable12"] = &Class20::variable12;
+    bindings["Class20_variable13"] = &Class20::variable13;
+    bindings["Class20_variable14"] = &Class20::variable14;
 }
 #endif
 

@@ -41,6 +41,22 @@ void Class54::registerBindings(GeneralBindings& bindings)
     ::bind<Class54>(bindings, "method13", &Class54::method13);
     ::bind<Class54>(bindings, "method14", &Class54::method14);
 
+    ::bind<Class54>(bindings, "memberVariable0", &Class54::memberVariable0);
+    ::bind<Class54>(bindings, "memberVariable1", &Class54::memberVariable1);
+    ::bind<Class54>(bindings, "memberVariable2", &Class54::memberVariable2);
+    ::bind<Class54>(bindings, "memberVariable3", &Class54::memberVariable3);
+    ::bind<Class54>(bindings, "memberVariable4", &Class54::memberVariable4);
+    ::bind<Class54>(bindings, "memberVariable5", &Class54::memberVariable5);
+    ::bind<Class54>(bindings, "memberVariable6", &Class54::memberVariable6);
+    ::bind<Class54>(bindings, "memberVariable7", &Class54::memberVariable7);
+    ::bind<Class54>(bindings, "memberVariable8", &Class54::memberVariable8);
+    ::bind<Class54>(bindings, "memberVariable9", &Class54::memberVariable9);
+    ::bind<Class54>(bindings, "memberVariable10", &Class54::memberVariable10);
+    ::bind<Class54>(bindings, "memberVariable11", &Class54::memberVariable11);
+    ::bind<Class54>(bindings, "memberVariable12", &Class54::memberVariable12);
+    ::bind<Class54>(bindings, "memberVariable13", &Class54::memberVariable13);
+    ::bind<Class54>(bindings, "memberVariable14", &Class54::memberVariable14);
+
     bindings["Class54_function0"] = [](coil::Context context, coil::NamedArgs args, int arg0, int arg1, double arg2, short arg3, float arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class54::registerBindings(GeneralBindings& bindings)
         args.get<short>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class54::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class54_variable0"] = &Class54::variable0;
+    bindings["Class54_variable1"] = &Class54::variable1;
+    bindings["Class54_variable2"] = &Class54::variable2;
+    bindings["Class54_variable3"] = &Class54::variable3;
+    bindings["Class54_variable4"] = &Class54::variable4;
+    bindings["Class54_variable5"] = &Class54::variable5;
+    bindings["Class54_variable6"] = &Class54::variable6;
+    bindings["Class54_variable7"] = &Class54::variable7;
+    bindings["Class54_variable8"] = &Class54::variable8;
+    bindings["Class54_variable9"] = &Class54::variable9;
+    bindings["Class54_variable10"] = &Class54::variable10;
+    bindings["Class54_variable11"] = &Class54::variable11;
+    bindings["Class54_variable12"] = &Class54::variable12;
+    bindings["Class54_variable13"] = &Class54::variable13;
+    bindings["Class54_variable14"] = &Class54::variable14;
 }
 #endif
 

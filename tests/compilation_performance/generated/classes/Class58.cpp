@@ -41,6 +41,22 @@ void Class58::registerBindings(GeneralBindings& bindings)
     ::bind<Class58>(bindings, "method13", &Class58::method13);
     ::bind<Class58>(bindings, "method14", &Class58::method14);
 
+    ::bind<Class58>(bindings, "memberVariable0", &Class58::memberVariable0);
+    ::bind<Class58>(bindings, "memberVariable1", &Class58::memberVariable1);
+    ::bind<Class58>(bindings, "memberVariable2", &Class58::memberVariable2);
+    ::bind<Class58>(bindings, "memberVariable3", &Class58::memberVariable3);
+    ::bind<Class58>(bindings, "memberVariable4", &Class58::memberVariable4);
+    ::bind<Class58>(bindings, "memberVariable5", &Class58::memberVariable5);
+    ::bind<Class58>(bindings, "memberVariable6", &Class58::memberVariable6);
+    ::bind<Class58>(bindings, "memberVariable7", &Class58::memberVariable7);
+    ::bind<Class58>(bindings, "memberVariable8", &Class58::memberVariable8);
+    ::bind<Class58>(bindings, "memberVariable9", &Class58::memberVariable9);
+    ::bind<Class58>(bindings, "memberVariable10", &Class58::memberVariable10);
+    ::bind<Class58>(bindings, "memberVariable11", &Class58::memberVariable11);
+    ::bind<Class58>(bindings, "memberVariable12", &Class58::memberVariable12);
+    ::bind<Class58>(bindings, "memberVariable13", &Class58::memberVariable13);
+    ::bind<Class58>(bindings, "memberVariable14", &Class58::memberVariable14);
+
     bindings["Class58_function0"] = [](coil::Context context, coil::NamedArgs args, short arg0, bool arg1, short arg2, unsigned arg3, unsigned arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class58::registerBindings(GeneralBindings& bindings)
         args.get<unsigned>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class58::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class58_variable0"] = &Class58::variable0;
+    bindings["Class58_variable1"] = &Class58::variable1;
+    bindings["Class58_variable2"] = &Class58::variable2;
+    bindings["Class58_variable3"] = &Class58::variable3;
+    bindings["Class58_variable4"] = &Class58::variable4;
+    bindings["Class58_variable5"] = &Class58::variable5;
+    bindings["Class58_variable6"] = &Class58::variable6;
+    bindings["Class58_variable7"] = &Class58::variable7;
+    bindings["Class58_variable8"] = &Class58::variable8;
+    bindings["Class58_variable9"] = &Class58::variable9;
+    bindings["Class58_variable10"] = &Class58::variable10;
+    bindings["Class58_variable11"] = &Class58::variable11;
+    bindings["Class58_variable12"] = &Class58::variable12;
+    bindings["Class58_variable13"] = &Class58::variable13;
+    bindings["Class58_variable14"] = &Class58::variable14;
 }
 #endif
 

@@ -41,6 +41,22 @@ void Class79::registerBindings(GeneralBindings& bindings)
     ::bind<Class79>(bindings, "method13", &Class79::method13);
     ::bind<Class79>(bindings, "method14", &Class79::method14);
 
+    ::bind<Class79>(bindings, "memberVariable0", &Class79::memberVariable0);
+    ::bind<Class79>(bindings, "memberVariable1", &Class79::memberVariable1);
+    ::bind<Class79>(bindings, "memberVariable2", &Class79::memberVariable2);
+    ::bind<Class79>(bindings, "memberVariable3", &Class79::memberVariable3);
+    ::bind<Class79>(bindings, "memberVariable4", &Class79::memberVariable4);
+    ::bind<Class79>(bindings, "memberVariable5", &Class79::memberVariable5);
+    ::bind<Class79>(bindings, "memberVariable6", &Class79::memberVariable6);
+    ::bind<Class79>(bindings, "memberVariable7", &Class79::memberVariable7);
+    ::bind<Class79>(bindings, "memberVariable8", &Class79::memberVariable8);
+    ::bind<Class79>(bindings, "memberVariable9", &Class79::memberVariable9);
+    ::bind<Class79>(bindings, "memberVariable10", &Class79::memberVariable10);
+    ::bind<Class79>(bindings, "memberVariable11", &Class79::memberVariable11);
+    ::bind<Class79>(bindings, "memberVariable12", &Class79::memberVariable12);
+    ::bind<Class79>(bindings, "memberVariable13", &Class79::memberVariable13);
+    ::bind<Class79>(bindings, "memberVariable14", &Class79::memberVariable14);
+
     bindings["Class79_function0"] = [](coil::Context context, coil::NamedArgs args, int arg0, unsigned arg1, float arg2, float arg3, int arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class79::registerBindings(GeneralBindings& bindings)
         args.get<double>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class79::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class79_variable0"] = &Class79::variable0;
+    bindings["Class79_variable1"] = &Class79::variable1;
+    bindings["Class79_variable2"] = &Class79::variable2;
+    bindings["Class79_variable3"] = &Class79::variable3;
+    bindings["Class79_variable4"] = &Class79::variable4;
+    bindings["Class79_variable5"] = &Class79::variable5;
+    bindings["Class79_variable6"] = &Class79::variable6;
+    bindings["Class79_variable7"] = &Class79::variable7;
+    bindings["Class79_variable8"] = &Class79::variable8;
+    bindings["Class79_variable9"] = &Class79::variable9;
+    bindings["Class79_variable10"] = &Class79::variable10;
+    bindings["Class79_variable11"] = &Class79::variable11;
+    bindings["Class79_variable12"] = &Class79::variable12;
+    bindings["Class79_variable13"] = &Class79::variable13;
+    bindings["Class79_variable14"] = &Class79::variable14;
 }
 #endif
 

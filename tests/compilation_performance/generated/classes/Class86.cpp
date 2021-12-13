@@ -41,6 +41,22 @@ void Class86::registerBindings(GeneralBindings& bindings)
     ::bind<Class86>(bindings, "method13", &Class86::method13);
     ::bind<Class86>(bindings, "method14", &Class86::method14);
 
+    ::bind<Class86>(bindings, "memberVariable0", &Class86::memberVariable0);
+    ::bind<Class86>(bindings, "memberVariable1", &Class86::memberVariable1);
+    ::bind<Class86>(bindings, "memberVariable2", &Class86::memberVariable2);
+    ::bind<Class86>(bindings, "memberVariable3", &Class86::memberVariable3);
+    ::bind<Class86>(bindings, "memberVariable4", &Class86::memberVariable4);
+    ::bind<Class86>(bindings, "memberVariable5", &Class86::memberVariable5);
+    ::bind<Class86>(bindings, "memberVariable6", &Class86::memberVariable6);
+    ::bind<Class86>(bindings, "memberVariable7", &Class86::memberVariable7);
+    ::bind<Class86>(bindings, "memberVariable8", &Class86::memberVariable8);
+    ::bind<Class86>(bindings, "memberVariable9", &Class86::memberVariable9);
+    ::bind<Class86>(bindings, "memberVariable10", &Class86::memberVariable10);
+    ::bind<Class86>(bindings, "memberVariable11", &Class86::memberVariable11);
+    ::bind<Class86>(bindings, "memberVariable12", &Class86::memberVariable12);
+    ::bind<Class86>(bindings, "memberVariable13", &Class86::memberVariable13);
+    ::bind<Class86>(bindings, "memberVariable14", &Class86::memberVariable14);
+
     bindings["Class86_function0"] = [](coil::Context context, coil::NamedArgs args, short arg0, short arg1, short arg2, float arg3, short arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class86::registerBindings(GeneralBindings& bindings)
         args.get<int>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class86::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class86_variable0"] = &Class86::variable0;
+    bindings["Class86_variable1"] = &Class86::variable1;
+    bindings["Class86_variable2"] = &Class86::variable2;
+    bindings["Class86_variable3"] = &Class86::variable3;
+    bindings["Class86_variable4"] = &Class86::variable4;
+    bindings["Class86_variable5"] = &Class86::variable5;
+    bindings["Class86_variable6"] = &Class86::variable6;
+    bindings["Class86_variable7"] = &Class86::variable7;
+    bindings["Class86_variable8"] = &Class86::variable8;
+    bindings["Class86_variable9"] = &Class86::variable9;
+    bindings["Class86_variable10"] = &Class86::variable10;
+    bindings["Class86_variable11"] = &Class86::variable11;
+    bindings["Class86_variable12"] = &Class86::variable12;
+    bindings["Class86_variable13"] = &Class86::variable13;
+    bindings["Class86_variable14"] = &Class86::variable14;
 }
 #endif
 

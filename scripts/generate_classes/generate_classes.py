@@ -18,10 +18,12 @@ DEFAULT_TYPES = ['int', 'float', 'double', 'bool', 'short', 'unsigned', 'std::st
 
 
 class ClassGenerator:
-    def __init__(self, classes_count=10, methods_count=3, functions_count=3, args_count=0, includes_count=5, types=DEFAULT_TYPES, seed=0):
+    def __init__(self, classes_count=10, methods_count=3, functions_count=3, member_variables_count=3, variables_count=3, args_count=0, includes_count=5, types=DEFAULT_TYPES, seed=0):
         self._classes_count = classes_count
         self._methods_count = methods_count
         self._functions_count = functions_count
+        self._member_variables_count = member_variables_count
+        self._variables_count = variables_count
         self._args_count = args_count
         self._includes_count = min(includes_count, classes_count)
         self._types = types
@@ -29,6 +31,9 @@ class ClassGenerator:
 
         self._methods_seed_offset = 1000
         self._functions_seed_offset = 10000
+        self._member_variables_seed_offset = 20000
+        self._variables_seed_offset = 30000
+        
         self._includes_seed_offset = 100000
 
     def generate(self):
@@ -56,6 +61,16 @@ class ClassGenerator:
         functions = []
         for i in range(self._functions_count):
             functions.append(self._generate_method('function', i))
+            
+        random.seed(base_seed + self._member_variables_seed_offset)
+        member_variables = []
+        for i in range(self._member_variables_count):
+            member_variables.append(self._generate_variable('memberVariable', i))
+            
+        random.seed(base_seed + self._variables_seed_offset)
+        variables = []
+        for i in range(self._variables_count):
+            variables.append(self._generate_variable('variable', i))
 
         random.seed(base_seed + self._includes_seed_offset)
         includes = random.sample(range(self._classes_count), self._includes_count)
@@ -66,6 +81,8 @@ class ClassGenerator:
         desc['name'] = name
         desc['methods'] = methods
         desc['functions'] = functions
+        desc['member_variables'] = member_variables
+        desc['variables'] = variables
         desc['seed'] = base_seed
         desc['includes'] = includes
         return desc
@@ -84,6 +101,16 @@ class ClassGenerator:
         desc['args'] = args
         if return_index is not None:
             desc['return_index'] = return_index
+        return desc
+
+    def _generate_variable(self, base_name, variable_index):
+        name  = base_name + str(variable_index)
+
+        type_name = random.choice(self._types)
+
+        desc = {}
+        desc['name'] = name
+        desc['type'] = type_name
         return desc
 
 
@@ -135,12 +162,14 @@ def main():
     classes_count = 100
     methods_count = 15
     functions_count = 15
+    member_variables_count = 15
+    variables_count = 15
     includes_count = 20
     args_count = 5
     types = ['int', 'float', 'double', 'bool', 'short', 'unsigned']
     destination = '../../tests/compilation_performance/generated'
 
-    class_generator = ClassGenerator(classes_count, methods_count, functions_count, args_count, includes_count, types, seed)
+    class_generator = ClassGenerator(classes_count, methods_count, functions_count, member_variables_count, variables_count, args_count, includes_count, types, seed)
     
     classes = class_generator.generate()
 

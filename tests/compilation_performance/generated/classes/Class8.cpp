@@ -41,6 +41,22 @@ void Class8::registerBindings(GeneralBindings& bindings)
     ::bind<Class8>(bindings, "method13", &Class8::method13);
     ::bind<Class8>(bindings, "method14", &Class8::method14);
 
+    ::bind<Class8>(bindings, "memberVariable0", &Class8::memberVariable0);
+    ::bind<Class8>(bindings, "memberVariable1", &Class8::memberVariable1);
+    ::bind<Class8>(bindings, "memberVariable2", &Class8::memberVariable2);
+    ::bind<Class8>(bindings, "memberVariable3", &Class8::memberVariable3);
+    ::bind<Class8>(bindings, "memberVariable4", &Class8::memberVariable4);
+    ::bind<Class8>(bindings, "memberVariable5", &Class8::memberVariable5);
+    ::bind<Class8>(bindings, "memberVariable6", &Class8::memberVariable6);
+    ::bind<Class8>(bindings, "memberVariable7", &Class8::memberVariable7);
+    ::bind<Class8>(bindings, "memberVariable8", &Class8::memberVariable8);
+    ::bind<Class8>(bindings, "memberVariable9", &Class8::memberVariable9);
+    ::bind<Class8>(bindings, "memberVariable10", &Class8::memberVariable10);
+    ::bind<Class8>(bindings, "memberVariable11", &Class8::memberVariable11);
+    ::bind<Class8>(bindings, "memberVariable12", &Class8::memberVariable12);
+    ::bind<Class8>(bindings, "memberVariable13", &Class8::memberVariable13);
+    ::bind<Class8>(bindings, "memberVariable14", &Class8::memberVariable14);
+
     bindings["Class8_function0"] = [](coil::Context context, coil::NamedArgs args, float arg0, short arg1, bool arg2, double arg3, float arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class8::registerBindings(GeneralBindings& bindings)
         args.get<bool>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class8::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class8_variable0"] = &Class8::variable0;
+    bindings["Class8_variable1"] = &Class8::variable1;
+    bindings["Class8_variable2"] = &Class8::variable2;
+    bindings["Class8_variable3"] = &Class8::variable3;
+    bindings["Class8_variable4"] = &Class8::variable4;
+    bindings["Class8_variable5"] = &Class8::variable5;
+    bindings["Class8_variable6"] = &Class8::variable6;
+    bindings["Class8_variable7"] = &Class8::variable7;
+    bindings["Class8_variable8"] = &Class8::variable8;
+    bindings["Class8_variable9"] = &Class8::variable9;
+    bindings["Class8_variable10"] = &Class8::variable10;
+    bindings["Class8_variable11"] = &Class8::variable11;
+    bindings["Class8_variable12"] = &Class8::variable12;
+    bindings["Class8_variable13"] = &Class8::variable13;
+    bindings["Class8_variable14"] = &Class8::variable14;
 }
 #endif
 

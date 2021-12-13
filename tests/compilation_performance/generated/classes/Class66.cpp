@@ -41,6 +41,22 @@ void Class66::registerBindings(GeneralBindings& bindings)
     ::bind<Class66>(bindings, "method13", &Class66::method13);
     ::bind<Class66>(bindings, "method14", &Class66::method14);
 
+    ::bind<Class66>(bindings, "memberVariable0", &Class66::memberVariable0);
+    ::bind<Class66>(bindings, "memberVariable1", &Class66::memberVariable1);
+    ::bind<Class66>(bindings, "memberVariable2", &Class66::memberVariable2);
+    ::bind<Class66>(bindings, "memberVariable3", &Class66::memberVariable3);
+    ::bind<Class66>(bindings, "memberVariable4", &Class66::memberVariable4);
+    ::bind<Class66>(bindings, "memberVariable5", &Class66::memberVariable5);
+    ::bind<Class66>(bindings, "memberVariable6", &Class66::memberVariable6);
+    ::bind<Class66>(bindings, "memberVariable7", &Class66::memberVariable7);
+    ::bind<Class66>(bindings, "memberVariable8", &Class66::memberVariable8);
+    ::bind<Class66>(bindings, "memberVariable9", &Class66::memberVariable9);
+    ::bind<Class66>(bindings, "memberVariable10", &Class66::memberVariable10);
+    ::bind<Class66>(bindings, "memberVariable11", &Class66::memberVariable11);
+    ::bind<Class66>(bindings, "memberVariable12", &Class66::memberVariable12);
+    ::bind<Class66>(bindings, "memberVariable13", &Class66::memberVariable13);
+    ::bind<Class66>(bindings, "memberVariable14", &Class66::memberVariable14);
+
     bindings["Class66_function0"] = [](coil::Context context, coil::NamedArgs args, bool arg0, bool arg1, int arg2, short arg3, unsigned arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class66::registerBindings(GeneralBindings& bindings)
         args.get<unsigned>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class66::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class66_variable0"] = &Class66::variable0;
+    bindings["Class66_variable1"] = &Class66::variable1;
+    bindings["Class66_variable2"] = &Class66::variable2;
+    bindings["Class66_variable3"] = &Class66::variable3;
+    bindings["Class66_variable4"] = &Class66::variable4;
+    bindings["Class66_variable5"] = &Class66::variable5;
+    bindings["Class66_variable6"] = &Class66::variable6;
+    bindings["Class66_variable7"] = &Class66::variable7;
+    bindings["Class66_variable8"] = &Class66::variable8;
+    bindings["Class66_variable9"] = &Class66::variable9;
+    bindings["Class66_variable10"] = &Class66::variable10;
+    bindings["Class66_variable11"] = &Class66::variable11;
+    bindings["Class66_variable12"] = &Class66::variable12;
+    bindings["Class66_variable13"] = &Class66::variable13;
+    bindings["Class66_variable14"] = &Class66::variable14;
 }
 #endif
 

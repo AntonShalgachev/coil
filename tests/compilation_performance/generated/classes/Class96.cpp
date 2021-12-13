@@ -41,6 +41,22 @@ void Class96::registerBindings(GeneralBindings& bindings)
     ::bind<Class96>(bindings, "method13", &Class96::method13);
     ::bind<Class96>(bindings, "method14", &Class96::method14);
 
+    ::bind<Class96>(bindings, "memberVariable0", &Class96::memberVariable0);
+    ::bind<Class96>(bindings, "memberVariable1", &Class96::memberVariable1);
+    ::bind<Class96>(bindings, "memberVariable2", &Class96::memberVariable2);
+    ::bind<Class96>(bindings, "memberVariable3", &Class96::memberVariable3);
+    ::bind<Class96>(bindings, "memberVariable4", &Class96::memberVariable4);
+    ::bind<Class96>(bindings, "memberVariable5", &Class96::memberVariable5);
+    ::bind<Class96>(bindings, "memberVariable6", &Class96::memberVariable6);
+    ::bind<Class96>(bindings, "memberVariable7", &Class96::memberVariable7);
+    ::bind<Class96>(bindings, "memberVariable8", &Class96::memberVariable8);
+    ::bind<Class96>(bindings, "memberVariable9", &Class96::memberVariable9);
+    ::bind<Class96>(bindings, "memberVariable10", &Class96::memberVariable10);
+    ::bind<Class96>(bindings, "memberVariable11", &Class96::memberVariable11);
+    ::bind<Class96>(bindings, "memberVariable12", &Class96::memberVariable12);
+    ::bind<Class96>(bindings, "memberVariable13", &Class96::memberVariable13);
+    ::bind<Class96>(bindings, "memberVariable14", &Class96::memberVariable14);
+
     bindings["Class96_function0"] = [](coil::Context context, coil::NamedArgs args, short arg0, double arg1, int arg2, unsigned arg3, bool arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class96::registerBindings(GeneralBindings& bindings)
         args.get<bool>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class96::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class96_variable0"] = &Class96::variable0;
+    bindings["Class96_variable1"] = &Class96::variable1;
+    bindings["Class96_variable2"] = &Class96::variable2;
+    bindings["Class96_variable3"] = &Class96::variable3;
+    bindings["Class96_variable4"] = &Class96::variable4;
+    bindings["Class96_variable5"] = &Class96::variable5;
+    bindings["Class96_variable6"] = &Class96::variable6;
+    bindings["Class96_variable7"] = &Class96::variable7;
+    bindings["Class96_variable8"] = &Class96::variable8;
+    bindings["Class96_variable9"] = &Class96::variable9;
+    bindings["Class96_variable10"] = &Class96::variable10;
+    bindings["Class96_variable11"] = &Class96::variable11;
+    bindings["Class96_variable12"] = &Class96::variable12;
+    bindings["Class96_variable13"] = &Class96::variable13;
+    bindings["Class96_variable14"] = &Class96::variable14;
 }
 #endif
 

@@ -41,6 +41,22 @@ void Class46::registerBindings(GeneralBindings& bindings)
     ::bind<Class46>(bindings, "method13", &Class46::method13);
     ::bind<Class46>(bindings, "method14", &Class46::method14);
 
+    ::bind<Class46>(bindings, "memberVariable0", &Class46::memberVariable0);
+    ::bind<Class46>(bindings, "memberVariable1", &Class46::memberVariable1);
+    ::bind<Class46>(bindings, "memberVariable2", &Class46::memberVariable2);
+    ::bind<Class46>(bindings, "memberVariable3", &Class46::memberVariable3);
+    ::bind<Class46>(bindings, "memberVariable4", &Class46::memberVariable4);
+    ::bind<Class46>(bindings, "memberVariable5", &Class46::memberVariable5);
+    ::bind<Class46>(bindings, "memberVariable6", &Class46::memberVariable6);
+    ::bind<Class46>(bindings, "memberVariable7", &Class46::memberVariable7);
+    ::bind<Class46>(bindings, "memberVariable8", &Class46::memberVariable8);
+    ::bind<Class46>(bindings, "memberVariable9", &Class46::memberVariable9);
+    ::bind<Class46>(bindings, "memberVariable10", &Class46::memberVariable10);
+    ::bind<Class46>(bindings, "memberVariable11", &Class46::memberVariable11);
+    ::bind<Class46>(bindings, "memberVariable12", &Class46::memberVariable12);
+    ::bind<Class46>(bindings, "memberVariable13", &Class46::memberVariable13);
+    ::bind<Class46>(bindings, "memberVariable14", &Class46::memberVariable14);
+
     bindings["Class46_function0"] = [](coil::Context context, coil::NamedArgs args, int arg0, int arg1, unsigned arg2, double arg3, double arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class46::registerBindings(GeneralBindings& bindings)
         args.get<double>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class46::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class46_variable0"] = &Class46::variable0;
+    bindings["Class46_variable1"] = &Class46::variable1;
+    bindings["Class46_variable2"] = &Class46::variable2;
+    bindings["Class46_variable3"] = &Class46::variable3;
+    bindings["Class46_variable4"] = &Class46::variable4;
+    bindings["Class46_variable5"] = &Class46::variable5;
+    bindings["Class46_variable6"] = &Class46::variable6;
+    bindings["Class46_variable7"] = &Class46::variable7;
+    bindings["Class46_variable8"] = &Class46::variable8;
+    bindings["Class46_variable9"] = &Class46::variable9;
+    bindings["Class46_variable10"] = &Class46::variable10;
+    bindings["Class46_variable11"] = &Class46::variable11;
+    bindings["Class46_variable12"] = &Class46::variable12;
+    bindings["Class46_variable13"] = &Class46::variable13;
+    bindings["Class46_variable14"] = &Class46::variable14;
 }
 #endif
 

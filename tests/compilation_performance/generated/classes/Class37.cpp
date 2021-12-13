@@ -41,6 +41,22 @@ void Class37::registerBindings(GeneralBindings& bindings)
     ::bind<Class37>(bindings, "method13", &Class37::method13);
     ::bind<Class37>(bindings, "method14", &Class37::method14);
 
+    ::bind<Class37>(bindings, "memberVariable0", &Class37::memberVariable0);
+    ::bind<Class37>(bindings, "memberVariable1", &Class37::memberVariable1);
+    ::bind<Class37>(bindings, "memberVariable2", &Class37::memberVariable2);
+    ::bind<Class37>(bindings, "memberVariable3", &Class37::memberVariable3);
+    ::bind<Class37>(bindings, "memberVariable4", &Class37::memberVariable4);
+    ::bind<Class37>(bindings, "memberVariable5", &Class37::memberVariable5);
+    ::bind<Class37>(bindings, "memberVariable6", &Class37::memberVariable6);
+    ::bind<Class37>(bindings, "memberVariable7", &Class37::memberVariable7);
+    ::bind<Class37>(bindings, "memberVariable8", &Class37::memberVariable8);
+    ::bind<Class37>(bindings, "memberVariable9", &Class37::memberVariable9);
+    ::bind<Class37>(bindings, "memberVariable10", &Class37::memberVariable10);
+    ::bind<Class37>(bindings, "memberVariable11", &Class37::memberVariable11);
+    ::bind<Class37>(bindings, "memberVariable12", &Class37::memberVariable12);
+    ::bind<Class37>(bindings, "memberVariable13", &Class37::memberVariable13);
+    ::bind<Class37>(bindings, "memberVariable14", &Class37::memberVariable14);
+
     bindings["Class37_function0"] = [](coil::Context context, coil::NamedArgs args, short arg0, short arg1, int arg2, short arg3, double arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class37::registerBindings(GeneralBindings& bindings)
         args.get<double>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class37::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class37_variable0"] = &Class37::variable0;
+    bindings["Class37_variable1"] = &Class37::variable1;
+    bindings["Class37_variable2"] = &Class37::variable2;
+    bindings["Class37_variable3"] = &Class37::variable3;
+    bindings["Class37_variable4"] = &Class37::variable4;
+    bindings["Class37_variable5"] = &Class37::variable5;
+    bindings["Class37_variable6"] = &Class37::variable6;
+    bindings["Class37_variable7"] = &Class37::variable7;
+    bindings["Class37_variable8"] = &Class37::variable8;
+    bindings["Class37_variable9"] = &Class37::variable9;
+    bindings["Class37_variable10"] = &Class37::variable10;
+    bindings["Class37_variable11"] = &Class37::variable11;
+    bindings["Class37_variable12"] = &Class37::variable12;
+    bindings["Class37_variable13"] = &Class37::variable13;
+    bindings["Class37_variable14"] = &Class37::variable14;
 }
 #endif
 

@@ -41,6 +41,22 @@ void Class50::registerBindings(GeneralBindings& bindings)
     ::bind<Class50>(bindings, "method13", &Class50::method13);
     ::bind<Class50>(bindings, "method14", &Class50::method14);
 
+    ::bind<Class50>(bindings, "memberVariable0", &Class50::memberVariable0);
+    ::bind<Class50>(bindings, "memberVariable1", &Class50::memberVariable1);
+    ::bind<Class50>(bindings, "memberVariable2", &Class50::memberVariable2);
+    ::bind<Class50>(bindings, "memberVariable3", &Class50::memberVariable3);
+    ::bind<Class50>(bindings, "memberVariable4", &Class50::memberVariable4);
+    ::bind<Class50>(bindings, "memberVariable5", &Class50::memberVariable5);
+    ::bind<Class50>(bindings, "memberVariable6", &Class50::memberVariable6);
+    ::bind<Class50>(bindings, "memberVariable7", &Class50::memberVariable7);
+    ::bind<Class50>(bindings, "memberVariable8", &Class50::memberVariable8);
+    ::bind<Class50>(bindings, "memberVariable9", &Class50::memberVariable9);
+    ::bind<Class50>(bindings, "memberVariable10", &Class50::memberVariable10);
+    ::bind<Class50>(bindings, "memberVariable11", &Class50::memberVariable11);
+    ::bind<Class50>(bindings, "memberVariable12", &Class50::memberVariable12);
+    ::bind<Class50>(bindings, "memberVariable13", &Class50::memberVariable13);
+    ::bind<Class50>(bindings, "memberVariable14", &Class50::memberVariable14);
+
     bindings["Class50_function0"] = [](coil::Context context, coil::NamedArgs args, double arg0, double arg1, unsigned arg2, int arg3, unsigned arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class50::registerBindings(GeneralBindings& bindings)
         args.get<float>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class50::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class50_variable0"] = &Class50::variable0;
+    bindings["Class50_variable1"] = &Class50::variable1;
+    bindings["Class50_variable2"] = &Class50::variable2;
+    bindings["Class50_variable3"] = &Class50::variable3;
+    bindings["Class50_variable4"] = &Class50::variable4;
+    bindings["Class50_variable5"] = &Class50::variable5;
+    bindings["Class50_variable6"] = &Class50::variable6;
+    bindings["Class50_variable7"] = &Class50::variable7;
+    bindings["Class50_variable8"] = &Class50::variable8;
+    bindings["Class50_variable9"] = &Class50::variable9;
+    bindings["Class50_variable10"] = &Class50::variable10;
+    bindings["Class50_variable11"] = &Class50::variable11;
+    bindings["Class50_variable12"] = &Class50::variable12;
+    bindings["Class50_variable13"] = &Class50::variable13;
+    bindings["Class50_variable14"] = &Class50::variable14;
 }
 #endif
 

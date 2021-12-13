@@ -41,6 +41,22 @@ void Class5::registerBindings(GeneralBindings& bindings)
     ::bind<Class5>(bindings, "method13", &Class5::method13);
     ::bind<Class5>(bindings, "method14", &Class5::method14);
 
+    ::bind<Class5>(bindings, "memberVariable0", &Class5::memberVariable0);
+    ::bind<Class5>(bindings, "memberVariable1", &Class5::memberVariable1);
+    ::bind<Class5>(bindings, "memberVariable2", &Class5::memberVariable2);
+    ::bind<Class5>(bindings, "memberVariable3", &Class5::memberVariable3);
+    ::bind<Class5>(bindings, "memberVariable4", &Class5::memberVariable4);
+    ::bind<Class5>(bindings, "memberVariable5", &Class5::memberVariable5);
+    ::bind<Class5>(bindings, "memberVariable6", &Class5::memberVariable6);
+    ::bind<Class5>(bindings, "memberVariable7", &Class5::memberVariable7);
+    ::bind<Class5>(bindings, "memberVariable8", &Class5::memberVariable8);
+    ::bind<Class5>(bindings, "memberVariable9", &Class5::memberVariable9);
+    ::bind<Class5>(bindings, "memberVariable10", &Class5::memberVariable10);
+    ::bind<Class5>(bindings, "memberVariable11", &Class5::memberVariable11);
+    ::bind<Class5>(bindings, "memberVariable12", &Class5::memberVariable12);
+    ::bind<Class5>(bindings, "memberVariable13", &Class5::memberVariable13);
+    ::bind<Class5>(bindings, "memberVariable14", &Class5::memberVariable14);
+
     bindings["Class5_function0"] = [](coil::Context context, coil::NamedArgs args, double arg0, short arg1, bool arg2, unsigned arg3, int arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class5::registerBindings(GeneralBindings& bindings)
         args.get<bool>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class5::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class5_variable0"] = &Class5::variable0;
+    bindings["Class5_variable1"] = &Class5::variable1;
+    bindings["Class5_variable2"] = &Class5::variable2;
+    bindings["Class5_variable3"] = &Class5::variable3;
+    bindings["Class5_variable4"] = &Class5::variable4;
+    bindings["Class5_variable5"] = &Class5::variable5;
+    bindings["Class5_variable6"] = &Class5::variable6;
+    bindings["Class5_variable7"] = &Class5::variable7;
+    bindings["Class5_variable8"] = &Class5::variable8;
+    bindings["Class5_variable9"] = &Class5::variable9;
+    bindings["Class5_variable10"] = &Class5::variable10;
+    bindings["Class5_variable11"] = &Class5::variable11;
+    bindings["Class5_variable12"] = &Class5::variable12;
+    bindings["Class5_variable13"] = &Class5::variable13;
+    bindings["Class5_variable14"] = &Class5::variable14;
 }
 #endif
 

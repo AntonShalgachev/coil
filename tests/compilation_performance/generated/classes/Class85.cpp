@@ -41,6 +41,22 @@ void Class85::registerBindings(GeneralBindings& bindings)
     ::bind<Class85>(bindings, "method13", &Class85::method13);
     ::bind<Class85>(bindings, "method14", &Class85::method14);
 
+    ::bind<Class85>(bindings, "memberVariable0", &Class85::memberVariable0);
+    ::bind<Class85>(bindings, "memberVariable1", &Class85::memberVariable1);
+    ::bind<Class85>(bindings, "memberVariable2", &Class85::memberVariable2);
+    ::bind<Class85>(bindings, "memberVariable3", &Class85::memberVariable3);
+    ::bind<Class85>(bindings, "memberVariable4", &Class85::memberVariable4);
+    ::bind<Class85>(bindings, "memberVariable5", &Class85::memberVariable5);
+    ::bind<Class85>(bindings, "memberVariable6", &Class85::memberVariable6);
+    ::bind<Class85>(bindings, "memberVariable7", &Class85::memberVariable7);
+    ::bind<Class85>(bindings, "memberVariable8", &Class85::memberVariable8);
+    ::bind<Class85>(bindings, "memberVariable9", &Class85::memberVariable9);
+    ::bind<Class85>(bindings, "memberVariable10", &Class85::memberVariable10);
+    ::bind<Class85>(bindings, "memberVariable11", &Class85::memberVariable11);
+    ::bind<Class85>(bindings, "memberVariable12", &Class85::memberVariable12);
+    ::bind<Class85>(bindings, "memberVariable13", &Class85::memberVariable13);
+    ::bind<Class85>(bindings, "memberVariable14", &Class85::memberVariable14);
+
     bindings["Class85_function0"] = [](coil::Context context, coil::NamedArgs args, short arg0, bool arg1, unsigned arg2, unsigned arg3, double arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class85::registerBindings(GeneralBindings& bindings)
         args.get<int>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class85::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class85_variable0"] = &Class85::variable0;
+    bindings["Class85_variable1"] = &Class85::variable1;
+    bindings["Class85_variable2"] = &Class85::variable2;
+    bindings["Class85_variable3"] = &Class85::variable3;
+    bindings["Class85_variable4"] = &Class85::variable4;
+    bindings["Class85_variable5"] = &Class85::variable5;
+    bindings["Class85_variable6"] = &Class85::variable6;
+    bindings["Class85_variable7"] = &Class85::variable7;
+    bindings["Class85_variable8"] = &Class85::variable8;
+    bindings["Class85_variable9"] = &Class85::variable9;
+    bindings["Class85_variable10"] = &Class85::variable10;
+    bindings["Class85_variable11"] = &Class85::variable11;
+    bindings["Class85_variable12"] = &Class85::variable12;
+    bindings["Class85_variable13"] = &Class85::variable13;
+    bindings["Class85_variable14"] = &Class85::variable14;
 }
 #endif
 

@@ -41,6 +41,22 @@ void Class77::registerBindings(GeneralBindings& bindings)
     ::bind<Class77>(bindings, "method13", &Class77::method13);
     ::bind<Class77>(bindings, "method14", &Class77::method14);
 
+    ::bind<Class77>(bindings, "memberVariable0", &Class77::memberVariable0);
+    ::bind<Class77>(bindings, "memberVariable1", &Class77::memberVariable1);
+    ::bind<Class77>(bindings, "memberVariable2", &Class77::memberVariable2);
+    ::bind<Class77>(bindings, "memberVariable3", &Class77::memberVariable3);
+    ::bind<Class77>(bindings, "memberVariable4", &Class77::memberVariable4);
+    ::bind<Class77>(bindings, "memberVariable5", &Class77::memberVariable5);
+    ::bind<Class77>(bindings, "memberVariable6", &Class77::memberVariable6);
+    ::bind<Class77>(bindings, "memberVariable7", &Class77::memberVariable7);
+    ::bind<Class77>(bindings, "memberVariable8", &Class77::memberVariable8);
+    ::bind<Class77>(bindings, "memberVariable9", &Class77::memberVariable9);
+    ::bind<Class77>(bindings, "memberVariable10", &Class77::memberVariable10);
+    ::bind<Class77>(bindings, "memberVariable11", &Class77::memberVariable11);
+    ::bind<Class77>(bindings, "memberVariable12", &Class77::memberVariable12);
+    ::bind<Class77>(bindings, "memberVariable13", &Class77::memberVariable13);
+    ::bind<Class77>(bindings, "memberVariable14", &Class77::memberVariable14);
+
     bindings["Class77_function0"] = [](coil::Context context, coil::NamedArgs args, unsigned arg0, int arg1, bool arg2, short arg3, bool arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class77::registerBindings(GeneralBindings& bindings)
         args.get<double>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class77::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class77_variable0"] = &Class77::variable0;
+    bindings["Class77_variable1"] = &Class77::variable1;
+    bindings["Class77_variable2"] = &Class77::variable2;
+    bindings["Class77_variable3"] = &Class77::variable3;
+    bindings["Class77_variable4"] = &Class77::variable4;
+    bindings["Class77_variable5"] = &Class77::variable5;
+    bindings["Class77_variable6"] = &Class77::variable6;
+    bindings["Class77_variable7"] = &Class77::variable7;
+    bindings["Class77_variable8"] = &Class77::variable8;
+    bindings["Class77_variable9"] = &Class77::variable9;
+    bindings["Class77_variable10"] = &Class77::variable10;
+    bindings["Class77_variable11"] = &Class77::variable11;
+    bindings["Class77_variable12"] = &Class77::variable12;
+    bindings["Class77_variable13"] = &Class77::variable13;
+    bindings["Class77_variable14"] = &Class77::variable14;
 }
 #endif
 

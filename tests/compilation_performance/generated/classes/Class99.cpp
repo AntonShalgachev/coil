@@ -41,6 +41,22 @@ void Class99::registerBindings(GeneralBindings& bindings)
     ::bind<Class99>(bindings, "method13", &Class99::method13);
     ::bind<Class99>(bindings, "method14", &Class99::method14);
 
+    ::bind<Class99>(bindings, "memberVariable0", &Class99::memberVariable0);
+    ::bind<Class99>(bindings, "memberVariable1", &Class99::memberVariable1);
+    ::bind<Class99>(bindings, "memberVariable2", &Class99::memberVariable2);
+    ::bind<Class99>(bindings, "memberVariable3", &Class99::memberVariable3);
+    ::bind<Class99>(bindings, "memberVariable4", &Class99::memberVariable4);
+    ::bind<Class99>(bindings, "memberVariable5", &Class99::memberVariable5);
+    ::bind<Class99>(bindings, "memberVariable6", &Class99::memberVariable6);
+    ::bind<Class99>(bindings, "memberVariable7", &Class99::memberVariable7);
+    ::bind<Class99>(bindings, "memberVariable8", &Class99::memberVariable8);
+    ::bind<Class99>(bindings, "memberVariable9", &Class99::memberVariable9);
+    ::bind<Class99>(bindings, "memberVariable10", &Class99::memberVariable10);
+    ::bind<Class99>(bindings, "memberVariable11", &Class99::memberVariable11);
+    ::bind<Class99>(bindings, "memberVariable12", &Class99::memberVariable12);
+    ::bind<Class99>(bindings, "memberVariable13", &Class99::memberVariable13);
+    ::bind<Class99>(bindings, "memberVariable14", &Class99::memberVariable14);
+
     bindings["Class99_function0"] = [](coil::Context context, coil::NamedArgs args, double arg0, float arg1, double arg2, float arg3, int arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class99::registerBindings(GeneralBindings& bindings)
         args.get<float>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class99::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class99_variable0"] = &Class99::variable0;
+    bindings["Class99_variable1"] = &Class99::variable1;
+    bindings["Class99_variable2"] = &Class99::variable2;
+    bindings["Class99_variable3"] = &Class99::variable3;
+    bindings["Class99_variable4"] = &Class99::variable4;
+    bindings["Class99_variable5"] = &Class99::variable5;
+    bindings["Class99_variable6"] = &Class99::variable6;
+    bindings["Class99_variable7"] = &Class99::variable7;
+    bindings["Class99_variable8"] = &Class99::variable8;
+    bindings["Class99_variable9"] = &Class99::variable9;
+    bindings["Class99_variable10"] = &Class99::variable10;
+    bindings["Class99_variable11"] = &Class99::variable11;
+    bindings["Class99_variable12"] = &Class99::variable12;
+    bindings["Class99_variable13"] = &Class99::variable13;
+    bindings["Class99_variable14"] = &Class99::variable14;
 }
 #endif
 

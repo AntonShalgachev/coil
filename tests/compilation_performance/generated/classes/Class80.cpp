@@ -41,6 +41,22 @@ void Class80::registerBindings(GeneralBindings& bindings)
     ::bind<Class80>(bindings, "method13", &Class80::method13);
     ::bind<Class80>(bindings, "method14", &Class80::method14);
 
+    ::bind<Class80>(bindings, "memberVariable0", &Class80::memberVariable0);
+    ::bind<Class80>(bindings, "memberVariable1", &Class80::memberVariable1);
+    ::bind<Class80>(bindings, "memberVariable2", &Class80::memberVariable2);
+    ::bind<Class80>(bindings, "memberVariable3", &Class80::memberVariable3);
+    ::bind<Class80>(bindings, "memberVariable4", &Class80::memberVariable4);
+    ::bind<Class80>(bindings, "memberVariable5", &Class80::memberVariable5);
+    ::bind<Class80>(bindings, "memberVariable6", &Class80::memberVariable6);
+    ::bind<Class80>(bindings, "memberVariable7", &Class80::memberVariable7);
+    ::bind<Class80>(bindings, "memberVariable8", &Class80::memberVariable8);
+    ::bind<Class80>(bindings, "memberVariable9", &Class80::memberVariable9);
+    ::bind<Class80>(bindings, "memberVariable10", &Class80::memberVariable10);
+    ::bind<Class80>(bindings, "memberVariable11", &Class80::memberVariable11);
+    ::bind<Class80>(bindings, "memberVariable12", &Class80::memberVariable12);
+    ::bind<Class80>(bindings, "memberVariable13", &Class80::memberVariable13);
+    ::bind<Class80>(bindings, "memberVariable14", &Class80::memberVariable14);
+
     bindings["Class80_function0"] = [](coil::Context context, coil::NamedArgs args, int arg0, float arg1, int arg2, unsigned arg3, float arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class80::registerBindings(GeneralBindings& bindings)
         args.get<unsigned>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class80::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class80_variable0"] = &Class80::variable0;
+    bindings["Class80_variable1"] = &Class80::variable1;
+    bindings["Class80_variable2"] = &Class80::variable2;
+    bindings["Class80_variable3"] = &Class80::variable3;
+    bindings["Class80_variable4"] = &Class80::variable4;
+    bindings["Class80_variable5"] = &Class80::variable5;
+    bindings["Class80_variable6"] = &Class80::variable6;
+    bindings["Class80_variable7"] = &Class80::variable7;
+    bindings["Class80_variable8"] = &Class80::variable8;
+    bindings["Class80_variable9"] = &Class80::variable9;
+    bindings["Class80_variable10"] = &Class80::variable10;
+    bindings["Class80_variable11"] = &Class80::variable11;
+    bindings["Class80_variable12"] = &Class80::variable12;
+    bindings["Class80_variable13"] = &Class80::variable13;
+    bindings["Class80_variable14"] = &Class80::variable14;
 }
 #endif
 

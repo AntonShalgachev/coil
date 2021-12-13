@@ -41,6 +41,22 @@ void Class65::registerBindings(GeneralBindings& bindings)
     ::bind<Class65>(bindings, "method13", &Class65::method13);
     ::bind<Class65>(bindings, "method14", &Class65::method14);
 
+    ::bind<Class65>(bindings, "memberVariable0", &Class65::memberVariable0);
+    ::bind<Class65>(bindings, "memberVariable1", &Class65::memberVariable1);
+    ::bind<Class65>(bindings, "memberVariable2", &Class65::memberVariable2);
+    ::bind<Class65>(bindings, "memberVariable3", &Class65::memberVariable3);
+    ::bind<Class65>(bindings, "memberVariable4", &Class65::memberVariable4);
+    ::bind<Class65>(bindings, "memberVariable5", &Class65::memberVariable5);
+    ::bind<Class65>(bindings, "memberVariable6", &Class65::memberVariable6);
+    ::bind<Class65>(bindings, "memberVariable7", &Class65::memberVariable7);
+    ::bind<Class65>(bindings, "memberVariable8", &Class65::memberVariable8);
+    ::bind<Class65>(bindings, "memberVariable9", &Class65::memberVariable9);
+    ::bind<Class65>(bindings, "memberVariable10", &Class65::memberVariable10);
+    ::bind<Class65>(bindings, "memberVariable11", &Class65::memberVariable11);
+    ::bind<Class65>(bindings, "memberVariable12", &Class65::memberVariable12);
+    ::bind<Class65>(bindings, "memberVariable13", &Class65::memberVariable13);
+    ::bind<Class65>(bindings, "memberVariable14", &Class65::memberVariable14);
+
     bindings["Class65_function0"] = [](coil::Context context, coil::NamedArgs args, double arg0, double arg1, unsigned arg2, short arg3, int arg4)
     {
         context.reportError("Task failed successfully");
@@ -161,6 +177,22 @@ void Class65::registerBindings(GeneralBindings& bindings)
         args.get<short>("key", context, coil::NamedArgs::ArgType::Optional);
         return Class65::function14(arg0, arg1, arg2, arg3, arg4);
     };
+
+    bindings["Class65_variable0"] = &Class65::variable0;
+    bindings["Class65_variable1"] = &Class65::variable1;
+    bindings["Class65_variable2"] = &Class65::variable2;
+    bindings["Class65_variable3"] = &Class65::variable3;
+    bindings["Class65_variable4"] = &Class65::variable4;
+    bindings["Class65_variable5"] = &Class65::variable5;
+    bindings["Class65_variable6"] = &Class65::variable6;
+    bindings["Class65_variable7"] = &Class65::variable7;
+    bindings["Class65_variable8"] = &Class65::variable8;
+    bindings["Class65_variable9"] = &Class65::variable9;
+    bindings["Class65_variable10"] = &Class65::variable10;
+    bindings["Class65_variable11"] = &Class65::variable11;
+    bindings["Class65_variable12"] = &Class65::variable12;
+    bindings["Class65_variable13"] = &Class65::variable13;
+    bindings["Class65_variable14"] = &Class65::variable14;
 }
 #endif
 
