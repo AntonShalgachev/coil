@@ -25,7 +25,6 @@ void Class48::work()
 #ifdef DEBUG_BINDINGS
 void Class48::registerBindings(GeneralBindings& bindings)
 {
-#ifdef USE_OBJECTS
     ::bind<Class48>(bindings, "method0", &Class48::method0);
     ::bind<Class48>(bindings, "method1", &Class48::method1);
     ::bind<Class48>(bindings, "method2", &Class48::method2);
@@ -41,23 +40,22 @@ void Class48::registerBindings(GeneralBindings& bindings)
     ::bind<Class48>(bindings, "method12", &Class48::method12);
     ::bind<Class48>(bindings, "method13", &Class48::method13);
     ::bind<Class48>(bindings, "method14", &Class48::method14);
-#else
-    bindings["Class48_method0"] = &ns_Class48::method0;
-    bindings["Class48_method1"] = &ns_Class48::method1;
-    bindings["Class48_method2"] = &ns_Class48::method2;
-    bindings["Class48_method3"] = &ns_Class48::method3;
-    bindings["Class48_method4"] = &ns_Class48::method4;
-    bindings["Class48_method5"] = &ns_Class48::method5;
-    bindings["Class48_method6"] = &ns_Class48::method6;
-    bindings["Class48_method7"] = &ns_Class48::method7;
-    bindings["Class48_method8"] = &ns_Class48::method8;
-    bindings["Class48_method9"] = &ns_Class48::method9;
-    bindings["Class48_method10"] = &ns_Class48::method10;
-    bindings["Class48_method11"] = &ns_Class48::method11;
-    bindings["Class48_method12"] = &ns_Class48::method12;
-    bindings["Class48_method13"] = &ns_Class48::method13;
-    bindings["Class48_method14"] = &ns_Class48::method14;
-#endif
+
+    bindings["Class48_function0"] = &Class48::function0;
+    bindings["Class48_function1"] = &Class48::function1;
+    bindings["Class48_function2"] = &Class48::function2;
+    bindings["Class48_function3"] = &Class48::function3;
+    bindings["Class48_function4"] = &Class48::function4;
+    bindings["Class48_function5"] = &Class48::function5;
+    bindings["Class48_function6"] = &Class48::function6;
+    bindings["Class48_function7"] = &Class48::function7;
+    bindings["Class48_function8"] = &Class48::function8;
+    bindings["Class48_function9"] = &Class48::function9;
+    bindings["Class48_function10"] = &Class48::function10;
+    bindings["Class48_function11"] = &Class48::function11;
+    bindings["Class48_function12"] = &Class48::function12;
+    bindings["Class48_function13"] = &Class48::function13;
+    bindings["Class48_function14"] = &Class48::function14;
 }
 #endif
 
@@ -364,7 +362,7 @@ int Class48::method14(double arg0, float arg1, double arg2, int arg3, bool arg4)
     return arg3;
 }
 
-void ns_Class48::method0(int arg0, short arg1, short arg2, float arg3, float arg4)
+void Class48::function0(double arg0, unsigned arg1, bool arg2, float arg3, double arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -375,14 +373,14 @@ void ns_Class48::method0(int arg0, short arg1, short arg2, float arg3, float arg
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class48::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
 }
-unsigned ns_Class48::method1(bool arg0, unsigned arg1, double arg2, unsigned arg3, unsigned arg4)
+void Class48::function1(double arg0, int arg1, double arg2, short arg3, int arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -393,15 +391,14 @@ unsigned ns_Class48::method1(bool arg0, unsigned arg1, double arg2, unsigned arg
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class48::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
-    return arg4;
 }
-unsigned ns_Class48::method2(float arg0, short arg1, int arg2, int arg3, unsigned arg4)
+short Class48::function2(short arg0, double arg1, double arg2, short arg3, short arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -412,64 +409,7 @@ unsigned ns_Class48::method2(float arg0, short arg1, int arg2, int arg3, unsigne
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class48::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg4;
-}
-unsigned ns_Class48::method3(unsigned arg0, short arg1, bool arg2, int arg3, float arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class48::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg0;
-}
-unsigned ns_Class48::method4(unsigned arg0, short arg1, double arg2, short arg3, short arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class48::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg0;
-}
-short ns_Class48::method5(short arg0, short arg1, float arg2, int arg3, short arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class48::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
@@ -477,7 +417,7 @@ short ns_Class48::method5(short arg0, short arg1, float arg2, int arg3, short ar
 
     return arg4;
 }
-void ns_Class48::method6(bool arg0, double arg1, short arg2, double arg3, float arg4)
+void Class48::function3(short arg0, unsigned arg1, int arg2, bool arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -488,14 +428,14 @@ void ns_Class48::method6(bool arg0, double arg1, short arg2, double arg3, float 
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class48::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
 }
-void ns_Class48::method7(double arg0, bool arg1, float arg2, bool arg3, bool arg4)
+void Class48::function4(bool arg0, bool arg1, float arg2, short arg3, unsigned arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -506,14 +446,14 @@ void ns_Class48::method7(double arg0, bool arg1, float arg2, bool arg3, bool arg
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class48::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
 }
-float ns_Class48::method8(int arg0, float arg1, float arg2, short arg3, bool arg4)
+void Class48::function5(double arg0, double arg1, bool arg2, short arg3, double arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -524,52 +464,14 @@ float ns_Class48::method8(int arg0, float arg1, float arg2, short arg3, bool arg
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class48::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg1;
-}
-bool ns_Class48::method9(int arg0, bool arg1, float arg2, double arg3, unsigned arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class48::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg1;
-}
-void ns_Class48::method10(int arg0, int arg1, bool arg2, bool arg3, short arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class48::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
 }
-void ns_Class48::method11(float arg0, short arg1, unsigned arg2, short arg3, bool arg4)
+void Class48::function6(unsigned arg0, int arg1, bool arg2, bool arg3, int arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -580,14 +482,14 @@ void ns_Class48::method11(float arg0, short arg1, unsigned arg2, short arg3, boo
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class48::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
 }
-int ns_Class48::method12(unsigned arg0, bool arg1, bool arg2, int arg3, bool arg4)
+unsigned Class48::function7(unsigned arg0, bool arg1, unsigned arg2, unsigned arg3, unsigned arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -598,7 +500,63 @@ int ns_Class48::method12(unsigned arg0, bool arg1, bool arg2, int arg3, bool arg
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class48::workInternally(strings);
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg4;
+}
+int Class48::function8(unsigned arg0, short arg1, int arg2, int arg3, int arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg2;
+}
+void Class48::function9(float arg0, double arg1, bool arg2, short arg3, double arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+float Class48::function10(bool arg0, short arg1, float arg2, float arg3, float arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
@@ -606,7 +564,7 @@ int ns_Class48::method12(unsigned arg0, bool arg1, bool arg2, int arg3, bool arg
 
     return arg3;
 }
-void ns_Class48::method13(float arg0, double arg1, bool arg2, short arg3, unsigned arg4)
+float Class48::function11(bool arg0, float arg1, float arg2, bool arg3, double arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -617,14 +575,52 @@ void ns_Class48::method13(float arg0, double arg1, bool arg2, short arg3, unsign
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class48::workInternally(strings);
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg1;
+}
+float Class48::function12(bool arg0, int arg1, short arg2, int arg3, float arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg4;
+}
+void Class48::function13(int arg0, float arg1, bool arg2, unsigned arg3, short arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
 }
-int ns_Class48::method14(double arg0, float arg1, double arg2, int arg3, bool arg4)
+int Class48::function14(float arg0, bool arg1, bool arg2, double arg3, int arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -635,11 +631,11 @@ int ns_Class48::method14(double arg0, float arg1, double arg2, int arg3, bool ar
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class48::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
-    return arg3;
+    return arg4;
 }

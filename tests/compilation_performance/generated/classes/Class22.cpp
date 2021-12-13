@@ -25,7 +25,6 @@ void Class22::work()
 #ifdef DEBUG_BINDINGS
 void Class22::registerBindings(GeneralBindings& bindings)
 {
-#ifdef USE_OBJECTS
     ::bind<Class22>(bindings, "method0", &Class22::method0);
     ::bind<Class22>(bindings, "method1", &Class22::method1);
     ::bind<Class22>(bindings, "method2", &Class22::method2);
@@ -41,23 +40,22 @@ void Class22::registerBindings(GeneralBindings& bindings)
     ::bind<Class22>(bindings, "method12", &Class22::method12);
     ::bind<Class22>(bindings, "method13", &Class22::method13);
     ::bind<Class22>(bindings, "method14", &Class22::method14);
-#else
-    bindings["Class22_method0"] = &ns_Class22::method0;
-    bindings["Class22_method1"] = &ns_Class22::method1;
-    bindings["Class22_method2"] = &ns_Class22::method2;
-    bindings["Class22_method3"] = &ns_Class22::method3;
-    bindings["Class22_method4"] = &ns_Class22::method4;
-    bindings["Class22_method5"] = &ns_Class22::method5;
-    bindings["Class22_method6"] = &ns_Class22::method6;
-    bindings["Class22_method7"] = &ns_Class22::method7;
-    bindings["Class22_method8"] = &ns_Class22::method8;
-    bindings["Class22_method9"] = &ns_Class22::method9;
-    bindings["Class22_method10"] = &ns_Class22::method10;
-    bindings["Class22_method11"] = &ns_Class22::method11;
-    bindings["Class22_method12"] = &ns_Class22::method12;
-    bindings["Class22_method13"] = &ns_Class22::method13;
-    bindings["Class22_method14"] = &ns_Class22::method14;
-#endif
+
+    bindings["Class22_function0"] = &Class22::function0;
+    bindings["Class22_function1"] = &Class22::function1;
+    bindings["Class22_function2"] = &Class22::function2;
+    bindings["Class22_function3"] = &Class22::function3;
+    bindings["Class22_function4"] = &Class22::function4;
+    bindings["Class22_function5"] = &Class22::function5;
+    bindings["Class22_function6"] = &Class22::function6;
+    bindings["Class22_function7"] = &Class22::function7;
+    bindings["Class22_function8"] = &Class22::function8;
+    bindings["Class22_function9"] = &Class22::function9;
+    bindings["Class22_function10"] = &Class22::function10;
+    bindings["Class22_function11"] = &Class22::function11;
+    bindings["Class22_function12"] = &Class22::function12;
+    bindings["Class22_function13"] = &Class22::function13;
+    bindings["Class22_function14"] = &Class22::function14;
 }
 #endif
 
@@ -366,7 +364,7 @@ void Class22::method14(double arg0, short arg1, double arg2, double arg3, float 
 
 }
 
-unsigned ns_Class22::method0(float arg0, unsigned arg1, float arg2, int arg3, unsigned arg4)
+void Class22::function0(int arg0, double arg1, bool arg2, float arg3, double arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -377,7 +375,25 @@ unsigned ns_Class22::method0(float arg0, unsigned arg1, float arg2, int arg3, un
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class22::workInternally(strings);
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+double Class22::function1(float arg0, float arg1, double arg2, short arg3, double arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
@@ -385,7 +401,7 @@ unsigned ns_Class22::method0(float arg0, unsigned arg1, float arg2, int arg3, un
 
     return arg4;
 }
-int ns_Class22::method1(unsigned arg0, short arg1, float arg2, int arg3, bool arg4)
+void Class22::function2(bool arg0, bool arg1, float arg2, bool arg3, unsigned arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -396,33 +412,14 @@ int ns_Class22::method1(unsigned arg0, short arg1, float arg2, int arg3, bool ar
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class22::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg3;
-}
-void ns_Class22::method2(double arg0, double arg1, unsigned arg2, int arg3, double arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class22::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
 }
-bool ns_Class22::method3(double arg0, bool arg1, double arg2, unsigned arg3, bool arg4)
+float Class22::function3(bool arg0, float arg1, short arg2, unsigned arg3, int arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -433,26 +430,7 @@ bool ns_Class22::method3(double arg0, bool arg1, double arg2, unsigned arg3, boo
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class22::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg4;
-}
-bool ns_Class22::method4(short arg0, bool arg1, int arg2, unsigned arg3, bool arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class22::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
@@ -460,7 +438,7 @@ bool ns_Class22::method4(short arg0, bool arg1, int arg2, unsigned arg3, bool ar
 
     return arg1;
 }
-void ns_Class22::method5(short arg0, float arg1, double arg2, bool arg3, bool arg4)
+void Class22::function4(float arg0, bool arg1, short arg2, int arg3, unsigned arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -471,14 +449,14 @@ void ns_Class22::method5(short arg0, float arg1, double arg2, bool arg3, bool ar
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class22::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
 }
-float ns_Class22::method6(double arg0, float arg1, double arg2, float arg3, bool arg4)
+void Class22::function5(double arg0, unsigned arg1, float arg2, bool arg3, int arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -489,15 +467,14 @@ float ns_Class22::method6(double arg0, float arg1, double arg2, float arg3, bool
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class22::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
-    return arg1;
 }
-unsigned ns_Class22::method7(short arg0, bool arg1, int arg2, float arg3, unsigned arg4)
+void Class22::function6(unsigned arg0, unsigned arg1, short arg2, int arg3, float arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -508,15 +485,14 @@ unsigned ns_Class22::method7(short arg0, bool arg1, int arg2, float arg3, unsign
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class22::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
-    return arg4;
 }
-int ns_Class22::method8(short arg0, int arg1, bool arg2, int arg3, bool arg4)
+int Class22::function7(float arg0, int arg1, int arg2, unsigned arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -527,45 +503,7 @@ int ns_Class22::method8(short arg0, int arg1, bool arg2, int arg3, bool arg4)
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class22::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg3;
-}
-short ns_Class22::method9(int arg0, float arg1, bool arg2, float arg3, short arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class22::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg4;
-}
-short ns_Class22::method10(bool arg0, short arg1, short arg2, int arg3, bool arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class22::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
@@ -573,7 +511,7 @@ short ns_Class22::method10(bool arg0, short arg1, short arg2, int arg3, bool arg
 
     return arg1;
 }
-float ns_Class22::method11(bool arg0, double arg1, float arg2, float arg3, float arg4)
+double Class22::function8(float arg0, double arg1, int arg2, float arg3, int arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -584,15 +522,15 @@ float ns_Class22::method11(bool arg0, double arg1, float arg2, float arg3, float
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class22::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
-    return arg3;
+    return arg1;
 }
-void ns_Class22::method12(double arg0, bool arg1, int arg2, short arg3, bool arg4)
+int Class22::function9(int arg0, double arg1, double arg2, unsigned arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -603,14 +541,33 @@ void ns_Class22::method12(double arg0, bool arg1, int arg2, short arg3, bool arg
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class22::workInternally(strings);
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg0;
+}
+void Class22::function10(double arg0, unsigned arg1, float arg2, unsigned arg3, float arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
 }
-int ns_Class22::method13(double arg0, bool arg1, float arg2, int arg3, short arg4)
+void Class22::function11(bool arg0, float arg1, bool arg2, bool arg3, int arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -621,15 +578,14 @@ int ns_Class22::method13(double arg0, bool arg1, float arg2, int arg3, short arg
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class22::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
-    return arg3;
 }
-void ns_Class22::method14(double arg0, short arg1, double arg2, double arg3, float arg4)
+short Class22::function12(short arg0, int arg1, unsigned arg2, unsigned arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -640,7 +596,44 @@ void ns_Class22::method14(double arg0, short arg1, double arg2, double arg3, flo
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class22::workInternally(strings);
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg0;
+}
+void Class22::function13(unsigned arg0, double arg1, double arg2, unsigned arg3, float arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+void Class22::function14(short arg0, bool arg1, bool arg2, int arg3, bool arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else

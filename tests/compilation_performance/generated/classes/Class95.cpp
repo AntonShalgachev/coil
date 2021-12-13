@@ -25,7 +25,6 @@ void Class95::work()
 #ifdef DEBUG_BINDINGS
 void Class95::registerBindings(GeneralBindings& bindings)
 {
-#ifdef USE_OBJECTS
     ::bind<Class95>(bindings, "method0", &Class95::method0);
     ::bind<Class95>(bindings, "method1", &Class95::method1);
     ::bind<Class95>(bindings, "method2", &Class95::method2);
@@ -41,23 +40,22 @@ void Class95::registerBindings(GeneralBindings& bindings)
     ::bind<Class95>(bindings, "method12", &Class95::method12);
     ::bind<Class95>(bindings, "method13", &Class95::method13);
     ::bind<Class95>(bindings, "method14", &Class95::method14);
-#else
-    bindings["Class95_method0"] = &ns_Class95::method0;
-    bindings["Class95_method1"] = &ns_Class95::method1;
-    bindings["Class95_method2"] = &ns_Class95::method2;
-    bindings["Class95_method3"] = &ns_Class95::method3;
-    bindings["Class95_method4"] = &ns_Class95::method4;
-    bindings["Class95_method5"] = &ns_Class95::method5;
-    bindings["Class95_method6"] = &ns_Class95::method6;
-    bindings["Class95_method7"] = &ns_Class95::method7;
-    bindings["Class95_method8"] = &ns_Class95::method8;
-    bindings["Class95_method9"] = &ns_Class95::method9;
-    bindings["Class95_method10"] = &ns_Class95::method10;
-    bindings["Class95_method11"] = &ns_Class95::method11;
-    bindings["Class95_method12"] = &ns_Class95::method12;
-    bindings["Class95_method13"] = &ns_Class95::method13;
-    bindings["Class95_method14"] = &ns_Class95::method14;
-#endif
+
+    bindings["Class95_function0"] = &Class95::function0;
+    bindings["Class95_function1"] = &Class95::function1;
+    bindings["Class95_function2"] = &Class95::function2;
+    bindings["Class95_function3"] = &Class95::function3;
+    bindings["Class95_function4"] = &Class95::function4;
+    bindings["Class95_function5"] = &Class95::function5;
+    bindings["Class95_function6"] = &Class95::function6;
+    bindings["Class95_function7"] = &Class95::function7;
+    bindings["Class95_function8"] = &Class95::function8;
+    bindings["Class95_function9"] = &Class95::function9;
+    bindings["Class95_function10"] = &Class95::function10;
+    bindings["Class95_function11"] = &Class95::function11;
+    bindings["Class95_function12"] = &Class95::function12;
+    bindings["Class95_function13"] = &Class95::function13;
+    bindings["Class95_function14"] = &Class95::function14;
 }
 #endif
 
@@ -365,7 +363,7 @@ bool Class95::method14(double arg0, float arg1, bool arg2, bool arg3, bool arg4)
     return arg4;
 }
 
-void ns_Class95::method0(double arg0, float arg1, bool arg2, float arg3, int arg4)
+void Class95::function0(double arg0, double arg1, double arg2, double arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -376,14 +374,14 @@ void ns_Class95::method0(double arg0, float arg1, bool arg2, float arg3, int arg
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class95::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
 }
-void ns_Class95::method1(int arg0, int arg1, bool arg2, short arg3, short arg4)
+short Class95::function1(short arg0, unsigned arg1, float arg2, unsigned arg3, short arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -394,14 +392,33 @@ void ns_Class95::method1(int arg0, int arg1, bool arg2, short arg3, short arg4)
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class95::workInternally(strings);
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg4;
+}
+void Class95::function2(double arg0, unsigned arg1, float arg2, unsigned arg3, unsigned arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
 }
-unsigned ns_Class95::method2(int arg0, unsigned arg1, float arg2, int arg3, short arg4)
+void Class95::function3(float arg0, unsigned arg1, unsigned arg2, bool arg3, int arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -412,7 +429,62 @@ unsigned ns_Class95::method2(int arg0, unsigned arg1, float arg2, int arg3, shor
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class95::workInternally(strings);
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+float Class95::function4(int arg0, unsigned arg1, double arg2, short arg3, float arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg4;
+}
+void Class95::function5(bool arg0, int arg1, short arg2, short arg3, unsigned arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+float Class95::function6(double arg0, float arg1, bool arg2, bool arg3, int arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
@@ -420,7 +492,7 @@ unsigned ns_Class95::method2(int arg0, unsigned arg1, float arg2, int arg3, shor
 
     return arg1;
 }
-int ns_Class95::method3(bool arg0, float arg1, double arg2, int arg3, double arg4)
+unsigned Class95::function7(int arg0, unsigned arg1, short arg2, unsigned arg3, int arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -431,7 +503,7 @@ int ns_Class95::method3(bool arg0, float arg1, double arg2, int arg3, double arg
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class95::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
@@ -439,7 +511,7 @@ int ns_Class95::method3(bool arg0, float arg1, double arg2, int arg3, double arg
 
     return arg3;
 }
-float ns_Class95::method4(unsigned arg0, float arg1, double arg2, bool arg3, int arg4)
+double Class95::function8(double arg0, int arg1, double arg2, bool arg3, double arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -450,45 +522,7 @@ float ns_Class95::method4(unsigned arg0, float arg1, double arg2, bool arg3, int
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class95::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg1;
-}
-short ns_Class95::method5(short arg0, bool arg1, short arg2, unsigned arg3, int arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class95::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg2;
-}
-double ns_Class95::method6(double arg0, short arg1, double arg2, short arg3, int arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class95::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
@@ -496,7 +530,7 @@ double ns_Class95::method6(double arg0, short arg1, double arg2, short arg3, int
 
     return arg0;
 }
-int ns_Class95::method7(bool arg0, int arg1, int arg2, bool arg3, unsigned arg4)
+void Class95::function9(short arg0, unsigned arg1, int arg2, bool arg3, double arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -507,52 +541,14 @@ int ns_Class95::method7(bool arg0, int arg1, int arg2, bool arg3, unsigned arg4)
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class95::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg2;
-}
-int ns_Class95::method8(double arg0, int arg1, bool arg2, unsigned arg3, unsigned arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class95::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg1;
-}
-void ns_Class95::method9(short arg0, unsigned arg1, int arg2, unsigned arg3, double arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class95::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
 }
-void ns_Class95::method10(bool arg0, int arg1, int arg2, unsigned arg3, unsigned arg4)
+void Class95::function10(float arg0, bool arg1, float arg2, float arg3, short arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -563,14 +559,14 @@ void ns_Class95::method10(bool arg0, int arg1, int arg2, unsigned arg3, unsigned
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class95::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
 }
-double ns_Class95::method11(bool arg0, double arg1, float arg2, bool arg3, unsigned arg4)
+void Class95::function11(int arg0, double arg1, int arg2, bool arg3, float arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -581,33 +577,14 @@ double ns_Class95::method11(bool arg0, double arg1, float arg2, bool arg3, unsig
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class95::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg1;
-}
-void ns_Class95::method12(float arg0, bool arg1, unsigned arg2, int arg3, unsigned arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class95::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
 }
-int ns_Class95::method13(unsigned arg0, double arg1, int arg2, unsigned arg3, double arg4)
+void Class95::function12(int arg0, float arg1, int arg2, bool arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -618,15 +595,14 @@ int ns_Class95::method13(unsigned arg0, double arg1, int arg2, unsigned arg3, do
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class95::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
-    return arg2;
 }
-bool ns_Class95::method14(double arg0, float arg1, bool arg2, bool arg3, bool arg4)
+void Class95::function13(int arg0, bool arg1, float arg2, short arg3, float arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -637,11 +613,28 @@ bool ns_Class95::method14(double arg0, float arg1, bool arg2, bool arg3, bool ar
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class95::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
-    return arg4;
+}
+void Class95::function14(float arg0, unsigned arg1, bool arg2, double arg3, unsigned arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
 }

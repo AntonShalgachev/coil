@@ -25,7 +25,6 @@ void Class20::work()
 #ifdef DEBUG_BINDINGS
 void Class20::registerBindings(GeneralBindings& bindings)
 {
-#ifdef USE_OBJECTS
     ::bind<Class20>(bindings, "method0", &Class20::method0);
     ::bind<Class20>(bindings, "method1", &Class20::method1);
     ::bind<Class20>(bindings, "method2", &Class20::method2);
@@ -41,23 +40,22 @@ void Class20::registerBindings(GeneralBindings& bindings)
     ::bind<Class20>(bindings, "method12", &Class20::method12);
     ::bind<Class20>(bindings, "method13", &Class20::method13);
     ::bind<Class20>(bindings, "method14", &Class20::method14);
-#else
-    bindings["Class20_method0"] = &ns_Class20::method0;
-    bindings["Class20_method1"] = &ns_Class20::method1;
-    bindings["Class20_method2"] = &ns_Class20::method2;
-    bindings["Class20_method3"] = &ns_Class20::method3;
-    bindings["Class20_method4"] = &ns_Class20::method4;
-    bindings["Class20_method5"] = &ns_Class20::method5;
-    bindings["Class20_method6"] = &ns_Class20::method6;
-    bindings["Class20_method7"] = &ns_Class20::method7;
-    bindings["Class20_method8"] = &ns_Class20::method8;
-    bindings["Class20_method9"] = &ns_Class20::method9;
-    bindings["Class20_method10"] = &ns_Class20::method10;
-    bindings["Class20_method11"] = &ns_Class20::method11;
-    bindings["Class20_method12"] = &ns_Class20::method12;
-    bindings["Class20_method13"] = &ns_Class20::method13;
-    bindings["Class20_method14"] = &ns_Class20::method14;
-#endif
+
+    bindings["Class20_function0"] = &Class20::function0;
+    bindings["Class20_function1"] = &Class20::function1;
+    bindings["Class20_function2"] = &Class20::function2;
+    bindings["Class20_function3"] = &Class20::function3;
+    bindings["Class20_function4"] = &Class20::function4;
+    bindings["Class20_function5"] = &Class20::function5;
+    bindings["Class20_function6"] = &Class20::function6;
+    bindings["Class20_function7"] = &Class20::function7;
+    bindings["Class20_function8"] = &Class20::function8;
+    bindings["Class20_function9"] = &Class20::function9;
+    bindings["Class20_function10"] = &Class20::function10;
+    bindings["Class20_function11"] = &Class20::function11;
+    bindings["Class20_function12"] = &Class20::function12;
+    bindings["Class20_function13"] = &Class20::function13;
+    bindings["Class20_function14"] = &Class20::function14;
 }
 #endif
 
@@ -363,7 +361,7 @@ short Class20::method14(short arg0, bool arg1, int arg2, int arg3, unsigned arg4
     return arg0;
 }
 
-int ns_Class20::method0(float arg0, int arg1, unsigned arg2, int arg3, float arg4)
+void Class20::function0(unsigned arg0, bool arg1, short arg2, unsigned arg3, unsigned arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -374,33 +372,14 @@ int ns_Class20::method0(float arg0, int arg1, unsigned arg2, int arg3, float arg
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class20::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg1;
-}
-void ns_Class20::method1(bool arg0, float arg1, double arg2, float arg3, short arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class20::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
 }
-double ns_Class20::method2(int arg0, double arg1, double arg2, float arg3, float arg4)
+int Class20::function1(double arg0, short arg1, int arg2, int arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -411,15 +390,15 @@ double ns_Class20::method2(int arg0, double arg1, double arg2, float arg3, float
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class20::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
-    return arg1;
+    return arg2;
 }
-short ns_Class20::method3(unsigned arg0, float arg1, int arg2, short arg3, short arg4)
+bool Class20::function2(unsigned arg0, unsigned arg1, bool arg2, bool arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -430,7 +409,44 @@ short ns_Class20::method3(unsigned arg0, float arg1, int arg2, short arg3, short
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class20::workInternally(strings);
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg2;
+}
+void Class20::function3(unsigned arg0, float arg1, double arg2, unsigned arg3, bool arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+short Class20::function4(double arg0, short arg1, double arg2, short arg3, int arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
@@ -438,7 +454,7 @@ short ns_Class20::method3(unsigned arg0, float arg1, int arg2, short arg3, short
 
     return arg3;
 }
-void ns_Class20::method4(short arg0, int arg1, short arg2, float arg3, unsigned arg4)
+void Class20::function5(double arg0, bool arg1, short arg2, float arg3, int arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -449,14 +465,14 @@ void ns_Class20::method4(short arg0, int arg1, short arg2, float arg3, unsigned 
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class20::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
 }
-void ns_Class20::method5(short arg0, unsigned arg1, unsigned arg2, int arg3, double arg4)
+short Class20::function6(int arg0, double arg1, short arg2, float arg3, double arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -467,14 +483,15 @@ void ns_Class20::method5(short arg0, unsigned arg1, unsigned arg2, int arg3, dou
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class20::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
+    return arg2;
 }
-void ns_Class20::method6(int arg0, bool arg1, float arg2, bool arg3, unsigned arg4)
+int Class20::function7(unsigned arg0, float arg1, double arg2, bool arg3, int arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -485,14 +502,15 @@ void ns_Class20::method6(int arg0, bool arg1, float arg2, bool arg3, unsigned ar
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class20::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
+    return arg4;
 }
-short ns_Class20::method7(short arg0, unsigned arg1, bool arg2, int arg3, int arg4)
+double Class20::function8(double arg0, short arg1, bool arg2, int arg3, short arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -503,7 +521,7 @@ short ns_Class20::method7(short arg0, unsigned arg1, bool arg2, int arg3, int ar
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class20::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
@@ -511,7 +529,7 @@ short ns_Class20::method7(short arg0, unsigned arg1, bool arg2, int arg3, int ar
 
     return arg0;
 }
-bool ns_Class20::method8(short arg0, bool arg1, int arg2, bool arg3, unsigned arg4)
+void Class20::function9(short arg0, int arg1, int arg2, short arg3, short arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -522,122 +540,103 @@ bool ns_Class20::method8(short arg0, bool arg1, int arg2, bool arg3, unsigned ar
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class20::workInternally(strings);
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+bool Class20::function10(bool arg0, bool arg1, short arg2, unsigned arg3, short arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg0;
+}
+void Class20::function11(float arg0, int arg1, short arg2, short arg3, unsigned arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+void Class20::function12(int arg0, int arg1, unsigned arg2, int arg3, short arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+unsigned Class20::function13(int arg0, double arg1, unsigned arg2, short arg3, float arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg2;
+}
+double Class20::function14(unsigned arg0, int arg1, double arg2, double arg3, float arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
     return arg3;
-}
-void ns_Class20::method9(bool arg0, bool arg1, float arg2, float arg3, bool arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class20::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-void ns_Class20::method10(float arg0, double arg1, float arg2, int arg3, int arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class20::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-void ns_Class20::method11(short arg0, bool arg1, float arg2, short arg3, bool arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class20::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-short ns_Class20::method12(short arg0, short arg1, int arg2, short arg3, unsigned arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class20::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg3;
-}
-float ns_Class20::method13(float arg0, int arg1, short arg2, unsigned arg3, short arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class20::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg0;
-}
-short ns_Class20::method14(short arg0, bool arg1, int arg2, int arg3, unsigned arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class20::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg0;
 }

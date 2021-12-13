@@ -23,11 +23,8 @@ private:
 #for $method in $methods
     #if 'return_index' in $method then $method.args[$method.return_index] else 'void' # ${method.name}($combine($method.args));
 #end for
-};
 
-namespace ns_$name
-{
-#for $method in $methods
-    #if 'return_index' in $method then $method.args[$method.return_index] else 'void' # ${method.name}($combine($method.args));
+#for $function in $functions
+    static #if 'return_index' in $function then $function.args[$function.return_index] else 'void' # ${function.name}($combine($function.args));
 #end for
-}
+};

@@ -25,7 +25,6 @@ void Class84::work()
 #ifdef DEBUG_BINDINGS
 void Class84::registerBindings(GeneralBindings& bindings)
 {
-#ifdef USE_OBJECTS
     ::bind<Class84>(bindings, "method0", &Class84::method0);
     ::bind<Class84>(bindings, "method1", &Class84::method1);
     ::bind<Class84>(bindings, "method2", &Class84::method2);
@@ -41,23 +40,22 @@ void Class84::registerBindings(GeneralBindings& bindings)
     ::bind<Class84>(bindings, "method12", &Class84::method12);
     ::bind<Class84>(bindings, "method13", &Class84::method13);
     ::bind<Class84>(bindings, "method14", &Class84::method14);
-#else
-    bindings["Class84_method0"] = &ns_Class84::method0;
-    bindings["Class84_method1"] = &ns_Class84::method1;
-    bindings["Class84_method2"] = &ns_Class84::method2;
-    bindings["Class84_method3"] = &ns_Class84::method3;
-    bindings["Class84_method4"] = &ns_Class84::method4;
-    bindings["Class84_method5"] = &ns_Class84::method5;
-    bindings["Class84_method6"] = &ns_Class84::method6;
-    bindings["Class84_method7"] = &ns_Class84::method7;
-    bindings["Class84_method8"] = &ns_Class84::method8;
-    bindings["Class84_method9"] = &ns_Class84::method9;
-    bindings["Class84_method10"] = &ns_Class84::method10;
-    bindings["Class84_method11"] = &ns_Class84::method11;
-    bindings["Class84_method12"] = &ns_Class84::method12;
-    bindings["Class84_method13"] = &ns_Class84::method13;
-    bindings["Class84_method14"] = &ns_Class84::method14;
-#endif
+
+    bindings["Class84_function0"] = &Class84::function0;
+    bindings["Class84_function1"] = &Class84::function1;
+    bindings["Class84_function2"] = &Class84::function2;
+    bindings["Class84_function3"] = &Class84::function3;
+    bindings["Class84_function4"] = &Class84::function4;
+    bindings["Class84_function5"] = &Class84::function5;
+    bindings["Class84_function6"] = &Class84::function6;
+    bindings["Class84_function7"] = &Class84::function7;
+    bindings["Class84_function8"] = &Class84::function8;
+    bindings["Class84_function9"] = &Class84::function9;
+    bindings["Class84_function10"] = &Class84::function10;
+    bindings["Class84_function11"] = &Class84::function11;
+    bindings["Class84_function12"] = &Class84::function12;
+    bindings["Class84_function13"] = &Class84::function13;
+    bindings["Class84_function14"] = &Class84::function14;
 }
 #endif
 
@@ -358,7 +356,7 @@ void Class84::method14(short arg0, float arg1, int arg2, int arg3, bool arg4)
 
 }
 
-void ns_Class84::method0(int arg0, bool arg1, float arg2, short arg3, bool arg4)
+void Class84::function0(double arg0, double arg1, float arg2, double arg3, float arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -369,14 +367,14 @@ void ns_Class84::method0(int arg0, bool arg1, float arg2, short arg3, bool arg4)
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class84::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
 }
-void ns_Class84::method1(double arg0, int arg1, int arg2, int arg3, bool arg4)
+void Class84::function1(int arg0, bool arg1, unsigned arg2, double arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -387,14 +385,14 @@ void ns_Class84::method1(double arg0, int arg1, int arg2, int arg3, bool arg4)
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class84::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
 }
-void ns_Class84::method2(short arg0, short arg1, unsigned arg2, float arg3, float arg4)
+bool Class84::function2(float arg0, int arg1, double arg2, double arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -405,14 +403,33 @@ void ns_Class84::method2(short arg0, short arg1, unsigned arg2, float arg3, floa
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class84::workInternally(strings);
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg4;
+}
+void Class84::function3(bool arg0, short arg1, int arg2, short arg3, bool arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
 }
-void ns_Class84::method3(short arg0, bool arg1, float arg2, float arg3, double arg4)
+int Class84::function4(int arg0, double arg1, bool arg2, float arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -423,14 +440,52 @@ void ns_Class84::method3(short arg0, bool arg1, float arg2, float arg3, double a
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class84::workInternally(strings);
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg0;
+}
+bool Class84::function5(bool arg0, double arg1, double arg2, double arg3, short arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg0;
+}
+void Class84::function6(short arg0, int arg1, unsigned arg2, short arg3, bool arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
 }
-int ns_Class84::method4(bool arg0, int arg1, unsigned arg2, bool arg3, int arg4)
+float Class84::function7(int arg0, float arg1, double arg2, bool arg3, short arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -441,7 +496,7 @@ int ns_Class84::method4(bool arg0, int arg1, unsigned arg2, bool arg3, int arg4)
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class84::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
@@ -449,7 +504,7 @@ int ns_Class84::method4(bool arg0, int arg1, unsigned arg2, bool arg3, int arg4)
 
     return arg1;
 }
-void ns_Class84::method5(float arg0, unsigned arg1, unsigned arg2, unsigned arg3, bool arg4)
+void Class84::function8(float arg0, bool arg1, bool arg2, bool arg3, float arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -460,14 +515,14 @@ void ns_Class84::method5(float arg0, unsigned arg1, unsigned arg2, unsigned arg3
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class84::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
 }
-unsigned ns_Class84::method6(bool arg0, float arg1, double arg2, double arg3, unsigned arg4)
+int Class84::function9(float arg0, int arg1, float arg2, float arg3, short arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -478,15 +533,15 @@ unsigned ns_Class84::method6(bool arg0, float arg1, double arg2, double arg3, un
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class84::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
-    return arg4;
+    return arg1;
 }
-void ns_Class84::method7(float arg0, bool arg1, int arg2, double arg3, int arg4)
+void Class84::function10(double arg0, double arg1, bool arg2, unsigned arg3, int arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -497,51 +552,14 @@ void ns_Class84::method7(float arg0, bool arg1, int arg2, double arg3, int arg4)
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class84::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-bool ns_Class84::method8(unsigned arg0, short arg1, float arg2, bool arg3, bool arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class84::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg4;
-}
-void ns_Class84::method9(unsigned arg0, float arg1, int arg2, double arg3, float arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class84::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
 }
-void ns_Class84::method10(unsigned arg0, short arg1, unsigned arg2, unsigned arg3, unsigned arg4)
+void Class84::function11(double arg0, bool arg1, unsigned arg2, int arg3, unsigned arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -552,14 +570,14 @@ void ns_Class84::method10(unsigned arg0, short arg1, unsigned arg2, unsigned arg
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class84::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
 }
-void ns_Class84::method11(float arg0, short arg1, double arg2, double arg3, short arg4)
+void Class84::function12(int arg0, double arg1, short arg2, float arg3, float arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -570,14 +588,14 @@ void ns_Class84::method11(float arg0, short arg1, double arg2, double arg3, shor
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class84::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
 }
-void ns_Class84::method12(float arg0, unsigned arg1, short arg2, float arg3, bool arg4)
+float Class84::function13(unsigned arg0, float arg1, float arg2, unsigned arg3, float arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -588,14 +606,15 @@ void ns_Class84::method12(float arg0, unsigned arg1, short arg2, float arg3, boo
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class84::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
+    return arg2;
 }
-void ns_Class84::method13(bool arg0, unsigned arg1, bool arg2, unsigned arg3, short arg4)
+void Class84::function14(float arg0, bool arg1, unsigned arg2, bool arg3, short arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -606,25 +625,7 @@ void ns_Class84::method13(bool arg0, unsigned arg1, bool arg2, unsigned arg3, sh
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class84::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-void ns_Class84::method14(short arg0, float arg1, int arg2, int arg3, bool arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class84::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else

@@ -25,7 +25,6 @@ void Class71::work()
 #ifdef DEBUG_BINDINGS
 void Class71::registerBindings(GeneralBindings& bindings)
 {
-#ifdef USE_OBJECTS
     ::bind<Class71>(bindings, "method0", &Class71::method0);
     ::bind<Class71>(bindings, "method1", &Class71::method1);
     ::bind<Class71>(bindings, "method2", &Class71::method2);
@@ -41,23 +40,22 @@ void Class71::registerBindings(GeneralBindings& bindings)
     ::bind<Class71>(bindings, "method12", &Class71::method12);
     ::bind<Class71>(bindings, "method13", &Class71::method13);
     ::bind<Class71>(bindings, "method14", &Class71::method14);
-#else
-    bindings["Class71_method0"] = &ns_Class71::method0;
-    bindings["Class71_method1"] = &ns_Class71::method1;
-    bindings["Class71_method2"] = &ns_Class71::method2;
-    bindings["Class71_method3"] = &ns_Class71::method3;
-    bindings["Class71_method4"] = &ns_Class71::method4;
-    bindings["Class71_method5"] = &ns_Class71::method5;
-    bindings["Class71_method6"] = &ns_Class71::method6;
-    bindings["Class71_method7"] = &ns_Class71::method7;
-    bindings["Class71_method8"] = &ns_Class71::method8;
-    bindings["Class71_method9"] = &ns_Class71::method9;
-    bindings["Class71_method10"] = &ns_Class71::method10;
-    bindings["Class71_method11"] = &ns_Class71::method11;
-    bindings["Class71_method12"] = &ns_Class71::method12;
-    bindings["Class71_method13"] = &ns_Class71::method13;
-    bindings["Class71_method14"] = &ns_Class71::method14;
-#endif
+
+    bindings["Class71_function0"] = &Class71::function0;
+    bindings["Class71_function1"] = &Class71::function1;
+    bindings["Class71_function2"] = &Class71::function2;
+    bindings["Class71_function3"] = &Class71::function3;
+    bindings["Class71_function4"] = &Class71::function4;
+    bindings["Class71_function5"] = &Class71::function5;
+    bindings["Class71_function6"] = &Class71::function6;
+    bindings["Class71_function7"] = &Class71::function7;
+    bindings["Class71_function8"] = &Class71::function8;
+    bindings["Class71_function9"] = &Class71::function9;
+    bindings["Class71_function10"] = &Class71::function10;
+    bindings["Class71_function11"] = &Class71::function11;
+    bindings["Class71_function12"] = &Class71::function12;
+    bindings["Class71_function13"] = &Class71::function13;
+    bindings["Class71_function14"] = &Class71::function14;
 }
 #endif
 
@@ -359,7 +357,7 @@ double Class71::method14(int arg0, double arg1, int arg2, double arg3, bool arg4
     return arg1;
 }
 
-void ns_Class71::method0(short arg0, unsigned arg1, int arg2, float arg3, bool arg4)
+void Class71::function0(int arg0, float arg1, short arg2, bool arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -370,14 +368,14 @@ void ns_Class71::method0(short arg0, unsigned arg1, int arg2, float arg3, bool a
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class71::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
 }
-void ns_Class71::method1(double arg0, unsigned arg1, int arg2, unsigned arg3, short arg4)
+short Class71::function1(double arg0, float arg1, double arg2, double arg3, short arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -388,14 +386,33 @@ void ns_Class71::method1(double arg0, unsigned arg1, int arg2, unsigned arg3, sh
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class71::workInternally(strings);
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg4;
+}
+void Class71::function2(float arg0, int arg1, unsigned arg2, double arg3, bool arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
 }
-void ns_Class71::method2(double arg0, double arg1, unsigned arg2, short arg3, double arg4)
+float Class71::function3(double arg0, float arg1, unsigned arg2, int arg3, short arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -406,14 +423,15 @@ void ns_Class71::method2(double arg0, double arg1, unsigned arg2, short arg3, do
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class71::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
+    return arg1;
 }
-unsigned ns_Class71::method3(short arg0, int arg1, double arg2, unsigned arg3, int arg4)
+float Class71::function4(bool arg0, float arg1, unsigned arg2, bool arg3, double arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -424,7 +442,45 @@ unsigned ns_Class71::method3(short arg0, int arg1, double arg2, unsigned arg3, i
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class71::workInternally(strings);
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg1;
+}
+short Class71::function5(bool arg0, short arg1, short arg2, double arg3, short arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg4;
+}
+bool Class71::function6(float arg0, bool arg1, double arg2, bool arg3, int arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
@@ -432,7 +488,7 @@ unsigned ns_Class71::method3(short arg0, int arg1, double arg2, unsigned arg3, i
 
     return arg3;
 }
-int ns_Class71::method4(float arg0, unsigned arg1, int arg2, int arg3, unsigned arg4)
+void Class71::function7(short arg0, short arg1, float arg2, double arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -443,33 +499,14 @@ int ns_Class71::method4(float arg0, unsigned arg1, int arg2, int arg3, unsigned 
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class71::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg2;
-}
-void ns_Class71::method5(int arg0, bool arg1, float arg2, int arg3, int arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class71::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
 }
-void ns_Class71::method6(short arg0, bool arg1, bool arg2, int arg3, short arg4)
+void Class71::function8(bool arg0, float arg1, float arg2, double arg3, double arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -480,14 +517,14 @@ void ns_Class71::method6(short arg0, bool arg1, bool arg2, int arg3, short arg4)
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class71::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
 }
-void ns_Class71::method7(int arg0, float arg1, short arg2, double arg3, short arg4)
+void Class71::function9(unsigned arg0, int arg1, unsigned arg2, unsigned arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -498,14 +535,14 @@ void ns_Class71::method7(int arg0, float arg1, short arg2, double arg3, short ar
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class71::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
 }
-void ns_Class71::method8(double arg0, double arg1, float arg2, unsigned arg3, float arg4)
+void Class71::function10(short arg0, float arg1, unsigned arg2, bool arg3, int arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -516,14 +553,14 @@ void ns_Class71::method8(double arg0, double arg1, float arg2, unsigned arg3, fl
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class71::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
 }
-void ns_Class71::method9(bool arg0, float arg1, float arg2, short arg3, double arg4)
+double Class71::function11(short arg0, bool arg1, int arg2, float arg3, double arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -534,14 +571,33 @@ void ns_Class71::method9(bool arg0, float arg1, float arg2, short arg3, double a
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class71::workInternally(strings);
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg4;
+}
+void Class71::function12(double arg0, float arg1, int arg2, float arg3, float arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
 }
-void ns_Class71::method10(short arg0, float arg1, unsigned arg2, int arg3, double arg4)
+void Class71::function13(bool arg0, double arg1, int arg2, float arg3, unsigned arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -552,14 +608,14 @@ void ns_Class71::method10(short arg0, float arg1, unsigned arg2, int arg3, doubl
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class71::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
 }
-short ns_Class71::method11(float arg0, short arg1, float arg2, int arg3, double arg4)
+void Class71::function14(short arg0, double arg1, float arg2, float arg3, double arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -570,66 +626,10 @@ short ns_Class71::method11(float arg0, short arg1, float arg2, int arg3, double 
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class71::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
-    return arg1;
-}
-void ns_Class71::method12(bool arg0, double arg1, int arg2, short arg3, double arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class71::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-void ns_Class71::method13(bool arg0, bool arg1, float arg2, double arg3, double arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class71::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-double ns_Class71::method14(int arg0, double arg1, int arg2, double arg3, bool arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class71::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg1;
 }

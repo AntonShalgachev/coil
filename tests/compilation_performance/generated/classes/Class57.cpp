@@ -25,7 +25,6 @@ void Class57::work()
 #ifdef DEBUG_BINDINGS
 void Class57::registerBindings(GeneralBindings& bindings)
 {
-#ifdef USE_OBJECTS
     ::bind<Class57>(bindings, "method0", &Class57::method0);
     ::bind<Class57>(bindings, "method1", &Class57::method1);
     ::bind<Class57>(bindings, "method2", &Class57::method2);
@@ -41,23 +40,22 @@ void Class57::registerBindings(GeneralBindings& bindings)
     ::bind<Class57>(bindings, "method12", &Class57::method12);
     ::bind<Class57>(bindings, "method13", &Class57::method13);
     ::bind<Class57>(bindings, "method14", &Class57::method14);
-#else
-    bindings["Class57_method0"] = &ns_Class57::method0;
-    bindings["Class57_method1"] = &ns_Class57::method1;
-    bindings["Class57_method2"] = &ns_Class57::method2;
-    bindings["Class57_method3"] = &ns_Class57::method3;
-    bindings["Class57_method4"] = &ns_Class57::method4;
-    bindings["Class57_method5"] = &ns_Class57::method5;
-    bindings["Class57_method6"] = &ns_Class57::method6;
-    bindings["Class57_method7"] = &ns_Class57::method7;
-    bindings["Class57_method8"] = &ns_Class57::method8;
-    bindings["Class57_method9"] = &ns_Class57::method9;
-    bindings["Class57_method10"] = &ns_Class57::method10;
-    bindings["Class57_method11"] = &ns_Class57::method11;
-    bindings["Class57_method12"] = &ns_Class57::method12;
-    bindings["Class57_method13"] = &ns_Class57::method13;
-    bindings["Class57_method14"] = &ns_Class57::method14;
-#endif
+
+    bindings["Class57_function0"] = &Class57::function0;
+    bindings["Class57_function1"] = &Class57::function1;
+    bindings["Class57_function2"] = &Class57::function2;
+    bindings["Class57_function3"] = &Class57::function3;
+    bindings["Class57_function4"] = &Class57::function4;
+    bindings["Class57_function5"] = &Class57::function5;
+    bindings["Class57_function6"] = &Class57::function6;
+    bindings["Class57_function7"] = &Class57::function7;
+    bindings["Class57_function8"] = &Class57::function8;
+    bindings["Class57_function9"] = &Class57::function9;
+    bindings["Class57_function10"] = &Class57::function10;
+    bindings["Class57_function11"] = &Class57::function11;
+    bindings["Class57_function12"] = &Class57::function12;
+    bindings["Class57_function13"] = &Class57::function13;
+    bindings["Class57_function14"] = &Class57::function14;
 }
 #endif
 
@@ -359,7 +357,7 @@ void Class57::method14(double arg0, float arg1, unsigned arg2, short arg3, doubl
 
 }
 
-void ns_Class57::method0(bool arg0, unsigned arg1, int arg2, float arg3, short arg4)
+void Class57::function0(bool arg0, unsigned arg1, short arg2, int arg3, int arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -370,14 +368,14 @@ void ns_Class57::method0(bool arg0, unsigned arg1, int arg2, float arg3, short a
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class57::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
 }
-void ns_Class57::method1(unsigned arg0, short arg1, short arg2, short arg3, double arg4)
+void Class57::function1(double arg0, bool arg1, int arg2, bool arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -388,14 +386,14 @@ void ns_Class57::method1(unsigned arg0, short arg1, short arg2, short arg3, doub
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class57::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
 }
-void ns_Class57::method2(float arg0, short arg1, unsigned arg2, bool arg3, bool arg4)
+unsigned Class57::function2(unsigned arg0, float arg1, unsigned arg2, int arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -406,14 +404,33 @@ void ns_Class57::method2(float arg0, short arg1, unsigned arg2, bool arg3, bool 
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class57::workInternally(strings);
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg0;
+}
+void Class57::function3(bool arg0, short arg1, bool arg2, bool arg3, double arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
 }
-float ns_Class57::method3(bool arg0, bool arg1, float arg2, short arg3, unsigned arg4)
+unsigned Class57::function4(int arg0, unsigned arg1, unsigned arg2, bool arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -424,117 +441,7 @@ float ns_Class57::method3(bool arg0, bool arg1, float arg2, short arg3, unsigned
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class57::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg2;
-}
-bool ns_Class57::method4(int arg0, int arg1, unsigned arg2, bool arg3, double arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class57::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg3;
-}
-void ns_Class57::method5(short arg0, short arg1, int arg2, short arg3, bool arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class57::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-void ns_Class57::method6(bool arg0, bool arg1, short arg2, short arg3, int arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class57::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-void ns_Class57::method7(short arg0, unsigned arg1, unsigned arg2, unsigned arg3, bool arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class57::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-void ns_Class57::method8(int arg0, int arg1, unsigned arg2, float arg3, short arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class57::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-short ns_Class57::method9(short arg0, short arg1, short arg2, double arg3, short arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class57::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
@@ -542,7 +449,7 @@ short ns_Class57::method9(short arg0, short arg1, short arg2, double arg3, short
 
     return arg1;
 }
-void ns_Class57::method10(short arg0, float arg1, double arg2, bool arg3, float arg4)
+bool Class57::function5(int arg0, bool arg1, unsigned arg2, short arg3, int arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -553,14 +460,52 @@ void ns_Class57::method10(short arg0, float arg1, double arg2, bool arg3, float 
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class57::workInternally(strings);
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg1;
+}
+unsigned Class57::function6(float arg0, float arg1, short arg2, unsigned arg3, unsigned arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg4;
+}
+void Class57::function7(int arg0, float arg1, double arg2, double arg3, short arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
 }
-void ns_Class57::method11(short arg0, short arg1, bool arg2, short arg3, double arg4)
+void Class57::function8(short arg0, double arg1, short arg2, int arg3, float arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -571,14 +516,14 @@ void ns_Class57::method11(short arg0, short arg1, bool arg2, short arg3, double 
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class57::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
 }
-void ns_Class57::method12(unsigned arg0, double arg1, int arg2, float arg3, short arg4)
+void Class57::function9(float arg0, int arg1, int arg2, short arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -589,14 +534,14 @@ void ns_Class57::method12(unsigned arg0, double arg1, int arg2, float arg3, shor
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class57::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
 }
-bool ns_Class57::method13(double arg0, double arg1, bool arg2, short arg3, unsigned arg4)
+unsigned Class57::function10(bool arg0, float arg1, unsigned arg2, short arg3, float arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -607,7 +552,7 @@ bool ns_Class57::method13(double arg0, double arg1, bool arg2, short arg3, unsig
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class57::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
@@ -615,7 +560,7 @@ bool ns_Class57::method13(double arg0, double arg1, bool arg2, short arg3, unsig
 
     return arg2;
 }
-void ns_Class57::method14(double arg0, float arg1, unsigned arg2, short arg3, double arg4)
+short Class57::function11(int arg0, int arg1, bool arg2, bool arg3, short arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -626,10 +571,67 @@ void ns_Class57::method14(double arg0, float arg1, unsigned arg2, short arg3, do
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class57::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
+    return arg4;
+}
+void Class57::function12(unsigned arg0, bool arg1, bool arg2, double arg3, short arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+float Class57::function13(float arg0, short arg1, float arg2, double arg3, short arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg2;
+}
+int Class57::function14(int arg0, double arg1, bool arg2, float arg3, int arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg4;
 }

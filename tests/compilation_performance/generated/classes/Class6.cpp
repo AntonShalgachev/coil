@@ -25,7 +25,6 @@ void Class6::work()
 #ifdef DEBUG_BINDINGS
 void Class6::registerBindings(GeneralBindings& bindings)
 {
-#ifdef USE_OBJECTS
     ::bind<Class6>(bindings, "method0", &Class6::method0);
     ::bind<Class6>(bindings, "method1", &Class6::method1);
     ::bind<Class6>(bindings, "method2", &Class6::method2);
@@ -41,23 +40,22 @@ void Class6::registerBindings(GeneralBindings& bindings)
     ::bind<Class6>(bindings, "method12", &Class6::method12);
     ::bind<Class6>(bindings, "method13", &Class6::method13);
     ::bind<Class6>(bindings, "method14", &Class6::method14);
-#else
-    bindings["Class6_method0"] = &ns_Class6::method0;
-    bindings["Class6_method1"] = &ns_Class6::method1;
-    bindings["Class6_method2"] = &ns_Class6::method2;
-    bindings["Class6_method3"] = &ns_Class6::method3;
-    bindings["Class6_method4"] = &ns_Class6::method4;
-    bindings["Class6_method5"] = &ns_Class6::method5;
-    bindings["Class6_method6"] = &ns_Class6::method6;
-    bindings["Class6_method7"] = &ns_Class6::method7;
-    bindings["Class6_method8"] = &ns_Class6::method8;
-    bindings["Class6_method9"] = &ns_Class6::method9;
-    bindings["Class6_method10"] = &ns_Class6::method10;
-    bindings["Class6_method11"] = &ns_Class6::method11;
-    bindings["Class6_method12"] = &ns_Class6::method12;
-    bindings["Class6_method13"] = &ns_Class6::method13;
-    bindings["Class6_method14"] = &ns_Class6::method14;
-#endif
+
+    bindings["Class6_function0"] = &Class6::function0;
+    bindings["Class6_function1"] = &Class6::function1;
+    bindings["Class6_function2"] = &Class6::function2;
+    bindings["Class6_function3"] = &Class6::function3;
+    bindings["Class6_function4"] = &Class6::function4;
+    bindings["Class6_function5"] = &Class6::function5;
+    bindings["Class6_function6"] = &Class6::function6;
+    bindings["Class6_function7"] = &Class6::function7;
+    bindings["Class6_function8"] = &Class6::function8;
+    bindings["Class6_function9"] = &Class6::function9;
+    bindings["Class6_function10"] = &Class6::function10;
+    bindings["Class6_function11"] = &Class6::function11;
+    bindings["Class6_function12"] = &Class6::function12;
+    bindings["Class6_function13"] = &Class6::function13;
+    bindings["Class6_function14"] = &Class6::function14;
 }
 #endif
 
@@ -362,7 +360,7 @@ void Class6::method14(bool arg0, unsigned arg1, unsigned arg2, short arg3, float
 
 }
 
-void ns_Class6::method0(unsigned arg0, bool arg1, short arg2, int arg3, float arg4)
+unsigned Class6::function0(float arg0, unsigned arg1, double arg2, short arg3, short arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -373,14 +371,33 @@ void ns_Class6::method0(unsigned arg0, bool arg1, short arg2, int arg3, float ar
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class6::workInternally(strings);
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg1;
+}
+void Class6::function1(int arg0, float arg1, double arg2, bool arg3, short arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
 }
-double ns_Class6::method1(unsigned arg0, bool arg1, int arg2, double arg3, bool arg4)
+void Class6::function2(unsigned arg0, int arg1, bool arg2, short arg3, float arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -391,33 +408,14 @@ double ns_Class6::method1(unsigned arg0, bool arg1, int arg2, double arg3, bool 
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class6::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg3;
-}
-void ns_Class6::method2(int arg0, short arg1, int arg2, int arg3, bool arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class6::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
 }
-void ns_Class6::method3(float arg0, double arg1, short arg2, unsigned arg3, unsigned arg4)
+void Class6::function3(double arg0, double arg1, float arg2, float arg3, float arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -428,14 +426,14 @@ void ns_Class6::method3(float arg0, double arg1, short arg2, unsigned arg3, unsi
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class6::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
 }
-void ns_Class6::method4(double arg0, double arg1, bool arg2, short arg3, int arg4)
+double Class6::function4(bool arg0, float arg1, unsigned arg2, bool arg3, double arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -446,25 +444,7 @@ void ns_Class6::method4(double arg0, double arg1, bool arg2, short arg3, int arg
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class6::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-double ns_Class6::method5(short arg0, double arg1, bool arg2, double arg3, double arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class6::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
@@ -472,7 +452,7 @@ double ns_Class6::method5(short arg0, double arg1, bool arg2, double arg3, doubl
 
     return arg4;
 }
-float ns_Class6::method6(unsigned arg0, unsigned arg1, float arg2, unsigned arg3, unsigned arg4)
+void Class6::function5(int arg0, unsigned arg1, int arg2, unsigned arg3, unsigned arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -483,33 +463,14 @@ float ns_Class6::method6(unsigned arg0, unsigned arg1, float arg2, unsigned arg3
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class6::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg2;
-}
-void ns_Class6::method7(double arg0, unsigned arg1, bool arg2, double arg3, short arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class6::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
 }
-void ns_Class6::method8(float arg0, int arg1, float arg2, short arg3, double arg4)
+void Class6::function6(bool arg0, float arg1, float arg2, short arg3, short arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -520,14 +481,14 @@ void ns_Class6::method8(float arg0, int arg1, float arg2, short arg3, double arg
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class6::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
 }
-double ns_Class6::method9(double arg0, float arg1, short arg2, double arg3, bool arg4)
+double Class6::function7(int arg0, float arg1, bool arg2, double arg3, unsigned arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -538,7 +499,7 @@ double ns_Class6::method9(double arg0, float arg1, short arg2, double arg3, bool
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class6::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
@@ -546,7 +507,7 @@ double ns_Class6::method9(double arg0, float arg1, short arg2, double arg3, bool
 
     return arg3;
 }
-unsigned ns_Class6::method10(unsigned arg0, unsigned arg1, unsigned arg2, bool arg3, short arg4)
+bool Class6::function8(int arg0, double arg1, float arg2, int arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -557,26 +518,7 @@ unsigned ns_Class6::method10(unsigned arg0, unsigned arg1, unsigned arg2, bool a
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class6::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg2;
-}
-unsigned ns_Class6::method11(double arg0, short arg1, short arg2, unsigned arg3, unsigned arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class6::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
@@ -584,7 +526,7 @@ unsigned ns_Class6::method11(double arg0, short arg1, short arg2, unsigned arg3,
 
     return arg4;
 }
-void ns_Class6::method12(int arg0, unsigned arg1, bool arg2, int arg3, short arg4)
+double Class6::function9(float arg0, double arg1, double arg2, unsigned arg3, double arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -595,14 +537,33 @@ void ns_Class6::method12(int arg0, unsigned arg1, bool arg2, int arg3, short arg
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class6::workInternally(strings);
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg1;
+}
+void Class6::function10(short arg0, short arg1, short arg2, unsigned arg3, int arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
 }
-unsigned ns_Class6::method13(double arg0, float arg1, bool arg2, unsigned arg3, short arg4)
+void Class6::function11(short arg0, unsigned arg1, unsigned arg2, unsigned arg3, double arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -613,15 +574,14 @@ unsigned ns_Class6::method13(double arg0, float arg1, bool arg2, unsigned arg3, 
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class6::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
-    return arg3;
 }
-void ns_Class6::method14(bool arg0, unsigned arg1, unsigned arg2, short arg3, float arg4)
+void Class6::function12(unsigned arg0, bool arg1, double arg2, int arg3, short arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -632,7 +592,44 @@ void ns_Class6::method14(bool arg0, unsigned arg1, unsigned arg2, short arg3, fl
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class6::workInternally(strings);
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+short Class6::function13(short arg0, int arg1, short arg2, bool arg3, int arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg0;
+}
+void Class6::function14(int arg0, double arg1, bool arg2, short arg3, unsigned arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else

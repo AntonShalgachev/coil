@@ -25,7 +25,6 @@ void Class53::work()
 #ifdef DEBUG_BINDINGS
 void Class53::registerBindings(GeneralBindings& bindings)
 {
-#ifdef USE_OBJECTS
     ::bind<Class53>(bindings, "method0", &Class53::method0);
     ::bind<Class53>(bindings, "method1", &Class53::method1);
     ::bind<Class53>(bindings, "method2", &Class53::method2);
@@ -41,23 +40,22 @@ void Class53::registerBindings(GeneralBindings& bindings)
     ::bind<Class53>(bindings, "method12", &Class53::method12);
     ::bind<Class53>(bindings, "method13", &Class53::method13);
     ::bind<Class53>(bindings, "method14", &Class53::method14);
-#else
-    bindings["Class53_method0"] = &ns_Class53::method0;
-    bindings["Class53_method1"] = &ns_Class53::method1;
-    bindings["Class53_method2"] = &ns_Class53::method2;
-    bindings["Class53_method3"] = &ns_Class53::method3;
-    bindings["Class53_method4"] = &ns_Class53::method4;
-    bindings["Class53_method5"] = &ns_Class53::method5;
-    bindings["Class53_method6"] = &ns_Class53::method6;
-    bindings["Class53_method7"] = &ns_Class53::method7;
-    bindings["Class53_method8"] = &ns_Class53::method8;
-    bindings["Class53_method9"] = &ns_Class53::method9;
-    bindings["Class53_method10"] = &ns_Class53::method10;
-    bindings["Class53_method11"] = &ns_Class53::method11;
-    bindings["Class53_method12"] = &ns_Class53::method12;
-    bindings["Class53_method13"] = &ns_Class53::method13;
-    bindings["Class53_method14"] = &ns_Class53::method14;
-#endif
+
+    bindings["Class53_function0"] = &Class53::function0;
+    bindings["Class53_function1"] = &Class53::function1;
+    bindings["Class53_function2"] = &Class53::function2;
+    bindings["Class53_function3"] = &Class53::function3;
+    bindings["Class53_function4"] = &Class53::function4;
+    bindings["Class53_function5"] = &Class53::function5;
+    bindings["Class53_function6"] = &Class53::function6;
+    bindings["Class53_function7"] = &Class53::function7;
+    bindings["Class53_function8"] = &Class53::function8;
+    bindings["Class53_function9"] = &Class53::function9;
+    bindings["Class53_function10"] = &Class53::function10;
+    bindings["Class53_function11"] = &Class53::function11;
+    bindings["Class53_function12"] = &Class53::function12;
+    bindings["Class53_function13"] = &Class53::function13;
+    bindings["Class53_function14"] = &Class53::function14;
 }
 #endif
 
@@ -362,7 +360,7 @@ void Class53::method14(unsigned arg0, bool arg1, short arg2, int arg3, bool arg4
 
 }
 
-void ns_Class53::method0(short arg0, bool arg1, unsigned arg2, bool arg3, short arg4)
+void Class53::function0(float arg0, bool arg1, double arg2, short arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -373,14 +371,14 @@ void ns_Class53::method0(short arg0, bool arg1, unsigned arg2, bool arg3, short 
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class53::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
 }
-double ns_Class53::method1(double arg0, double arg1, bool arg2, double arg3, double arg4)
+double Class53::function1(double arg0, short arg1, short arg2, float arg3, int arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -391,26 +389,7 @@ double ns_Class53::method1(double arg0, double arg1, bool arg2, double arg3, dou
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class53::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg0;
-}
-int ns_Class53::method2(int arg0, int arg1, int arg2, bool arg3, bool arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class53::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
@@ -418,7 +397,7 @@ int ns_Class53::method2(int arg0, int arg1, int arg2, bool arg3, bool arg4)
 
     return arg0;
 }
-void ns_Class53::method3(bool arg0, float arg1, short arg2, bool arg3, short arg4)
+unsigned Class53::function2(unsigned arg0, float arg1, int arg2, bool arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -429,14 +408,33 @@ void ns_Class53::method3(bool arg0, float arg1, short arg2, bool arg3, short arg
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class53::workInternally(strings);
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg0;
+}
+void Class53::function3(unsigned arg0, int arg1, int arg2, float arg3, int arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
 }
-void ns_Class53::method4(double arg0, int arg1, short arg2, unsigned arg3, bool arg4)
+float Class53::function4(int arg0, bool arg1, float arg2, bool arg3, double arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -447,81 +445,7 @@ void ns_Class53::method4(double arg0, int arg1, short arg2, unsigned arg3, bool 
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class53::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-void ns_Class53::method5(bool arg0, short arg1, unsigned arg2, float arg3, float arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class53::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-bool ns_Class53::method6(double arg0, bool arg1, double arg2, short arg3, bool arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class53::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg4;
-}
-int ns_Class53::method7(int arg0, double arg1, unsigned arg2, bool arg3, int arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class53::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg4;
-}
-short ns_Class53::method8(unsigned arg0, bool arg1, short arg2, short arg3, int arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class53::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
@@ -529,7 +453,7 @@ short ns_Class53::method8(unsigned arg0, bool arg1, short arg2, short arg3, int 
 
     return arg2;
 }
-void ns_Class53::method9(unsigned arg0, short arg1, unsigned arg2, unsigned arg3, bool arg4)
+void Class53::function5(bool arg0, int arg1, double arg2, float arg3, short arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -540,14 +464,14 @@ void ns_Class53::method9(unsigned arg0, short arg1, unsigned arg2, unsigned arg3
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class53::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
 }
-int ns_Class53::method10(int arg0, bool arg1, double arg2, unsigned arg3, unsigned arg4)
+void Class53::function6(short arg0, float arg1, double arg2, short arg3, short arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -558,33 +482,14 @@ int ns_Class53::method10(int arg0, bool arg1, double arg2, unsigned arg3, unsign
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class53::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg0;
-}
-void ns_Class53::method11(double arg0, double arg1, int arg2, double arg3, unsigned arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class53::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
 }
-float ns_Class53::method12(float arg0, double arg1, unsigned arg2, double arg3, short arg4)
+void Class53::function7(unsigned arg0, float arg1, double arg2, int arg3, int arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -595,33 +500,14 @@ float ns_Class53::method12(float arg0, double arg1, unsigned arg2, double arg3, 
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class53::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg0;
-}
-void ns_Class53::method13(float arg0, unsigned arg1, float arg2, unsigned arg3, double arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class53::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
 }
-void ns_Class53::method14(unsigned arg0, bool arg1, short arg2, int arg3, bool arg4)
+short Class53::function8(int arg0, int arg1, short arg2, double arg3, unsigned arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -632,10 +518,123 @@ void ns_Class53::method14(unsigned arg0, bool arg1, short arg2, int arg3, bool a
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class53::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
+    return arg2;
+}
+float Class53::function9(int arg0, unsigned arg1, double arg2, float arg3, double arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg3;
+}
+float Class53::function10(double arg0, short arg1, float arg2, double arg3, float arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg2;
+}
+void Class53::function11(short arg0, double arg1, double arg2, bool arg3, unsigned arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+void Class53::function12(double arg0, int arg1, int arg2, float arg3, int arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+int Class53::function13(float arg0, int arg1, short arg2, short arg3, short arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg1;
+}
+unsigned Class53::function14(unsigned arg0, unsigned arg1, bool arg2, int arg3, unsigned arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg4;
 }

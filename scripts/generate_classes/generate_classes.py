@@ -18,9 +18,10 @@ DEFAULT_TYPES = ['int', 'float', 'double', 'bool', 'short', 'unsigned', 'std::st
 
 
 class ClassGenerator:
-    def __init__(self, classes_count=10, methods_count=3, args_count=0, includes_count=5, types=DEFAULT_TYPES, seed=0):
+    def __init__(self, classes_count=10, methods_count=3, functions_count=3, args_count=0, includes_count=5, types=DEFAULT_TYPES, seed=0):
         self._classes_count = classes_count
         self._methods_count = methods_count
+        self._functions_count = functions_count
         self._args_count = args_count
         self._includes_count = min(includes_count, classes_count)
         self._types = types
@@ -45,7 +46,11 @@ class ClassGenerator:
 
         methods = []
         for i in range(self._methods_count):
-            methods.append(self._generate_method(i))
+            methods.append(self._generate_method('method', i))
+            
+        functions = []
+        for i in range(self._functions_count):
+            functions.append(self._generate_method('function', i))
 
         includes = random.sample(range(self._classes_count), self._includes_count)
         includes = [x for x in includes if x != class_index] # don't include self
@@ -54,12 +59,13 @@ class ClassGenerator:
         desc = {}
         desc['name'] = name
         desc['methods'] = methods
+        desc['functions'] = functions
         desc['seed'] = seed
         desc['includes'] = includes
         return desc
 
-    def _generate_method(self, method_index):
-        name  = 'method' + str(method_index)
+    def _generate_method(self, base_name, method_index):
+        name  = base_name + str(method_index)
 
         args = random.choices(self._types, k=self._args_count)
 
@@ -122,12 +128,13 @@ def main():
     seed = 88005553535
     classes_count = 100
     methods_count = 15
+    functions_count = 15
     includes_count = 20
     args_count = 5
     types = ['int', 'float', 'double', 'bool', 'short', 'unsigned']
     destination = '../../tests/compilation_performance/generated'
 
-    class_generator = ClassGenerator(classes_count, methods_count, args_count, includes_count, types, seed)
+    class_generator = ClassGenerator(classes_count, methods_count, functions_count, args_count, includes_count, types, seed)
     
     classes = class_generator.generate()
 
