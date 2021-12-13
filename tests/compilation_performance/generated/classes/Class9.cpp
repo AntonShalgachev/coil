@@ -25,7 +25,6 @@ void Class9::work()
 #ifdef DEBUG_BINDINGS
 void Class9::registerBindings(GeneralBindings& bindings)
 {
-#ifdef USE_OBJECTS
     ::bind<Class9>(bindings, "method0", &Class9::method0);
     ::bind<Class9>(bindings, "method1", &Class9::method1);
     ::bind<Class9>(bindings, "method2", &Class9::method2);
@@ -41,23 +40,22 @@ void Class9::registerBindings(GeneralBindings& bindings)
     ::bind<Class9>(bindings, "method12", &Class9::method12);
     ::bind<Class9>(bindings, "method13", &Class9::method13);
     ::bind<Class9>(bindings, "method14", &Class9::method14);
-#else
-    bindings["Class9_method0"] = &ns_Class9::method0;
-    bindings["Class9_method1"] = &ns_Class9::method1;
-    bindings["Class9_method2"] = &ns_Class9::method2;
-    bindings["Class9_method3"] = &ns_Class9::method3;
-    bindings["Class9_method4"] = &ns_Class9::method4;
-    bindings["Class9_method5"] = &ns_Class9::method5;
-    bindings["Class9_method6"] = &ns_Class9::method6;
-    bindings["Class9_method7"] = &ns_Class9::method7;
-    bindings["Class9_method8"] = &ns_Class9::method8;
-    bindings["Class9_method9"] = &ns_Class9::method9;
-    bindings["Class9_method10"] = &ns_Class9::method10;
-    bindings["Class9_method11"] = &ns_Class9::method11;
-    bindings["Class9_method12"] = &ns_Class9::method12;
-    bindings["Class9_method13"] = &ns_Class9::method13;
-    bindings["Class9_method14"] = &ns_Class9::method14;
-#endif
+
+    bindings["Class9_function0"] = &Class9::function0;
+    bindings["Class9_function1"] = &Class9::function1;
+    bindings["Class9_function2"] = &Class9::function2;
+    bindings["Class9_function3"] = &Class9::function3;
+    bindings["Class9_function4"] = &Class9::function4;
+    bindings["Class9_function5"] = &Class9::function5;
+    bindings["Class9_function6"] = &Class9::function6;
+    bindings["Class9_function7"] = &Class9::function7;
+    bindings["Class9_function8"] = &Class9::function8;
+    bindings["Class9_function9"] = &Class9::function9;
+    bindings["Class9_function10"] = &Class9::function10;
+    bindings["Class9_function11"] = &Class9::function11;
+    bindings["Class9_function12"] = &Class9::function12;
+    bindings["Class9_function13"] = &Class9::function13;
+    bindings["Class9_function14"] = &Class9::function14;
 }
 #endif
 
@@ -365,7 +363,7 @@ void Class9::method14(unsigned arg0, unsigned arg1, int arg2, float arg3, short 
 
 }
 
-bool ns_Class9::method0(int arg0, bool arg1, short arg2, int arg3, float arg4)
+float Class9::function0(unsigned arg0, int arg1, double arg2, short arg3, float arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -376,119 +374,7 @@ bool ns_Class9::method0(int arg0, bool arg1, short arg2, int arg3, float arg4)
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class9::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg1;
-}
-float ns_Class9::method1(double arg0, short arg1, float arg2, bool arg3, double arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class9::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg2;
-}
-float ns_Class9::method2(unsigned arg0, double arg1, unsigned arg2, float arg3, bool arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class9::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg3;
-}
-void ns_Class9::method3(double arg0, unsigned arg1, short arg2, unsigned arg3, unsigned arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class9::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-void ns_Class9::method4(int arg0, int arg1, double arg2, int arg3, bool arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class9::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-unsigned ns_Class9::method5(float arg0, short arg1, unsigned arg2, unsigned arg3, double arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class9::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg3;
-}
-float ns_Class9::method6(short arg0, bool arg1, short arg2, int arg3, float arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class9::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
@@ -496,7 +382,7 @@ float ns_Class9::method6(short arg0, bool arg1, short arg2, int arg3, float arg4
 
     return arg4;
 }
-short ns_Class9::method7(bool arg0, bool arg1, float arg2, float arg3, short arg4)
+short Class9::function1(bool arg0, int arg1, float arg2, int arg3, short arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -507,7 +393,7 @@ short ns_Class9::method7(bool arg0, bool arg1, float arg2, float arg3, short arg
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class9::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
@@ -515,7 +401,7 @@ short ns_Class9::method7(bool arg0, bool arg1, float arg2, float arg3, short arg
 
     return arg4;
 }
-void ns_Class9::method8(int arg0, float arg1, bool arg2, int arg3, short arg4)
+void Class9::function2(double arg0, int arg1, short arg2, unsigned arg3, int arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -526,14 +412,14 @@ void ns_Class9::method8(int arg0, float arg1, bool arg2, int arg3, short arg4)
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class9::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
 }
-void ns_Class9::method9(short arg0, int arg1, float arg2, float arg3, bool arg4)
+void Class9::function3(unsigned arg0, bool arg1, float arg2, float arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -544,14 +430,14 @@ void ns_Class9::method9(short arg0, int arg1, float arg2, float arg3, bool arg4)
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class9::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
 }
-bool ns_Class9::method10(float arg0, bool arg1, unsigned arg2, double arg3, bool arg4)
+void Class9::function4(bool arg0, bool arg1, float arg2, double arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -562,15 +448,14 @@ bool ns_Class9::method10(float arg0, bool arg1, unsigned arg2, double arg3, bool
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class9::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
-    return arg1;
 }
-short ns_Class9::method11(double arg0, float arg1, short arg2, short arg3, int arg4)
+void Class9::function5(bool arg0, unsigned arg1, bool arg2, unsigned arg3, float arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -581,7 +466,25 @@ short ns_Class9::method11(double arg0, float arg1, short arg2, short arg3, int a
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class9::workInternally(strings);
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+bool Class9::function6(bool arg0, unsigned arg1, bool arg2, double arg3, bool arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
@@ -589,7 +492,7 @@ short ns_Class9::method11(double arg0, float arg1, short arg2, short arg3, int a
 
     return arg2;
 }
-short ns_Class9::method12(int arg0, double arg1, short arg2, float arg3, short arg4)
+void Class9::function7(float arg0, float arg1, bool arg2, double arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -600,7 +503,61 @@ short ns_Class9::method12(int arg0, double arg1, short arg2, float arg3, short a
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class9::workInternally(strings);
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+void Class9::function8(float arg0, unsigned arg1, double arg2, bool arg3, double arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+void Class9::function9(double arg0, int arg1, unsigned arg2, int arg3, double arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+int Class9::function10(double arg0, double arg1, int arg2, double arg3, bool arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
@@ -608,7 +565,7 @@ short ns_Class9::method12(int arg0, double arg1, short arg2, float arg3, short a
 
     return arg2;
 }
-unsigned ns_Class9::method13(short arg0, double arg1, unsigned arg2, int arg3, double arg4)
+void Class9::function11(unsigned arg0, bool arg1, short arg2, float arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -619,7 +576,25 @@ unsigned ns_Class9::method13(short arg0, double arg1, unsigned arg2, int arg3, d
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class9::workInternally(strings);
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+float Class9::function12(double arg0, double arg1, float arg2, unsigned arg3, float arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
@@ -627,7 +602,7 @@ unsigned ns_Class9::method13(short arg0, double arg1, unsigned arg2, int arg3, d
 
     return arg2;
 }
-void ns_Class9::method14(unsigned arg0, unsigned arg1, int arg2, float arg3, short arg4)
+void Class9::function13(int arg0, short arg1, unsigned arg2, float arg3, unsigned arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -638,10 +613,29 @@ void ns_Class9::method14(unsigned arg0, unsigned arg1, int arg2, float arg3, sho
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class9::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
+}
+float Class9::function14(float arg0, float arg1, short arg2, double arg3, int arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg0;
 }

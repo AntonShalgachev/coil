@@ -25,15 +25,13 @@ void $name::work()
 \#ifdef DEBUG_BINDINGS
 void $name::registerBindings(GeneralBindings& bindings)
 {
-\#ifdef USE_OBJECTS
 #for $method in $methods
     ::bind<$name>(bindings, "${method.name}", &$name::${method.name});
 #end for
-\#else
-#for $method in $methods
-    bindings["${name}_${method.name}"] = &ns_$name::${method.name};
+
+#for $function in $functions
+    bindings["${name}_${function.name}"] = &$name::${function.name};
 #end for
-\#endif
 }
 \#endif
 
@@ -86,11 +84,11 @@ std::optional<float> $name::workInternally(std::vector<std::string> const& value
 }
 #end for
 
-#for $method in $methods
-#if 'return_index' in $method then $method.args[$method.return_index] else 'void' # ns_$name::${method.name}($combine($method.args))
+#for $function in $functions
+#if 'return_index' in $function then $function.args[$function.return_index] else 'void' # $name::${function.name}($combine($function.args))
 {
-    #if len($method.args) > 0
-    std::cout << #echo ' << '.join($arg_names($method.args))#;
+    #if len($function.args) > 0
+    std::cout << #echo ' << '.join($arg_names($function.args))#;
     #end if
     
     std::vector<std::string> strings;
@@ -100,14 +98,14 @@ std::optional<float> $name::workInternally(std::vector<std::string> const& value
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = $name::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
-    #if 'return_index' in $method
-    return #echo $arg_names($method.args)[$method.return_index]#;
+    #if 'return_index' in $function
+    return #echo $arg_names($function.args)[$function.return_index]#;
     #end if
 }
 #end for

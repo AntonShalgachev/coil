@@ -25,7 +25,6 @@ void Class41::work()
 #ifdef DEBUG_BINDINGS
 void Class41::registerBindings(GeneralBindings& bindings)
 {
-#ifdef USE_OBJECTS
     ::bind<Class41>(bindings, "method0", &Class41::method0);
     ::bind<Class41>(bindings, "method1", &Class41::method1);
     ::bind<Class41>(bindings, "method2", &Class41::method2);
@@ -41,23 +40,22 @@ void Class41::registerBindings(GeneralBindings& bindings)
     ::bind<Class41>(bindings, "method12", &Class41::method12);
     ::bind<Class41>(bindings, "method13", &Class41::method13);
     ::bind<Class41>(bindings, "method14", &Class41::method14);
-#else
-    bindings["Class41_method0"] = &ns_Class41::method0;
-    bindings["Class41_method1"] = &ns_Class41::method1;
-    bindings["Class41_method2"] = &ns_Class41::method2;
-    bindings["Class41_method3"] = &ns_Class41::method3;
-    bindings["Class41_method4"] = &ns_Class41::method4;
-    bindings["Class41_method5"] = &ns_Class41::method5;
-    bindings["Class41_method6"] = &ns_Class41::method6;
-    bindings["Class41_method7"] = &ns_Class41::method7;
-    bindings["Class41_method8"] = &ns_Class41::method8;
-    bindings["Class41_method9"] = &ns_Class41::method9;
-    bindings["Class41_method10"] = &ns_Class41::method10;
-    bindings["Class41_method11"] = &ns_Class41::method11;
-    bindings["Class41_method12"] = &ns_Class41::method12;
-    bindings["Class41_method13"] = &ns_Class41::method13;
-    bindings["Class41_method14"] = &ns_Class41::method14;
-#endif
+
+    bindings["Class41_function0"] = &Class41::function0;
+    bindings["Class41_function1"] = &Class41::function1;
+    bindings["Class41_function2"] = &Class41::function2;
+    bindings["Class41_function3"] = &Class41::function3;
+    bindings["Class41_function4"] = &Class41::function4;
+    bindings["Class41_function5"] = &Class41::function5;
+    bindings["Class41_function6"] = &Class41::function6;
+    bindings["Class41_function7"] = &Class41::function7;
+    bindings["Class41_function8"] = &Class41::function8;
+    bindings["Class41_function9"] = &Class41::function9;
+    bindings["Class41_function10"] = &Class41::function10;
+    bindings["Class41_function11"] = &Class41::function11;
+    bindings["Class41_function12"] = &Class41::function12;
+    bindings["Class41_function13"] = &Class41::function13;
+    bindings["Class41_function14"] = &Class41::function14;
 }
 #endif
 
@@ -366,7 +364,7 @@ bool Class41::method14(int arg0, short arg1, int arg2, double arg3, bool arg4)
     return arg4;
 }
 
-double ns_Class41::method0(short arg0, float arg1, unsigned arg2, double arg3, unsigned arg4)
+bool Class41::function0(double arg0, short arg1, bool arg2, double arg3, short arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -377,64 +375,7 @@ double ns_Class41::method0(short arg0, float arg1, unsigned arg2, double arg3, u
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class41::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg3;
-}
-double ns_Class41::method1(double arg0, short arg1, double arg2, int arg3, double arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class41::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg0;
-}
-float ns_Class41::method2(double arg0, short arg1, short arg2, float arg3, short arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class41::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg3;
-}
-double ns_Class41::method3(unsigned arg0, unsigned arg1, double arg2, int arg3, unsigned arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class41::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
@@ -442,7 +383,7 @@ double ns_Class41::method3(unsigned arg0, unsigned arg1, double arg2, int arg3, 
 
     return arg2;
 }
-void ns_Class41::method4(bool arg0, double arg1, int arg2, int arg3, double arg4)
+void Class41::function1(short arg0, float arg1, float arg2, double arg3, float arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -453,14 +394,14 @@ void ns_Class41::method4(bool arg0, double arg1, int arg2, int arg3, double arg4
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class41::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
 }
-float ns_Class41::method5(unsigned arg0, float arg1, unsigned arg2, int arg3, unsigned arg4)
+double Class41::function2(short arg0, double arg1, short arg2, float arg3, double arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -471,63 +412,7 @@ float ns_Class41::method5(unsigned arg0, float arg1, unsigned arg2, int arg3, un
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class41::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg1;
-}
-void ns_Class41::method6(int arg0, bool arg1, bool arg2, int arg3, bool arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class41::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-bool ns_Class41::method7(unsigned arg0, bool arg1, double arg2, float arg3, double arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class41::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg1;
-}
-unsigned ns_Class41::method8(double arg0, double arg1, float arg2, float arg3, unsigned arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class41::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
@@ -535,7 +420,7 @@ unsigned ns_Class41::method8(double arg0, double arg1, float arg2, float arg3, u
 
     return arg4;
 }
-void ns_Class41::method9(short arg0, unsigned arg1, int arg2, int arg3, double arg4)
+void Class41::function3(short arg0, unsigned arg1, bool arg2, double arg3, short arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -546,14 +431,14 @@ void ns_Class41::method9(short arg0, unsigned arg1, int arg2, int arg3, double a
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class41::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
 }
-short ns_Class41::method10(short arg0, float arg1, float arg2, float arg3, unsigned arg4)
+bool Class41::function4(float arg0, double arg1, bool arg2, int arg3, double arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -564,7 +449,63 @@ short ns_Class41::method10(short arg0, float arg1, float arg2, float arg3, unsig
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class41::workInternally(strings);
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg2;
+}
+float Class41::function5(unsigned arg0, float arg1, unsigned arg2, short arg3, int arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg1;
+}
+void Class41::function6(int arg0, unsigned arg1, short arg2, int arg3, bool arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+unsigned Class41::function7(unsigned arg0, bool arg1, bool arg2, short arg3, unsigned arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
@@ -572,7 +513,7 @@ short ns_Class41::method10(short arg0, float arg1, float arg2, float arg3, unsig
 
     return arg0;
 }
-unsigned ns_Class41::method11(unsigned arg0, int arg1, float arg2, float arg3, unsigned arg4)
+void Class41::function8(short arg0, int arg1, short arg2, double arg3, double arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -583,7 +524,25 @@ unsigned ns_Class41::method11(unsigned arg0, int arg1, float arg2, float arg3, u
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class41::workInternally(strings);
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+unsigned Class41::function9(unsigned arg0, float arg1, float arg2, int arg3, double arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
@@ -591,7 +550,7 @@ unsigned ns_Class41::method11(unsigned arg0, int arg1, float arg2, float arg3, u
 
     return arg0;
 }
-void ns_Class41::method12(double arg0, float arg1, unsigned arg2, bool arg3, short arg4)
+void Class41::function10(float arg0, short arg1, int arg2, float arg3, float arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -602,14 +561,14 @@ void ns_Class41::method12(double arg0, float arg1, unsigned arg2, bool arg3, sho
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class41::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
 }
-unsigned ns_Class41::method13(bool arg0, double arg1, unsigned arg2, unsigned arg3, short arg4)
+void Class41::function11(unsigned arg0, double arg1, int arg2, float arg3, short arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -620,15 +579,14 @@ unsigned ns_Class41::method13(bool arg0, double arg1, unsigned arg2, unsigned ar
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class41::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
-    return arg3;
 }
-bool ns_Class41::method14(int arg0, short arg1, int arg2, double arg3, bool arg4)
+void Class41::function12(unsigned arg0, bool arg1, short arg2, unsigned arg3, double arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -639,11 +597,48 @@ bool ns_Class41::method14(int arg0, short arg1, int arg2, double arg3, bool arg4
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class41::workInternally(strings);
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+bool Class41::function13(float arg0, float arg1, unsigned arg2, short arg3, bool arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
     return arg4;
+}
+short Class41::function14(int arg0, short arg1, short arg2, float arg3, float arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg2;
 }

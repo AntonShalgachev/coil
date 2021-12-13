@@ -25,7 +25,6 @@ void Class39::work()
 #ifdef DEBUG_BINDINGS
 void Class39::registerBindings(GeneralBindings& bindings)
 {
-#ifdef USE_OBJECTS
     ::bind<Class39>(bindings, "method0", &Class39::method0);
     ::bind<Class39>(bindings, "method1", &Class39::method1);
     ::bind<Class39>(bindings, "method2", &Class39::method2);
@@ -41,23 +40,22 @@ void Class39::registerBindings(GeneralBindings& bindings)
     ::bind<Class39>(bindings, "method12", &Class39::method12);
     ::bind<Class39>(bindings, "method13", &Class39::method13);
     ::bind<Class39>(bindings, "method14", &Class39::method14);
-#else
-    bindings["Class39_method0"] = &ns_Class39::method0;
-    bindings["Class39_method1"] = &ns_Class39::method1;
-    bindings["Class39_method2"] = &ns_Class39::method2;
-    bindings["Class39_method3"] = &ns_Class39::method3;
-    bindings["Class39_method4"] = &ns_Class39::method4;
-    bindings["Class39_method5"] = &ns_Class39::method5;
-    bindings["Class39_method6"] = &ns_Class39::method6;
-    bindings["Class39_method7"] = &ns_Class39::method7;
-    bindings["Class39_method8"] = &ns_Class39::method8;
-    bindings["Class39_method9"] = &ns_Class39::method9;
-    bindings["Class39_method10"] = &ns_Class39::method10;
-    bindings["Class39_method11"] = &ns_Class39::method11;
-    bindings["Class39_method12"] = &ns_Class39::method12;
-    bindings["Class39_method13"] = &ns_Class39::method13;
-    bindings["Class39_method14"] = &ns_Class39::method14;
-#endif
+
+    bindings["Class39_function0"] = &Class39::function0;
+    bindings["Class39_function1"] = &Class39::function1;
+    bindings["Class39_function2"] = &Class39::function2;
+    bindings["Class39_function3"] = &Class39::function3;
+    bindings["Class39_function4"] = &Class39::function4;
+    bindings["Class39_function5"] = &Class39::function5;
+    bindings["Class39_function6"] = &Class39::function6;
+    bindings["Class39_function7"] = &Class39::function7;
+    bindings["Class39_function8"] = &Class39::function8;
+    bindings["Class39_function9"] = &Class39::function9;
+    bindings["Class39_function10"] = &Class39::function10;
+    bindings["Class39_function11"] = &Class39::function11;
+    bindings["Class39_function12"] = &Class39::function12;
+    bindings["Class39_function13"] = &Class39::function13;
+    bindings["Class39_function14"] = &Class39::function14;
 }
 #endif
 
@@ -363,7 +361,7 @@ void Class39::method14(int arg0, int arg1, int arg2, unsigned arg3, double arg4)
 
 }
 
-void ns_Class39::method0(short arg0, bool arg1, bool arg2, int arg3, unsigned arg4)
+void Class39::function0(unsigned arg0, bool arg1, float arg2, double arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -374,14 +372,14 @@ void ns_Class39::method0(short arg0, bool arg1, bool arg2, int arg3, unsigned ar
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class39::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
 }
-float ns_Class39::method1(double arg0, float arg1, bool arg2, int arg3, bool arg4)
+void Class39::function1(unsigned arg0, bool arg1, int arg2, unsigned arg3, unsigned arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -392,15 +390,14 @@ float ns_Class39::method1(double arg0, float arg1, bool arg2, int arg3, bool arg
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class39::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
-    return arg1;
 }
-float ns_Class39::method2(bool arg0, int arg1, float arg2, float arg3, float arg4)
+unsigned Class39::function2(unsigned arg0, short arg1, int arg2, double arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -411,15 +408,15 @@ float ns_Class39::method2(bool arg0, int arg1, float arg2, float arg3, float arg
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class39::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
-    return arg3;
+    return arg0;
 }
-float ns_Class39::method3(short arg0, short arg1, double arg2, float arg3, float arg4)
+int Class39::function3(short arg0, int arg1, unsigned arg2, short arg3, int arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -430,26 +427,7 @@ float ns_Class39::method3(short arg0, short arg1, double arg2, float arg3, float
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class39::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg3;
-}
-double ns_Class39::method4(short arg0, unsigned arg1, int arg2, double arg3, double arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class39::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
@@ -457,7 +435,7 @@ double ns_Class39::method4(short arg0, unsigned arg1, int arg2, double arg3, dou
 
     return arg4;
 }
-void ns_Class39::method5(float arg0, float arg1, bool arg2, double arg3, unsigned arg4)
+float Class39::function4(float arg0, float arg1, short arg2, unsigned arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -468,25 +446,7 @@ void ns_Class39::method5(float arg0, float arg1, bool arg2, double arg3, unsigne
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class39::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-unsigned ns_Class39::method6(unsigned arg0, unsigned arg1, float arg2, bool arg3, float arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class39::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
@@ -494,7 +454,7 @@ unsigned ns_Class39::method6(unsigned arg0, unsigned arg1, float arg2, bool arg3
 
     return arg1;
 }
-void ns_Class39::method7(bool arg0, unsigned arg1, float arg2, double arg3, unsigned arg4)
+void Class39::function5(bool arg0, float arg1, bool arg2, int arg3, unsigned arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -505,14 +465,14 @@ void ns_Class39::method7(bool arg0, unsigned arg1, float arg2, double arg3, unsi
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class39::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
 }
-void ns_Class39::method8(short arg0, unsigned arg1, double arg2, float arg3, double arg4)
+void Class39::function6(short arg0, short arg1, short arg2, bool arg3, float arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -523,14 +483,14 @@ void ns_Class39::method8(short arg0, unsigned arg1, double arg2, float arg3, dou
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class39::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
 }
-bool ns_Class39::method9(float arg0, float arg1, unsigned arg2, bool arg3, unsigned arg4)
+int Class39::function7(unsigned arg0, int arg1, short arg2, float arg3, float arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -541,7 +501,63 @@ bool ns_Class39::method9(float arg0, float arg1, unsigned arg2, bool arg3, unsig
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class39::workInternally(strings);
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg1;
+}
+short Class39::function8(short arg0, float arg1, short arg2, double arg3, int arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg2;
+}
+void Class39::function9(int arg0, bool arg1, short arg2, short arg3, int arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+unsigned Class39::function10(unsigned arg0, short arg1, int arg2, unsigned arg3, unsigned arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
@@ -549,7 +565,7 @@ bool ns_Class39::method9(float arg0, float arg1, unsigned arg2, bool arg3, unsig
 
     return arg3;
 }
-void ns_Class39::method10(double arg0, double arg1, short arg2, bool arg3, short arg4)
+void Class39::function11(unsigned arg0, unsigned arg1, double arg2, float arg3, short arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -560,14 +576,14 @@ void ns_Class39::method10(double arg0, double arg1, short arg2, bool arg3, short
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class39::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
 }
-void ns_Class39::method11(unsigned arg0, unsigned arg1, short arg2, double arg3, double arg4)
+double Class39::function12(bool arg0, int arg1, double arg2, unsigned arg3, int arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -578,14 +594,33 @@ void ns_Class39::method11(unsigned arg0, unsigned arg1, short arg2, double arg3,
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class39::workInternally(strings);
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg2;
+}
+void Class39::function13(int arg0, int arg1, short arg2, double arg3, unsigned arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
         std::cout << "null" << std::endl;
 
 }
-unsigned ns_Class39::method12(double arg0, unsigned arg1, unsigned arg2, bool arg3, unsigned arg4)
+void Class39::function14(double arg0, double arg1, int arg2, double arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -596,45 +631,7 @@ unsigned ns_Class39::method12(double arg0, unsigned arg1, unsigned arg2, bool ar
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class39::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg4;
-}
-double ns_Class39::method13(bool arg0, double arg1, short arg2, unsigned arg3, float arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class39::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg1;
-}
-void ns_Class39::method14(int arg0, int arg1, int arg2, unsigned arg3, double arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class39::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
