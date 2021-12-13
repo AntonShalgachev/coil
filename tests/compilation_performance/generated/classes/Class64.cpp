@@ -84,7 +84,7 @@ std::optional<float> Class64::workInternally(std::vector<std::string> const& val
     return result;
 }
 
-void Class64::method0(double arg0, bool arg1, short arg2, float arg3, double arg4)
+void Class64::method0(unsigned arg0, float arg1, int arg2, int arg3, unsigned arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -102,7 +102,7 @@ void Class64::method0(double arg0, bool arg1, short arg2, float arg3, double arg
         std::cout << "null" << std::endl;
 
 }
-void Class64::method1(float arg0, unsigned arg1, short arg2, bool arg3, bool arg4)
+void Class64::method1(int arg0, short arg1, unsigned arg2, bool arg3, short arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -120,25 +120,7 @@ void Class64::method1(float arg0, unsigned arg1, short arg2, bool arg3, bool arg
         std::cout << "null" << std::endl;
 
 }
-void Class64::method2(double arg0, float arg1, unsigned arg2, short arg3, unsigned arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-unsigned Class64::method3(double arg0, double arg1, unsigned arg2, int arg3, int arg4)
+short Class64::method2(double arg0, float arg1, short arg2, int arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -157,7 +139,7 @@ unsigned Class64::method3(double arg0, double arg1, unsigned arg2, int arg3, int
 
     return arg2;
 }
-void Class64::method4(bool arg0, int arg1, bool arg2, short arg3, float arg4)
+void Class64::method3(bool arg0, short arg1, float arg2, double arg3, unsigned arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -175,7 +157,98 @@ void Class64::method4(bool arg0, int arg1, bool arg2, short arg3, float arg4)
         std::cout << "null" << std::endl;
 
 }
-unsigned Class64::method5(unsigned arg0, unsigned arg1, float arg2, unsigned arg3, double arg4)
+void Class64::method4(double arg0, short arg1, float arg2, unsigned arg3, unsigned arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+void Class64::method5(bool arg0, short arg1, bool arg2, short arg3, int arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+void Class64::method6(float arg0, double arg1, int arg2, short arg3, double arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+void Class64::method7(short arg0, bool arg1, float arg2, float arg3, unsigned arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+double Class64::method8(double arg0, unsigned arg1, double arg2, int arg3, bool arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg2;
+}
+short Class64::method9(double arg0, short arg1, float arg2, short arg3, double arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -194,7 +267,7 @@ unsigned Class64::method5(unsigned arg0, unsigned arg1, float arg2, unsigned arg
 
     return arg3;
 }
-int Class64::method6(int arg0, bool arg1, int arg2, double arg3, short arg4)
+double Class64::method10(bool arg0, int arg1, short arg2, double arg3, int arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -211,101 +284,9 @@ int Class64::method6(int arg0, bool arg1, int arg2, double arg3, short arg4)
     else
         std::cout << "null" << std::endl;
 
-    return arg0;
+    return arg3;
 }
-void Class64::method7(unsigned arg0, bool arg1, int arg2, int arg3, int arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-bool Class64::method8(bool arg0, short arg1, double arg2, float arg3, bool arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg4;
-}
-bool Class64::method9(bool arg0, short arg1, double arg2, short arg3, bool arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg0;
-}
-void Class64::method10(unsigned arg0, unsigned arg1, bool arg2, unsigned arg3, float arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-void Class64::method11(double arg0, short arg1, unsigned arg2, bool arg3, short arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-float Class64::method12(short arg0, float arg1, int arg2, float arg3, float arg4)
+float Class64::method11(unsigned arg0, float arg1, int arg2, bool arg3, float arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -324,7 +305,25 @@ float Class64::method12(short arg0, float arg1, int arg2, float arg3, float arg4
 
     return arg1;
 }
-unsigned Class64::method13(unsigned arg0, unsigned arg1, unsigned arg2, unsigned arg3, float arg4)
+void Class64::method12(int arg0, short arg1, float arg2, short arg3, float arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+unsigned Class64::method13(bool arg0, unsigned arg1, short arg2, short arg3, float arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -343,7 +342,7 @@ unsigned Class64::method13(unsigned arg0, unsigned arg1, unsigned arg2, unsigned
 
     return arg1;
 }
-void Class64::method14(int arg0, double arg1, float arg2, double arg3, double arg4)
+bool Class64::method14(bool arg0, unsigned arg1, short arg2, unsigned arg3, float arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -360,9 +359,10 @@ void Class64::method14(int arg0, double arg1, float arg2, double arg3, double ar
     else
         std::cout << "null" << std::endl;
 
+    return arg0;
 }
 
-void ns_Class64::method0(double arg0, bool arg1, short arg2, float arg3, double arg4)
+void ns_Class64::method0(unsigned arg0, float arg1, int arg2, int arg3, unsigned arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -380,7 +380,7 @@ void ns_Class64::method0(double arg0, bool arg1, short arg2, float arg3, double 
         std::cout << "null" << std::endl;
 
 }
-void ns_Class64::method1(float arg0, unsigned arg1, short arg2, bool arg3, bool arg4)
+void ns_Class64::method1(int arg0, short arg1, unsigned arg2, bool arg3, short arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -398,25 +398,7 @@ void ns_Class64::method1(float arg0, unsigned arg1, short arg2, bool arg3, bool 
         std::cout << "null" << std::endl;
 
 }
-void ns_Class64::method2(double arg0, float arg1, unsigned arg2, short arg3, unsigned arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class64::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-unsigned ns_Class64::method3(double arg0, double arg1, unsigned arg2, int arg3, int arg4)
+short ns_Class64::method2(double arg0, float arg1, short arg2, int arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -435,7 +417,7 @@ unsigned ns_Class64::method3(double arg0, double arg1, unsigned arg2, int arg3, 
 
     return arg2;
 }
-void ns_Class64::method4(bool arg0, int arg1, bool arg2, short arg3, float arg4)
+void ns_Class64::method3(bool arg0, short arg1, float arg2, double arg3, unsigned arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -453,7 +435,98 @@ void ns_Class64::method4(bool arg0, int arg1, bool arg2, short arg3, float arg4)
         std::cout << "null" << std::endl;
 
 }
-unsigned ns_Class64::method5(unsigned arg0, unsigned arg1, float arg2, unsigned arg3, double arg4)
+void ns_Class64::method4(double arg0, short arg1, float arg2, unsigned arg3, unsigned arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = Class64::workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+void ns_Class64::method5(bool arg0, short arg1, bool arg2, short arg3, int arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = Class64::workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+void ns_Class64::method6(float arg0, double arg1, int arg2, short arg3, double arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = Class64::workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+void ns_Class64::method7(short arg0, bool arg1, float arg2, float arg3, unsigned arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = Class64::workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+double ns_Class64::method8(double arg0, unsigned arg1, double arg2, int arg3, bool arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = Class64::workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg2;
+}
+short ns_Class64::method9(double arg0, short arg1, float arg2, short arg3, double arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -472,7 +545,7 @@ unsigned ns_Class64::method5(unsigned arg0, unsigned arg1, float arg2, unsigned 
 
     return arg3;
 }
-int ns_Class64::method6(int arg0, bool arg1, int arg2, double arg3, short arg4)
+double ns_Class64::method10(bool arg0, int arg1, short arg2, double arg3, int arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -489,101 +562,9 @@ int ns_Class64::method6(int arg0, bool arg1, int arg2, double arg3, short arg4)
     else
         std::cout << "null" << std::endl;
 
-    return arg0;
+    return arg3;
 }
-void ns_Class64::method7(unsigned arg0, bool arg1, int arg2, int arg3, int arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class64::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-bool ns_Class64::method8(bool arg0, short arg1, double arg2, float arg3, bool arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class64::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg4;
-}
-bool ns_Class64::method9(bool arg0, short arg1, double arg2, short arg3, bool arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class64::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg0;
-}
-void ns_Class64::method10(unsigned arg0, unsigned arg1, bool arg2, unsigned arg3, float arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class64::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-void ns_Class64::method11(double arg0, short arg1, unsigned arg2, bool arg3, short arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class64::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-float ns_Class64::method12(short arg0, float arg1, int arg2, float arg3, float arg4)
+float ns_Class64::method11(unsigned arg0, float arg1, int arg2, bool arg3, float arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -602,7 +583,25 @@ float ns_Class64::method12(short arg0, float arg1, int arg2, float arg3, float a
 
     return arg1;
 }
-unsigned ns_Class64::method13(unsigned arg0, unsigned arg1, unsigned arg2, unsigned arg3, float arg4)
+void ns_Class64::method12(int arg0, short arg1, float arg2, short arg3, float arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = Class64::workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+unsigned ns_Class64::method13(bool arg0, unsigned arg1, short arg2, short arg3, float arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -621,7 +620,7 @@ unsigned ns_Class64::method13(unsigned arg0, unsigned arg1, unsigned arg2, unsig
 
     return arg1;
 }
-void ns_Class64::method14(int arg0, double arg1, float arg2, double arg3, double arg4)
+bool ns_Class64::method14(bool arg0, unsigned arg1, short arg2, unsigned arg3, float arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -638,4 +637,5 @@ void ns_Class64::method14(int arg0, double arg1, float arg2, double arg3, double
     else
         std::cout << "null" << std::endl;
 
+    return arg0;
 }

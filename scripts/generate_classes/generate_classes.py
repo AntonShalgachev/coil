@@ -18,38 +18,50 @@ DEFAULT_TYPES = ['int', 'float', 'double', 'bool', 'short', 'unsigned', 'std::st
 
 
 class ClassGenerator:
-    def __init__(self, methods_count_min=3, methods_count_max=50, args_count_min=0, args_count_max=5, types=DEFAULT_TYPES, seed=0):
-        self._methods_count_min = methods_count_min
-        self._methods_count_max = methods_count_max
-        self._args_count_min = args_count_min
-        self._args_count_max = args_count_max
+    def __init__(self, classes_count=10, methods_count=3, args_count=0, includes_count=5, types=DEFAULT_TYPES, seed=0):
+        self._classes_count = classes_count
+        self._methods_count = methods_count
+        self._args_count = args_count
+        self._includes_count = min(includes_count, classes_count)
         self._types = types
-
-        random.seed(seed)
-        self.seed = seed
-        
-        self._next_index = 0
+        self._seed = seed
 
     def generate(self):
-        name  = 'Class' + str(self._next_index)
+        classes = []
+        for i in range(self._classes_count):
+            classes.append(self._generate_class(i))
+        
+        desc = {}
+        desc['classes'] = classes
+        desc['seed'] = self._seed
+
+        return desc
+
+    def _generate_class(self, class_index):
+        name  = 'Class' + str(class_index)
+
+        seed = self._seed + class_index
+        random.seed(seed)
 
         methods = []
-        methods_count = random.randint(self._methods_count_min, self._methods_count_max)
-        for i in range(methods_count):
+        for i in range(self._methods_count):
             methods.append(self._generate_method(i))
 
-        self._next_index += 1
+        includes = random.sample(range(self._classes_count), self._includes_count)
+        includes = [x for x in includes if x != class_index] # don't include self
+        includes.sort()
         
         desc = {}
         desc['name'] = name
         desc['methods'] = methods
+        desc['seed'] = seed
+        desc['includes'] = includes
         return desc
 
-    def _generate_method(self, index):
-        name  = 'method' + str(index)
+    def _generate_method(self, method_index):
+        name  = 'method' + str(method_index)
 
-        args_count = random.randint(self._args_count_min, self._args_count_max)
-        args = random.choices(self._types, k=args_count)
+        args = random.choices(self._types, k=self._args_count)
 
         return_index = None
         if len(args) > 0 and bool(random.getrandbits(1)):
@@ -67,10 +79,10 @@ class SourceWriter:
     def __init__(self, destination):
         self._destination = destination
 
-    def write(self, seed, classes, name_key='name'):
+    def write(self, seed, classes, classes_key='classes', name_key='name'):
         self._clear_destination()
-        self._write_cmake(seed, classes)
-        for c in classes:
+        self._write_cmake(classes)
+        for c in classes[classes_key]:
             self._write_source(c, '.h', name_key)
             self._write_source(c, '.cpp', name_key)
 
@@ -88,48 +100,39 @@ class SourceWriter:
         template_name = 'Class' + ext + '.template'
         source_name = c[name_key] + ext
 
-        t = Template(file=template_name, searchList=c)
-        t.combine = combine
-        t.arg_names = arg_names
-        
-        source_path = os.path.join(output_folder, source_name)
+        search_list = c.copy()
+        search_list['combine'] = combine
+        search_list['arg_names'] = arg_names
+        self._write_template(template_name, search_list, output_folder, source_name)
 
-        with open(source_path, 'w') as fp:
-            fp.write(str(t))
-
-    def _write_cmake(self, seed, classes):
+    def _write_cmake(self, classes):
         output_folder = self._get_and_create_folder('.')
         template_name = 'CMakeLists.txt.template'
         source_name = 'CMakeLists.txt'
+        self._write_template(template_name, classes, output_folder, source_name)
 
-        t = Template(file=template_name, searchList={'classes':classes, 'seed':seed})
+    def _write_template(self, template_file, search_list, output_folder, output_filename):
+        t = Template(file=template_file, searchList=search_list)
         
-        source_path = os.path.join(output_folder, source_name)
-
-        with open(source_path, 'w') as fp:
+        output_file = os.path.join(output_folder, output_filename)
+        with open(output_file, 'w') as fp:
             fp.write(str(t))
-
 
 def main():
     seed = 88005553535
-    classes_count_min = 100
-    classes_count_max = 100
-    methods_count_min = 15
-    methods_count_max = 15
-    args_count_min = 5
-    args_count_max = 5
+    classes_count = 100
+    methods_count = 15
+    includes_count = 20
+    args_count = 5
     types = ['int', 'float', 'double', 'bool', 'short', 'unsigned']
     destination = '../../tests/compilation_performance/generated'
 
-    class_generator = ClassGenerator(methods_count_min, methods_count_max, args_count_min, args_count_max, types, seed)
+    class_generator = ClassGenerator(classes_count, methods_count, args_count, includes_count, types, seed)
     
-    classes = []
-    classes_count = random.randint(classes_count_min, classes_count_max)
-    for _ in range(classes_count):
-        classes.append(class_generator.generate())
+    classes = class_generator.generate()
 
     writer = SourceWriter(destination)
-    writer.write(class_generator.seed, classes)
+    writer.write(class_generator._seed, classes)
 
 
 if __name__ == '__main__':

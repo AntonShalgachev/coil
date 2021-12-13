@@ -84,26 +84,7 @@ std::optional<float> Class21::workInternally(std::vector<std::string> const& val
     return result;
 }
 
-bool Class21::method0(double arg0, bool arg1, bool arg2, double arg3, double arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg1;
-}
-double Class21::method1(float arg0, double arg1, unsigned arg2, double arg3, int arg4)
+bool Class21::method0(bool arg0, unsigned arg1, short arg2, bool arg3, double arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -122,26 +103,7 @@ double Class21::method1(float arg0, double arg1, unsigned arg2, double arg3, int
 
     return arg3;
 }
-short Class21::method2(bool arg0, double arg1, float arg2, short arg3, double arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg3;
-}
-void Class21::method3(float arg0, unsigned arg1, unsigned arg2, double arg3, double arg4)
+void Class21::method1(unsigned arg0, int arg1, bool arg2, short arg3, unsigned arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -159,7 +121,7 @@ void Class21::method3(float arg0, unsigned arg1, unsigned arg2, double arg3, dou
         std::cout << "null" << std::endl;
 
 }
-void Class21::method4(short arg0, int arg1, double arg2, float arg3, unsigned arg4)
+void Class21::method2(double arg0, float arg1, double arg2, double arg3, unsigned arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -177,7 +139,44 @@ void Class21::method4(short arg0, int arg1, double arg2, float arg3, unsigned ar
         std::cout << "null" << std::endl;
 
 }
-double Class21::method5(int arg0, short arg1, unsigned arg2, short arg3, double arg4)
+short Class21::method3(short arg0, double arg1, short arg2, int arg3, short arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg2;
+}
+void Class21::method4(bool arg0, bool arg1, double arg2, double arg3, float arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+bool Class21::method5(short arg0, bool arg1, int arg2, float arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -196,7 +195,7 @@ double Class21::method5(int arg0, short arg1, unsigned arg2, short arg3, double 
 
     return arg4;
 }
-int Class21::method6(short arg0, double arg1, int arg2, short arg3, double arg4)
+float Class21::method6(unsigned arg0, bool arg1, float arg2, int arg3, short arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -215,7 +214,7 @@ int Class21::method6(short arg0, double arg1, int arg2, short arg3, double arg4)
 
     return arg2;
 }
-unsigned Class21::method7(float arg0, double arg1, double arg2, unsigned arg3, short arg4)
+bool Class21::method7(bool arg0, unsigned arg1, double arg2, float arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -232,45 +231,9 @@ unsigned Class21::method7(float arg0, double arg1, double arg2, unsigned arg3, s
     else
         std::cout << "null" << std::endl;
 
-    return arg3;
+    return arg0;
 }
-void Class21::method8(int arg0, double arg1, short arg2, int arg3, float arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-void Class21::method9(float arg0, bool arg1, bool arg2, unsigned arg3, double arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-short Class21::method10(int arg0, short arg1, bool arg2, double arg3, bool arg4)
+float Class21::method8(float arg0, float arg1, double arg2, unsigned arg3, short arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -289,7 +252,7 @@ short Class21::method10(int arg0, short arg1, bool arg2, double arg3, bool arg4)
 
     return arg1;
 }
-void Class21::method11(short arg0, double arg1, float arg2, short arg3, double arg4)
+void Class21::method9(bool arg0, short arg1, bool arg2, double arg3, float arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -307,7 +270,7 @@ void Class21::method11(short arg0, double arg1, float arg2, short arg3, double a
         std::cout << "null" << std::endl;
 
 }
-void Class21::method12(unsigned arg0, bool arg1, double arg2, float arg3, double arg4)
+void Class21::method10(float arg0, double arg1, double arg2, float arg3, int arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -325,26 +288,7 @@ void Class21::method12(unsigned arg0, bool arg1, double arg2, float arg3, double
         std::cout << "null" << std::endl;
 
 }
-unsigned Class21::method13(int arg0, short arg1, unsigned arg2, bool arg3, int arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg2;
-}
-unsigned Class21::method14(double arg0, double arg1, unsigned arg2, double arg3, short arg4)
+int Class21::method11(double arg0, bool arg1, int arg2, double arg3, unsigned arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -363,8 +307,7 @@ unsigned Class21::method14(double arg0, double arg1, unsigned arg2, double arg3,
 
     return arg2;
 }
-
-bool ns_Class21::method0(double arg0, bool arg1, bool arg2, double arg3, double arg4)
+bool Class21::method12(float arg0, bool arg1, double arg2, bool arg3, unsigned arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -375,7 +318,7 @@ bool ns_Class21::method0(double arg0, bool arg1, bool arg2, double arg3, double 
     for (auto i = 0; i < 100; i++)
         strings.push_back(std::to_string(dist(rd)));
 
-    auto result = Class21::workInternally(strings);
+    auto result = workInternally(strings);
     if (result)
         std::cout << *result << std::endl;
     else
@@ -383,7 +326,45 @@ bool ns_Class21::method0(double arg0, bool arg1, bool arg2, double arg3, double 
 
     return arg1;
 }
-double ns_Class21::method1(float arg0, double arg1, unsigned arg2, double arg3, int arg4)
+unsigned Class21::method13(float arg0, short arg1, short arg2, unsigned arg3, double arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg3;
+}
+void Class21::method14(double arg0, short arg1, short arg2, int arg3, short arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+
+bool ns_Class21::method0(bool arg0, unsigned arg1, short arg2, bool arg3, double arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -402,26 +383,7 @@ double ns_Class21::method1(float arg0, double arg1, unsigned arg2, double arg3, 
 
     return arg3;
 }
-short ns_Class21::method2(bool arg0, double arg1, float arg2, short arg3, double arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class21::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg3;
-}
-void ns_Class21::method3(float arg0, unsigned arg1, unsigned arg2, double arg3, double arg4)
+void ns_Class21::method1(unsigned arg0, int arg1, bool arg2, short arg3, unsigned arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -439,7 +401,7 @@ void ns_Class21::method3(float arg0, unsigned arg1, unsigned arg2, double arg3, 
         std::cout << "null" << std::endl;
 
 }
-void ns_Class21::method4(short arg0, int arg1, double arg2, float arg3, unsigned arg4)
+void ns_Class21::method2(double arg0, float arg1, double arg2, double arg3, unsigned arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -457,7 +419,44 @@ void ns_Class21::method4(short arg0, int arg1, double arg2, float arg3, unsigned
         std::cout << "null" << std::endl;
 
 }
-double ns_Class21::method5(int arg0, short arg1, unsigned arg2, short arg3, double arg4)
+short ns_Class21::method3(short arg0, double arg1, short arg2, int arg3, short arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = Class21::workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg2;
+}
+void ns_Class21::method4(bool arg0, bool arg1, double arg2, double arg3, float arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = Class21::workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+bool ns_Class21::method5(short arg0, bool arg1, int arg2, float arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -476,7 +475,7 @@ double ns_Class21::method5(int arg0, short arg1, unsigned arg2, short arg3, doub
 
     return arg4;
 }
-int ns_Class21::method6(short arg0, double arg1, int arg2, short arg3, double arg4)
+float ns_Class21::method6(unsigned arg0, bool arg1, float arg2, int arg3, short arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -495,7 +494,7 @@ int ns_Class21::method6(short arg0, double arg1, int arg2, short arg3, double ar
 
     return arg2;
 }
-unsigned ns_Class21::method7(float arg0, double arg1, double arg2, unsigned arg3, short arg4)
+bool ns_Class21::method7(bool arg0, unsigned arg1, double arg2, float arg3, bool arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -512,45 +511,9 @@ unsigned ns_Class21::method7(float arg0, double arg1, double arg2, unsigned arg3
     else
         std::cout << "null" << std::endl;
 
-    return arg3;
+    return arg0;
 }
-void ns_Class21::method8(int arg0, double arg1, short arg2, int arg3, float arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class21::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-void ns_Class21::method9(float arg0, bool arg1, bool arg2, unsigned arg3, double arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = Class21::workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-short ns_Class21::method10(int arg0, short arg1, bool arg2, double arg3, bool arg4)
+float ns_Class21::method8(float arg0, float arg1, double arg2, unsigned arg3, short arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -569,7 +532,7 @@ short ns_Class21::method10(int arg0, short arg1, bool arg2, double arg3, bool ar
 
     return arg1;
 }
-void ns_Class21::method11(short arg0, double arg1, float arg2, short arg3, double arg4)
+void ns_Class21::method9(bool arg0, short arg1, bool arg2, double arg3, float arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -587,7 +550,7 @@ void ns_Class21::method11(short arg0, double arg1, float arg2, short arg3, doubl
         std::cout << "null" << std::endl;
 
 }
-void ns_Class21::method12(unsigned arg0, bool arg1, double arg2, float arg3, double arg4)
+void ns_Class21::method10(float arg0, double arg1, double arg2, float arg3, int arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -605,7 +568,7 @@ void ns_Class21::method12(unsigned arg0, bool arg1, double arg2, float arg3, dou
         std::cout << "null" << std::endl;
 
 }
-unsigned ns_Class21::method13(int arg0, short arg1, unsigned arg2, bool arg3, int arg4)
+int ns_Class21::method11(double arg0, bool arg1, int arg2, double arg3, unsigned arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -624,7 +587,7 @@ unsigned ns_Class21::method13(int arg0, short arg1, unsigned arg2, bool arg3, in
 
     return arg2;
 }
-unsigned ns_Class21::method14(double arg0, double arg1, unsigned arg2, double arg3, short arg4)
+bool ns_Class21::method12(float arg0, bool arg1, double arg2, bool arg3, unsigned arg4)
 {
     std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
@@ -641,5 +604,42 @@ unsigned ns_Class21::method14(double arg0, double arg1, unsigned arg2, double ar
     else
         std::cout << "null" << std::endl;
 
-    return arg2;
+    return arg1;
+}
+unsigned ns_Class21::method13(float arg0, short arg1, short arg2, unsigned arg3, double arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = Class21::workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg3;
+}
+void ns_Class21::method14(double arg0, short arg1, short arg2, int arg3, short arg4)
+{
+    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = Class21::workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
 }
