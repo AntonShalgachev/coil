@@ -40,6 +40,11 @@ if(MSVC)
     endif()
 endif()
 
+if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    message(STATUS "Clang in use")
+    list(APPEND COMPILE_OPTIONS -ftime-trace)
+endif()
+
 target_compile_options(${PROJECT_NAME} PRIVATE
     ${COMPILE_OPTIONS}
 )
