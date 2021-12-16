@@ -1,6 +1,8 @@
 #pragma once
 
 #if USE_SOL
+#include "sol/sol.hpp"
+#include "coil/utils/MemberFunctionFunctor.h"
 
 using GeneralBindings = sol::state;
 
@@ -20,6 +22,7 @@ void bind(sol::state& bindings, std::string_view name, Func&& func, ObjectPointe
 }
 
 #elif USE_COIL
+#include "coil/Bindings.h"
 
 using GeneralBindings = coil::Bindings;
 
