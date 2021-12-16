@@ -18,14 +18,16 @@ DEFAULT_TYPES = ['int', 'float', 'double', 'bool', 'short', 'unsigned', 'std::st
 
 
 class ClassGenerator:
-    def __init__(self, classes_count=10, methods_count=3, functions_count=3, member_variables_count=3, variables_count=3, args_count=0, includes_count=5, types=DEFAULT_TYPES, seed=0):
-        self._classes_count = classes_count
+    def __init__(self, classes_with_bindings_count=10, classes_without_bindings_count=10, methods_count=3, functions_count=3, member_variables_count=3, variables_count=3, args_count=0, includes_count=5, types=DEFAULT_TYPES, seed=0):
+        self._classes_with_bindings_count = classes_with_bindings_count
+        self._classes_without_bindings_count = classes_without_bindings_count
         self._methods_count = methods_count
         self._functions_count = functions_count
         self._member_variables_count = member_variables_count
         self._variables_count = variables_count
         self._args_count = args_count
-        self._includes_count = min(includes_count, classes_count)
+        self._includes_with_bindings_count = min(includes_count, classes_with_bindings_count)
+        self._includes_without_bindings_count = min(includes_count, classes_without_bindings_count)
         self._types = types
         self._seed = seed
 
@@ -38,8 +40,10 @@ class ClassGenerator:
 
     def generate(self):
         classes = []
-        for i in range(self._classes_count):
-            classes.append(self._generate_class(i))
+        for i in range(self._classes_with_bindings_count):
+            classes.append(self._generate_class('ClassWithBindings', i, self._classes_with_bindings_count, self._includes_with_bindings_count, True))
+        for i in range(self._classes_without_bindings_count):
+            classes.append(self._generate_class('ClassWithoutBindings', i, self._classes_without_bindings_count, self._includes_without_bindings_count, False))
         
         desc = {}
         desc['classes'] = classes
@@ -47,8 +51,8 @@ class ClassGenerator:
 
         return desc
 
-    def _generate_class(self, class_index):
-        name  = 'Class' + str(class_index)
+    def _generate_class(self, base_name, class_index, classes_count, includes_count, has_bindings):
+        name  = base_name + str(class_index)
 
         base_seed = self._seed + class_index
 
@@ -73,9 +77,10 @@ class ClassGenerator:
             variables.append(self._generate_variable('variable', i))
 
         random.seed(base_seed + self._includes_seed_offset)
-        includes = random.sample(range(self._classes_count), self._includes_count)
-        includes = [x for x in includes if x != class_index] # don't include self
+        includes = random.sample(range(classes_count), includes_count)
+        includes = [i for i in includes if i != class_index] # don't include self
         includes.sort()
+        includes = [base_name + str(i) for i in includes]
         
         desc = {}
         desc['name'] = name
@@ -85,6 +90,7 @@ class ClassGenerator:
         desc['variables'] = variables
         desc['seed'] = base_seed
         desc['includes'] = includes
+        desc['has_bindings'] = has_bindings
         return desc
 
     def _generate_method(self, base_name, method_index):
@@ -159,7 +165,8 @@ class SourceWriter:
 
 def main():
     seed = 88005553535
-    classes_count = 100
+    classes_with_bindings_count = 100
+    classes_without_bindings_count = 100
     methods_count = 15
     functions_count = 15
     member_variables_count = 15
@@ -169,7 +176,7 @@ def main():
     types = ['int', 'float', 'double', 'bool', 'short', 'unsigned']
     destination = '../../tests/compilation_performance/generated'
 
-    class_generator = ClassGenerator(classes_count, methods_count, functions_count, member_variables_count, variables_count, args_count, includes_count, types, seed)
+    class_generator = ClassGenerator(classes_with_bindings_count, classes_without_bindings_count, methods_count, functions_count, member_variables_count, variables_count, args_count, includes_count, types, seed)
     
     classes = class_generator.generate()
 

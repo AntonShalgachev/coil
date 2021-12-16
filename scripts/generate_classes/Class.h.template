@@ -2,10 +2,12 @@
 
 // Generated with seed '$seed'
 
+#if $has_bindings
 \#include "../../Common.h"
+#end if
 
-#for $include_index in $includes
-\#include "Class${include_index}.h"
+#for $include in $includes
+\#include "${include}.h"
 #end for
 
 class $name
@@ -13,9 +15,11 @@ class $name
 public:
     void work();
 
+#if $has_bindings
 \#ifdef DEBUG_BINDINGS
     void registerBindings(GeneralBindings& bindings);
 \#endif
+#end if
 
     static std::optional<float> workInternally(std::vector<std::string> const& values);
 

@@ -22,6 +22,7 @@ void $name::work()
     innerMap.insert_or_assign(3.14, 3.14f);
 }
 
+#if $has_bindings
 \#ifdef DEBUG_BINDINGS
 void $name::registerBindings(GeneralBindings& bindings)
 {
@@ -49,6 +50,7 @@ void $name::registerBindings(GeneralBindings& bindings)
 #end for
 }
 \#endif
+#end if
 
 std::optional<float> $name::workInternally(std::vector<std::string> const& values)
 {
