@@ -11,7 +11,8 @@ function Measure-SingleBuild {
     param (
         [int]$Count = 1,
         [switch]$UseCoil = $false,
-        [switch]$UseClang = $false
+        [switch]$UseClang = $false,
+        [switch]$UseUnityBuild = $false
     )
 
     $buildFolder = "build_temp"
@@ -23,9 +24,10 @@ function Measure-SingleBuild {
     Push-Location $buildFolder
 
     $compilerName = Get-CompilerName $UseClang.IsPresent    
-    Write-Host "Measuring with [$compilerName $(IIf $UseCoil "Coil" "-")]"
+    Write-Host "Measuring with [$compilerName $(IIf $UseCoil "Coil" "-") $(IIf $UseUnityBuild "Unity" "-")]"
 
     $coil = [int]$UseCoil.IsPresent
+    $unityBuild = [int]$UseUnityBuild.IsPresent
     
     Write-Host "Running CMake..."
     if ($UseClang) {
@@ -35,7 +37,7 @@ function Measure-SingleBuild {
         $env:CC=""
         $env:CXX=""
     }
-    Invoke-Expression "cmake -DTEST_COMP_PERF=1 -DTEST_COMP_PERF_USE_COIL=$coil -GNinja .." | Out-Null
+    Invoke-Expression "cmake -DTEST_COMP_PERF=1 -DTEST_COMP_PERF_USE_COIL=$coil -DCMAKE_UNITY_BUILD=$unityBuild -GNinja .." | Out-Null
 
     Write-Host "Building 0/$Count (will be discarded)..."
     ninja | Out-Null
@@ -92,13 +94,14 @@ function Write-BuildStatistics {
 function Measure-Builds {
     param (
         [int]$Count,
-        [bool]$UseClang
+        [bool]$UseClang,
+        [bool]$UseUnityBuild
     )
 
     $compilerName = Get-CompilerName $UseClang
 
-    $base = Measure-SingleBuild -Count $Count -UseClang:$UseClang
-    $coil = Measure-SingleBuild -Count $Count -UseCoil -UseClang:$UseClang
+    $base = Measure-SingleBuild -Count $Count -UseClang:$UseClang -UseUnityBuild:$UseUnityBuild
+    $coil = Measure-SingleBuild -Count $Count -UseCoil -UseClang:$UseClang -UseUnityBuild:$UseUnityBuild
 
     return @(
         @("Base ($compilerName)", $base),
@@ -116,8 +119,10 @@ Push-Location ../..
 $BuildCounts = 2
 
 $results = @()
-$results += Measure-Builds $BuildCounts -UseClang:$false
-$results += Measure-Builds $BuildCounts -UseClang:$true
+$results += Measure-Builds $BuildCounts -UseClang:$false -UseUnityBuild:$false
+$results += Measure-Builds $BuildCounts -UseClang:$true -UseUnityBuild:$false
+$results += Measure-Builds $BuildCounts -UseClang:$false -UseUnityBuild:$true
+$results += Measure-Builds $BuildCounts -UseClang:$true -UseUnityBuild:$true
 
 foreach ($pair in $results) {
     Write-BuildStatistics $pair[0] $pair[1]
