@@ -7,6 +7,7 @@ set(ALL_FILES
     "common/ExamplesCommon.cpp"
     "common/CustomTypeName.h"
     "common/EnumToString.h"
+    "common/FlagVariableWrapper.h"
     
     "basic/BasicExample.h"
     "basic/BasicExample.cpp"
