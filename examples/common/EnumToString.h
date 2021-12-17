@@ -15,28 +15,34 @@ namespace coil
     // For this demo I use magic_enum to automatically convert any enum to/from string
     // But other custom solutions are also possible to implement
 
-    template<typename EnumT>
-    struct TypeSerializer<EnumT, std::enable_if_t<std::is_enum_v<EnumT>>>
+    template<typename E>
+    struct TypeSerializer<E, std::enable_if_t<std::is_enum_v<E>>>
     {
         template<typename OnError>
-        static EnumT fromString(std::string_view str, [[maybe_unused]] OnError&& onError)
+        static E fromString(std::string_view str, [[maybe_unused]] OnError&& onError)
         {
+            // Allow 0 for the flag enums which don't define a "None" flag
+            if (str == "0")
+                return static_cast<E>(0);
+
             // This makes enum names case-insensitive
             auto pred = [](unsigned char a, unsigned char b) { return std::tolower(a) == std::tolower(b); };
-            std::optional<EnumT> optionalValue = magic_enum::enum_cast<EnumT>(str, std::move(pred));
+            std::optional<E> optionalValue = magic_enum::enum_cast<E>(str, std::move(pred));
 
             if (optionalValue.has_value())
                 return optionalValue.value();
 
-            std::string names = utils::flatten(magic_enum::enum_names<EnumT>(), "'");
+            std::string names = utils::flatten(magic_enum::enum_names<E>(), "'");
 
-            reportConversionError<EnumT>(std::forward<OnError>(onError), str, utils::formatString("Possible values are [%s]", names.c_str()));
-            return EnumT{};
+            reportConversionError<E>(std::forward<OnError>(onError), str, utils::formatString("Possible values are [%s]", names.c_str()));
+            return E{};
         }
 
-        static std::string_view toString(EnumT const& value)
+        static auto toString(E const& value)
         {
-            return magic_enum::enum_name(value);
+            // not optimal for non-flags enum types, since magic_enum::flags::enum_name returns std::string,
+            // but other solutions are possible (e.g. using different specialization for non-flag enum types)
+            return magic_enum::flags::enum_name(value);
         }
     };
 }
