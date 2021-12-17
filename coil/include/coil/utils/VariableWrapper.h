@@ -52,7 +52,7 @@ namespace coil::utils
     private:
         T& get(C* target)
         {
-            return std::invoke(m_variable, target);
+            return std::invoke(m_variable, target); // TODO don't use std::invoke
         }
 
         T C::* m_variable = nullptr;
