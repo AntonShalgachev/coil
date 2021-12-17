@@ -14,6 +14,6 @@ namespace coil
         }
 
 		std::vector<std::string> errors;
-		std::optional<std::string> output;
+		std::optional<std::string> returnValue;
 	};
 }
