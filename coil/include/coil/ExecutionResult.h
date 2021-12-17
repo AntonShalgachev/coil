@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <string>
+#include <sstream>
 #include <optional>
 
 namespace coil
@@ -15,5 +16,6 @@ namespace coil
 
 		std::vector<std::string> errors;
 		std::optional<std::string> returnValue;
+        std::stringstream output;
 	};
 }

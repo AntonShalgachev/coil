@@ -41,9 +41,9 @@ namespace
         {7, "key", 1, Source::Loot, Type::Key},
     };
 
-    void printItem(Item const& item)
+    void printItem(std::ostream& os, Item const& item)
     {
-        std::cout << item.id << '\t' << item.name << '\t' << item.amount << '\t' << magic_enum::enum_name(item.source) << '\t' << magic_enum::enum_name(item.type) << std::endl;
+        os << item.id << '\t' << item.name << '\t' << item.amount << '\t' << magic_enum::enum_name(item.source) << '\t' << magic_enum::enum_name(item.type) << std::endl;
     }
 
     void printItems(coil::Context& context, coil::NamedArgs& namedArgs)
@@ -68,11 +68,11 @@ namespace
             return nameOk && minAmountOk && sourceOk && typeOk;
         };
 
-        std::cout << "ID\tName\tAmount\tSource\tType" << std::endl;
+        context.out() << "ID\tName\tAmount\tSource\tType" << std::endl;
 
         for (Item const& item : items)
             if (doesItemMatch(item))
-                printItem(item);
+                printItem(context.out(), item);
     }
 
     void addItem(coil::Context& context, coil::NamedArgs& namedArgs, std::uint64_t id, std::string_view name)
@@ -87,17 +87,17 @@ namespace
         items.push_back({id, name, *amount, Source::Debug, *type});
     }
 
-    void printArgs(coil::NamedArgs& namedArgs)
+    void printArgs(coil::Context& context, coil::NamedArgs& namedArgs)
     {
         for (coil::NamedAnyArgView arg : namedArgs)
-            std::cout << arg.key() << ": " << arg.value().getRaw() << std::endl;
+            context.out() << arg.key() << ": " << arg.value().getRaw() << std::endl;
     }
 
-    void printFloats(coil::NamedArgs& namedArgs)
+    void printFloats(coil::Context& context, coil::NamedArgs& namedArgs)
     {
         for (coil::NamedAnyArgView arg : namedArgs)
             if (arg.value().get<float>())
-                std::cout << arg.key() << ": " << arg.value().getRaw() << std::endl;
+                context.out() << arg.key() << ": " << arg.value().getRaw() << std::endl;
     }
 
     enum class SaveGameType
@@ -114,7 +114,7 @@ namespace
         if (!type || !delay)
             return;
 
-        std::cout << "Saving game with type " << magic_enum::enum_name(*type) << " and delay " << *delay << "ms" << std::endl;
+        context.out() << "Saving game with type " << magic_enum::enum_name(*type) << " and delay " << *delay << "ms" << std::endl;
     }
 
     void requiredAndOptional(coil::Context& context, coil::NamedArgs& namedArgs)
@@ -124,9 +124,9 @@ namespace
             return; // the error is already reported
 
         if (auto valueBool = requiredAnyArg->get<bool>())
-            std::cout << "Required: " << std::boolalpha << *valueBool << std::noboolalpha << std::endl;
+            context.out() << "Required: " << std::boolalpha << *valueBool << std::noboolalpha << std::endl;
         else if (auto valueInt = requiredAnyArg->get<int>())
-            std::cout << "Required: " << *valueInt << std::endl;
+            context.out() << "Required: " << *valueInt << std::endl;
         else
             context.reportErrors(std::move(valueBool), std::move(valueInt));
 
@@ -134,9 +134,9 @@ namespace
         if (optionalAnyArg)
         {
             if (auto valueBool = optionalAnyArg->get<bool>())
-                std::cout << "Optional: " << std::boolalpha << *valueBool << std::noboolalpha << std::endl;
+                context.out() << "Optional: " << std::boolalpha << *valueBool << std::noboolalpha << std::endl;
             else if (auto valueInt = optionalAnyArg->get<int>())
-                std::cout << "Optional: " << *valueInt << std::endl;
+                context.out() << "Optional: " << *valueInt << std::endl;
             else
                 context.reportErrors(std::move(valueBool), std::move(valueInt));
         }

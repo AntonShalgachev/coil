@@ -58,11 +58,11 @@ namespace
             context.reportError("Failed to find entity '"s + std::string{ entity.getRaw() } + "'"s);
     }
 
-    void printEntities()
+    void printEntities(coil::Context& context)
     {
-        std::cout << "Entities:" << std::endl;
+        context.out() << "Entities:" << std::endl;
         for (Entity const& entity : entities)
-            std::cout << entity.id << ": " << entity.name << std::endl;
+            context.out() << entity.id << ": " << entity.name << std::endl;
     }
 
     void addEntities(coil::Context& context, std::vector<coil::AnyArgView> const& args)

@@ -10,6 +10,7 @@ namespace
     auto errorColor = &termcolor::red<char>;
     auto commandColor = &termcolor::bright_yellow<char>;
     auto returnColor = &termcolor::green<char>;
+    auto outputColor = &termcolor::bright_grey<char>;
 }
 
 void common::printSectionHeader(std::string_view header)
@@ -28,6 +29,8 @@ void common::executeCommand(coil::Bindings& bindings, std::string_view command)
 
     for (const auto& error : result.errors)
         std::cout << errorColor << "\t" << "Error: " << error << termcolor::reset << std::endl;
+
+    std::cout << outputColor << result.output.str() << termcolor::reset;
 
     if (result.returnValue)
         std::cout << "\t" << "Returned '" << returnColor << *result.returnValue << termcolor::reset << "'" << std::endl;

@@ -6,21 +6,26 @@
 
 namespace
 {
-    void func()
+    void hello()
     {
         std::cout << "Hello, world!" << std::endl;
     }
 
-    void printRepeated(std::string const& val, std::size_t repetitions)
+    void helloWithContext(coil::Context context)
     {
-        for (std::size_t i = 0; i < repetitions; i++)
-            std::cout << val;
-        std::cout << std::endl;
+        context.out() << "Hello, world!" << std::endl;
     }
 
-    void printDecorated(std::string_view val)
+    void printRepeated(coil::Context context, std::string const& val, std::size_t repetitions)
     {
-        std::cout << "'" << val << "'" << std::endl;
+        for (std::size_t i = 0; i < repetitions; i++)
+            context.out() << val;
+        context.out() << std::endl;
+    }
+
+    void printQuoted(coil::Context context, std::string_view val)
+    {
+        context.out() << "'" << val << "'" << std::endl;
     }
 
     bool invert(bool val)
@@ -43,18 +48,22 @@ void BasicExample::run()
 {
     coil::Bindings bindings;
 
-    bindings["function"] = &func;
+    bindings["hello"] = &hello;
+    bindings["hello_with_context"] = &helloWithContext;
     bindings["print_repeated"] = &printRepeated;
-    bindings["print_decorated"] = &printDecorated;
+    bindings["print_quoted"] = &printQuoted;
     bindings["invert"] = &invert;
     bindings["add"] = &add;
     bindings["concat"] = &concat;
 
     common::printSectionHeader("Basic function without any arguments:");
-    common::executeCommand(bindings, "function");
+    common::executeCommand(bindings, "hello");
+
+    common::printSectionHeader("Use coil::Context to capture output in the execution result");
+    common::executeCommand(bindings, "hello_with_context");
 
     common::printSectionHeader("Functions with arbitrary arguments:");
-    common::executeCommand(bindings, "print_decorated coil");
+    common::executeCommand(bindings, "print_quoted coil");
     common::executeCommand(bindings, "print_repeated hi 10");
 
     common::printSectionHeader("Boolean arguments can be passed in any format:");

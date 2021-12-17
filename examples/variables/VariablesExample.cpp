@@ -45,10 +45,10 @@ void VariablesExample::run()
     bindings["city"] = &city;
     bindings["flags"] = FlagsVariableWrapper{ &flags };
 
-    bindings["print_variables"] = [&object, &timeScale, &city, &flags]()
+    bindings["print_variables"] = [&object, &timeScale, &city, &flags](coil::Context context)
     {
-        std::cout << "Time scale: " << timeScale << "; city: " << city << "; flags: " << magic_enum::flags::enum_name(flags) << std::endl;
-        std::cout << "Object: enabled: " << std::boolalpha << object.enabled << std::noboolalpha << "; flags: " << magic_enum::flags::enum_name(object.flags) << std::endl;
+        context.out() << "Time scale: " << timeScale << "; city: " << city << "; flags: " << magic_enum::flags::enum_name(flags) << std::endl;
+        context.out() << "Object: enabled: " << std::boolalpha << object.enabled << std::noboolalpha << "; flags: " << magic_enum::flags::enum_name(object.flags) << std::endl;
     };
 
     common::printSectionHeader("Calling variable without arguments will return its value:");
