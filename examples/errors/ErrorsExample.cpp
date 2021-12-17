@@ -5,6 +5,11 @@
 
 namespace
 {
+    struct Object
+    {
+        void func() {}
+    };
+
     float checkedSqrt(coil::Context& context, float value)
     {
         if (value < 0.0f)
@@ -70,12 +75,29 @@ namespace
 
 void ErrorsExample::run()
 {
+    Object obj;
+
     coil::Bindings bindings;
 
     bindings["sqrt"] = checkedSqrt;
     bindings["get_float"] = getFloat;
     bindings["get_type_name"] = getTypeName;
     bindings["test_named_args"] = testNamedArgs;
+
+    bindings.addObject("obj", &obj);
+    bindings.bind<Object>("func", &Object::func);
+
+    common::printSectionHeader("If the command name isn't found, the error would be returned");
+    common::executeCommand(bindings, "foo arg");
+    common::executeCommand(bindings, "obj.foo arg");
+
+    common::printSectionHeader("The error would be returned also if the object name isn't found");
+    common::executeCommand(bindings, "bar.foo arg");
+
+    common::printSectionHeader("If the expression is malformed, the error also would be returned");
+    common::executeCommand(bindings, "foo.bar.func");
+    common::executeCommand(bindings, "foo = 1");
+    common::executeCommand(bindings, ".foo");
 
     common::printSectionHeader("You can use coil::Context before user arguments to report any errors during the command");
     common::executeCommand(bindings, "sqrt 9.8596");
