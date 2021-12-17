@@ -164,7 +164,7 @@ namespace coil::detail
                 {
                     auto returnValue = std::invoke(func, std::forward<Args>(args)...);
                     if (result)
-                        result.output = TypeSerializer<R>::toString(returnValue);
+                        result.output = TypeSerializer<std::decay_t<R>>::toString(returnValue);
                 }
             }
             catch (std::exception const& ex)
