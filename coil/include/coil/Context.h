@@ -10,6 +10,8 @@ namespace coil
     public:
         Context(detail::CallContext& callContext) : m_callContext(callContext) {}
 
+        std::ostream& out() { return m_callContext.result.output; }
+
         void reportError(std::string error)
         {
             m_callContext.result.errors.push_back(std::move(error));

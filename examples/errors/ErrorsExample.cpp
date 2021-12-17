@@ -61,10 +61,10 @@ namespace
         if (context.hasErrors())
             return;
 
-        std::cout << requiredAnyArg->getRaw() << ", " << *requiredFloatArg;
+        context.out() << requiredAnyArg->getRaw() << ", " << *requiredFloatArg;
         if (optionalFloatArg)
-            std::cout << ", " << *optionalFloatArg;
-        std::cout << std::endl;
+            context.out() << ", " << *optionalFloatArg;
+        context.out() << std::endl;
     }
 }
 
