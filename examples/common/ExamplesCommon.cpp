@@ -16,7 +16,7 @@ void common::executeCommand(coil::Bindings& bindings, std::string_view command)
 
     for (const auto& error : result.errors)
         std::cout << "\t" << "Error: " << error << std::endl;
-    if (!result.output.empty())
-        std::cout << "\t" << "Output: '" << result.output << "'" << std::endl;
+    if (result.output)
+        std::cout << "\t" << "Output: '" << *result.output << "'" << std::endl;
     std::cout << std::endl;
 }

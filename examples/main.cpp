@@ -77,8 +77,8 @@ int main()
 
         for (const auto& error : result.errors)
             std::cout << "Error: " << error << std::endl;
-        if (!result.output.empty())
-            std::cout << "Output: '" << result.output << "'" << std::endl;
+        if (result.output)
+            std::cout << "Output: '" << *result.output << "'" << std::endl;
     }
 
     return 0;
