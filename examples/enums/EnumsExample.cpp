@@ -52,7 +52,7 @@ void EnumsExample::run()
     PlayerAbilitySystem abilities;
     bindings.addObject("abilities", &abilities);
 
-    common::printSectionHeader("Enums can also be as long as a corresponding TypeSerializer is specialized:");
+    common::printSectionHeader("Enums can be used as long as a corresponding TypeSerializer is specialized:");
     common::executeCommand(bindings, "abilities.set_ability SpeedBoost AfterDelay");
 
     common::printSectionHeader("Both scoped and unscoped enums can be used:");
