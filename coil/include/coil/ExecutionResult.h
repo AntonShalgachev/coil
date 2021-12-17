@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <string>
+#include <optional>
 
 namespace coil
 {
@@ -13,6 +14,6 @@ namespace coil
         }
 
 		std::vector<std::string> errors;
-		std::string output;
+		std::optional<std::string> output;
 	};
 }
