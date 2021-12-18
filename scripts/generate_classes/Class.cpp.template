@@ -41,12 +41,33 @@ void $name::registerBindings(GeneralBindings& bindings)
         args.get("key");
         args.get<$function.args[0]>("key");
         args.get<$function.args[0]>("key", context, coil::NamedArgs::ArgType::Optional);
-        return $name::${function.name}(#echo ', '.join($arg_names($method.args))#);
+        return $name::${function.name}(#echo ', '.join($arg_names($function.args))#);
     };
 #end for
 
 #for $variable in $variables
     bindings["${name}_${variable.name}"] = &${name}::${variable.name};
+#end for
+}
+\#endif
+
+\#ifdef MANUAL_DEBUG_BINDINGS
+void ${name}::registerBindings(DumbBindings& bindings)
+{
+#for $method in $methods
+    bindings.registerCommand("${name}_${method.name}", [this](auto const& args) { return ${method.name}Command(args); });
+#end for
+
+#for $member_variable in $member_variables
+    bindings.registerCommand("${name}_${member_variable.name}", [this](auto const& args) { return ${member_variable.name}Command(args); });
+#end for
+
+#for $function in $functions
+    bindings.registerCommand("${name}_${function.name}", ${name}::${function.name}Command);
+#end for
+
+#for $variable in $variables
+    bindings.registerCommand("${name}_${variable.name}", ${name}::${variable.name}Command);
 #end for
 }
 \#endif
@@ -76,7 +97,7 @@ std::optional<float> $name::workInternally(std::vector<std::string> const& value
 }
 
 #for $method in $methods
-#if 'return_index' in $method then $method.args[$method.return_index] else 'void' # $name::${method.name}($combine($method.args))
+#echo $return_type($method) # $name::${method.name}($combine($method.args))
 {
     #if len($method.args) > 0
     std::cout << #echo ' << '.join($arg_names($method.args))#;
@@ -102,7 +123,7 @@ std::optional<float> $name::workInternally(std::vector<std::string> const& value
 #end for
 
 #for $function in $functions
-#if 'return_index' in $function then $function.args[$function.return_index] else 'void' # $name::${function.name}($combine($function.args))
+#echo $return_type($function) # $name::${function.name}($combine($function.args))
 {
     #if len($function.args) > 0
     std::cout << #echo ' << '.join($arg_names($function.args))#;
@@ -126,3 +147,117 @@ std::optional<float> $name::workInternally(std::vector<std::string> const& value
     #end if
 }
 #end for
+#if $has_bindings
+
+////////////////////////////////////////////////////////////////////////////////////////////
+
+#ifdef MANUAL_DEBUG_BINDINGS
+
+#for $method in $methods
+std::string ${name}::${method.name}Command(std::vector<std::string> const& arguments)
+{
+    if (arguments.size() != #echo len($method.args) #)
+    {
+        std::cout << "Wrong number of arguments!" << std::endl;
+        return {};
+    }
+
+    #for $i in range(len($method.args))
+    $method.args[$i] arg${i}{};
+    if (!tryConvert(arguments[${i}], arg${i}))
+    {
+        std::cout << "Failed to convert argument ${i}!" << std::endl;
+        return {};
+    }
+    #end for
+
+    #if 'return_index' in $method
+    auto returnValue = ${method.name}(#echo ', '.join($arg_names($method.args)) #);
+    return std::to_string(returnValue);
+    #else
+    ${method.name}(#echo ', '.join($arg_names($method.args)) #);
+    return {};
+    #end if
+}
+#end for
+
+#for $member_variable in $member_variables
+std::string ${name}::${member_variable.name}Command(std::vector<std::string> const& arguments)
+{
+    if (arguments.size() > 1)
+    {
+        std::cout << "Wrong number of arguments!" << std::endl;
+        return {};
+    }
+
+    if (arguments.size() == 1)
+    {
+        ${member_variable.type} newValue;
+        if (!tryConvert(arguments[0], newValue))
+        {
+            std::cout << "Failed to convert argument!" << std::endl;
+            return {};
+        }
+
+        ${member_variable.name} = newValue;
+    }
+
+    return std::to_string(${member_variable.name});
+}
+#end for
+
+#for $function in $functions
+std::string ${name}::${function.name}Command(std::vector<std::string> const& arguments)
+{
+    if (arguments.size() != #echo len($function.args) #)
+    {
+        std::cout << "Wrong number of arguments!" << std::endl;
+        return {};
+    }
+
+    #for $i in range(len($function.args))
+    $function.args[$i] arg${i}{};
+    if (!tryConvert(arguments[${i}], arg${i}))
+    {
+        std::cout << "Failed to convert argument ${i}!" << std::endl;
+        return {};
+    }
+    #end for
+
+    #if 'return_index' in $function
+    auto returnValue = ${function.name}(#echo ', '.join($arg_names($function.args)) #);
+    return std::to_string(returnValue);
+    #else
+    ${function.name}(#echo ', '.join($arg_names($function.args)) #);
+    return {};
+    #end if
+}
+#end for
+
+#for $variable in $variables
+std::string ${name}::${variable.name}Command(std::vector<std::string> const& arguments)
+{
+    if (arguments.size() > 1)
+    {
+        std::cout << "Wrong number of arguments!" << std::endl;
+        return {};
+    }
+
+    if (arguments.size() == 1)
+    {
+        ${variable.type} newValue;
+        if (!tryConvert(arguments[0], newValue))
+        {
+            std::cout << "Failed to convert argument!" << std::endl;
+            return {};
+        }
+
+        ${variable.name} = newValue;
+    }
+
+    return std::to_string(${variable.name});
+}
+#end for
+
+#endif
+#end if

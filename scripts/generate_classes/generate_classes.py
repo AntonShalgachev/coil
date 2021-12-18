@@ -9,6 +9,10 @@ def arg_names(args):
     return ['arg' + str(i) for i in range(len(args))]
 
 
+def return_type(method):
+    return method['args'][method['return_index']] if 'return_index' in method else 'void'
+
+
 def combine(args):
     typed_args = [t + ' ' + n for t,n in zip(args, arg_names(args))]
     return ', '.join(typed_args)
@@ -148,6 +152,7 @@ class SourceWriter:
         search_list = c.copy()
         search_list['combine'] = combine
         search_list['arg_names'] = arg_names
+        search_list['return_type'] = return_type
         self._write_template(template_name, search_list, output_folder, source_name)
 
     def _write_cmake(self, classes):
