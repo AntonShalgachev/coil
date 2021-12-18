@@ -3,6 +3,7 @@ set(PROJECT_NAME compilation_performance)
 set(ALL_FILES
     "main.cpp"
     "Common.h"
+    "Common.cpp"
     "pch.h"
 )
 

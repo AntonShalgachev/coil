@@ -34,6 +34,10 @@ public:
     void registerBindings(GeneralBindings& bindings);
 #endif
 
+#ifdef MANUAL_DEBUG_BINDINGS
+    void registerBindings(DumbBindings& bindings);
+#endif
+
     static std::optional<float> workInternally(std::vector<std::string> const& values);
 
 private:
@@ -100,4 +104,70 @@ private:
     inline static short variable12{};
     inline static double variable13{};
     inline static short variable14{};
+
+#ifdef MANUAL_DEBUG_BINDINGS
+    std::string method0Command(std::vector<std::string> const& arguments);
+    std::string method1Command(std::vector<std::string> const& arguments);
+    std::string method2Command(std::vector<std::string> const& arguments);
+    std::string method3Command(std::vector<std::string> const& arguments);
+    std::string method4Command(std::vector<std::string> const& arguments);
+    std::string method5Command(std::vector<std::string> const& arguments);
+    std::string method6Command(std::vector<std::string> const& arguments);
+    std::string method7Command(std::vector<std::string> const& arguments);
+    std::string method8Command(std::vector<std::string> const& arguments);
+    std::string method9Command(std::vector<std::string> const& arguments);
+    std::string method10Command(std::vector<std::string> const& arguments);
+    std::string method11Command(std::vector<std::string> const& arguments);
+    std::string method12Command(std::vector<std::string> const& arguments);
+    std::string method13Command(std::vector<std::string> const& arguments);
+    std::string method14Command(std::vector<std::string> const& arguments);
+
+    std::string memberVariable0Command(std::vector<std::string> const& arguments);
+    std::string memberVariable1Command(std::vector<std::string> const& arguments);
+    std::string memberVariable2Command(std::vector<std::string> const& arguments);
+    std::string memberVariable3Command(std::vector<std::string> const& arguments);
+    std::string memberVariable4Command(std::vector<std::string> const& arguments);
+    std::string memberVariable5Command(std::vector<std::string> const& arguments);
+    std::string memberVariable6Command(std::vector<std::string> const& arguments);
+    std::string memberVariable7Command(std::vector<std::string> const& arguments);
+    std::string memberVariable8Command(std::vector<std::string> const& arguments);
+    std::string memberVariable9Command(std::vector<std::string> const& arguments);
+    std::string memberVariable10Command(std::vector<std::string> const& arguments);
+    std::string memberVariable11Command(std::vector<std::string> const& arguments);
+    std::string memberVariable12Command(std::vector<std::string> const& arguments);
+    std::string memberVariable13Command(std::vector<std::string> const& arguments);
+    std::string memberVariable14Command(std::vector<std::string> const& arguments);
+
+    static std::string function0Command(std::vector<std::string> const& arguments);
+    static std::string function1Command(std::vector<std::string> const& arguments);
+    static std::string function2Command(std::vector<std::string> const& arguments);
+    static std::string function3Command(std::vector<std::string> const& arguments);
+    static std::string function4Command(std::vector<std::string> const& arguments);
+    static std::string function5Command(std::vector<std::string> const& arguments);
+    static std::string function6Command(std::vector<std::string> const& arguments);
+    static std::string function7Command(std::vector<std::string> const& arguments);
+    static std::string function8Command(std::vector<std::string> const& arguments);
+    static std::string function9Command(std::vector<std::string> const& arguments);
+    static std::string function10Command(std::vector<std::string> const& arguments);
+    static std::string function11Command(std::vector<std::string> const& arguments);
+    static std::string function12Command(std::vector<std::string> const& arguments);
+    static std::string function13Command(std::vector<std::string> const& arguments);
+    static std::string function14Command(std::vector<std::string> const& arguments);
+
+    static std::string variable0Command(std::vector<std::string> const& arguments);
+    static std::string variable1Command(std::vector<std::string> const& arguments);
+    static std::string variable2Command(std::vector<std::string> const& arguments);
+    static std::string variable3Command(std::vector<std::string> const& arguments);
+    static std::string variable4Command(std::vector<std::string> const& arguments);
+    static std::string variable5Command(std::vector<std::string> const& arguments);
+    static std::string variable6Command(std::vector<std::string> const& arguments);
+    static std::string variable7Command(std::vector<std::string> const& arguments);
+    static std::string variable8Command(std::vector<std::string> const& arguments);
+    static std::string variable9Command(std::vector<std::string> const& arguments);
+    static std::string variable10Command(std::vector<std::string> const& arguments);
+    static std::string variable11Command(std::vector<std::string> const& arguments);
+    static std::string variable12Command(std::vector<std::string> const& arguments);
+    static std::string variable13Command(std::vector<std::string> const& arguments);
+    static std::string variable14Command(std::vector<std::string> const& arguments);
+#endif
 };

@@ -19,13 +19,17 @@ public:
 \#ifdef DEBUG_BINDINGS
     void registerBindings(GeneralBindings& bindings);
 \#endif
+
+\#ifdef MANUAL_DEBUG_BINDINGS
+    void registerBindings(DumbBindings& bindings);
+\#endif
 #end if
 
     static std::optional<float> workInternally(std::vector<std::string> const& values);
 
 private:
 #for $method in $methods
-    #if 'return_index' in $method then $method.args[$method.return_index] else 'void' # ${method.name}($combine($method.args));
+    #echo $return_type($method) # ${method.name}($combine($method.args));
 #end for
 
 #for $member_variable in $member_variables
@@ -33,10 +37,30 @@ private:
 #end for
 
 #for $function in $functions
-    static #if 'return_index' in $function then $function.args[$function.return_index] else 'void' # ${function.name}($combine($function.args));
+    static #echo $return_type($function) # ${function.name}($combine($function.args));
 #end for
 
 #for $variable in $variables
     inline static $variable.type $variable.name{};
 #end for
+#if $has_bindings
+
+\#ifdef MANUAL_DEBUG_BINDINGS
+#for $method in $methods
+    std::string ${method.name}Command(std::vector<std::string> const& arguments);
+#end for
+
+#for $member_variable in $member_variables
+    std::string ${member_variable.name}Command(std::vector<std::string> const& arguments);
+#end for
+
+#for $function in $functions
+    static std::string ${function.name}Command(std::vector<std::string> const& arguments);
+#end for
+
+#for $variable in $variables
+    static std::string ${variable.name}Command(std::vector<std::string> const& arguments);
+#end for
+\#endif
+#end if
 };
