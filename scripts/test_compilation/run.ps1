@@ -17,8 +17,9 @@ function Measure-SingleBuild {
         [switch]$UseClang = $false,
         [switch]$UseUnityBuild = $false
     )
-
-    $buildFolder = "build_temp"
+    $configurationName = Get-ConfigurationName $UseCoil $UseClang $UseUnityBuild
+    Write-Host "Measuring configuration [$configurationName]"
+    $buildFolder = "build_temp/$configurationName"
 
     if (Test-Path -Path $buildFolder) {
         Remove-Item $buildFolder -Recurse -Force
@@ -37,7 +38,7 @@ function Measure-SingleBuild {
         $env:CC=""
         $env:CXX=""
     }
-    Invoke-Expression "cmake -DTEST_COMP_PERF=1 -DTEST_COMP_PERF_USE_COIL=$coil -DCMAKE_UNITY_BUILD=$unityBuild -GNinja .." | Out-Null
+    Invoke-Expression "cmake -DTEST_COMP_PERF=1 -DTEST_COMP_PERF_USE_COIL=$coil -DCMAKE_UNITY_BUILD=$unityBuild -GNinja ../.." | Out-Null
 
     Write-Host "Building 0/$Count (will be discarded)..."
     ninja | Out-Null
@@ -93,7 +94,6 @@ foreach ($useClang in $clangOptions) {
     foreach ($useUnityBuild in $unityBuildOptions) {
         foreach ($useCoil in $coilOptions) {
             $configurationName = Get-ConfigurationName $useCoil $useClang $useUnityBuild
-            Write-Host "Measuring configuration [$configurationName]"
             $result = Measure-SingleBuild -Count $buildCounts -UseCoil:$useCoil -UseClang:$useClang -UseUnityBuild:$useUnityBuild
 
             $results += [PSCustomObject]@{
