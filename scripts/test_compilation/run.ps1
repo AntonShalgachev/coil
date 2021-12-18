@@ -3,8 +3,11 @@ function IIf($If, $IfTrue, $IfFalse) {
     Else {If ($IfFalse -is "ScriptBlock") {&$IfFalse} Else {$IfFalse}}
 }
 
-function Get-CompilerName([bool]$IsClang) {
-    return $(If ($IsClang) {"Clang"} Else {"MSVC"})
+function Get-ConfigurationName([bool]$UseCoil, [bool]$UseClang, [bool]$UseUnityBuild) {
+    $compilerName = $(If ($UseClang) {"Clang"} Else {"MSVC"})
+    $coilName = $(IIf $UseCoil "Coil" "-")
+    $unityBuildName = $(IIf $UseUnityBuild "Unity" "-");
+    return "$compilerName $coilName $unityBuildName"
 }
 
 function Measure-SingleBuild {
@@ -22,9 +25,6 @@ function Measure-SingleBuild {
     }
     mkdir $buildFolder | Out-Null
     Push-Location $buildFolder
-
-    $compilerName = Get-CompilerName $UseClang.IsPresent    
-    Write-Host "Measuring with [$compilerName $(IIf $UseCoil "Coil" "-") $(IIf $UseUnityBuild "Unity" "-")]"
 
     $coil = [int]$UseCoil.IsPresent
     $unityBuild = [int]$UseUnityBuild.IsPresent
@@ -81,51 +81,35 @@ function Measure-BuildResults($Durations) {
     return $res | Select-Object Median, Average, Minimum, Maximum
 }
 
-function Write-BuildStatistics {
-    param (
-        $Name,
-        $Durations
-    )
-    
-    Write-Host "${Name}:"
-    Measure-BuildResults $Durations | Out-Host
-}
-
-function Measure-Builds {
-    param (
-        [int]$Count,
-        [bool]$UseClang,
-        [bool]$UseUnityBuild
-    )
-
-    $compilerName = Get-CompilerName $UseClang
-
-    $base = Measure-SingleBuild -Count $Count -UseClang:$UseClang -UseUnityBuild:$UseUnityBuild
-    $coil = Measure-SingleBuild -Count $Count -UseCoil -UseClang:$UseClang -UseUnityBuild:$UseUnityBuild
-
-    return @(
-        @("Base ($compilerName)", $base),
-        @("Coil ($compilerName)", $coil)
-    )
-}
-
-if ($null -eq $env:vsinstalldir) {
-    Write-Error "Visual Studio environment isn't set up"
-    Exit 1
-}
-
 Push-Location ../..
 
-$BuildCounts = 2
+$buildCounts = 10
+$coilOptions = @($false, $true)
+$clangOptions = @($false, $true)
+$unityBuildOptions = @($false, $true)
 
 $results = @()
-$results += Measure-Builds $BuildCounts -UseClang:$false -UseUnityBuild:$false
-$results += Measure-Builds $BuildCounts -UseClang:$true -UseUnityBuild:$false
-$results += Measure-Builds $BuildCounts -UseClang:$false -UseUnityBuild:$true
-$results += Measure-Builds $BuildCounts -UseClang:$true -UseUnityBuild:$true
+foreach ($useClang in $clangOptions) {
+    foreach ($useUnityBuild in $unityBuildOptions) {
+        foreach ($useCoil in $coilOptions) {
+            $configurationName = Get-ConfigurationName $useCoil $useClang $useUnityBuild
+            Write-Host "Measuring configuration [$configurationName]"
+            $result = Measure-SingleBuild -Count $buildCounts -UseCoil:$useCoil -UseClang:$useClang -UseUnityBuild:$useUnityBuild
 
-foreach ($pair in $results) {
-    Write-BuildStatistics $pair[0] $pair[1]
+            $results += [PSCustomObject]@{
+                Name = "[$configurationName]"
+                Durations = $result
+            }
+        }
+    }
+}
+
+foreach ($configuration in $results) {
+    $name = $configuration.Name
+    $durations = $configuration.Durations
+
+    Write-Host "${name}:"
+    Measure-BuildResults $durations | Out-Host
 }
 
 Pop-Location
