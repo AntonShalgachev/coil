@@ -4,6 +4,7 @@ set(ALL_FILES
     "LexerTests.cpp"
     "ExpectedTests.cpp"
     "BindingsTests.cpp"
+    "TypeSerializerTests.cpp"
 )
 
 add_executable(${PROJECT_NAME} ${ALL_FILES})
