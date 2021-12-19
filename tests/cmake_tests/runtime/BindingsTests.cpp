@@ -73,7 +73,7 @@ namespace
         int value = 0;
     };
 
-    Object object;
+    Object object0;
     Object object42{ 42 };
 
     template<typename T>
@@ -132,7 +132,7 @@ namespace
         T m_payload;
     };
 
-    Tracker<int> variable;
+    Tracker<int> trackedVariable;
 
     Tracker<int> createTracker() { return 42; }
     void useTrackerByValue(Tracker<int>) {}
@@ -146,7 +146,7 @@ namespace
         bindings.bind("sum", &sum);
         bindings.bind("sum_all", &sumAll);
         bindings.bind("output", &output);
-        bindings.bind("var", &variable);
+        bindings.bind("var", &trackedVariable);
         bindings.bind("create_tracker", &createTracker);
         bindings.bind("use_tracker_by_value", &useTrackerByValue);
         bindings.bind("use_tracker_by_ref", &useTrackerByRef);
@@ -158,7 +158,7 @@ namespace
             return obj->getDouble();
         });
 
-        bindings.addObject("obj", &object);
+        bindings.addObject("obj", &object0);
         bindings.addObject("obj42", &object42);
 
         return bindings;
