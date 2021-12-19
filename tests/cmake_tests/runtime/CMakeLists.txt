@@ -3,6 +3,7 @@ set(PROJECT_NAME cmake_tests)
 set(ALL_FILES
     "LexerTests.cpp"
     "ExpectedTests.cpp"
+    "BindingsTests.cpp"
 )
 
 add_executable(${PROJECT_NAME} ${ALL_FILES})
