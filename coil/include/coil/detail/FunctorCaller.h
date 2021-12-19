@@ -93,8 +93,6 @@ namespace coil::detail
         static constexpr std::size_t minArgs = currentMin;
         static constexpr bool isUnlimited = currentIsUnlimited;
         static constexpr std::size_t maxArgs = currentMax;
-
-        static constexpr bool isVariadic = isUnlimited || (minArgs != maxArgs);
     };
 
     template<typename... Args>
@@ -102,6 +100,34 @@ namespace coil::detail
 
     template<typename... Args>
     struct VariadicArgsTraits<utils::Types<Args...>> : VariadicArgsTraitsImpl<0, false, 0, Args...> {};
+
+    inline bool validateArguments(std::size_t minArgs, std::size_t isUnlimited, std::size_t maxArgs, CallContext& context)
+    {
+        std::size_t const actualArgsCount = context.input.arguments.size();
+        return actualArgsCount >= minArgs && (isUnlimited || actualArgsCount <= maxArgs);
+    }
+
+    inline void reportInvalidArguments(std::size_t minArgs, std::size_t isUnlimited, std::size_t maxArgs, std::string const& typeNames, CallContext& context)
+    {
+        auto const& arguments = context.input.arguments;
+        std::size_t const actualArgsCount = arguments.size();
+
+        bool isVariadic = isUnlimited || (minArgs != maxArgs);
+
+        std::string expectedMessage;
+        if (isVariadic && isUnlimited)
+            expectedMessage = utils::formatString("at least %d", minArgs);
+        else if (isVariadic && !isUnlimited)
+            expectedMessage = utils::formatString("from %d to %d", minArgs, maxArgs);
+        else
+            expectedMessage = utils::formatString("%d", minArgs);
+
+        std::string_view functionName = context.input.functionName;
+        std::string actualArgsStr = utils::flatten(arguments, "'");
+        auto errorMessage = utils::formatString("Wrong number of arguments to '%.*s': expected %s ([%s]), got %d (%s)", functionName.size(), functionName.data(), expectedMessage.c_str(), typeNames.c_str(), actualArgsCount, actualArgsStr.c_str());
+
+        context.result.errors.push_back(std::move(errorMessage));
+    }
 
     template<typename Func>
     struct FunctorCaller
@@ -113,8 +139,17 @@ namespace coil::detail
             using UserArgTypes = typename Traits::UserArgumentTypes;
             using UserArgIndicesType = typename UserArgTypes::IndicesType;
 
-            if (!validateArguments(context))
+            using VTraits = VariadicArgsTraits<UserArgTypes>;
+            auto constexpr minArgs = VTraits::minArgs;
+            auto constexpr isUnlimited = VTraits::isUnlimited;
+            auto constexpr maxArgs = VTraits::maxArgs;
+
+            if (!validateArguments(VTraits::minArgs, VTraits::isUnlimited, VTraits::maxArgs, context))
+            {
+                std::string typeNames = utils::flatten(UserArgTypes::decayedNames());
+                reportInvalidArguments(VTraits::minArgs, VTraits::isUnlimited, VTraits::maxArgs, typeNames, context);
                 return;
+            }
 
             if (!context.input.namedArguments.empty() && !Traits::hasNamedArgs)
             {
@@ -171,41 +206,6 @@ namespace coil::detail
             {
                 result.errors.push_back(utils::formatString("Exception caught during execution: %s", ex.what()));
             }
-        }
-
-        static bool validateArguments(CallContext& context)
-        {
-            using ArgTypes = typename Traits::UserArgumentTypes;
-
-            auto const& arguments = context.input.arguments;
-            std::size_t const actualArgsCount = arguments.size();
-
-            auto constexpr minArgs = VariadicArgsTraits<ArgTypes>::minArgs;
-            auto constexpr isUnlimited = VariadicArgsTraits<ArgTypes>::isUnlimited;
-            auto constexpr maxArgs = VariadicArgsTraits<ArgTypes>::maxArgs;
-            auto constexpr isVariadic = VariadicArgsTraits<ArgTypes>::isVariadic;
-
-            auto const isCorrect = actualArgsCount >= minArgs && (isUnlimited || actualArgsCount <= maxArgs);
-
-            if (isCorrect)
-                return true;
-
-            std::string expectedMessage;
-            if constexpr (isVariadic && isUnlimited)
-                expectedMessage = utils::formatString("at least %d", minArgs);
-            else if constexpr (isVariadic && !isUnlimited)
-                expectedMessage = utils::formatString("from %d to %d", minArgs, maxArgs);
-            else
-                expectedMessage = utils::formatString("%d", minArgs);
-
-            std::string_view functionName = context.input.functionName;
-            std::string typeNames = utils::flatten(ArgTypes::decayedNames());
-            std::string actualArgsStr = utils::flatten(arguments, "'");
-            auto errorMessage = utils::formatString("Wrong number of arguments to '%.*s': expected %s ([%s]), got %d (%s)", functionName.size(), functionName.data(), expectedMessage.c_str(), typeNames.c_str(), actualArgsCount, actualArgsStr.c_str());
-
-            context.result.errors.push_back(std::move(errorMessage));
-
-            return false;
         }
 	};
 }
