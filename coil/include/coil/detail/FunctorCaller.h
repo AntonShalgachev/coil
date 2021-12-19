@@ -129,83 +129,76 @@ namespace coil::detail
         context.result.errors.push_back(std::move(errorMessage));
     }
 
-    template<typename Func>
-    struct FunctorCaller
+    template<typename Func, typename... Args>
+    void invoke(Func& func, ExecutionResult& result, Args&&... args)
     {
-    public:
-        template<typename T>
-        static void call(Func& func, CallContext& context, T* target)
+        if (!result)
+            return;
+
+        using R = typename detail::FuncTraitsEx<Func>::ReturnType;
+
+        try
         {
-            using UserArgTypes = typename Traits::UserArgumentTypes;
-            using UserArgIndicesType = typename UserArgTypes::IndicesType;
-
-            using VTraits = VariadicArgsTraits<UserArgTypes>;
-            auto constexpr minArgs = VTraits::minArgs;
-            auto constexpr isUnlimited = VTraits::isUnlimited;
-            auto constexpr maxArgs = VTraits::maxArgs;
-
-            if (!validateArguments(VTraits::minArgs, VTraits::isUnlimited, VTraits::maxArgs, context))
+            if constexpr (std::is_void_v<R>)
             {
-                std::string typeNames = utils::flatten(UserArgTypes::decayedNames());
-                reportInvalidArguments(VTraits::minArgs, VTraits::isUnlimited, VTraits::maxArgs, typeNames, context);
-                return;
+                std::invoke(func, std::forward<Args>(args)...);
             }
-
-            if (!context.input.namedArguments.empty() && !Traits::hasNamedArgs)
+            else
             {
-                context.result.errors.push_back("The function doesn't support named arguments");
-                return;
+                auto&& returnValue = std::invoke(func, std::forward<Args>(args)...);
+                if (result)
+                    result.returnValue = TypeSerializer<std::decay_t<R>>::toString(returnValue);
             }
-
-            static constexpr bool hasTarget = Traits::template isMethodOfType<T> || Traits::hasTarget;
-            static constexpr bool hasContext = Traits::hasContext;
-            static constexpr bool hasNamedArgs = Traits::hasNamedArgs;
-
-            std::tuple<T*, Context, NamedArgs> nonUserArgs{ target, Context{context}, NamedArgs{context} };
-            using NonUserArgIndices = utils::TrueIndicesT<hasTarget, hasContext, hasNamedArgs>;
-
-            unpackAndInvoke(func, context, nonUserArgs, NonUserArgIndices{}, UserArgTypes{}, UserArgIndicesType{});
         }
+        catch (std::exception const& ex)
+        {
+            result.errors.push_back(utils::formatString("Exception caught during execution: %s", ex.what()));
+        }
+    }
 
-    private:
+    template<typename Func, typename NonUserArgsTuple, std::size_t... NonUserIndices, typename... UserArgs, std::size_t... UserIndices>
+    void unpackAndInvoke(Func& func, CallContext& context, NonUserArgsTuple& nonUserArgs, std::index_sequence<NonUserIndices...>, utils::Types<UserArgs...>, std::index_sequence<UserIndices...>)
+    {
+        auto onError = [&context](std::string error)
+        {
+            context.result.errors.push_back(std::move(error));
+        };
+
+        invoke(func, context.result, std::get<NonUserIndices>(nonUserArgs)..., VariadicConsumer<std::decay_t<UserArgs>>::consume(context.input.arguments, UserIndices, onError)...);
+    }
+
+    template<typename Func, typename T>
+    void call(Func& func, CallContext& context, T* target)
+    {
         using Traits = detail::FuncTraitsEx<Func>;
-        using R = typename Traits::ReturnType;
+        using UserArgTypes = typename Traits::UserArgumentTypes;
+        using UserArgIndicesType = typename UserArgTypes::IndicesType;
 
-        template<typename NonUserArgsTuple, std::size_t... NonUserIndices, typename... UserArgs, std::size_t... UserIndices>
-        static void unpackAndInvoke(Func& func, CallContext& context, NonUserArgsTuple& nonUserArgs, std::index_sequence<NonUserIndices...>, utils::Types<UserArgs...>, std::index_sequence<UserIndices...>)
+        using VTraits = VariadicArgsTraits<UserArgTypes>;
+        auto constexpr minArgs = VTraits::minArgs;
+        auto constexpr isUnlimited = VTraits::isUnlimited;
+        auto constexpr maxArgs = VTraits::maxArgs;
+
+        if (!validateArguments(VTraits::minArgs, VTraits::isUnlimited, VTraits::maxArgs, context))
         {
-            auto onError = [&context](std::string error)
-            {
-                context.result.errors.push_back(std::move(error));
-            };
-
-            invoke(func, context.result, std::get<NonUserIndices>(nonUserArgs)..., VariadicConsumer<std::decay_t<UserArgs>>::consume(context.input.arguments, UserIndices, onError)...);
+            std::string typeNames = utils::flatten(UserArgTypes::decayedNames());
+            reportInvalidArguments(VTraits::minArgs, VTraits::isUnlimited, VTraits::maxArgs, typeNames, context);
+            return;
         }
 
-        // Introduce fake R template parameter as a workaround to MSVC evaluating false 'if constexpr' branch
-        template<typename... Args, typename R = R>
-        static void invoke(Func& func, ExecutionResult& result, Args&&... args)
+        if (!context.input.namedArguments.empty() && !Traits::hasNamedArgs)
         {
-            if (!result)
-                return;
-
-            try
-            {
-                if constexpr (std::is_void_v<R>)
-                {
-                    std::invoke(func, std::forward<Args>(args)...);
-                }
-                else
-                {
-                    auto&& returnValue = std::invoke(func, std::forward<Args>(args)...);
-                    if (result)
-                        result.returnValue = TypeSerializer<std::decay_t<R>>::toString(returnValue);
-                }
-            }
-            catch (std::exception const& ex)
-            {
-                result.errors.push_back(utils::formatString("Exception caught during execution: %s", ex.what()));
-            }
+            context.result.errors.push_back("The function doesn't support named arguments");
+            return;
         }
-	};
+
+        static constexpr bool hasTarget = Traits::template isMethodOfType<T> || Traits::hasTarget;
+        static constexpr bool hasContext = Traits::hasContext;
+        static constexpr bool hasNamedArgs = Traits::hasNamedArgs;
+
+        std::tuple<T*, Context, NamedArgs> nonUserArgs{ target, Context{context}, NamedArgs{context} };
+        using NonUserArgIndices = utils::TrueIndicesT<hasTarget, hasContext, hasNamedArgs>;
+
+        unpackAndInvoke(func, context, nonUserArgs, NonUserArgIndices{}, UserArgTypes{}, UserArgIndicesType{});
+    }
 }

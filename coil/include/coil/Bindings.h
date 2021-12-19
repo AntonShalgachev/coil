@@ -295,7 +295,7 @@ namespace coil
                 }
             }
 
-            detail::FunctorCaller<FuncT>::template call<T>(*functor, context, object);
+            detail::call<FuncT, T>(*functor, context, object);
         }
 
         void execute(detail::CallContext& context)
