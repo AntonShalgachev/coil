@@ -357,31 +357,31 @@ TEST(LexerTests, TestFloatNamedArgs)
     EXPECT_EQ(lexer("obj.func arg1=3.14 arg2=arg arg3=2.0"), createInput("obj", "func", {}, { { "arg1", "3.14" }, { "arg2", "arg" }, { "arg3", "2.0" } }));
 }
 
-TEST(LexerTests, TestShortFloatArgs)
-{
-    coil::DefaultLexer lexer;
-
-    EXPECT_EQ(lexer("func .14"), createInput("", "func", { ".14" }, {}));
-    EXPECT_EQ(lexer("func .14 arg"), createInput("", "func", { ".14", "arg" }, {}));
-    EXPECT_EQ(lexer("func .14 arg .0"), createInput("", "func", { ".14", "arg", ".0" }, {}));
-
-    EXPECT_EQ(lexer("obj.func .14"), createInput("obj", "func", { ".14" }, {}));
-    EXPECT_EQ(lexer("obj.func .14 arg"), createInput("obj", "func", { ".14", "arg" }, {}));
-    EXPECT_EQ(lexer("obj.func .14 arg .0"), createInput("obj", "func", { ".14", "arg", ".0" }, {}));
-}
-
-TEST(LexerTests, TestShortFloatNamedArgs)
-{
-    coil::DefaultLexer lexer;
-
-    EXPECT_EQ(lexer("func arg1=.14"), createInput("", "func", {}, { { "arg1", ".14" } }));
-    EXPECT_EQ(lexer("func arg1=.14 arg2=arg"), createInput("", "func", {}, { { "arg1", ".14" }, { "arg2", "arg" } }));
-    EXPECT_EQ(lexer("func arg1=.14 arg2=arg arg3=.0"), createInput("", "func", {}, { { "arg1", ".14" }, { "arg2", "arg" }, { "arg3", ".0" } }));
-
-    EXPECT_EQ(lexer("obj.func arg1=.14"), createInput("obj", "func", {}, { { "arg1", ".14" } }));
-    EXPECT_EQ(lexer("obj.func arg1=.14 arg2=arg"), createInput("obj", "func", {}, { { "arg1", ".14" }, { "arg2", "arg" } }));
-    EXPECT_EQ(lexer("obj.func arg1=.14 arg2=arg arg3=.0"), createInput("obj", "func", {}, { { "arg1", ".14" }, { "arg2", "arg" }, { "arg3", ".0" } }));
-}
+//TEST(LexerTests, TestShortFloatArgs)
+//{
+//    coil::DefaultLexer lexer;
+//
+//    EXPECT_EQ(lexer("func .14"), createInput("", "func", { ".14" }, {}));
+//    EXPECT_EQ(lexer("func .14 arg"), createInput("", "func", { ".14", "arg" }, {}));
+//    EXPECT_EQ(lexer("func .14 arg .0"), createInput("", "func", { ".14", "arg", ".0" }, {}));
+//
+//    EXPECT_EQ(lexer("obj.func .14"), createInput("obj", "func", { ".14" }, {}));
+//    EXPECT_EQ(lexer("obj.func .14 arg"), createInput("obj", "func", { ".14", "arg" }, {}));
+//    EXPECT_EQ(lexer("obj.func .14 arg .0"), createInput("obj", "func", { ".14", "arg", ".0" }, {}));
+//}
+//
+//TEST(LexerTests, TestShortFloatNamedArgs)
+//{
+//    coil::DefaultLexer lexer;
+//
+//    EXPECT_EQ(lexer("func arg1=.14"), createInput("", "func", {}, { { "arg1", ".14" } }));
+//    EXPECT_EQ(lexer("func arg1=.14 arg2=arg"), createInput("", "func", {}, { { "arg1", ".14" }, { "arg2", "arg" } }));
+//    EXPECT_EQ(lexer("func arg1=.14 arg2=arg arg3=.0"), createInput("", "func", {}, { { "arg1", ".14" }, { "arg2", "arg" }, { "arg3", ".0" } }));
+//
+//    EXPECT_EQ(lexer("obj.func arg1=.14"), createInput("obj", "func", {}, { { "arg1", ".14" } }));
+//    EXPECT_EQ(lexer("obj.func arg1=.14 arg2=arg"), createInput("obj", "func", {}, { { "arg1", ".14" }, { "arg2", "arg" } }));
+//    EXPECT_EQ(lexer("obj.func arg1=.14 arg2=arg arg3=.0"), createInput("obj", "func", {}, { { "arg1", ".14" }, { "arg2", "arg" }, { "arg3", ".0" } }));
+//}
 
 TEST(LexerTests, TestErrors)
 {
