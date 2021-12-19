@@ -263,6 +263,11 @@ namespace coil
                 context.result.errors.push_back(utils::formatString("No function '%.*s' is registered for type '%.*s'", functionName.size(), functionName.data(), typeName.size(), typeName.data()));
         }
 
+        static void reportInternalError(detail::CallContext& context, std::string_view details)
+        {
+            context.result.errors.push_back("Internal error: " + std::string(details));
+        }
+
         template<typename T, typename FuncT>
         void functorTrampoline([[maybe_unused]] std::any const& anyObject, std::any& anyFunctor, detail::CallContext& context)
         {
@@ -270,32 +275,23 @@ namespace coil
 
             if (!functor)
             {
-                auto&& typeName = TypeName<FuncT>::name();
-                context.result.errors.push_back(utils::formatString("Internal error: anyFunctor is not of type '%.*s'", typeName.size(), typeName.data()));
+                reportInternalError(context, "Unexpected anyFunctor type");
                 return;
             }
 
-            T* object = nullptr;
-            if constexpr (!std::is_void_v<T>)
+            auto&& object = std::any_cast<T*>(&anyObject);
+            if (!object)
             {
-                auto maybeObject = std::any_cast<T*>(&anyObject);
-                if (!maybeObject)
-                {
-                    auto&& typeName = TypeName<T>::name();
-                    context.result.errors.push_back(utils::formatString("Internal error: anyObject is not of type '%.*s'", typeName.size(), typeName.data()));
-                    return;
-                }
-
-                object = *maybeObject;
-
-                if (!object)
-                {
-                    context.result.errors.push_back("Internal error: object is nullptr");
-                    return;
-                }
+                reportInternalError(context, "Unexpected anyObject type");
+                return;
+            }
+            if (!std::is_void_v<T> && !*object)
+            {
+                reportInternalError(context, "object is nullptr");
+                return;
             }
 
-            detail::call<FuncT, T>(*functor, context, object);
+            detail::call<FuncT, T>(*functor, context, *object);
         }
 
         void execute(detail::CallContext& context)
@@ -309,7 +305,7 @@ namespace coil
             auto&& objectName = context.input.objectName;
 
             if (objectName.empty())
-                return objectTrampoline<void>({}, context);
+                return objectTrampoline<void>(static_cast<void*>(nullptr), context);
 
             auto it = m_objects.find(objectName);
             if (it == m_objects.end())
