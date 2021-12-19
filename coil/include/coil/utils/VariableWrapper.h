@@ -15,10 +15,10 @@ namespace coil::utils
             static_assert(!std::is_const_v<T>, "Variable shouldn't be const");
         }
 
-        T const& operator()(std::optional<T> const& arg)
+        T const& operator()(std::optional<T> arg)
         {
             if (arg.has_value())
-                get() = arg.value();
+                get() = std::move(arg).value();
 
             return get();
         }
@@ -41,10 +41,10 @@ namespace coil::utils
             static_assert(!std::is_const_v<T>, "Variable shouldn't be const");
         }
 
-        T const& operator()(C* target, std::optional<T> const& arg)
+        T const& operator()(C* target, std::optional<T> arg)
         {
             if (arg.has_value())
-                get(target) = arg.value();
+                get(target) = std::move(arg).value();
 
             return get(target);
         }
