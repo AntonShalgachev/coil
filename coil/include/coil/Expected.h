@@ -1,7 +1,5 @@
 #pragma once
 
-#include <variant>
-
 namespace coil
 {
     template <class E>
@@ -73,32 +71,85 @@ namespace coil
         using ExpectedType = std::conditional_t<std::is_void_v<T>, std::monostate, T>;
 
         template<typename U = T, typename = std::enable_if_t<!std::is_void_v<U>>>
-        Expected(U value) : m_data(std::move(value)) {}
+        Expected(U value) : m_expected(std::move(value)), m_hasValue(true) {}
 
         template<typename U = T, typename = std::enable_if_t<std::is_void_v<U>>>
-        Expected() : m_data(std::monostate{}) {}
+        Expected() : m_expected(std::monostate{}), m_hasValue(true) {}
 
         template<typename U>
-        Expected(detail::Unexpected<U> error) : m_data(std::move(error))
+        Expected(detail::Unexpected<U> error) : m_unexpected(std::move(error)), m_hasValue(false)
         {
             static_assert(std::is_convertible_v<U&&, E>, "U should be convertible to E");
         }
 
-        bool hasValue() const
+        Expected(Expected<T, E> const& rhs)
         {
-            return m_data.index() == 0;
+            constructFrom(rhs);
         }
 
-        E const& error() const& { return std::get<detail::Unexpected<E>>(m_data).value(); }
-        E& error()& { return std::get<detail::Unexpected<E>>(m_data).value(); }
-        E&& error() && { return std::get<detail::Unexpected<E>>(std::move(m_data)).value(); }
+        Expected(Expected<T, E>&& rhs)
+        {
+            constructFrom(std::move(rhs));
+        }
+
+        ~Expected()
+        {
+            destruct();
+        }
+
+        Expected<T, E>& operator=(Expected<T, E> const& rhs)
+        {
+            if (m_hasValue && rhs.m_hasValue)
+            {
+                m_expected = rhs.m_expected;
+            }
+            else if (!m_hasValue && !rhs.m_hasValue)
+            {
+                m_unexpected = rhs.m_unexpected;
+            }
+            else
+            {
+                destruct();
+                constructFrom(rhs);
+            }
+
+            return *this;
+        }
+
+        Expected<T, E>& operator=(Expected<T, E>&& rhs)
+        {
+            if (m_hasValue && rhs.m_hasValue)
+            {
+                m_expected = std::move(rhs).m_expected;
+            }
+            else if (!m_hasValue && !rhs.m_hasValue)
+            {
+                m_unexpected = std::move(rhs).m_unexpected;
+            }
+            else
+            {
+                destruct();
+                constructFrom(std::move(rhs));
+            }
+
+            return *this;
+        }
+
+        bool hasValue() const
+        {
+            return m_hasValue;
+        }
+
+        E const& error() const& { return m_unexpected.value(); }
+        E& error()& { return m_unexpected.value(); }
+        E&& error() && { return std::move(m_unexpected.value()); }
 
         template<typename U = T, typename = std::enable_if_t<!std::is_void_v<U>>>
         ExpectedType const& value() const&
         {
             if (!hasValue())
                 throw BadExpectedAccess<E>(error());
-            return std::get<ExpectedType>(m_data);
+            return m_expected;
         }
 
         template<typename U = T, typename = std::enable_if_t<!std::is_void_v<U>>>
@@ -106,15 +157,15 @@ namespace coil
         {
             if (!hasValue())
                 throw BadExpectedAccess<E>(error());
-            return std::get<ExpectedType>(m_data);
+            return m_expected;
         }
 
         template<typename U = T, typename = std::enable_if_t<!std::is_void_v<U>>>
         ExpectedType&& value() &&
         {
-            if (!hasValue())
-                throw BadExpectedAccess<E>(error());
-            return std::get<ExpectedType>(std::move(m_data));
+             if (!hasValue())
+                 throw BadExpectedAccess<E>(error());
+            return std::move(m_expected);
         }
 
         operator bool() const
@@ -186,10 +237,41 @@ namespace coil
         operator Expected<ExpectedType, E2>() &&
         {
             if (hasValue()) return std::move(value());
-            return error();
+            return std::move(error());
         }
 
     private:
-        std::variant<ExpectedType, detail::Unexpected<E>> m_data;
+        void constructFrom(Expected<T, E> const& rhs)
+        {
+            m_hasValue = rhs.m_hasValue;
+            if (rhs.m_hasValue)
+                new (std::addressof(m_expected)) ExpectedType(rhs.m_expected);
+            else
+                new (std::addressof(m_unexpected)) detail::Unexpected<E>(rhs.m_unexpected);
+        }
+
+        void constructFrom(Expected<T, E>&& rhs)
+        {
+            m_hasValue = rhs.m_hasValue;
+            if (rhs.m_hasValue)
+                new (std::addressof(m_expected)) ExpectedType(std::move(rhs.m_expected));
+            else
+                new (std::addressof(m_unexpected)) detail::Unexpected<E>(std::move(rhs.m_unexpected));
+        }
+
+        void destruct()
+        {
+            if (m_hasValue)
+                m_expected.~ExpectedType();
+            else
+                m_unexpected.~Unexpected<E>();
+        }
+
+        union
+        {
+            ExpectedType m_expected;
+            detail::Unexpected<E> m_unexpected;
+        };
+        bool m_hasValue = true;
     };
 }
