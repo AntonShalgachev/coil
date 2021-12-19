@@ -175,10 +175,6 @@ namespace coil::detail
         using UserArgIndicesType = typename UserArgTypes::IndicesType;
 
         using VTraits = VariadicArgsTraits<UserArgTypes>;
-        auto constexpr minArgs = VTraits::minArgs;
-        auto constexpr isUnlimited = VTraits::isUnlimited;
-        auto constexpr maxArgs = VTraits::maxArgs;
-
         if (!validateArguments(VTraits::minArgs, VTraits::isUnlimited, VTraits::maxArgs, context))
         {
             std::string typeNames = utils::flatten(UserArgTypes::decayedNames());
