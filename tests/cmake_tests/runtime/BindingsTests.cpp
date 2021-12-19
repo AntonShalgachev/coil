@@ -43,12 +43,22 @@ namespace
         return a + b;
     }
 
-    int sumAll(std::vector<int> const& values)
+    int sumAllInit(int init, std::vector<int> const& values)
     {
-        int result = 0;
+        int result = init;
         for (auto const& value : values)
             result += value;
         return result;
+    }
+
+    int sumAll(std::vector<int> const& values)
+    {
+        return sumAllInit(0, values);
+    }
+
+    void funcWithOptional(int, float, std::optional<float>)
+    {
+
     }
 
     void output(coil::Context context, std::string value)
@@ -145,6 +155,8 @@ namespace
         bindings.bind("func", &function);
         bindings.bind("sum", &sum);
         bindings.bind("sum_all", &sumAll);
+        bindings.bind("sum_all_init", &sumAllInit);
+        bindings.bind("func_with_optional", &funcWithOptional);
         bindings.bind("output", &output);
         bindings.bind("var", &trackedVariable);
         bindings.bind("create_tracker", &createTracker);
@@ -341,6 +353,24 @@ TEST(BindingsTests, TestErrorWrongArgumentsCount)
 
     EXPECT_EQ(result.errors.size(), 1);
     EXPECT_PRED2(containsError, result.errors, "Wrong number of arguments to 'sum': expected 2 ([unknown, unknown]), got 3 ('1', '2', '3')");
+}
+
+TEST(BindingsTests, TestErrorWrongArgumentsCountVariadicAtLeast)
+{
+    coil::Bindings bindings = createBindings();
+    auto result = bindings.execute("sum_all_init");
+
+    EXPECT_EQ(result.errors.size(), 1);
+    EXPECT_PRED2(containsError, result.errors, "Wrong number of arguments to 'sum_all_init': expected at least 1 ([unknown, unknown]), got 0 ()");
+}
+
+TEST(BindingsTests, TestErrorWrongArgumentsCountVariadicBetween)
+{
+    coil::Bindings bindings = createBindings();
+    auto result = bindings.execute("func_with_optional");
+
+    EXPECT_EQ(result.errors.size(), 1);
+    EXPECT_PRED2(containsError, result.errors, "Wrong number of arguments to 'func_with_optional': expected from 2 to 3 ([unknown, unknown, unknown]), got 0 ()");
 }
 
 TEST(BindingsTests, TestErrorWrongArgumentTypes)
