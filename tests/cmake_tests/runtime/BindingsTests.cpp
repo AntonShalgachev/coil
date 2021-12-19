@@ -352,7 +352,7 @@ TEST(BindingsTests, TestErrorWrongArgumentsCount)
     auto result = bindings.execute("sum 1 2 3");
 
     EXPECT_EQ(result.errors.size(), 1);
-    EXPECT_PRED2(containsError, result.errors, "Wrong number of arguments to 'sum': expected 2 ([unknown, unknown]), got 3 ('1', '2', '3')");
+    EXPECT_PRED2(containsError, result.errors, "Wrong number of arguments to 'sum': expected 2, got 3");
 }
 
 TEST(BindingsTests, TestErrorWrongArgumentsCountVariadicAtLeast)
@@ -361,7 +361,7 @@ TEST(BindingsTests, TestErrorWrongArgumentsCountVariadicAtLeast)
     auto result = bindings.execute("sum_all_init");
 
     EXPECT_EQ(result.errors.size(), 1);
-    EXPECT_PRED2(containsError, result.errors, "Wrong number of arguments to 'sum_all_init': expected at least 1 ([unknown, unknown]), got 0 ()");
+    EXPECT_PRED2(containsError, result.errors, "Wrong number of arguments to 'sum_all_init': expected at least 1, got 0");
 }
 
 TEST(BindingsTests, TestErrorWrongArgumentsCountVariadicBetween)
@@ -370,7 +370,7 @@ TEST(BindingsTests, TestErrorWrongArgumentsCountVariadicBetween)
     auto result = bindings.execute("func_with_optional");
 
     EXPECT_EQ(result.errors.size(), 1);
-    EXPECT_PRED2(containsError, result.errors, "Wrong number of arguments to 'func_with_optional': expected from 2 to 3 ([unknown, unknown, unknown]), got 0 ()");
+    EXPECT_PRED2(containsError, result.errors, "Wrong number of arguments to 'func_with_optional': expected from 2 to 3, got 0");
 }
 
 TEST(BindingsTests, TestErrorWrongArgumentTypes)

@@ -107,7 +107,7 @@ namespace coil::detail
         return actualArgsCount >= minArgs && (isUnlimited || actualArgsCount <= maxArgs);
     }
 
-    inline void reportInvalidArguments(std::size_t minArgs, std::size_t isUnlimited, std::size_t maxArgs, std::string const& typeNames, CallContext& context)
+    inline void reportInvalidArguments(std::size_t minArgs, std::size_t isUnlimited, std::size_t maxArgs, CallContext& context)
     {
         auto const& arguments = context.input.arguments;
         std::size_t const actualArgsCount = arguments.size();
@@ -123,8 +123,7 @@ namespace coil::detail
             expectedMessage = utils::formatString("%d", minArgs);
 
         std::string_view functionName = context.input.functionName;
-        std::string actualArgsStr = utils::flatten(arguments, "'");
-        auto errorMessage = utils::formatString("Wrong number of arguments to '%.*s': expected %s ([%s]), got %d (%s)", functionName.size(), functionName.data(), expectedMessage.c_str(), typeNames.c_str(), actualArgsCount, actualArgsStr.c_str());
+        auto errorMessage = utils::formatString("Wrong number of arguments to '%.*s': expected %s, got %d", functionName.size(), functionName.data(), expectedMessage.c_str(), actualArgsCount);
 
         context.result.errors.push_back(std::move(errorMessage));
     }
@@ -177,8 +176,7 @@ namespace coil::detail
         using VTraits = VariadicArgsTraits<UserArgTypes>;
         if (!validateArguments(VTraits::minArgs, VTraits::isUnlimited, VTraits::maxArgs, context))
         {
-            std::string typeNames = utils::flatten(UserArgTypes::decayedNames());
-            reportInvalidArguments(VTraits::minArgs, VTraits::isUnlimited, VTraits::maxArgs, typeNames, context);
+            reportInvalidArguments(VTraits::minArgs, VTraits::isUnlimited, VTraits::maxArgs, context);
             return;
         }
 
