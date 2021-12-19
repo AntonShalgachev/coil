@@ -1,3 +1,11 @@
+param (
+    [bool]$keepBuildResults = $false,
+    [int]$buildsCount = 10,
+    [bool[]]$coilOptions = @($true, $false),
+    [bool[]]$clangOptions = @($true, $false),
+    [bool[]]$unityBuildOptions = @($true, $false)
+)
+
 function IIf($If, $IfTrue, $IfFalse) {
     If ($If) {If ($IfTrue -is "ScriptBlock") {&$IfTrue} Else {$IfTrue}}
     Else {If ($IfFalse -is "ScriptBlock") {&$IfFalse} Else {$IfFalse}}
@@ -12,6 +20,7 @@ function Get-ConfigurationName([bool]$UseCoil, [bool]$UseClang, [bool]$UseUnityB
 
 function Measure-SingleBuild {
     param (
+        [switch]$KeepBuildResults = $false,
         [int]$Count = 1,
         [switch]$UseCoil = $false,
         [switch]$UseClang = $false,
@@ -56,7 +65,7 @@ function Measure-SingleBuild {
     Write-Host
 
     Pop-Location
-    if (Test-Path -Path $buildFolder) {
+    if (-not $KeepBuildResults -and (Test-Path -Path $buildFolder)) {
         Remove-Item $buildFolder -Recurse -Force
     }
     
@@ -82,34 +91,38 @@ function Measure-BuildResults($Durations) {
     return $res | Select-Object Median, Average, Minimum, Maximum
 }
 
-Push-Location ../..
-
-$buildCounts = 10
-$coilOptions = @($false, $true)
-$clangOptions = @($false, $true)
-$unityBuildOptions = @($false, $true)
-
-$results = @()
-foreach ($useClang in $clangOptions) {
-    foreach ($useUnityBuild in $unityBuildOptions) {
-        foreach ($useCoil in $coilOptions) {
-            $configurationName = Get-ConfigurationName $useCoil $useClang $useUnityBuild
-            $result = Measure-SingleBuild -Count $buildCounts -UseCoil:$useCoil -UseClang:$useClang -UseUnityBuild:$useUnityBuild
-
-            $results += [PSCustomObject]@{
-                Name = "[$configurationName]"
-                Durations = $result
+function Main {
+    if ($null -eq $env:vsinstalldir) {
+        Write-Error "Visual Studio environment isn't set up"
+        Exit 1
+    }
+    
+    Push-Location ../..
+    
+    $results = @()
+    foreach ($useClang in $clangOptions) {
+        foreach ($useUnityBuild in $unityBuildOptions) {
+            foreach ($useCoil in $coilOptions) {
+                $configurationName = Get-ConfigurationName $useCoil $useClang $useUnityBuild
+                $result = Measure-SingleBuild -KeepBuildResults:$keepBuildResults -Count $buildsCount -UseCoil:$useCoil -UseClang:$useClang -UseUnityBuild:$useUnityBuild
+    
+                $results += [PSCustomObject]@{
+                    Name = "[$configurationName]"
+                    Durations = $result
+                }
             }
         }
     }
+    
+    foreach ($configuration in $results) {
+        $name = $configuration.Name
+        $durations = $configuration.Durations
+    
+        Write-Host "${name}:"
+        Measure-BuildResults $durations | Out-Host
+    }
+    
+    Pop-Location
 }
 
-foreach ($configuration in $results) {
-    $name = $configuration.Name
-    $durations = $configuration.Durations
-
-    Write-Host "${name}:"
-    Measure-BuildResults $durations | Out-Host
-}
-
-Pop-Location
+Main
