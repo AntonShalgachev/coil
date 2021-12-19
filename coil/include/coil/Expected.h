@@ -63,7 +63,7 @@ namespace coil
     template<typename T>
     detail::Unexpected<T> makeUnexpected(T value)
     {
-        return detail::Unexpected<std::decay_t<T>>(value);
+        return detail::Unexpected<std::decay_t<T>>(std::move(value));
     }
 
     template<typename T, typename E>
