@@ -303,7 +303,7 @@ TEST(BindingsTests, TestErrorNoFunction)
     coil::Bindings bindings = createBindings();
     auto result = bindings.execute("");
 
-    ASSERT_EQ(result.errors.size(), 1);
+    EXPECT_EQ(result.errors.size(), 1);
     EXPECT_PRED2(containsError, result.errors, "No function name is specified");
 }
 
@@ -312,7 +312,7 @@ TEST(BindingsTests, TestErrorUndefinedFunction)
     coil::Bindings bindings = createBindings();
     auto result = bindings.execute("foo");
 
-    ASSERT_EQ(result.errors.size(), 1);
+    EXPECT_EQ(result.errors.size(), 1);
     EXPECT_PRED2(containsError, result.errors, "No function 'foo' is registered");
 }
 
@@ -321,7 +321,7 @@ TEST(BindingsTests, TestErrorUndefinedMethod)
     coil::Bindings bindings = createBindings();
     auto result = bindings.execute("obj.foo");
 
-    ASSERT_EQ(result.errors.size(), 1);
+    EXPECT_EQ(result.errors.size(), 1);
     EXPECT_PRED2(containsError, result.errors, "No function 'foo' is registered for type 'unknown'");
 }
 
@@ -330,7 +330,7 @@ TEST(BindingsTests, TestErrorUndefinedObject)
     coil::Bindings bindings = createBindings();
     auto result = bindings.execute("foo.method");
 
-    ASSERT_EQ(result.errors.size(), 1);
+    EXPECT_EQ(result.errors.size(), 1);
     EXPECT_PRED2(containsError, result.errors, "Object 'foo' is not registered");
 }
 
@@ -339,7 +339,7 @@ TEST(BindingsTests, TestErrorWrongArgumentsCount)
     coil::Bindings bindings = createBindings();
     auto result = bindings.execute("sum 1 2 3");
 
-    ASSERT_EQ(result.errors.size(), 1);
+    EXPECT_EQ(result.errors.size(), 1);
     EXPECT_PRED2(containsError, result.errors, "Wrong number of arguments to 'sum': expected 2 ([unknown, unknown]), got 3 ('1', '2', '3')");
 }
 
@@ -348,9 +348,20 @@ TEST(BindingsTests, TestErrorWrongArgumentTypes)
     coil::Bindings bindings = createBindings();
     auto result = bindings.execute("sum foo bar");
 
-    ASSERT_EQ(result.errors.size(), 2);
+    EXPECT_EQ(result.errors.size(), 2);
     EXPECT_PRED2(containsError, result.errors, "Unable to convert 'foo' to type 'unknown'");
     EXPECT_PRED2(containsError, result.errors, "Unable to convert 'bar' to type 'unknown'");
+}
+
+TEST(BindingsTests, TestErrorWrongArgumentTypesVariadic)
+{
+    coil::Bindings bindings = createBindings();
+    auto result = bindings.execute("sum_all foo bar baz");
+
+    EXPECT_EQ(result.errors.size(), 3);
+    EXPECT_PRED2(containsError, result.errors, "Unable to convert 'foo' to type 'unknown'");
+    EXPECT_PRED2(containsError, result.errors, "Unable to convert 'bar' to type 'unknown'");
+    EXPECT_PRED2(containsError, result.errors, "Unable to convert 'baz' to type 'unknown'");
 }
 
 TEST(BindingsTests, TestFunctionReturnValue)
