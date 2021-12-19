@@ -1,5 +1,6 @@
 #pragma once
 
+#include "TypeName.h"
 #include "utils/Utils.h"
 
 #include <string>
