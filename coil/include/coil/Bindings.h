@@ -285,10 +285,14 @@ namespace coil
                 reportInternalError(context, "Unexpected anyObject type");
                 return;
             }
-            if (!std::is_void_v<T> && !*object)
+
+            if constexpr (!std::is_void_v<T>)
             {
-                reportInternalError(context, "object is nullptr");
-                return;
+                if (!*object)
+                {
+                    reportInternalError(context, "object is nullptr");
+                    return;
+                }
             }
 
             detail::call<FuncT, T>(*functor, context, *object);
