@@ -56,6 +56,8 @@ namespace coil
         private:
             T m_value;
         };
+
+        struct dummy {}; // aka std::monostate
     }
 
     template<typename T>
@@ -68,13 +70,13 @@ namespace coil
     class Expected
     {
     public:
-        using ExpectedType = std::conditional_t<std::is_void_v<T>, std::monostate, T>;
+        using ExpectedType = std::conditional_t<std::is_void_v<T>, detail::dummy, T>;
 
         template<typename U = T, typename = std::enable_if_t<!std::is_void_v<U>>>
         Expected(U value) : m_expected(std::move(value)), m_hasValue(true) {}
 
         template<typename U = T, typename = std::enable_if_t<std::is_void_v<U>>>
-        Expected() : m_expected(std::monostate{}), m_hasValue(true) {}
+        Expected() : m_expected(ExpectedType{}), m_hasValue(true) {}
 
         template<typename U>
         Expected(detail::Unexpected<U> error) : m_unexpected(std::move(error)), m_hasValue(false)
