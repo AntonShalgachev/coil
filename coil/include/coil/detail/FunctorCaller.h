@@ -155,13 +155,23 @@ namespace coil::detail
         }
     }
 
+    struct ContextErrorAppender
+    {
+        ContextErrorAppender(CallContext& context) : m_context(context) {}
+
+        void operator()(std::string error) const
+        {
+            m_context.result.errors.push_back(std::move(error));
+        }
+
+    private:
+        CallContext& m_context;
+    };
+
     template<typename Func, typename NonUserArgsTuple, std::size_t... NonUserIndices, typename... UserArgs, std::size_t... UserIndices>
     void unpackAndInvoke(Func& func, CallContext& context, NonUserArgsTuple& nonUserArgs, std::index_sequence<NonUserIndices...>, utils::Types<UserArgs...>, std::index_sequence<UserIndices...>)
     {
-        auto onError = [&context](std::string error)
-        {
-            context.result.errors.push_back(std::move(error));
-        };
+        ContextErrorAppender onError{ context };
 
         invoke(func, context.result, std::get<NonUserIndices>(nonUserArgs)..., VariadicConsumer<std::decay_t<UserArgs>>::consume(context.input.arguments, UserIndices, onError)...);
     }
