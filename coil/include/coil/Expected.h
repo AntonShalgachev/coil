@@ -87,7 +87,7 @@ namespace coil
             constructFrom(rhs);
         }
 
-        Expected(Expected<T, E>&& rhs)
+        Expected(Expected<T, E>&& rhs) noexcept
         {
             constructFrom(std::move(rhs));
         }
@@ -116,7 +116,7 @@ namespace coil
             return *this;
         }
 
-        Expected<T, E>& operator=(Expected<T, E>&& rhs)
+        Expected<T, E>& operator=(Expected<T, E>&& rhs) noexcept
         {
             if (m_hasValue && rhs.m_hasValue)
             {
