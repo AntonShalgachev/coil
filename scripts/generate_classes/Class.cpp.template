@@ -31,7 +31,7 @@ void $name::registerBindings(GeneralBindings& bindings)
 #end for
 
 #for $variable in $member_variables
-    ::bind<$name>(bindings, "${variable.name}", &${name}::${variable.name});
+    ::bind<$name>(bindings, "${variable.name}", coil::variable(&${name}::${variable.name}));
 #end for
 
 #for $function in $functions
@@ -46,7 +46,7 @@ void $name::registerBindings(GeneralBindings& bindings)
 #end for
 
 #for $variable in $variables
-    bindings["${name}_${variable.name}"] = &${name}::${variable.name};
+    bindings["${name}_${variable.name}"] = coil::variable(&${name}::${variable.name});
 #end for
 }
 \#endif

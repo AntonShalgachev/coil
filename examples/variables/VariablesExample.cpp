@@ -1,6 +1,7 @@
 #include "VariablesExample.h"
 
 #include "common/ExamplesCommon.h"
+#include "coil/utils/VariableWrapper.h"
 
 #include <iostream>
 #include "common/FlagVariableWrapper.h"
@@ -38,11 +39,11 @@ void VariablesExample::run()
     Flags flags = Flags::Flag1 | Flags::Flag3;
 
     bindings.addObject("obj", &object);
-    bindings.bind<Object>("enabled", &Object::enabled);
+    bindings.bind<Object>("enabled", coil::variable(&Object::enabled));
     bindings.bind<Object>("flags", MemberFlagsVariableWrapper{ &Object::flags });
 
-    bindings["time_scale"] = &timeScale;
-    bindings["city"] = &city;
+    bindings["time_scale"] = coil::variable(&timeScale);
+    bindings["city"] = coil::variable(&city);
     bindings["flags"] = FlagsVariableWrapper{ &flags };
 
     bindings["print_variables"] = [&object, &timeScale, &city, &flags](coil::Context context)

@@ -23,6 +23,7 @@ void bind(sol::state& bindings, std::string_view name, Func&& func, ObjectPointe
 
 #elif USE_COIL
 #include "coil/Bindings.h"
+#include "coil/utils/VariableWrapper.h"
 
 using GeneralBindings = coil::Bindings;
 
