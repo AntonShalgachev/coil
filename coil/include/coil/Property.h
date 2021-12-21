@@ -54,8 +54,8 @@ namespace coil
     {
         using GetterTraits = detail::FuncTraitsEx<G>;
         using SetterTraits = detail::FuncTraitsEx<S>;
-        static constexpr bool getterHasTarget = GetterTraits::isMethod || GetterTraits::hasTarget;
-        static constexpr bool setterHasTarget = SetterTraits::isMethod || SetterTraits::hasTarget;
+        static constexpr bool getterHasTarget = GetterTraits::isMethod || GetterTraits::ArgsTraits::hasTarget;
+        static constexpr bool setterHasTarget = SetterTraits::isMethod || SetterTraits::ArgsTraits::hasTarget;
 
         static_assert(getterHasTarget == setterHasTarget, "Either both or none functors should be callable with a target");
         static constexpr bool hasTarget = getterHasTarget;
@@ -66,8 +66,8 @@ namespace coil
         }
         else
         {
-            using GetterTargetType = std::conditional_t<GetterTraits::hasTarget, typename GetterTraits::ExplicitTargetType, typename GetterTraits::ObjectType>;
-            using SetterTargetType = std::conditional_t<SetterTraits::hasTarget, typename SetterTraits::ExplicitTargetType, typename SetterTraits::ObjectType>;
+            using GetterTargetType = std::conditional_t<GetterTraits::ArgsTraits::hasTarget, typename GetterTraits::ArgsTraits::ExplicitTargetType, typename GetterTraits::ObjectType>;
+            using SetterTargetType = std::conditional_t<SetterTraits::ArgsTraits::hasTarget, typename SetterTraits::ArgsTraits::ExplicitTargetType, typename SetterTraits::ObjectType>;
 
             static_assert(std::is_same_v<GetterTargetType, SetterTargetType>, "Both functors should be callable with the same target type");
 

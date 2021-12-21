@@ -38,6 +38,7 @@ namespace coil
         {
             using UnqualifiedFunc = std::decay_t<Func>;
             using FuncTraits = detail::FuncTraitsEx<UnqualifiedFunc>;
+            using ArgsTraits = typename FuncTraits::ArgsTraits;
 
             static_assert(FuncTraits::isFunc, "Func should be a functor object");
 
@@ -51,11 +52,11 @@ namespace coil
             if constexpr (std::is_void_v<T>)
                 static_assert(!std::is_member_function_pointer_v<UnqualifiedFunc>, "Func shouldn't be a member function");
 
-            if constexpr (FuncTraits::hasTarget)
+            if constexpr (ArgsTraits::hasTarget)
             {
                 static_assert(!std::is_void_v<T>, "Can't bind a functor with explicit target to a type 'void'");
                 static_assert(!std::is_same_v<T, typename FuncTraits::ObjectType>, "Explicit target shouldn't be used on member functions of the same type");
-                static_assert(std::is_same_v<T, std::decay_t<typename FuncTraits::ExplicitTargetType>>, "Explicit target should be either T* or T const*");
+                static_assert(std::is_same_v<T, std::decay_t<typename ArgsTraits::ExplicitTargetType>>, "Explicit target should be either T* or T const*");
             }
 
             if (name.getView().empty())
