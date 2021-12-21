@@ -13,15 +13,13 @@ namespace coil::utils
 		template<typename Func, typename ObjectReferenceT, typename... Args>
 		struct MemberFunctionFunctorImpl<Func, ObjectReferenceT, Types<Args...>>
 		{
-			using R = typename FuncTraits<Func>::ReturnType;
-
 			static_assert(std::is_lvalue_reference_v<ObjectReferenceT>, "ObjectReferenceT should be an L-value reference type");
 
 			MemberFunctionFunctorImpl(Func&& func, ObjectReferenceT obj) : func(std::forward<Func>(func)), obj(obj) {}
 
-			R operator()(Args... args)
+			decltype(auto) operator()(Args... args)
 			{
-				return std::invoke(func, obj, std::forward<Args>(args)...);
+				return (std::addressof(obj)->*func)(std::forward<Args>(args)...);
 			}
 
 			Func func;
