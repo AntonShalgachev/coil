@@ -247,20 +247,27 @@ namespace coil
             TrampolineT m_trampoline;
         };
 
-        template<typename T>
-        void objectTrampoline(std::any const& anyObject, detail::CallContext& context)
+        void invokeFunctorTrampoline(utils::TypeIdT typeId, std::string_view typeName, std::any const& anyObject, detail::CallContext& context)
         {
             auto&& functionName = context.input.functionName;
 
-            auto& typeFunctors = m_functors[utils::typeId<T>()];
+            auto& typeFunctors = m_functors[typeId];
             if (auto it = typeFunctors.find(functionName); it != typeFunctors.end())
                 return it->second.invokeTrampoline(this, anyObject, context);
 
-            auto&& typeName = TypeName<T>::name();
-            if constexpr (std::is_void_v<T>)
+            if (typeName.empty())
                 context.result.errors.push_back(utils::formatString("No function '%.*s' is registered", functionName.size(), functionName.data()));
             else
                 context.result.errors.push_back(utils::formatString("No function '%.*s' is registered for type '%.*s'", functionName.size(), functionName.data(), typeName.size(), typeName.data()));
+        }
+
+        template<typename T>
+        void objectTrampoline(std::any const& anyObject, detail::CallContext& context)
+        {
+            if constexpr (std::is_void_v<T>)
+                return invokeFunctorTrampoline(utils::typeId<T>(), "", anyObject, context);
+            else
+                return invokeFunctorTrampoline(utils::typeId<T>(), TypeName<T>::name(), anyObject, context);
         }
 
         template<typename T, typename FuncT>
