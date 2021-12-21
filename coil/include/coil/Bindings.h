@@ -263,38 +263,11 @@ namespace coil
                 context.result.errors.push_back(utils::formatString("No function '%.*s' is registered for type '%.*s'", functionName.size(), functionName.data(), typeName.size(), typeName.data()));
         }
 
-        static void reportInternalError(detail::CallContext& context, std::string_view details)
-        {
-            context.result.errors.push_back("Internal error: " + std::string(details));
-        }
-
         template<typename T, typename FuncT>
         void functorTrampoline([[maybe_unused]] std::any const& anyObject, std::any& anyFunctor, detail::CallContext& context)
         {
             FuncT* functor = std::any_cast<FuncT>(&anyFunctor);
-
-            if (!functor)
-            {
-                reportInternalError(context, "Unexpected anyFunctor type");
-                return;
-            }
-
             auto&& object = std::any_cast<T*>(&anyObject);
-            if (!object)
-            {
-                reportInternalError(context, "Unexpected anyObject type");
-                return;
-            }
-
-            if constexpr (!std::is_void_v<T>)
-            {
-                if (!*object)
-                {
-                    reportInternalError(context, "object is nullptr");
-                    return;
-                }
-            }
-
             detail::call<FuncT, T>(*functor, context, *object);
         }
 
