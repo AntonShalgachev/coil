@@ -183,12 +183,24 @@ namespace coil::detail
         CallContext& m_context;
     };
 
-    template<typename Func, typename NonUserArgsTuple, std::size_t... NonUserIndices, typename... UserArgs, std::size_t... UserIndices>
-    void unpackAndInvoke(Func& func, CallContext& context, NonUserArgsTuple& nonUserArgs, std::index_sequence<NonUserIndices...>, utils::Types<UserArgs...>, std::index_sequence<UserIndices...>)
+    template<typename T>
+    struct NonUserArgs
+    {
+        T* target = nullptr;
+        Context context;
+        NamedArgs namedArgs;
+
+        T* get(std::integral_constant<std::size_t, 0>) { return target; }
+        Context& get(std::integral_constant<std::size_t, 1>) { return context; }
+        NamedArgs& get(std::integral_constant<std::size_t, 2>) { return namedArgs; }
+    };
+
+    template<typename Func, typename T, std::size_t... NonUserIndices, typename... UserArgs, std::size_t... UserIndices>
+    void unpackAndInvoke(Func& func, CallContext& context, NonUserArgs<T>& nonUserArgs, std::index_sequence<NonUserIndices...>, utils::Types<UserArgs...>, std::index_sequence<UserIndices...>)
     {
         ContextErrorAppender onError{ context };
 
-        invoke(context.result, func, std::get<NonUserIndices>(nonUserArgs)..., VariadicConsumer<std::decay_t<UserArgs>>::consume(context.input.arguments, UserIndices, onError)...);
+        invoke(context.result, func, nonUserArgs.get(std::integral_constant<std::size_t, NonUserIndices>{})..., VariadicConsumer<std::decay_t<UserArgs>>::consume(context.input.arguments, UserIndices, onError)...);
     }
 
     template<typename Func, typename T>
@@ -215,7 +227,7 @@ namespace coil::detail
         static constexpr bool hasContext = Traits::hasContext;
         static constexpr bool hasNamedArgs = Traits::hasNamedArgs;
 
-        std::tuple<T*, Context, NamedArgs> nonUserArgs{ target, Context{context}, NamedArgs{context} };
+        NonUserArgs<T> nonUserArgs{ target, Context{context}, NamedArgs{context} };
         using NonUserArgIndices = utils::TrueIndicesT<hasTarget, hasContext, hasNamedArgs>;
 
         unpackAndInvoke(func, context, nonUserArgs, NonUserArgIndices{}, UserArgTypes{}, UserArgIndicesType{});
