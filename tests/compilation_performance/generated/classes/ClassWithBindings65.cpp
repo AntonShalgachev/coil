@@ -41,21 +41,21 @@ void ClassWithBindings65::registerBindings(GeneralBindings& bindings)
     ::bind<ClassWithBindings65>(bindings, "method13", &ClassWithBindings65::method13);
     ::bind<ClassWithBindings65>(bindings, "method14", &ClassWithBindings65::method14);
 
-    ::bind<ClassWithBindings65>(bindings, "memberVariable0", &ClassWithBindings65::memberVariable0);
-    ::bind<ClassWithBindings65>(bindings, "memberVariable1", &ClassWithBindings65::memberVariable1);
-    ::bind<ClassWithBindings65>(bindings, "memberVariable2", &ClassWithBindings65::memberVariable2);
-    ::bind<ClassWithBindings65>(bindings, "memberVariable3", &ClassWithBindings65::memberVariable3);
-    ::bind<ClassWithBindings65>(bindings, "memberVariable4", &ClassWithBindings65::memberVariable4);
-    ::bind<ClassWithBindings65>(bindings, "memberVariable5", &ClassWithBindings65::memberVariable5);
-    ::bind<ClassWithBindings65>(bindings, "memberVariable6", &ClassWithBindings65::memberVariable6);
-    ::bind<ClassWithBindings65>(bindings, "memberVariable7", &ClassWithBindings65::memberVariable7);
-    ::bind<ClassWithBindings65>(bindings, "memberVariable8", &ClassWithBindings65::memberVariable8);
-    ::bind<ClassWithBindings65>(bindings, "memberVariable9", &ClassWithBindings65::memberVariable9);
-    ::bind<ClassWithBindings65>(bindings, "memberVariable10", &ClassWithBindings65::memberVariable10);
-    ::bind<ClassWithBindings65>(bindings, "memberVariable11", &ClassWithBindings65::memberVariable11);
-    ::bind<ClassWithBindings65>(bindings, "memberVariable12", &ClassWithBindings65::memberVariable12);
-    ::bind<ClassWithBindings65>(bindings, "memberVariable13", &ClassWithBindings65::memberVariable13);
-    ::bind<ClassWithBindings65>(bindings, "memberVariable14", &ClassWithBindings65::memberVariable14);
+    ::bind<ClassWithBindings65>(bindings, "memberVariable0", coil::variable(&ClassWithBindings65::memberVariable0));
+    ::bind<ClassWithBindings65>(bindings, "memberVariable1", coil::variable(&ClassWithBindings65::memberVariable1));
+    ::bind<ClassWithBindings65>(bindings, "memberVariable2", coil::variable(&ClassWithBindings65::memberVariable2));
+    ::bind<ClassWithBindings65>(bindings, "memberVariable3", coil::variable(&ClassWithBindings65::memberVariable3));
+    ::bind<ClassWithBindings65>(bindings, "memberVariable4", coil::variable(&ClassWithBindings65::memberVariable4));
+    ::bind<ClassWithBindings65>(bindings, "memberVariable5", coil::variable(&ClassWithBindings65::memberVariable5));
+    ::bind<ClassWithBindings65>(bindings, "memberVariable6", coil::variable(&ClassWithBindings65::memberVariable6));
+    ::bind<ClassWithBindings65>(bindings, "memberVariable7", coil::variable(&ClassWithBindings65::memberVariable7));
+    ::bind<ClassWithBindings65>(bindings, "memberVariable8", coil::variable(&ClassWithBindings65::memberVariable8));
+    ::bind<ClassWithBindings65>(bindings, "memberVariable9", coil::variable(&ClassWithBindings65::memberVariable9));
+    ::bind<ClassWithBindings65>(bindings, "memberVariable10", coil::variable(&ClassWithBindings65::memberVariable10));
+    ::bind<ClassWithBindings65>(bindings, "memberVariable11", coil::variable(&ClassWithBindings65::memberVariable11));
+    ::bind<ClassWithBindings65>(bindings, "memberVariable12", coil::variable(&ClassWithBindings65::memberVariable12));
+    ::bind<ClassWithBindings65>(bindings, "memberVariable13", coil::variable(&ClassWithBindings65::memberVariable13));
+    ::bind<ClassWithBindings65>(bindings, "memberVariable14", coil::variable(&ClassWithBindings65::memberVariable14));
 
     bindings["ClassWithBindings65_function0"] = [](coil::Context context, coil::NamedArgs args, double arg0, double arg1, unsigned arg2, short arg3, int arg4)
     {
@@ -178,21 +178,21 @@ void ClassWithBindings65::registerBindings(GeneralBindings& bindings)
         return ClassWithBindings65::function14(arg0, arg1, arg2, arg3, arg4);
     };
 
-    bindings["ClassWithBindings65_variable0"] = &ClassWithBindings65::variable0;
-    bindings["ClassWithBindings65_variable1"] = &ClassWithBindings65::variable1;
-    bindings["ClassWithBindings65_variable2"] = &ClassWithBindings65::variable2;
-    bindings["ClassWithBindings65_variable3"] = &ClassWithBindings65::variable3;
-    bindings["ClassWithBindings65_variable4"] = &ClassWithBindings65::variable4;
-    bindings["ClassWithBindings65_variable5"] = &ClassWithBindings65::variable5;
-    bindings["ClassWithBindings65_variable6"] = &ClassWithBindings65::variable6;
-    bindings["ClassWithBindings65_variable7"] = &ClassWithBindings65::variable7;
-    bindings["ClassWithBindings65_variable8"] = &ClassWithBindings65::variable8;
-    bindings["ClassWithBindings65_variable9"] = &ClassWithBindings65::variable9;
-    bindings["ClassWithBindings65_variable10"] = &ClassWithBindings65::variable10;
-    bindings["ClassWithBindings65_variable11"] = &ClassWithBindings65::variable11;
-    bindings["ClassWithBindings65_variable12"] = &ClassWithBindings65::variable12;
-    bindings["ClassWithBindings65_variable13"] = &ClassWithBindings65::variable13;
-    bindings["ClassWithBindings65_variable14"] = &ClassWithBindings65::variable14;
+    bindings["ClassWithBindings65_variable0"] = coil::variable(&ClassWithBindings65::variable0);
+    bindings["ClassWithBindings65_variable1"] = coil::variable(&ClassWithBindings65::variable1);
+    bindings["ClassWithBindings65_variable2"] = coil::variable(&ClassWithBindings65::variable2);
+    bindings["ClassWithBindings65_variable3"] = coil::variable(&ClassWithBindings65::variable3);
+    bindings["ClassWithBindings65_variable4"] = coil::variable(&ClassWithBindings65::variable4);
+    bindings["ClassWithBindings65_variable5"] = coil::variable(&ClassWithBindings65::variable5);
+    bindings["ClassWithBindings65_variable6"] = coil::variable(&ClassWithBindings65::variable6);
+    bindings["ClassWithBindings65_variable7"] = coil::variable(&ClassWithBindings65::variable7);
+    bindings["ClassWithBindings65_variable8"] = coil::variable(&ClassWithBindings65::variable8);
+    bindings["ClassWithBindings65_variable9"] = coil::variable(&ClassWithBindings65::variable9);
+    bindings["ClassWithBindings65_variable10"] = coil::variable(&ClassWithBindings65::variable10);
+    bindings["ClassWithBindings65_variable11"] = coil::variable(&ClassWithBindings65::variable11);
+    bindings["ClassWithBindings65_variable12"] = coil::variable(&ClassWithBindings65::variable12);
+    bindings["ClassWithBindings65_variable13"] = coil::variable(&ClassWithBindings65::variable13);
+    bindings["ClassWithBindings65_variable14"] = coil::variable(&ClassWithBindings65::variable14);
 }
 #endif
 

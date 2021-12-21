@@ -4,5 +4,7 @@ int main()
 {
     [[maybe_unused]] coil::Bindings cmd;
 
-    cmd[""] = coil::variable(&Object::memberVariable);
+    int var = 42;
+
+    cmd[""] = &var;
 }

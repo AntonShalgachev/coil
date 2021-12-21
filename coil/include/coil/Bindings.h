@@ -9,8 +9,6 @@
 #include "utils/Utils.h"
 #include "detail/FunctorCaller.h"
 #include "ExecutionResult.h"
-#include "utils/MemberFunctionFunctor.h"
-#include "utils/VariableWrapper.h"
 #include "utils/TypeId.h"
 #include "BindingProxy.h"
 #include "DefaultLexer.h"
@@ -29,59 +27,44 @@ namespace coil
             return BindingProxy<Bindings, GeneralizedString>(*this, std::move(name));
         }
 
-        template<typename T, typename Func, typename ObjectPointerT>
-        void bind(GeneralizedString name, Func&& func, ObjectPointerT obj)
-        {
-            using Traits = utils::FuncTraits<Func>;
-            using ObjectT = std::remove_pointer_t<ObjectPointerT>;
-            using ObjectReferenceT = std::add_lvalue_reference_t<ObjectT>;
- 
-            static_assert(!std::is_void_v<typename Traits::ObjectType>, "Func must be a pointer to member function");
-            static_assert(std::is_pointer_v<ObjectPointerT>, "Object must be a pointer"); // To make it obvious that we don't make a copy of this object
-            static_assert(std::is_same_v<typename Traits::ObjectType, std::decay_t<ObjectT>>, "Object must have the same type as the function's object type");
-            if constexpr (std::is_const_v<ObjectT>)
-                static_assert(Traits::isConst, "Can't call non-const method on a const object");
-
-            return bind<T>(std::move(name), utils::MemberFunctionFunctor<Func, ObjectReferenceT>(std::forward<Func>(func), *obj));
-        }
-
-        template<typename Func, typename ObjectPointerT>
-        void bind(GeneralizedString name, Func&& func, ObjectPointerT obj)
-        {
-            return bind<void>(std::move(name), std::forward<Func>(func), obj);
-        }
-
         template<typename AnyT>
         void bind(GeneralizedString name, AnyT&& anything)
         {
             return bind<void, AnyT>(std::move(name), std::forward<AnyT>(anything));
         }
 
-        template<typename T, typename AnyT>
-        void bind(GeneralizedString name, AnyT&& anything)
-		{
-            using DecayedAnyT = std::decay_t<AnyT>;
-            if constexpr (utils::FuncTraits<DecayedAnyT>::isFunc)
+        template<typename T, typename Func>
+        void bind(GeneralizedString name, Func&& func)
+        {
+            using UnqualifiedFunc = std::decay_t<Func>;
+            using FuncTraits = detail::FuncTraitsEx<UnqualifiedFunc>;
+
+            static_assert(FuncTraits::isFunc, "Func should be a functor object");
+
+            // TODO assert that user parameters of Func are either values or const-references
+            // TODO assert that Context parameter is non-const reference and is at second optional position
+            // TODO assert that variadic args are at the end of the function
+
+            static_assert(!std::is_const_v<T>, "T shouldn't be const");
+            static_assert(!std::is_pointer_v<T>, "T shouldn't be a pointer");
+
+            if constexpr (std::is_void_v<T>)
+                static_assert(!std::is_member_function_pointer_v<UnqualifiedFunc>, "Func shouldn't be a member function");
+
+            if constexpr (FuncTraits::hasTarget)
             {
-                return bindFunc<T>(std::move(name), std::forward<AnyT>(anything));
+                static_assert(!std::is_void_v<T>, "Can't bind a functor with explicit target to a type 'void'");
+                static_assert(!std::is_same_v<T, typename FuncTraits::ObjectType>, "Explicit target shouldn't be used on member functions of the same type");
+                static_assert(std::is_same_v<T, std::decay_t<typename FuncTraits::ExplicitTargetType>>, "Explicit target should be either T* or T const*");
             }
-            else if constexpr (std::is_member_object_pointer_v<DecayedAnyT>)
-            {
-                // TODO disallow variadic args (e.g. vector, optional)
-                static_assert(!std::is_void_v<T>, "Pointer to member variable should be bound to non-void type");
-                return bindMemberVariable<T>(std::move(name), std::forward<AnyT>(anything));
-            }
-            else if constexpr (std::is_pointer_v<AnyT> && !std::is_function_v<AnyT>)
-            {
-                // TODO disallow variadic args (e.g. vector, optional)
-                return bindVariable<T>(std::move(name), std::forward<AnyT>(anything));
-            }
-            else
-            {
-                // TODO add more descriptive message for various types:
-                // rvalue, reference to variable, objects without operator()
-                static_assert(sizeof(AnyT) == -1, "Unsupported type AnyT");
-            }
+
+            if (name.getView().empty())
+                return;
+
+            UnqualifiedFunc unqualifiedFunc{ std::move(func) };
+
+            auto& typeFunctors = m_functors[utils::typeId<T>()];
+            typeFunctors.insert_or_assign(std::move(name), AnyFunctor{ std::move(unqualifiedFunc), &Bindings::functorTrampoline<T, UnqualifiedFunc> });
         }
 
         void unbind(std::string_view name) { return unbind<void>(name); }
@@ -160,50 +143,6 @@ namespace coil
         }
 
     private:
-        template<typename T, typename Func>
-        void bindFunc(GeneralizedString name, Func&& func)
-        {
-            // TODO assert that user parameters of Func are either values or const-references
-            // TODO assert that Context parameter is non-const reference and is at second optional position
-            // TODO assert that variadic args are at the end of the function
-
-            static_assert(!std::is_const_v<T>, "T shouldn't be const");
-            static_assert(!std::is_pointer_v<T>, "T shouldn't be a pointer");
-
-            using UnqualifiedFunc = std::decay_t<Func>;
-            using FuncTraits = detail::FuncTraitsEx<UnqualifiedFunc>;
-
-            if constexpr (std::is_void_v<T>)
-                static_assert(!std::is_member_function_pointer_v<UnqualifiedFunc>, "Func shouldn't be a member function");
-
-            if constexpr (FuncTraits::hasTarget)
-            {
-                static_assert(!std::is_void_v<T>, "Can't have explicit target for bindings without target");
-                static_assert(!std::is_same_v<T, typename FuncTraits::ObjectType>, "Explicit target shouldn't be used on member functions of the same type");
-                static_assert(std::is_same_v<T, std::decay_t<typename FuncTraits::ExplicitTargetType>>, "Explicit target should be either T* or T const*");
-            }
-
-            if (name.getView().empty())
-                return;
-
-            UnqualifiedFunc unqualifiedFunc{ std::move(func) };
-
-            auto& typeFunctors = m_functors[utils::typeId<T>()];
-            typeFunctors.insert_or_assign(std::move(name), AnyFunctor{ std::move(unqualifiedFunc), &Bindings::functorTrampoline<T, UnqualifiedFunc> });
-        }
-
-        template<typename T, typename R>
-        void bindMemberVariable(GeneralizedString name, R T::* var)
-        {
-            return bindFunc<T>(std::move(name), utils::MemberVariableWrapper{ var });
-        }
-
-        template<typename T, typename R>
-        void bindVariable(GeneralizedString name, R* var)
-        {
-            return bindFunc<T>(std::move(name), utils::VariableWrapper{ var });
-        }
-
         struct AnyObject
         {
             using TrampolineT = void(Bindings::*)(std::any const&, detail::CallContext&);

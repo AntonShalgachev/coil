@@ -8,7 +8,7 @@ int main()
 
     cmd[""] = &freeFunc;
     cmd[""] = &freeFuncWithContext;
-    cmd[""] = &variable;
+    cmd[""] = coil::variable(&variable);
     cmd[""] = &freeFuncWithoutArgs;
     cmd[""] = &freeFuncWithoutArgsWithContext;
     cmd[""] = functor;
@@ -17,8 +17,8 @@ int main()
     cmd[""] = lambdaWithContext;
     cmd[""] = &Object::staticFunc;
     cmd[""] = &Object::staticFuncWithContext;
-    cmd.bind("", &Object::memberFunc, &object);
-    cmd.bind("", &Object::memberFuncWithContext, &object);
+    cmd.bind("", coil::bind(&Object::memberFunc, &object));
+    cmd.bind("", coil::bind(&Object::memberFuncWithContext, &object));
 
     cmd[""] = [](coil::NamedArgs) {};
     cmd[""] = [](coil::NamedArgs&) {};
@@ -29,7 +29,7 @@ int main()
 
     cmd.bind<Object>("", &Object::memberFunc);
     cmd.bind<Object>("", &Object::memberFuncWithContext);
-    cmd.bind<Object>("", &Object::memberVariable);
+    cmd.bind<Object>("", coil::variable(&Object::memberVariable));
     cmd.bind<Object>("", functorWithTarget);
     cmd.bind<Object>("", functorWithTargetContext);
     cmd.bind<Object>("", lambdaWithTarget);
@@ -43,7 +43,7 @@ int main()
     cmd.bind<Object>("", [](Object const*) {});
     cmd.bind<Object>("", &freeFuncWithoutArgs);
     cmd.bind<Object>("", &freeFunc);
-    cmd.bind<Object>("", &variable);
+    cmd.bind<Object>("", coil::variable(&variable));
     cmd.bind<Object>("", []() {});
     cmd.bind<Object>("", [](int) {});
     cmd.bind<Object>("", &Object::staticFuncWithTarget);
@@ -51,8 +51,8 @@ int main()
 
     cmd.bind<Object>("", &funcTargetNamedArgs);
 
-    cmd.bind<Object>("", &Object::memberFuncWithTarget, &object);
-    cmd.bind<Object>("", &Object::memberFuncWithTargetContext, &object);
+    cmd.bind<Object>("", coil::bind(&Object::memberFuncWithTarget, &object));
+    cmd.bind<Object>("", coil::bind(&Object::memberFuncWithTargetContext, &object));
 
     cmd[""] = &funcVariadicVector;
     cmd[""] = &funcFloatVector;

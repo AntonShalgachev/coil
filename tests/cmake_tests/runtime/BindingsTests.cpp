@@ -1,5 +1,6 @@
 #include "gtest/gtest.h"
 #include "coil/Bindings.h"
+#include "coil/utils/VariableWrapper.h"
 
 namespace stats
 {
@@ -158,7 +159,7 @@ namespace
         bindings.bind("sum_all_init", &sumAllInit);
         bindings.bind("func_with_optional", &funcWithOptional);
         bindings.bind("output", &output);
-        bindings.bind("var", &trackedVariable);
+        bindings.bind("var", coil::variable(&trackedVariable));
         bindings.bind("create_tracker", &createTracker);
         bindings.bind("use_tracker_by_value", &useTrackerByValue);
         bindings.bind("use_tracker_by_ref", &useTrackerByRef);

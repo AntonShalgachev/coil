@@ -41,21 +41,21 @@ void ClassWithBindings86::registerBindings(GeneralBindings& bindings)
     ::bind<ClassWithBindings86>(bindings, "method13", &ClassWithBindings86::method13);
     ::bind<ClassWithBindings86>(bindings, "method14", &ClassWithBindings86::method14);
 
-    ::bind<ClassWithBindings86>(bindings, "memberVariable0", &ClassWithBindings86::memberVariable0);
-    ::bind<ClassWithBindings86>(bindings, "memberVariable1", &ClassWithBindings86::memberVariable1);
-    ::bind<ClassWithBindings86>(bindings, "memberVariable2", &ClassWithBindings86::memberVariable2);
-    ::bind<ClassWithBindings86>(bindings, "memberVariable3", &ClassWithBindings86::memberVariable3);
-    ::bind<ClassWithBindings86>(bindings, "memberVariable4", &ClassWithBindings86::memberVariable4);
-    ::bind<ClassWithBindings86>(bindings, "memberVariable5", &ClassWithBindings86::memberVariable5);
-    ::bind<ClassWithBindings86>(bindings, "memberVariable6", &ClassWithBindings86::memberVariable6);
-    ::bind<ClassWithBindings86>(bindings, "memberVariable7", &ClassWithBindings86::memberVariable7);
-    ::bind<ClassWithBindings86>(bindings, "memberVariable8", &ClassWithBindings86::memberVariable8);
-    ::bind<ClassWithBindings86>(bindings, "memberVariable9", &ClassWithBindings86::memberVariable9);
-    ::bind<ClassWithBindings86>(bindings, "memberVariable10", &ClassWithBindings86::memberVariable10);
-    ::bind<ClassWithBindings86>(bindings, "memberVariable11", &ClassWithBindings86::memberVariable11);
-    ::bind<ClassWithBindings86>(bindings, "memberVariable12", &ClassWithBindings86::memberVariable12);
-    ::bind<ClassWithBindings86>(bindings, "memberVariable13", &ClassWithBindings86::memberVariable13);
-    ::bind<ClassWithBindings86>(bindings, "memberVariable14", &ClassWithBindings86::memberVariable14);
+    ::bind<ClassWithBindings86>(bindings, "memberVariable0", coil::variable(&ClassWithBindings86::memberVariable0));
+    ::bind<ClassWithBindings86>(bindings, "memberVariable1", coil::variable(&ClassWithBindings86::memberVariable1));
+    ::bind<ClassWithBindings86>(bindings, "memberVariable2", coil::variable(&ClassWithBindings86::memberVariable2));
+    ::bind<ClassWithBindings86>(bindings, "memberVariable3", coil::variable(&ClassWithBindings86::memberVariable3));
+    ::bind<ClassWithBindings86>(bindings, "memberVariable4", coil::variable(&ClassWithBindings86::memberVariable4));
+    ::bind<ClassWithBindings86>(bindings, "memberVariable5", coil::variable(&ClassWithBindings86::memberVariable5));
+    ::bind<ClassWithBindings86>(bindings, "memberVariable6", coil::variable(&ClassWithBindings86::memberVariable6));
+    ::bind<ClassWithBindings86>(bindings, "memberVariable7", coil::variable(&ClassWithBindings86::memberVariable7));
+    ::bind<ClassWithBindings86>(bindings, "memberVariable8", coil::variable(&ClassWithBindings86::memberVariable8));
+    ::bind<ClassWithBindings86>(bindings, "memberVariable9", coil::variable(&ClassWithBindings86::memberVariable9));
+    ::bind<ClassWithBindings86>(bindings, "memberVariable10", coil::variable(&ClassWithBindings86::memberVariable10));
+    ::bind<ClassWithBindings86>(bindings, "memberVariable11", coil::variable(&ClassWithBindings86::memberVariable11));
+    ::bind<ClassWithBindings86>(bindings, "memberVariable12", coil::variable(&ClassWithBindings86::memberVariable12));
+    ::bind<ClassWithBindings86>(bindings, "memberVariable13", coil::variable(&ClassWithBindings86::memberVariable13));
+    ::bind<ClassWithBindings86>(bindings, "memberVariable14", coil::variable(&ClassWithBindings86::memberVariable14));
 
     bindings["ClassWithBindings86_function0"] = [](coil::Context context, coil::NamedArgs args, short arg0, short arg1, short arg2, float arg3, short arg4)
     {
@@ -178,21 +178,21 @@ void ClassWithBindings86::registerBindings(GeneralBindings& bindings)
         return ClassWithBindings86::function14(arg0, arg1, arg2, arg3, arg4);
     };
 
-    bindings["ClassWithBindings86_variable0"] = &ClassWithBindings86::variable0;
-    bindings["ClassWithBindings86_variable1"] = &ClassWithBindings86::variable1;
-    bindings["ClassWithBindings86_variable2"] = &ClassWithBindings86::variable2;
-    bindings["ClassWithBindings86_variable3"] = &ClassWithBindings86::variable3;
-    bindings["ClassWithBindings86_variable4"] = &ClassWithBindings86::variable4;
-    bindings["ClassWithBindings86_variable5"] = &ClassWithBindings86::variable5;
-    bindings["ClassWithBindings86_variable6"] = &ClassWithBindings86::variable6;
-    bindings["ClassWithBindings86_variable7"] = &ClassWithBindings86::variable7;
-    bindings["ClassWithBindings86_variable8"] = &ClassWithBindings86::variable8;
-    bindings["ClassWithBindings86_variable9"] = &ClassWithBindings86::variable9;
-    bindings["ClassWithBindings86_variable10"] = &ClassWithBindings86::variable10;
-    bindings["ClassWithBindings86_variable11"] = &ClassWithBindings86::variable11;
-    bindings["ClassWithBindings86_variable12"] = &ClassWithBindings86::variable12;
-    bindings["ClassWithBindings86_variable13"] = &ClassWithBindings86::variable13;
-    bindings["ClassWithBindings86_variable14"] = &ClassWithBindings86::variable14;
+    bindings["ClassWithBindings86_variable0"] = coil::variable(&ClassWithBindings86::variable0);
+    bindings["ClassWithBindings86_variable1"] = coil::variable(&ClassWithBindings86::variable1);
+    bindings["ClassWithBindings86_variable2"] = coil::variable(&ClassWithBindings86::variable2);
+    bindings["ClassWithBindings86_variable3"] = coil::variable(&ClassWithBindings86::variable3);
+    bindings["ClassWithBindings86_variable4"] = coil::variable(&ClassWithBindings86::variable4);
+    bindings["ClassWithBindings86_variable5"] = coil::variable(&ClassWithBindings86::variable5);
+    bindings["ClassWithBindings86_variable6"] = coil::variable(&ClassWithBindings86::variable6);
+    bindings["ClassWithBindings86_variable7"] = coil::variable(&ClassWithBindings86::variable7);
+    bindings["ClassWithBindings86_variable8"] = coil::variable(&ClassWithBindings86::variable8);
+    bindings["ClassWithBindings86_variable9"] = coil::variable(&ClassWithBindings86::variable9);
+    bindings["ClassWithBindings86_variable10"] = coil::variable(&ClassWithBindings86::variable10);
+    bindings["ClassWithBindings86_variable11"] = coil::variable(&ClassWithBindings86::variable11);
+    bindings["ClassWithBindings86_variable12"] = coil::variable(&ClassWithBindings86::variable12);
+    bindings["ClassWithBindings86_variable13"] = coil::variable(&ClassWithBindings86::variable13);
+    bindings["ClassWithBindings86_variable14"] = coil::variable(&ClassWithBindings86::variable14);
 }
 #endif
 

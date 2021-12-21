@@ -58,3 +58,18 @@ namespace coil::utils
         T C::* m_variable = nullptr;
     };
 }
+
+namespace coil
+{
+    template<typename T>
+    auto variable(T* var)
+    {
+        return utils::VariableWrapper<T>{ var };
+    }
+
+    template<typename T, typename C>
+    auto variable(T C::* var)
+    {
+        return utils::MemberVariableWrapper<T, C>{ var };
+    }
+}
