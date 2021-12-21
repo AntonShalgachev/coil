@@ -128,8 +128,23 @@ namespace coil::detail
         context.result.errors.push_back(std::move(errorMessage));
     }
 
+    template<typename Func, typename Arg1, typename... Args>
+    decltype(auto) invokeFunc(Func& func, Arg1&& arg1, Args&&... args)
+    {
+        if constexpr (utils::FuncTraits<Func>::isMethod)
+            return (std::forward<Arg1>(arg1)->*func)(std::forward<Args>(args)...);
+        else
+            return func(std::forward<Arg1>(arg1), std::forward<Args>(args)...);
+    }
+
+    template<typename Func>
+    decltype(auto) invokeFunc(Func& func)
+    {
+        return func();
+    }
+
     template<typename Func, typename... Args>
-    void invoke(Func& func, ExecutionResult& result, Args&&... args)
+    void invoke(ExecutionResult& result, Func& func, Args&&... args)
     {
         if (!result)
             return;
@@ -140,11 +155,11 @@ namespace coil::detail
         {
             if constexpr (std::is_void_v<R>)
             {
-                std::invoke(func, std::forward<Args>(args)...);
+                invokeFunc(func, std::forward<Args>(args)...);
             }
             else
             {
-                auto&& returnValue = std::invoke(func, std::forward<Args>(args)...);
+                auto&& returnValue = invokeFunc(func, std::forward<Args>(args)...);
                 if (result)
                     result.returnValue = TypeSerializer<std::decay_t<R>>::toString(returnValue);
             }
@@ -173,7 +188,7 @@ namespace coil::detail
     {
         ContextErrorAppender onError{ context };
 
-        invoke(func, context.result, std::get<NonUserIndices>(nonUserArgs)..., VariadicConsumer<std::decay_t<UserArgs>>::consume(context.input.arguments, UserIndices, onError)...);
+        invoke(context.result, func, std::get<NonUserIndices>(nonUserArgs)..., VariadicConsumer<std::decay_t<UserArgs>>::consume(context.input.arguments, UserIndices, onError)...);
     }
 
     template<typename Func, typename T>
