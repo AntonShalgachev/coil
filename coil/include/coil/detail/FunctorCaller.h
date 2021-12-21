@@ -8,7 +8,6 @@
 #include "../utils/Types.h"
 #include "coil/TypeSerializer.h"
 #include "FuncTraitsEx.h"
-#include "coil/utils/TrueIndices.h"
 
 namespace coil::detail
 {
@@ -53,60 +52,6 @@ namespace coil::detail
         }
     };
 
-    // TODO move to another file
-    // TODO allow specialization
-    template<typename T>
-    struct ArgCountTraits
-    {
-        static constexpr std::size_t min = 1;
-        static constexpr bool isUnlimited = false;
-        static constexpr std::size_t max = 1;
-    };
-
-    template<typename T>
-    struct ArgCountTraits<std::vector<T>>
-    {
-        static constexpr std::size_t min = 0;
-        static constexpr bool isUnlimited = true;
-        static constexpr std::size_t max = 0;
-    };
-
-    template<typename T>
-    struct ArgCountTraits<std::optional<T>>
-    {
-        static constexpr std::size_t min = 0;
-        static constexpr bool isUnlimited = false;
-        static constexpr std::size_t max = 1;
-    };
-
-    template<std::size_t currentMin, bool isUnlimited, std::size_t currentMax, typename... Args>
-    struct VariadicArgsTraitsImpl;
-
-    template<std::size_t currentMin, bool isUnlimited, std::size_t currentMax, typename Head, typename... Tail>
-    struct VariadicArgsTraitsImpl<currentMin, isUnlimited, currentMax, Head, Tail...> : VariadicArgsTraitsImpl<currentMin + ArgCountTraits<std::decay_t<Head>>::min, isUnlimited || ArgCountTraits<std::decay_t<Head>>::isUnlimited, currentMax + ArgCountTraits<std::decay_t<Head>>::max, Tail...> {};
-
-    template<std::size_t currentMin, bool currentIsUnlimited, std::size_t currentMax>
-    struct VariadicArgsTraitsImpl<currentMin, currentIsUnlimited, currentMax>
-    {
-        static_assert(currentMax >= currentMin || currentIsUnlimited, "For unlimited arguments currentMax should not be less than currentMin");
-
-        static constexpr std::size_t minArgs = currentMin;
-        static constexpr bool isUnlimited = currentIsUnlimited;
-        static constexpr std::size_t maxArgs = currentMax;
-    };
-
-    template<typename... Args>
-    struct VariadicArgsTraits;
-
-    template<typename... Args>
-    struct VariadicArgsTraits<utils::Types<Args...>> : VariadicArgsTraitsImpl<0, false, 0, Args...> {};
-
-    inline bool validateArguments(std::size_t minArgs, std::size_t isUnlimited, std::size_t maxArgs, CallContext& context)
-    {
-        std::size_t const actualArgsCount = context.input.arguments.size();
-        return actualArgsCount >= minArgs && (isUnlimited || actualArgsCount <= maxArgs);
-    }
-
     inline void reportInvalidArguments(std::size_t minArgs, std::size_t isUnlimited, std::size_t maxArgs, CallContext& context)
     {
         auto const& arguments = context.input.arguments;
@@ -126,6 +71,25 @@ namespace coil::detail
         auto errorMessage = utils::formatString("Wrong number of arguments to '%.*s': expected %s, got %d", functionName.size(), functionName.data(), expectedMessage.c_str(), actualArgsCount);
 
         context.result.errors.push_back(std::move(errorMessage));
+    }
+
+    inline bool validateArguments(std::size_t minArgs, std::size_t isUnlimited, std::size_t maxArgs, bool hasNamedArgs, CallContext& context)
+    {
+        std::size_t const actualArgsCount = context.input.arguments.size();
+        bool const argsCountOkay = actualArgsCount >= minArgs && (isUnlimited || actualArgsCount <= maxArgs);
+        if (!argsCountOkay)
+        {
+            reportInvalidArguments(minArgs, isUnlimited, maxArgs, context);
+            return false;
+        }
+
+        if (!context.input.namedArguments.empty() && !hasNamedArgs)
+        {
+            context.result.errors.push_back("The function doesn't support named arguments");
+            return false;
+        }
+
+        return true;
     }
 
     template<typename Func, typename Arg1, typename... Args>
@@ -206,29 +170,16 @@ namespace coil::detail
     template<typename Func, typename T>
     void call(Func& func, CallContext& context, T* target)
     {
-        using Traits = detail::FuncTraitsEx<Func>;
-        using UserArgTypes = typename Traits::UserArgumentTypes;
+        using FuncTraits = detail::FuncTraitsEx<Func>;
+        using ArgsTraits = typename FuncTraits::ArgsTraits;
+
+        if (!validateArguments(ArgsTraits::minArgs, ArgsTraits::isUnlimited, ArgsTraits::maxArgs, ArgsTraits::hasNamedArgs, context))
+            return;
+
+        using UserArgTypes = typename ArgsTraits::UserArgumentTypes;
         using UserArgIndicesType = typename UserArgTypes::IndicesType;
-
-        using VTraits = VariadicArgsTraits<UserArgTypes>;
-        if (!validateArguments(VTraits::minArgs, VTraits::isUnlimited, VTraits::maxArgs, context))
-        {
-            reportInvalidArguments(VTraits::minArgs, VTraits::isUnlimited, VTraits::maxArgs, context);
-            return;
-        }
-
-        if (!context.input.namedArguments.empty() && !Traits::hasNamedArgs)
-        {
-            context.result.errors.push_back("The function doesn't support named arguments");
-            return;
-        }
-
-        static constexpr bool hasTarget = Traits::template isMethodOfType<T> || Traits::hasTarget;
-        static constexpr bool hasContext = Traits::hasContext;
-        static constexpr bool hasNamedArgs = Traits::hasNamedArgs;
-
+        using NonUserArgIndices = typename ArgsTraits::template NonUserArgsIndices<FuncTraits::template isMethodOfType<T>>;
         NonUserArgs<T> nonUserArgs{ target, Context{context}, NamedArgs{context} };
-        using NonUserArgIndices = utils::TrueIndicesT<hasTarget, hasContext, hasNamedArgs>;
 
         unpackAndInvoke(func, context, nonUserArgs, NonUserArgIndices{}, UserArgTypes{}, UserArgIndicesType{});
     }
