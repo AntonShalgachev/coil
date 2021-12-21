@@ -215,7 +215,19 @@ namespace coil
         {
             FuncT* functor = std::any_cast<FuncT>(&anyFunctor);
             auto&& object = std::any_cast<T*>(&anyObject);
-            detail::call<FuncT, T>(*functor, context, *object);
+
+            using FuncTraits = detail::FuncTraitsEx<FuncT>;
+            using ArgsTraits = typename FuncTraits::ArgsTraits;
+
+            if (!validateArguments(ArgsTraits::minArgs, ArgsTraits::isUnlimited, ArgsTraits::maxArgs, ArgsTraits::hasNamedArgs, context))
+                return;
+
+            using UserArgTypes = typename ArgsTraits::UserArgumentTypes;
+            using UserArgIndicesType = typename UserArgTypes::IndicesType;
+            using NonUserArgIndices = typename ArgsTraits::template NonUserArgsIndices<FuncTraits::template isMethodOfType<T>>;
+            detail::NonUserArgs<T> nonUserArgs{ *object, Context{context}, NamedArgs{context} };
+
+            detail::unpackAndInvoke(*functor, context, nonUserArgs, NonUserArgIndices{}, UserArgTypes{}, UserArgIndicesType{});
         }
 
         void execute(detail::CallContext& context)
