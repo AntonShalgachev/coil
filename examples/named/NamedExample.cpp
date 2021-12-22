@@ -46,7 +46,7 @@ namespace
         os << item.id << '\t' << item.name << '\t' << item.amount << '\t' << magic_enum::enum_name(item.source) << '\t' << magic_enum::enum_name(item.type) << std::endl;
     }
 
-    void printItems(coil::Context& context)
+    void printItems(coil::Context context)
     {
         auto& namedArgs = context.namedArgs();
 
@@ -77,7 +77,7 @@ namespace
                 printItem(context.out(), item);
     }
 
-    void addItem(coil::Context& context, std::uint64_t id, std::string_view name)
+    void addItem(coil::Context context, std::uint64_t id, std::string_view name)
     {
         auto& namedArgs = context.namedArgs();
 
@@ -91,13 +91,13 @@ namespace
         items.push_back({id, name, *amount, Source::Debug, *type});
     }
 
-    void printArgs(coil::Context& context)
+    void printArgs(coil::Context context)
     {
         for (coil::NamedAnyArgView arg : context.namedArgs())
             context.out() << arg.key() << ": " << arg.value().getRaw() << std::endl;
     }
 
-    void printFloats(coil::Context& context)
+    void printFloats(coil::Context context)
     {
         for (coil::NamedAnyArgView arg : context.namedArgs())
             if (arg.value().get<float>())
@@ -110,7 +110,7 @@ namespace
         Memory,
     };
 
-    void saveGame(coil::Context& context)
+    void saveGame(coil::Context context)
     {
         auto& namedArgs = context.namedArgs();
 
@@ -123,7 +123,7 @@ namespace
         context.out() << "Saving game with type " << magic_enum::enum_name(*type) << " and delay " << *delay << "ms" << std::endl;
     }
 
-    void requiredAndOptional(coil::Context& context)
+    void requiredAndOptional(coil::Context context)
     {
         auto& namedArgs = context.namedArgs();
 

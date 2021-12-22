@@ -43,7 +43,7 @@ namespace
         return nullptr;
     }
 
-    void renameEntity(coil::Context& context, coil::AnyArgView entity, std::string_view newName)
+    void renameEntity(coil::Context context, coil::AnyArgView entity, std::string_view newName)
     {
         Entity* target = nullptr;
         if (auto id = entity.get<std::uint64_t>())
@@ -58,14 +58,14 @@ namespace
             context.reportError("Failed to find entity '"s + std::string{ entity.getRaw() } + "'"s);
     }
 
-    void printEntities(coil::Context& context)
+    void printEntities(coil::Context context)
     {
         context.out() << "Entities:" << std::endl;
         for (Entity const& entity : entities)
             context.out() << entity.id << ": " << entity.name << std::endl;
     }
 
-    void addEntities(coil::Context& context, std::vector<coil::AnyArgView> const& args)
+    void addEntities(coil::Context context, std::vector<coil::AnyArgView> const& args)
     {
         using namespace std::literals::string_literals;
 
