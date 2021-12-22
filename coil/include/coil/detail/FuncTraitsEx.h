@@ -106,16 +106,12 @@ namespace coil::detail
     };
 
     template<>
-    struct ArgsTraits<utils::Types<>>
+    struct ArgsTraits<utils::Types<>> : ArgsCounters<>
     {
         using UserArgumentTypes = utils::Types<>;
 
         static constexpr bool hasExplicitTarget = false;
         using ExplicitTargetType = void;
-
-        static constexpr std::size_t minArgs = 0;
-        static constexpr bool isUnlimited = false;
-        static constexpr std::size_t maxArgs = 0;
 
         static constexpr bool hasContext = false;
 
