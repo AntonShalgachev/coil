@@ -225,7 +225,7 @@ namespace coil
             using UserArgTypes = typename ArgsTraits::UserArgumentTypes;
             using UserArgIndicesType = typename UserArgTypes::IndicesType;
             using NonUserArgIndices = typename ArgsTraits::template NonUserArgsIndices<FuncTraits::template isMethodOfType<T>>;
-            detail::NonUserArgs<T> nonUserArgs{ *object, Context{context}, NamedArgs{context} };
+            detail::NonUserArgs<T> nonUserArgs{ *object, Context{context} };
 
             detail::unpackAndInvoke(*functor, context, nonUserArgs, NonUserArgIndices{}, UserArgTypes{}, UserArgIndicesType{});
         }
