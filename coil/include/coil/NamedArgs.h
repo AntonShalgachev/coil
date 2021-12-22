@@ -2,7 +2,6 @@
 
 #include "detail/CallContext.h"
 #include "AnyArgView.h"
-#include "Context.h"
 
 namespace coil
 {
@@ -117,25 +116,25 @@ namespace coil
             Required,
         };
 
-        std::optional<AnyArgView> get(std::string_view key, coil::Context& context, ArgType argType = ArgType::Optional) const
+        std::optional<AnyArgView> getOrReport(std::string_view key, ArgType argType = ArgType::Optional) const
         {
             if (auto anyArg = get(key))
                 return *anyArg;
             else if (argType == ArgType::Required)
-                context.reportError(std::move(anyArg));
+                m_context.reportError(std::move(anyArg));
 
             return {};
         }
 
         template<typename T>
-        std::optional<T> get(std::string_view key, coil::Context& context, ArgType argType = ArgType::Optional, std::optional<T> defaultValue = {}) const
+        std::optional<T> getOrReport(std::string_view key, ArgType argType = ArgType::Optional, std::optional<T> defaultValue = {}) const
         {
             if (auto value = get<T>(key))
                 return *value;
             else if (argType == ArgType::Optional && value.error().type == coil::NamedArgs::Error::Type::MissingKey)
                 return defaultValue;
             else
-                context.reportError(std::move(value));
+                m_context.reportError(std::move(value));
 
             return {};
         }

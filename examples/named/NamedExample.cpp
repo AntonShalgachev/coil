@@ -48,10 +48,10 @@ namespace
 
     void printItems(coil::Context& context, coil::NamedArgs& namedArgs)
     {
-        auto name = namedArgs.get<std::string_view>("name", context, coil::NamedArgs::ArgType::Optional);
-        auto minAmount = namedArgs.get<std::size_t>("min_amount", context, coil::NamedArgs::ArgType::Optional);
-        auto source = namedArgs.get<Source>("source", context, coil::NamedArgs::ArgType::Optional);
-        auto type = namedArgs.get<Type>("type", context, coil::NamedArgs::ArgType::Optional);
+        auto name = namedArgs.getOrReport<std::string_view>("name", coil::NamedArgs::ArgType::Optional);
+        auto minAmount = namedArgs.getOrReport<std::size_t>("min_amount", coil::NamedArgs::ArgType::Optional);
+        auto source = namedArgs.getOrReport<Source>("source", coil::NamedArgs::ArgType::Optional);
+        auto type = namedArgs.getOrReport<Type>("type", coil::NamedArgs::ArgType::Optional);
 
         // if any of the above arguments didn't have the correct type, then the error would be reported and
         // the returned value would be an empty std::optional
@@ -77,8 +77,8 @@ namespace
 
     void addItem(coil::Context& context, coil::NamedArgs& namedArgs, std::uint64_t id, std::string_view name)
     {
-        auto amount = namedArgs.get<std::size_t>("amount", context, coil::NamedArgs::ArgType::Optional, 1);
-        auto type = namedArgs.get<Type>("type", context, coil::NamedArgs::ArgType::Optional, Type::Weapon);
+        auto amount = namedArgs.getOrReport<std::size_t>("amount", coil::NamedArgs::ArgType::Optional, 1);
+        auto type = namedArgs.getOrReport<Type>("type", coil::NamedArgs::ArgType::Optional, Type::Weapon);
 
         // This might happen if the above arguments exist, but they can't be represented in the specified C++ type
         if (!amount || !type)
@@ -108,8 +108,8 @@ namespace
 
     void saveGame(coil::Context& context, coil::NamedArgs& namedArgs)
     {
-        auto type = namedArgs.get<SaveGameType>("type", context, coil::NamedArgs::ArgType::Required);
-        auto delay = namedArgs.get<float>("delay", context, coil::NamedArgs::ArgType::Optional, 0.0f);
+        auto type = namedArgs.getOrReport<SaveGameType>("type", coil::NamedArgs::ArgType::Required);
+        auto delay = namedArgs.getOrReport<float>("delay", coil::NamedArgs::ArgType::Optional, 0.0f);
 
         if (!type || !delay)
             return;
@@ -119,7 +119,7 @@ namespace
 
     void requiredAndOptional(coil::Context& context, coil::NamedArgs& namedArgs)
     {
-        auto requiredAnyArg = namedArgs.get("required", context, coil::NamedArgs::ArgType::Required);
+        auto requiredAnyArg = namedArgs.getOrReport("required", coil::NamedArgs::ArgType::Required);
         if (!requiredAnyArg)
             return; // the error is already reported
 
@@ -130,7 +130,7 @@ namespace
         else
             context.reportErrors(std::move(valueBool), std::move(valueInt));
 
-        auto optionalAnyArg = namedArgs.get("optional", context, coil::NamedArgs::ArgType::Optional);
+        auto optionalAnyArg = namedArgs.getOrReport("optional", coil::NamedArgs::ArgType::Optional);
         if (optionalAnyArg)
         {
             if (auto valueBool = optionalAnyArg->get<bool>())

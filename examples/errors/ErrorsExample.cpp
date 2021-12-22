@@ -48,18 +48,18 @@ namespace
     void testNamedArgs(coil::Context& context, coil::NamedArgs& namedArgs)
     {
         // This version will automatically report error if 'any_arg' isn't passed
-        auto requiredAnyArg = namedArgs.get("any_arg", context, coil::NamedArgs::ArgType::Required);
+        auto requiredAnyArg = namedArgs.getOrReport("any_arg", coil::NamedArgs::ArgType::Required);
         if (!requiredAnyArg)
             return;
 
         // This version will automatically report error if 'float_arg' isn't passed,
         // or if the value of 'float_arg' couldn't be converted to float
-        auto requiredFloatArg = namedArgs.get<float>("float_arg", context, coil::NamedArgs::ArgType::Required);
+        auto requiredFloatArg = namedArgs.getOrReport<float>("float_arg", coil::NamedArgs::ArgType::Required);
         if (!requiredFloatArg)
             return;
 
         // This version will automatically report error only if the value of 'int_arg' couldn't be converted to int
-        auto optionalFloatArg = namedArgs.get<int>("int_arg", context, coil::NamedArgs::ArgType::Optional);
+        auto optionalFloatArg = namedArgs.getOrReport<int>("int_arg", coil::NamedArgs::ArgType::Optional);
 
         // If the type of 'int_arg' is wrong, the error would be reported and the default value would be
         // returned (by default it's an empty std::optional)
