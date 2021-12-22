@@ -40,7 +40,7 @@ void $name::registerBindings(GeneralBindings& bindings)
         context.reportError("Task failed successfully");
         args.get("key");
         args.get<$function.args[0]>("key");
-        args.get<$function.args[0]>("key", context, coil::NamedArgs::ArgType::Optional);
+        args.getOrReport<$function.args[0]>("key", coil::NamedArgs::ArgType::Optional);
         return $name::${function.name}(#echo ', '.join($arg_names($function.args))#);
     };
 #end for
