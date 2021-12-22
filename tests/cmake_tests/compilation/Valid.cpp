@@ -20,9 +20,6 @@ int main()
     cmd.bind("", coil::bind(&Object::memberFunc, &object));
     cmd.bind("", coil::bind(&Object::memberFuncWithContext, &object));
 
-    cmd[""] = [](coil::NamedArgs) {};
-    cmd[""] = [](coil::NamedArgs&) {};
-    cmd[""] = [](coil::NamedArgs const&) {};
     cmd[""] = [](coil::Context) {};
     cmd[""] = [](coil::Context&) {};
     cmd[""] = [](coil::Context const&) {};
@@ -49,15 +46,12 @@ int main()
     cmd.bind<Object>("", &Object::staticFuncWithTarget);
     cmd.bind<Object>("", &Object::staticFuncWithTargetContext);
 
-    cmd.bind<Object>("", &funcTargetNamedArgs);
-
     cmd.bind<Object>("", coil::bind(&Object::memberFuncWithTarget, &object));
     cmd.bind<Object>("", coil::bind(&Object::memberFuncWithTargetContext, &object));
 
     cmd[""] = &funcVariadicVector;
     cmd[""] = &funcFloatVector;
     cmd[""] = &funcOptional;
-    cmd[""] = &funcNamedArgs;
 
     cmd[""] = &funcScopedEnum;
     cmd[""] = &funcUnscopedEnum;

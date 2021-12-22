@@ -219,7 +219,7 @@ namespace coil
             using FuncTraits = detail::FuncTraitsEx<FuncT>;
             using ArgsTraits = typename FuncTraits::ArgsTraits;
 
-            if (!validateArguments(ArgsTraits::minArgs, ArgsTraits::isUnlimited, ArgsTraits::maxArgs, ArgsTraits::hasNamedArgs, context))
+            if (!validateArguments(ArgsTraits::minArgs, ArgsTraits::isUnlimited, ArgsTraits::maxArgs, context))
                 return;
 
             using UserArgTypes = typename ArgsTraits::UserArgumentTypes;
