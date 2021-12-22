@@ -347,6 +347,15 @@ TEST(BindingsTests, TestErrorUndefinedObject)
     EXPECT_PRED2(containsError, result.errors, "Object 'foo' is not registered");
 }
 
+TEST(BindingsTests, TestErrorWrongArgumentsCountWithNonUserArgs)
+{
+    coil::Bindings bindings = createBindings();
+    auto result = bindings.execute("output foo bar");
+
+    EXPECT_EQ(result.errors.size(), 1);
+    EXPECT_PRED2(containsError, result.errors, "Wrong number of arguments to 'output': expected 1, got 2");
+}
+
 TEST(BindingsTests, TestErrorWrongArgumentsCount)
 {
     coil::Bindings bindings = createBindings();

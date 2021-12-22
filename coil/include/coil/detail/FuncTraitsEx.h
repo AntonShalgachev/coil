@@ -2,45 +2,10 @@
 #include "coil/Context.h"
 #include "coil/NamedArgs.h"
 #include "coil/utils/TrueIndices.h"
+#include "coil/utils/Types.h"
 
 namespace coil::detail
 {
-    // template<typename Types, bool HasTarget, typename ExplicitTargetT, bool HasContext, bool HasNamedArgs>
-    // struct ArgumentTraitsImpl {};
-
-    template<bool HasTarget, typename ExplicitTargetT, bool HasContext, bool HasNamedArgs, typename... Args>
-    struct ArgumentTraitsImpl
-    {
-        using UserArgumentTypes = utils::Types<Args...>;
-        using ExplicitTargetType = ExplicitTargetT;
-        static bool constexpr hasTarget = HasTarget;
-        static bool constexpr hasContext = HasContext;
-        static bool constexpr hasNamedArgs = HasNamedArgs;
-    };
-
-    template<bool HasTarget, typename ExplicitTargetT, bool HasContext, bool HasNamedArgs, typename T, typename... Args>
-    struct ArgumentTraitsImpl<HasTarget, ExplicitTargetT, HasContext, HasNamedArgs, T*, Args...> : public ArgumentTraitsImpl<true, T, HasContext, HasNamedArgs, Args...> {};
-
-    template<bool HasTarget, typename ExplicitTargetT, bool HasContext, bool HasNamedArgs, typename... Args>
-    struct ArgumentTraitsImpl<HasTarget, ExplicitTargetT, HasContext, HasNamedArgs, Context, Args...> : public ArgumentTraitsImpl<HasTarget, ExplicitTargetT, true, HasNamedArgs, Args...> {};
-
-    template<bool HasTarget, typename ExplicitTargetT, bool HasContext, bool HasNamedArgs, typename... Args>
-    struct ArgumentTraitsImpl<HasTarget, ExplicitTargetT, HasContext, HasNamedArgs, Context&, Args...> : public ArgumentTraitsImpl<HasTarget, ExplicitTargetT, true, HasNamedArgs, Args...> {};
-
-    template<bool HasTarget, typename ExplicitTargetT, bool HasContext, bool HasNamedArgs, typename... Args>
-    struct ArgumentTraitsImpl<HasTarget, ExplicitTargetT, HasContext, HasNamedArgs, Context const&, Args...> : public ArgumentTraitsImpl<HasTarget, ExplicitTargetT, true, HasNamedArgs, Args...> {};
-
-    template<bool HasTarget, typename ExplicitTargetT, bool HasContext, bool HasNamedArgs, typename... Args>
-    struct ArgumentTraitsImpl<HasTarget, ExplicitTargetT, HasContext, HasNamedArgs, NamedArgs, Args...> : public ArgumentTraitsImpl<HasTarget, ExplicitTargetT, HasContext, true, Args...> {};
-
-    template<bool HasTarget, typename ExplicitTargetT, bool HasContext, bool HasNamedArgs, typename... Args>
-    struct ArgumentTraitsImpl<HasTarget, ExplicitTargetT, HasContext, HasNamedArgs, NamedArgs&, Args...> : public ArgumentTraitsImpl<HasTarget, ExplicitTargetT, HasContext, true, Args...> {};
-
-    template<bool HasTarget, typename ExplicitTargetT, bool HasContext, bool HasNamedArgs, typename... Args>
-    struct ArgumentTraitsImpl<HasTarget, ExplicitTargetT, HasContext, HasNamedArgs, NamedArgs const&, Args...> : public ArgumentTraitsImpl<HasTarget, ExplicitTargetT, HasContext, true, Args...> {};
-
-    //////////////////////////////////////////////////////////////////////////
-
     // TODO move to another file
     // TODO allow specialization
     template<typename T>
@@ -50,7 +15,6 @@ namespace coil::detail
         static constexpr bool isUnlimited = false;
         static constexpr std::size_t max = 1;
     };
-
     template<typename T>
     struct ArgCountTraits<std::vector<T>>
     {
@@ -58,7 +22,6 @@ namespace coil::detail
         static constexpr bool isUnlimited = true;
         static constexpr std::size_t max = 0;
     };
-
     template<typename T>
     struct ArgCountTraits<std::optional<T>>
     {
@@ -66,45 +29,107 @@ namespace coil::detail
         static constexpr bool isUnlimited = false;
         static constexpr std::size_t max = 1;
     };
-
-    template<std::size_t currentMin, bool isUnlimited, std::size_t currentMax, typename... Args>
-    struct VariadicArgsTraitsImpl;
-
-    template<std::size_t currentMin, bool isUnlimited, std::size_t currentMax, typename Head, typename... Tail>
-    struct VariadicArgsTraitsImpl<currentMin, isUnlimited, currentMax, Head, Tail...> : VariadicArgsTraitsImpl<currentMin + ArgCountTraits<std::decay_t<Head>>::min, isUnlimited || ArgCountTraits<std::decay_t<Head>>::isUnlimited, currentMax + ArgCountTraits<std::decay_t<Head>>::max, Tail...> {};
-
-    template<std::size_t currentMin, bool currentIsUnlimited, std::size_t currentMax>
-    struct VariadicArgsTraitsImpl<currentMin, currentIsUnlimited, currentMax>
+    template<>
+    struct ArgCountTraits<Context>
     {
-        static_assert(currentMax >= currentMin || currentIsUnlimited, "For unlimited arguments currentMax should not be less than currentMin");
-
-        static constexpr std::size_t minArgs = currentMin;
-        static constexpr bool isUnlimited = currentIsUnlimited;
-        static constexpr std::size_t maxArgs = currentMax;
+        static constexpr std::size_t min = 0;
+        static constexpr bool isUnlimited = false;
+        static constexpr std::size_t max = 0;
     };
+    template<>
+    struct ArgCountTraits<NamedArgs>
+    {
+        static constexpr std::size_t min = 0;
+        static constexpr bool isUnlimited = false;
+        static constexpr std::size_t max = 0;
+    };
+
+    template<typename T>
+    struct NonUserArgTraits
+    {
+        static constexpr bool isContext = std::is_same_v<T, Context>;
+        static constexpr bool isNamedArgs = std::is_same_v<T, NamedArgs>;
+    };
+
+    template<typename T>
+    constexpr bool isUserArg = !NonUserArgTraits<T>::isContext && !NonUserArgTraits<T>::isNamedArgs;
+
+    template<typename, typename... Args>
+    struct UserArgumentsGetter
+    {
+        using Types = utils::Types<Args...>;
+    };
+
+    template<typename Head, typename... Tail>
+    struct UserArgumentsGetter<std::enable_if_t<isUserArg<std::decay_t<Head>>>, Head, Tail...>
+    {
+        using Types = utils::Types<Head, Tail...>;
+    };
+    template<typename Head, typename... Tail>
+    struct UserArgumentsGetter<std::enable_if_t<!isUserArg<std::decay_t<Head>>>, Head, Tail...> : UserArgumentsGetter<void, Tail...> {};
 
     //////////////////////////////////////////////////////////////////////////
 
     template<typename Types>
     struct ArgsTraits;
 
-    template<typename... Args>
-    struct ArgsTraits<utils::Types<Args...>>
+    template<typename T, typename... Tail>
+    struct ArgsTraits<utils::Types<T*, Tail...>>
     {
-        using VariadicTraits = VariadicArgsTraitsImpl<0, false, 0, Args...>;
-        static constexpr std::size_t minArgs = VariadicTraits::minArgs;
-        static constexpr bool isUnlimited = VariadicTraits::isUnlimited;
-        static constexpr std::size_t maxArgs = VariadicTraits::maxArgs;
+        using UserArgumentTypes = typename UserArgumentsGetter<void, Tail...>::Types;
 
-        using ArgumentTraits = ArgumentTraitsImpl<false, void, false, false, Args...>;
-        using UserArgumentTypes = typename ArgumentTraits::UserArgumentTypes;
-        using ExplicitTargetType = typename ArgumentTraits::ExplicitTargetType;
-        static bool constexpr hasTarget = ArgumentTraits::hasTarget;
-        static bool constexpr hasContext = ArgumentTraits::hasContext;
-        static bool constexpr hasNamedArgs = ArgumentTraits::hasNamedArgs;
+        static constexpr bool hasExplicitTarget = true;
+        using ExplicitTargetType = T;
+
+        static constexpr std::size_t minArgs = (ArgCountTraits<std::decay_t<Tail>>::min + ... + 0);
+        static constexpr bool isUnlimited = (ArgCountTraits<std::decay_t<Tail>>::isUnlimited || ...);
+        static constexpr std::size_t maxArgs = (ArgCountTraits<std::decay_t<Tail>>::max + ... + 0);
+        static_assert(maxArgs >= minArgs || isUnlimited, "For finite arguments maxArgs should not be less than minArgs");
+
+        static constexpr bool hasContext = (NonUserArgTraits<std::decay_t<Tail>>::isContext || ...);
+        static constexpr bool hasNamedArgs = (NonUserArgTraits<std::decay_t<Tail>>::isNamedArgs || ...);
 
         template<bool IsMethod>
-        using NonUserArgsIndices = utils::TrueIndicesT<IsMethod || hasTarget, hasContext, hasNamedArgs>;
+        using NonUserArgsIndices = utils::TrueIndicesT<IsMethod || hasExplicitTarget, hasContext, hasNamedArgs>;
+    };
+
+    template<typename Head, typename... Tail>
+    struct ArgsTraits<utils::Types<Head, Tail...>>
+    {
+        using UserArgumentTypes = typename UserArgumentsGetter<void, Head, Tail...>::Types;
+
+        static constexpr bool hasExplicitTarget = false;
+        using ExplicitTargetType = void;
+
+        static constexpr std::size_t minArgs = ArgCountTraits<std::decay_t<Head>>::min + (ArgCountTraits<std::decay_t<Tail>>::min + ... + 0);
+        static constexpr bool isUnlimited = ArgCountTraits<std::decay_t<Head>>::isUnlimited || (ArgCountTraits<std::decay_t<Tail>>::isUnlimited || ...);
+        static constexpr std::size_t maxArgs = ArgCountTraits<std::decay_t<Head>>::max + (ArgCountTraits<std::decay_t<Tail>>::max + ... + 0);
+        static_assert(maxArgs >= minArgs || isUnlimited, "For finite arguments maxArgs should not be less than minArgs");
+
+        static constexpr bool hasContext = NonUserArgTraits<std::decay_t<Head>>::isContext || (NonUserArgTraits<std::decay_t<Tail>>::isContext || ...);
+        static constexpr bool hasNamedArgs = NonUserArgTraits<std::decay_t<Head>>::isNamedArgs || (NonUserArgTraits<std::decay_t<Tail>>::isNamedArgs || ...);
+
+        template<bool IsMethod>
+        using NonUserArgsIndices = utils::TrueIndicesT<IsMethod || hasExplicitTarget, hasContext, hasNamedArgs>;
+    };
+
+    template<>
+    struct ArgsTraits<utils::Types<>>
+    {
+        using UserArgumentTypes = utils::Types<>;
+
+        static constexpr bool hasExplicitTarget = false;
+        using ExplicitTargetType = void;
+
+        static constexpr std::size_t minArgs = 0;
+        static constexpr bool isUnlimited = false;
+        static constexpr std::size_t maxArgs = 0;
+
+        static constexpr bool hasContext = false;
+        static constexpr bool hasNamedArgs = false;
+
+        template<bool IsMethod>
+        using NonUserArgsIndices = utils::TrueIndicesT<IsMethod || hasExplicitTarget, hasContext, hasNamedArgs>;
     };
 
     //////////////////////////////////////////////////////////////////////////
