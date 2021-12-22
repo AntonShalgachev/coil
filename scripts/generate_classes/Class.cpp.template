@@ -35,9 +35,10 @@ void $name::registerBindings(GeneralBindings& bindings)
 #end for
 
 #for $function in $functions
-    bindings["${name}_${function.name}"] = [](coil::Context context, coil::NamedArgs args, $combine($function.args))
+    bindings["${name}_${function.name}"] = [](coil::Context context, $combine($function.args))
     {
         context.reportError("Task failed successfully");
+        auto& args = context.namedArgs();
         args.get("key");
         args.get<$function.args[0]>("key");
         args.getOrReport<$function.args[0]>("key", coil::NamedArgs::ArgType::Optional);

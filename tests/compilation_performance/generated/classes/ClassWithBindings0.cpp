@@ -57,121 +57,136 @@ void ClassWithBindings0::registerBindings(GeneralBindings& bindings)
     ::bind<ClassWithBindings0>(bindings, "memberVariable13", coil::variable(&ClassWithBindings0::memberVariable13));
     ::bind<ClassWithBindings0>(bindings, "memberVariable14", coil::variable(&ClassWithBindings0::memberVariable14));
 
-    bindings["ClassWithBindings0_function0"] = [](coil::Context context, coil::NamedArgs args, float arg0, unsigned arg1, int arg2, double arg3, float arg4)
+    bindings["ClassWithBindings0_function0"] = [](coil::Context context, float arg0, unsigned arg1, int arg2, double arg3, float arg4)
     {
         context.reportError("Task failed successfully");
+        auto& args = context.namedArgs();
         args.get("key");
         args.get<float>("key");
         args.getOrReport<float>("key", coil::NamedArgs::ArgType::Optional);
         return ClassWithBindings0::function0(arg0, arg1, arg2, arg3, arg4);
     };
-    bindings["ClassWithBindings0_function1"] = [](coil::Context context, coil::NamedArgs args, int arg0, short arg1, unsigned arg2, float arg3, float arg4)
+    bindings["ClassWithBindings0_function1"] = [](coil::Context context, int arg0, short arg1, unsigned arg2, float arg3, float arg4)
     {
         context.reportError("Task failed successfully");
+        auto& args = context.namedArgs();
         args.get("key");
         args.get<int>("key");
         args.getOrReport<int>("key", coil::NamedArgs::ArgType::Optional);
         return ClassWithBindings0::function1(arg0, arg1, arg2, arg3, arg4);
     };
-    bindings["ClassWithBindings0_function2"] = [](coil::Context context, coil::NamedArgs args, float arg0, short arg1, float arg2, double arg3, int arg4)
+    bindings["ClassWithBindings0_function2"] = [](coil::Context context, float arg0, short arg1, float arg2, double arg3, int arg4)
     {
         context.reportError("Task failed successfully");
+        auto& args = context.namedArgs();
         args.get("key");
         args.get<float>("key");
         args.getOrReport<float>("key", coil::NamedArgs::ArgType::Optional);
         return ClassWithBindings0::function2(arg0, arg1, arg2, arg3, arg4);
     };
-    bindings["ClassWithBindings0_function3"] = [](coil::Context context, coil::NamedArgs args, double arg0, int arg1, double arg2, double arg3, double arg4)
+    bindings["ClassWithBindings0_function3"] = [](coil::Context context, double arg0, int arg1, double arg2, double arg3, double arg4)
     {
         context.reportError("Task failed successfully");
+        auto& args = context.namedArgs();
         args.get("key");
         args.get<double>("key");
         args.getOrReport<double>("key", coil::NamedArgs::ArgType::Optional);
         return ClassWithBindings0::function3(arg0, arg1, arg2, arg3, arg4);
     };
-    bindings["ClassWithBindings0_function4"] = [](coil::Context context, coil::NamedArgs args, unsigned arg0, int arg1, unsigned arg2, float arg3, double arg4)
+    bindings["ClassWithBindings0_function4"] = [](coil::Context context, unsigned arg0, int arg1, unsigned arg2, float arg3, double arg4)
     {
         context.reportError("Task failed successfully");
+        auto& args = context.namedArgs();
         args.get("key");
         args.get<unsigned>("key");
         args.getOrReport<unsigned>("key", coil::NamedArgs::ArgType::Optional);
         return ClassWithBindings0::function4(arg0, arg1, arg2, arg3, arg4);
     };
-    bindings["ClassWithBindings0_function5"] = [](coil::Context context, coil::NamedArgs args, unsigned arg0, int arg1, short arg2, float arg3, bool arg4)
+    bindings["ClassWithBindings0_function5"] = [](coil::Context context, unsigned arg0, int arg1, short arg2, float arg3, bool arg4)
     {
         context.reportError("Task failed successfully");
+        auto& args = context.namedArgs();
         args.get("key");
         args.get<unsigned>("key");
         args.getOrReport<unsigned>("key", coil::NamedArgs::ArgType::Optional);
         return ClassWithBindings0::function5(arg0, arg1, arg2, arg3, arg4);
     };
-    bindings["ClassWithBindings0_function6"] = [](coil::Context context, coil::NamedArgs args, double arg0, float arg1, short arg2, float arg3, float arg4)
+    bindings["ClassWithBindings0_function6"] = [](coil::Context context, double arg0, float arg1, short arg2, float arg3, float arg4)
     {
         context.reportError("Task failed successfully");
+        auto& args = context.namedArgs();
         args.get("key");
         args.get<double>("key");
         args.getOrReport<double>("key", coil::NamedArgs::ArgType::Optional);
         return ClassWithBindings0::function6(arg0, arg1, arg2, arg3, arg4);
     };
-    bindings["ClassWithBindings0_function7"] = [](coil::Context context, coil::NamedArgs args, double arg0, short arg1, float arg2, short arg3, short arg4)
+    bindings["ClassWithBindings0_function7"] = [](coil::Context context, double arg0, short arg1, float arg2, short arg3, short arg4)
     {
         context.reportError("Task failed successfully");
+        auto& args = context.namedArgs();
         args.get("key");
         args.get<double>("key");
         args.getOrReport<double>("key", coil::NamedArgs::ArgType::Optional);
         return ClassWithBindings0::function7(arg0, arg1, arg2, arg3, arg4);
     };
-    bindings["ClassWithBindings0_function8"] = [](coil::Context context, coil::NamedArgs args, float arg0, float arg1, int arg2, int arg3, double arg4)
+    bindings["ClassWithBindings0_function8"] = [](coil::Context context, float arg0, float arg1, int arg2, int arg3, double arg4)
     {
         context.reportError("Task failed successfully");
+        auto& args = context.namedArgs();
         args.get("key");
         args.get<float>("key");
         args.getOrReport<float>("key", coil::NamedArgs::ArgType::Optional);
         return ClassWithBindings0::function8(arg0, arg1, arg2, arg3, arg4);
     };
-    bindings["ClassWithBindings0_function9"] = [](coil::Context context, coil::NamedArgs args, short arg0, short arg1, bool arg2, int arg3, float arg4)
+    bindings["ClassWithBindings0_function9"] = [](coil::Context context, short arg0, short arg1, bool arg2, int arg3, float arg4)
     {
         context.reportError("Task failed successfully");
+        auto& args = context.namedArgs();
         args.get("key");
         args.get<short>("key");
         args.getOrReport<short>("key", coil::NamedArgs::ArgType::Optional);
         return ClassWithBindings0::function9(arg0, arg1, arg2, arg3, arg4);
     };
-    bindings["ClassWithBindings0_function10"] = [](coil::Context context, coil::NamedArgs args, double arg0, bool arg1, unsigned arg2, bool arg3, unsigned arg4)
+    bindings["ClassWithBindings0_function10"] = [](coil::Context context, double arg0, bool arg1, unsigned arg2, bool arg3, unsigned arg4)
     {
         context.reportError("Task failed successfully");
+        auto& args = context.namedArgs();
         args.get("key");
         args.get<double>("key");
         args.getOrReport<double>("key", coil::NamedArgs::ArgType::Optional);
         return ClassWithBindings0::function10(arg0, arg1, arg2, arg3, arg4);
     };
-    bindings["ClassWithBindings0_function11"] = [](coil::Context context, coil::NamedArgs args, float arg0, float arg1, float arg2, float arg3, double arg4)
+    bindings["ClassWithBindings0_function11"] = [](coil::Context context, float arg0, float arg1, float arg2, float arg3, double arg4)
     {
         context.reportError("Task failed successfully");
+        auto& args = context.namedArgs();
         args.get("key");
         args.get<float>("key");
         args.getOrReport<float>("key", coil::NamedArgs::ArgType::Optional);
         return ClassWithBindings0::function11(arg0, arg1, arg2, arg3, arg4);
     };
-    bindings["ClassWithBindings0_function12"] = [](coil::Context context, coil::NamedArgs args, int arg0, unsigned arg1, double arg2, int arg3, double arg4)
+    bindings["ClassWithBindings0_function12"] = [](coil::Context context, int arg0, unsigned arg1, double arg2, int arg3, double arg4)
     {
         context.reportError("Task failed successfully");
+        auto& args = context.namedArgs();
         args.get("key");
         args.get<int>("key");
         args.getOrReport<int>("key", coil::NamedArgs::ArgType::Optional);
         return ClassWithBindings0::function12(arg0, arg1, arg2, arg3, arg4);
     };
-    bindings["ClassWithBindings0_function13"] = [](coil::Context context, coil::NamedArgs args, unsigned arg0, int arg1, bool arg2, double arg3, int arg4)
+    bindings["ClassWithBindings0_function13"] = [](coil::Context context, unsigned arg0, int arg1, bool arg2, double arg3, int arg4)
     {
         context.reportError("Task failed successfully");
+        auto& args = context.namedArgs();
         args.get("key");
         args.get<unsigned>("key");
         args.getOrReport<unsigned>("key", coil::NamedArgs::ArgType::Optional);
         return ClassWithBindings0::function13(arg0, arg1, arg2, arg3, arg4);
     };
-    bindings["ClassWithBindings0_function14"] = [](coil::Context context, coil::NamedArgs args, bool arg0, short arg1, int arg2, bool arg3, unsigned arg4)
+    bindings["ClassWithBindings0_function14"] = [](coil::Context context, bool arg0, short arg1, int arg2, bool arg3, unsigned arg4)
     {
         context.reportError("Task failed successfully");
+        auto& args = context.namedArgs();
         args.get("key");
         args.get<bool>("key");
         args.getOrReport<bool>("key", coil::NamedArgs::ArgType::Optional);

@@ -205,16 +205,6 @@ namespace
         return val;
     }
 
-    [[maybe_unused]] void funcNamedArgs(coil::NamedArgs)
-    {
-
-    }
-
-    [[maybe_unused]] void funcTargetNamedArgs(Object*, coil::NamedArgs)
-    {
-
-    }
-
     template<typename T>
     [[maybe_unused]] T funcWithType(T v) { return v; }
 

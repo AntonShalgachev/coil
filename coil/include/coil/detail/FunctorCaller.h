@@ -73,19 +73,13 @@ namespace coil::detail
         context.result.errors.push_back(std::move(errorMessage));
     }
 
-    inline bool validateArguments(std::size_t minArgs, std::size_t isUnlimited, std::size_t maxArgs, bool hasNamedArgs, CallContext& context)
+    inline bool validateArguments(std::size_t minArgs, std::size_t isUnlimited, std::size_t maxArgs, CallContext& context)
     {
         std::size_t const actualArgsCount = context.input.arguments.size();
         bool const argsCountOkay = actualArgsCount >= minArgs && (isUnlimited || actualArgsCount <= maxArgs);
         if (!argsCountOkay)
         {
             reportInvalidArguments(minArgs, isUnlimited, maxArgs, context);
-            return false;
-        }
-
-        if (!context.input.namedArguments.empty() && !hasNamedArgs)
-        {
-            context.result.errors.push_back("The function doesn't support named arguments");
             return false;
         }
 

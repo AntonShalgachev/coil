@@ -46,8 +46,10 @@ namespace
         os << item.id << '\t' << item.name << '\t' << item.amount << '\t' << magic_enum::enum_name(item.source) << '\t' << magic_enum::enum_name(item.type) << std::endl;
     }
 
-    void printItems(coil::Context& context, coil::NamedArgs& namedArgs)
+    void printItems(coil::Context& context)
     {
+        auto& namedArgs = context.namedArgs();
+
         auto name = namedArgs.getOrReport<std::string_view>("name", coil::NamedArgs::ArgType::Optional);
         auto minAmount = namedArgs.getOrReport<std::size_t>("min_amount", coil::NamedArgs::ArgType::Optional);
         auto source = namedArgs.getOrReport<Source>("source", coil::NamedArgs::ArgType::Optional);
@@ -75,8 +77,10 @@ namespace
                 printItem(context.out(), item);
     }
 
-    void addItem(coil::Context& context, coil::NamedArgs& namedArgs, std::uint64_t id, std::string_view name)
+    void addItem(coil::Context& context, std::uint64_t id, std::string_view name)
     {
+        auto& namedArgs = context.namedArgs();
+
         auto amount = namedArgs.getOrReport<std::size_t>("amount", coil::NamedArgs::ArgType::Optional, 1);
         auto type = namedArgs.getOrReport<Type>("type", coil::NamedArgs::ArgType::Optional, Type::Weapon);
 
@@ -87,15 +91,15 @@ namespace
         items.push_back({id, name, *amount, Source::Debug, *type});
     }
 
-    void printArgs(coil::Context& context, coil::NamedArgs& namedArgs)
+    void printArgs(coil::Context& context)
     {
-        for (coil::NamedAnyArgView arg : namedArgs)
+        for (coil::NamedAnyArgView arg : context.namedArgs())
             context.out() << arg.key() << ": " << arg.value().getRaw() << std::endl;
     }
 
-    void printFloats(coil::Context& context, coil::NamedArgs& namedArgs)
+    void printFloats(coil::Context& context)
     {
-        for (coil::NamedAnyArgView arg : namedArgs)
+        for (coil::NamedAnyArgView arg : context.namedArgs())
             if (arg.value().get<float>())
                 context.out() << arg.key() << ": " << arg.value().getRaw() << std::endl;
     }
@@ -106,8 +110,10 @@ namespace
         Memory,
     };
 
-    void saveGame(coil::Context& context, coil::NamedArgs& namedArgs)
+    void saveGame(coil::Context& context)
     {
+        auto& namedArgs = context.namedArgs();
+
         auto type = namedArgs.getOrReport<SaveGameType>("type", coil::NamedArgs::ArgType::Required);
         auto delay = namedArgs.getOrReport<float>("delay", coil::NamedArgs::ArgType::Optional, 0.0f);
 
@@ -117,8 +123,10 @@ namespace
         context.out() << "Saving game with type " << magic_enum::enum_name(*type) << " and delay " << *delay << "ms" << std::endl;
     }
 
-    void requiredAndOptional(coil::Context& context, coil::NamedArgs& namedArgs)
+    void requiredAndOptional(coil::Context& context)
     {
+        auto& namedArgs = context.namedArgs();
+
         auto requiredAnyArg = namedArgs.getOrReport("required", coil::NamedArgs::ArgType::Required);
         if (!requiredAnyArg)
             return; // the error is already reported
