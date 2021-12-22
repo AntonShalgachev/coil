@@ -21,8 +21,6 @@ int main()
     cmd.bind("", coil::bind(&Object::memberFuncWithContext, &object));
 
     cmd[""] = [](coil::Context) {};
-    cmd[""] = [](coil::Context&) {};
-    cmd[""] = [](coil::Context const&) {};
 
     cmd.bind<Object>("", &Object::memberFunc);
     cmd.bind<Object>("", &Object::memberFuncWithContext);

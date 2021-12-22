@@ -50,12 +50,12 @@ namespace
             return val * 2.0f;
         }
 
-        float memberFuncWithTargetContext(Object*, coil::Context&, float val)
+        float memberFuncWithTargetContext(Object*, coil::Context, float val)
         {
             return val * 2.0f;
         }
 
-        float memberFuncWithContext(coil::Context&, float val)
+        float memberFuncWithContext(coil::Context, float val)
         {
             return val * 2.0f;
         }
@@ -70,12 +70,12 @@ namespace
             return val * 2.0f;
         }
 
-        static float staticFuncWithTargetContext(Object*, coil::Context&, float val)
+        static float staticFuncWithTargetContext(Object*, coil::Context, float val)
         {
             return val * 2.0f;
         }
 
-        static float staticFuncWithContext(coil::Context&, float val)
+        static float staticFuncWithContext(coil::Context, float val)
         {
             return val * 2.0f;
         }
@@ -116,7 +116,7 @@ namespace
 
     struct FunctorWithTargetContext
     {
-        float operator()(Object*, coil::Context&, float val)
+        float operator()(Object*, coil::Context, float val)
         {
             return val * 2.0f;
         }
@@ -124,7 +124,7 @@ namespace
 
     struct FunctorWithContext
     {
-        float operator()(coil::Context&, float val)
+        float operator()(coil::Context, float val)
         {
             return val * 2.0f;
         }
@@ -135,7 +135,7 @@ namespace
         return val * 2.0f;
     }
 
-    [[maybe_unused]] float freeFuncWithContext(coil::Context&, float val)
+    [[maybe_unused]] float freeFuncWithContext(coil::Context, float val)
     {
         return val * 2.0f;
     }
@@ -155,7 +155,7 @@ namespace
         return val * 2.0f;
     }
 
-    [[maybe_unused]] float freeFuncWithTargetContext(Object*, coil::Context&, float val)
+    [[maybe_unused]] float freeFuncWithTargetContext(Object*, coil::Context, float val)
     {
         return val * 2.0f;
     }
@@ -170,12 +170,12 @@ namespace
 
     }
 
-    [[maybe_unused]] void freeFuncWithoutArgsWithTargetContext(Object*, coil::Context&)
+    [[maybe_unused]] void freeFuncWithoutArgsWithTargetContext(Object*, coil::Context)
     {
 
     }
 
-    [[maybe_unused]] void freeFuncWithoutArgsWithContext(coil::Context&)
+    [[maybe_unused]] void freeFuncWithoutArgsWithContext(coil::Context)
     {
 
     }
@@ -228,11 +228,11 @@ namespace
     {
         return val * 2.0f;
     };
-    [[maybe_unused]] auto lambdaWithTargetContext = [](Object*, coil::Context&, float val)
+    [[maybe_unused]] auto lambdaWithTargetContext = [](Object*, coil::Context, float val)
     {
         return val * 2.0f;
     };
-    [[maybe_unused]] auto lambdaWithContext = [](coil::Context&, float val)
+    [[maybe_unused]] auto lambdaWithContext = [](coil::Context, float val)
     {
         return val * 2.0f;
     };

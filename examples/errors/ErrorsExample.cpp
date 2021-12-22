@@ -10,7 +10,7 @@ namespace
         void func() {}
     };
 
-    float checkedSqrt(coil::Context& context, float value)
+    float checkedSqrt(coil::Context context, float value)
     {
         if (value < 0.0f)
         {
@@ -21,7 +21,7 @@ namespace
         return std::sqrt(value);
     }
 
-    float getFloat(coil::Context& context, coil::AnyArgView arg)
+    float getFloat(coil::Context context, coil::AnyArgView arg)
     {
         auto asFloat = arg.get<float>();
         if (asFloat)
@@ -31,7 +31,7 @@ namespace
         return 0.0f;
     }
 
-    std::string_view getTypeName(coil::Context& context, coil::AnyArgView arg)
+    std::string_view getTypeName(coil::Context context, coil::AnyArgView arg)
     {
         if (auto asBool = arg.get<bool>())
             return "bool";
@@ -45,7 +45,7 @@ namespace
         return {};
     }
 
-    void testNamedArgs(coil::Context& context)
+    void testNamedArgs(coil::Context context)
     {
         auto& namedArgs = context.namedArgs();
 
