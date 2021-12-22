@@ -1,6 +1,5 @@
 #pragma once
 #include "coil/Context.h"
-#include "coil/utils/TrueIndices.h"
 #include "coil/utils/Types.h"
 
 namespace coil::detail
@@ -28,40 +27,6 @@ namespace coil::detail
         static constexpr bool isUnlimited = false;
         static constexpr std::size_t max = 1;
     };
-    template<>
-    struct ArgCountTraits<Context>
-    {
-        static constexpr std::size_t min = 0;
-        static constexpr bool isUnlimited = false;
-        static constexpr std::size_t max = 0;
-    };
-
-    template<typename T>
-    struct NonUserArgTraits
-    {
-        static constexpr bool isContext = std::is_same_v<T, Context>;
-    };
-
-    template<typename, typename... Args>
-    struct UserArgumentsGetter
-    {
-        using Types = utils::Types<Args...>;
-    };
-    template<typename... Args>
-    struct UserArgumentsGetter<void, Context, Args...>
-    {
-        using Types = utils::Types<Args...>;
-    };
-    template<typename... Args>
-    struct UserArgumentsGetter<void, Context&, Args...>
-    {
-        using Types = utils::Types<Args...>;
-    };
-    template<typename... Args>
-    struct UserArgumentsGetter<void, Context const&, Args...>
-    {
-        using Types = utils::Types<Args...>;
-    };
 
     //////////////////////////////////////////////////////////////////////////
 
@@ -74,49 +39,50 @@ namespace coil::detail
         static_assert(maxArgs >= minArgs || isUnlimited, "For finite arguments maxArgs should not be less than minArgs");
     };
 
+    template<bool HasExplicitTarget, typename T>
+    struct NonUserArgsTraits
+    {
+        static constexpr bool hasExplicitTarget = HasExplicitTarget;
+        using ExplicitTargetType = T;
+    };
+
     template<typename Types>
     struct ArgsTraits;
 
     template<typename T, typename... Tail>
-    struct ArgsTraits<utils::Types<T*, Tail...>> : ArgsCounters<Tail...>
+    struct ArgsTraits<utils::Types<T*, Tail...>> : ArgsCounters<Tail...>, NonUserArgsTraits<true, T>
     {
-        using UserArgumentTypes = typename UserArgumentsGetter<void, Tail...>::Types;
-
-        static constexpr bool hasExplicitTarget = true;
-        using ExplicitTargetType = T;
-
-        static constexpr bool hasContext = (NonUserArgTraits<std::decay_t<Tail>>::isContext || ...);
+        using UserArgumentTypes = utils::Types<Tail...>;
 
         template<bool IsMethod>
-        using NonUserArgsIndices = utils::TrueIndicesT<IsMethod || hasExplicitTarget, hasContext>;
+        using NonUserArgsIndices = std::index_sequence<0>;
     };
 
-    template<typename Head, typename... Tail>
-    struct ArgsTraits<utils::Types<Head, Tail...>> : ArgsCounters<Head, Tail...>
+    template<typename T, typename... Tail>
+    struct ArgsTraits<utils::Types<T*, Context, Tail...>> : ArgsCounters<Tail...>, NonUserArgsTraits<true, T>
     {
-        using UserArgumentTypes = typename UserArgumentsGetter<void, Head, Tail...>::Types;
-
-        static constexpr bool hasExplicitTarget = false;
-        using ExplicitTargetType = void;
-
-        static constexpr bool hasContext = NonUserArgTraits<std::decay_t<Head>>::isContext || (NonUserArgTraits<std::decay_t<Tail>>::isContext || ...);
+        using UserArgumentTypes = utils::Types<Tail...>;
 
         template<bool IsMethod>
-        using NonUserArgsIndices = utils::TrueIndicesT<IsMethod || hasExplicitTarget, hasContext>;
+        using NonUserArgsIndices = std::index_sequence<0, 1>;
     };
 
-    template<>
-    struct ArgsTraits<utils::Types<>> : ArgsCounters<>
+    template<typename... Tail>
+    struct ArgsTraits<utils::Types<Context, Tail...>> : ArgsCounters<Tail...>, NonUserArgsTraits<false, void>
     {
-        using UserArgumentTypes = utils::Types<>;
-
-        static constexpr bool hasExplicitTarget = false;
-        using ExplicitTargetType = void;
-
-        static constexpr bool hasContext = false;
+        using UserArgumentTypes = utils::Types<Tail...>;
 
         template<bool IsMethod>
-        using NonUserArgsIndices = utils::TrueIndicesT<IsMethod || hasExplicitTarget, hasContext>;
+        using NonUserArgsIndices = std::conditional_t<IsMethod, std::index_sequence<0, 1>, std::index_sequence<1>>; // TODO get rid of the conditional
+    };
+
+    template<typename... Args>
+    struct ArgsTraits<utils::Types<Args...>> : ArgsCounters<Args...>, NonUserArgsTraits<false, void>
+    {
+        using UserArgumentTypes = utils::Types<Args...>;
+
+        template<bool IsMethod>
+        using NonUserArgsIndices = std::conditional_t<IsMethod, std::index_sequence<0>, std::index_sequence<>>; // TODO get rid of the conditional
     };
 
     //////////////////////////////////////////////////////////////////////////
