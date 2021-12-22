@@ -54,8 +54,8 @@ namespace coil::detail
     {
         using UserArgumentTypes = utils::Types<Tail...>;
 
-        template<bool IsMethod>
-        using NonUserArgsIndices = std::index_sequence<0>;
+        template<std::size_t... InitialIndices>
+        using NonUserArgsIndices = std::index_sequence<InitialIndices..., 0>;
     };
 
     template<typename T, typename... Tail>
@@ -63,8 +63,8 @@ namespace coil::detail
     {
         using UserArgumentTypes = utils::Types<Tail...>;
 
-        template<bool IsMethod>
-        using NonUserArgsIndices = std::index_sequence<0, 1>;
+        template<std::size_t... InitialIndices>
+        using NonUserArgsIndices = std::index_sequence<InitialIndices..., 0, 1>;
     };
 
     template<typename... Tail>
@@ -72,8 +72,8 @@ namespace coil::detail
     {
         using UserArgumentTypes = utils::Types<Tail...>;
 
-        template<bool IsMethod>
-        using NonUserArgsIndices = std::conditional_t<IsMethod, std::index_sequence<0, 1>, std::index_sequence<1>>; // TODO get rid of the conditional
+        template<std::size_t... InitialIndices>
+        using NonUserArgsIndices = std::index_sequence<InitialIndices..., 1>;
     };
 
     template<typename... Args>
@@ -81,8 +81,8 @@ namespace coil::detail
     {
         using UserArgumentTypes = utils::Types<Args...>;
 
-        template<bool IsMethod>
-        using NonUserArgsIndices = std::conditional_t<IsMethod, std::index_sequence<0>, std::index_sequence<>>; // TODO get rid of the conditional
+        template<std::size_t... InitialIndices>
+        using NonUserArgsIndices = std::index_sequence<InitialIndices...>;
     };
 
     //////////////////////////////////////////////////////////////////////////

@@ -31,7 +31,6 @@ message(STATUS "Performing compilation tests...")
 
 validate_compilation(Valid.cpp TRUE "")
 validate_compilation(WrongExplicitTarget.cpp FALSE "Explicit target should be either T* or T const*")
-validate_compilation(TargetOnMemberFunction.cpp FALSE "Explicit target shouldn't be used on member functions of the same type")
 validate_compilation(ExplicitTargetOnVoid.cpp FALSE "Can't bind a functor with explicit target to a type 'void'")
 validate_compilation(MemberFunctionOnVoid.cpp FALSE "Func shouldn't be a member function")
 validate_compilation(MemberVariableOnVoid.cpp FALSE "Can't bind a functor with explicit target to a type 'void'")
