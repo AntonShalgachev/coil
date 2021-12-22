@@ -146,11 +146,9 @@ namespace coil::detail
     {
         T* target = nullptr;
         Context context;
-        NamedArgs namedArgs;
 
         T* get(std::integral_constant<std::size_t, 0>) { return target; }
         Context& get(std::integral_constant<std::size_t, 1>) { return context; }
-        NamedArgs& get(std::integral_constant<std::size_t, 2>) { return namedArgs; }
     };
 
     template<typename Func, typename T, std::size_t... NonUserIndices, typename... UserArgs, std::size_t... UserIndices>
