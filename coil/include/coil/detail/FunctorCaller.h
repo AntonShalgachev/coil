@@ -166,21 +166,4 @@ namespace coil::detail
 
         invoke(context.result, func, nonUserArgs.get(std::integral_constant<std::size_t, NonUserIndices>{})..., VariadicConsumer<std::decay_t<UserArgs>>::consume(context.input.arguments, UserIndices, onError)...);
     }
-
-    template<typename Func, typename T>
-    void call(Func& func, CallContext& context, T* target)
-    {
-        using FuncTraits = detail::FuncTraitsEx<Func>;
-        using ArgsTraits = typename FuncTraits::ArgsTraits;
-
-        if (!validateArguments(ArgsTraits::minArgs, ArgsTraits::isUnlimited, ArgsTraits::maxArgs, ArgsTraits::hasNamedArgs, context))
-            return;
-
-        using UserArgTypes = typename ArgsTraits::UserArgumentTypes;
-        using UserArgIndicesType = typename UserArgTypes::IndicesType;
-        using NonUserArgIndices = typename ArgsTraits::template NonUserArgsIndices<FuncTraits::template isMethodOfType<T>>;
-        NonUserArgs<T> nonUserArgs{ target, Context{context}, NamedArgs{context} };
-
-        unpackAndInvoke(func, context, nonUserArgs, NonUserArgIndices{}, UserArgTypes{}, UserArgIndicesType{});
-    }
 }
