@@ -52,7 +52,7 @@ namespace coil
             if constexpr (std::is_void_v<T>)
                 static_assert(!std::is_member_function_pointer_v<UnqualifiedFunc>, "Func shouldn't be a member function");
 
-            if constexpr (ArgsTraits::hasTarget)
+            if constexpr (ArgsTraits::hasExplicitTarget)
             {
                 static_assert(!std::is_void_v<T>, "Can't bind a functor with explicit target to a type 'void'");
                 static_assert(!std::is_same_v<T, typename FuncTraits::ObjectType>, "Explicit target shouldn't be used on member functions of the same type");
