@@ -55,7 +55,6 @@ namespace coil
             if constexpr (ArgsTraits::hasExplicitTarget)
             {
                 static_assert(!std::is_void_v<T>, "Can't bind a functor with explicit target to a type 'void'");
-                static_assert(!std::is_same_v<T, typename FuncTraits::ObjectType>, "Explicit target shouldn't be used on member functions of the same type");
                 static_assert(std::is_same_v<T, std::decay_t<typename ArgsTraits::ExplicitTargetType>>, "Explicit target should be either T* or T const*");
             }
 
@@ -224,10 +223,13 @@ namespace coil
 
             using UserArgTypes = typename ArgsTraits::UserArgumentTypes;
             using UserArgIndicesType = typename UserArgTypes::IndicesType;
-            using NonUserArgIndices = typename ArgsTraits::template NonUserArgsIndices<FuncTraits::template isMethodOfType<T>>;
+
             detail::NonUserArgs<T> nonUserArgs{ *object, Context{context} };
 
-            detail::unpackAndInvoke(*functor, context, nonUserArgs, NonUserArgIndices{}, UserArgTypes{}, UserArgIndicesType{});
+            if constexpr (FuncTraits::template isMethodOfType<T>)
+                detail::unpackAndInvoke(*functor, context, nonUserArgs, typename ArgsTraits::template NonUserArgsIndices<0>{}, UserArgTypes{}, UserArgIndicesType{});
+            else
+                detail::unpackAndInvoke(*functor, context, nonUserArgs, typename ArgsTraits::template NonUserArgsIndices<>{}, UserArgTypes{}, UserArgIndicesType{});
         }
 
         void execute(detail::CallContext& context)

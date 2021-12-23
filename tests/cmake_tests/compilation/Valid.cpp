@@ -24,6 +24,7 @@ int main()
 
     cmd.bind<Object>("", &Object::memberFunc);
     cmd.bind<Object>("", &Object::memberFuncWithContext);
+    cmd.bind<Object>("", &Object::memberFuncWithTarget);
     cmd.bind<Object>("", coil::variable(&Object::memberVariable));
     cmd.bind<Object>("", functorWithTarget);
     cmd.bind<Object>("", functorWithTargetContext);
