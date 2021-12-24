@@ -1,7 +1,7 @@
 param (
     [bool]$keepBuildResults = $false,
     [int]$buildsCount = 10,
-    [bool[]]$coilOptions = @($true, $false),
+    [string[]]$bindingsOptions = @("coil", "manual", ""),
     [bool[]]$clangOptions = @($true, $false),
     [bool[]]$unityBuildOptions = @($true, $false)
 )
@@ -11,22 +11,22 @@ function IIf($If, $IfTrue, $IfFalse) {
     Else {If ($IfFalse -is "ScriptBlock") {&$IfFalse} Else {$IfFalse}}
 }
 
-function Get-ConfigurationName([bool]$UseCoil, [bool]$UseClang, [bool]$UseUnityBuild) {
+function Get-ConfigurationName([string]$Bindings, [bool]$UseClang, [bool]$UseUnityBuild) {
     $compilerName = $(If ($UseClang) {"Clang"} Else {"MSVC"})
-    $coilName = $(IIf $UseCoil "Coil" "-")
+    $bindingsName = $(IIf $Bindings $Bindings "-")
     $unityBuildName = $(IIf $UseUnityBuild "Unity" "-");
-    return "$compilerName $coilName $unityBuildName"
+    return "$compilerName $bindingsName $unityBuildName"
 }
 
 function Measure-SingleBuild {
     param (
         [switch]$KeepBuildResults = $false,
         [int]$Count = 1,
-        [switch]$UseCoil = $false,
+        [string]$BindingsType = "",
         [switch]$UseClang = $false,
         [switch]$UseUnityBuild = $false
     )
-    $configurationName = Get-ConfigurationName $UseCoil $UseClang $UseUnityBuild
+    $configurationName = Get-ConfigurationName $BindingsType $UseClang $UseUnityBuild
     Write-Host "Measuring configuration [$configurationName]"
     $buildFolder = "build_temp/$configurationName"
 
@@ -36,7 +36,8 @@ function Measure-SingleBuild {
     mkdir $buildFolder | Out-Null
     Push-Location $buildFolder
 
-    $coil = [int]$UseCoil.IsPresent
+    $coil = [int]($BindingsType -eq "coil")
+    $manual = [int]($BindingsType -eq "manual")
     $unityBuild = [int]$UseUnityBuild.IsPresent
     
     Write-Host "Running CMake..."
@@ -47,7 +48,7 @@ function Measure-SingleBuild {
         $env:CC=""
         $env:CXX=""
     }
-    Invoke-Expression "cmake -DTEST_COMP_PERF=1 -DTEST_COMP_PERF_USE_COIL=$coil -DCMAKE_UNITY_BUILD=$unityBuild -GNinja ../.." | Out-Null
+    Invoke-Expression "cmake -DTEST_COMP_PERF=1 -DTEST_COMP_PERF_USE_COIL=$coil -DTEST_COMP_PERF_USE_MANUAL=$manual -DCMAKE_UNITY_BUILD=$unityBuild -GNinja ../.." | Out-Null
 
     Write-Host "Building 0/$Count (will be discarded)..."
     ninja | Out-Null
@@ -102,9 +103,9 @@ function Main {
     $results = @()
     foreach ($useClang in $clangOptions) {
         foreach ($useUnityBuild in $unityBuildOptions) {
-            foreach ($useCoil in $coilOptions) {
-                $configurationName = Get-ConfigurationName $useCoil $useClang $useUnityBuild
-                $result = Measure-SingleBuild -KeepBuildResults:$keepBuildResults -Count $buildsCount -UseCoil:$useCoil -UseClang:$useClang -UseUnityBuild:$useUnityBuild
+            foreach ($bindingsOption in $bindingsOptions) {
+                $configurationName = Get-ConfigurationName $bindingsOption $useClang $useUnityBuild
+                $result = Measure-SingleBuild -KeepBuildResults:$keepBuildResults -Count $buildsCount -BindingsType $bindingsOption -UseClang:$useClang -UseUnityBuild:$useUnityBuild
     
                 $results += [PSCustomObject]@{
                     Name = "[$configurationName]"

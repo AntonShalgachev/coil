@@ -22,40 +22,40 @@ void ClassWithBindings56::work()
     innerMap.insert_or_assign(3.14, 3.14f);
 }
 
-#ifdef DEBUG_BINDINGS
-void ClassWithBindings56::registerBindings(GeneralBindings& bindings)
+#if USE_COIL
+void ClassWithBindings56::registerBindings(coil::Bindings& bindings)
 {
-    ::bind<ClassWithBindings56>(bindings, "method0", &ClassWithBindings56::method0);
-    ::bind<ClassWithBindings56>(bindings, "method1", &ClassWithBindings56::method1);
-    ::bind<ClassWithBindings56>(bindings, "method2", &ClassWithBindings56::method2);
-    ::bind<ClassWithBindings56>(bindings, "method3", &ClassWithBindings56::method3);
-    ::bind<ClassWithBindings56>(bindings, "method4", &ClassWithBindings56::method4);
-    ::bind<ClassWithBindings56>(bindings, "method5", &ClassWithBindings56::method5);
-    ::bind<ClassWithBindings56>(bindings, "method6", &ClassWithBindings56::method6);
-    ::bind<ClassWithBindings56>(bindings, "method7", &ClassWithBindings56::method7);
-    ::bind<ClassWithBindings56>(bindings, "method8", &ClassWithBindings56::method8);
-    ::bind<ClassWithBindings56>(bindings, "method9", &ClassWithBindings56::method9);
-    ::bind<ClassWithBindings56>(bindings, "method10", &ClassWithBindings56::method10);
-    ::bind<ClassWithBindings56>(bindings, "method11", &ClassWithBindings56::method11);
-    ::bind<ClassWithBindings56>(bindings, "method12", &ClassWithBindings56::method12);
-    ::bind<ClassWithBindings56>(bindings, "method13", &ClassWithBindings56::method13);
-    ::bind<ClassWithBindings56>(bindings, "method14", &ClassWithBindings56::method14);
+    bindings.bind<ClassWithBindings56>("method0", &ClassWithBindings56::method0);
+    bindings.bind<ClassWithBindings56>("method1", &ClassWithBindings56::method1);
+    bindings.bind<ClassWithBindings56>("method2", &ClassWithBindings56::method2);
+    bindings.bind<ClassWithBindings56>("method3", &ClassWithBindings56::method3);
+    bindings.bind<ClassWithBindings56>("method4", &ClassWithBindings56::method4);
+    bindings.bind<ClassWithBindings56>("method5", &ClassWithBindings56::method5);
+    bindings.bind<ClassWithBindings56>("method6", &ClassWithBindings56::method6);
+    bindings.bind<ClassWithBindings56>("method7", &ClassWithBindings56::method7);
+    bindings.bind<ClassWithBindings56>("method8", &ClassWithBindings56::method8);
+    bindings.bind<ClassWithBindings56>("method9", &ClassWithBindings56::method9);
+    bindings.bind<ClassWithBindings56>("method10", &ClassWithBindings56::method10);
+    bindings.bind<ClassWithBindings56>("method11", &ClassWithBindings56::method11);
+    bindings.bind<ClassWithBindings56>("method12", &ClassWithBindings56::method12);
+    bindings.bind<ClassWithBindings56>("method13", &ClassWithBindings56::method13);
+    bindings.bind<ClassWithBindings56>("method14", &ClassWithBindings56::method14);
 
-    ::bind<ClassWithBindings56>(bindings, "memberVariable0", coil::variable(&ClassWithBindings56::memberVariable0));
-    ::bind<ClassWithBindings56>(bindings, "memberVariable1", coil::variable(&ClassWithBindings56::memberVariable1));
-    ::bind<ClassWithBindings56>(bindings, "memberVariable2", coil::variable(&ClassWithBindings56::memberVariable2));
-    ::bind<ClassWithBindings56>(bindings, "memberVariable3", coil::variable(&ClassWithBindings56::memberVariable3));
-    ::bind<ClassWithBindings56>(bindings, "memberVariable4", coil::variable(&ClassWithBindings56::memberVariable4));
-    ::bind<ClassWithBindings56>(bindings, "memberVariable5", coil::variable(&ClassWithBindings56::memberVariable5));
-    ::bind<ClassWithBindings56>(bindings, "memberVariable6", coil::variable(&ClassWithBindings56::memberVariable6));
-    ::bind<ClassWithBindings56>(bindings, "memberVariable7", coil::variable(&ClassWithBindings56::memberVariable7));
-    ::bind<ClassWithBindings56>(bindings, "memberVariable8", coil::variable(&ClassWithBindings56::memberVariable8));
-    ::bind<ClassWithBindings56>(bindings, "memberVariable9", coil::variable(&ClassWithBindings56::memberVariable9));
-    ::bind<ClassWithBindings56>(bindings, "memberVariable10", coil::variable(&ClassWithBindings56::memberVariable10));
-    ::bind<ClassWithBindings56>(bindings, "memberVariable11", coil::variable(&ClassWithBindings56::memberVariable11));
-    ::bind<ClassWithBindings56>(bindings, "memberVariable12", coil::variable(&ClassWithBindings56::memberVariable12));
-    ::bind<ClassWithBindings56>(bindings, "memberVariable13", coil::variable(&ClassWithBindings56::memberVariable13));
-    ::bind<ClassWithBindings56>(bindings, "memberVariable14", coil::variable(&ClassWithBindings56::memberVariable14));
+    bindings.bind<ClassWithBindings56>("memberVariable0", coil::variable(&ClassWithBindings56::memberVariable0));
+    bindings.bind<ClassWithBindings56>("memberVariable1", coil::variable(&ClassWithBindings56::memberVariable1));
+    bindings.bind<ClassWithBindings56>("memberVariable2", coil::variable(&ClassWithBindings56::memberVariable2));
+    bindings.bind<ClassWithBindings56>("memberVariable3", coil::variable(&ClassWithBindings56::memberVariable3));
+    bindings.bind<ClassWithBindings56>("memberVariable4", coil::variable(&ClassWithBindings56::memberVariable4));
+    bindings.bind<ClassWithBindings56>("memberVariable5", coil::variable(&ClassWithBindings56::memberVariable5));
+    bindings.bind<ClassWithBindings56>("memberVariable6", coil::variable(&ClassWithBindings56::memberVariable6));
+    bindings.bind<ClassWithBindings56>("memberVariable7", coil::variable(&ClassWithBindings56::memberVariable7));
+    bindings.bind<ClassWithBindings56>("memberVariable8", coil::variable(&ClassWithBindings56::memberVariable8));
+    bindings.bind<ClassWithBindings56>("memberVariable9", coil::variable(&ClassWithBindings56::memberVariable9));
+    bindings.bind<ClassWithBindings56>("memberVariable10", coil::variable(&ClassWithBindings56::memberVariable10));
+    bindings.bind<ClassWithBindings56>("memberVariable11", coil::variable(&ClassWithBindings56::memberVariable11));
+    bindings.bind<ClassWithBindings56>("memberVariable12", coil::variable(&ClassWithBindings56::memberVariable12));
+    bindings.bind<ClassWithBindings56>("memberVariable13", coil::variable(&ClassWithBindings56::memberVariable13));
+    bindings.bind<ClassWithBindings56>("memberVariable14", coil::variable(&ClassWithBindings56::memberVariable14));
 
     bindings["ClassWithBindings56_function0"] = [](coil::Context context, float arg0, double arg1, unsigned arg2, int arg3, short arg4)
     {
@@ -211,7 +211,7 @@ void ClassWithBindings56::registerBindings(GeneralBindings& bindings)
 }
 #endif
 
-#ifdef MANUAL_DEBUG_BINDINGS
+#if USE_MANUAL
 void ClassWithBindings56::registerBindings(DumbBindings& bindings)
 {
     bindings.registerCommand("ClassWithBindings56_method0", [this](auto const& args) { return method0Command(args); });
@@ -856,7 +856,7 @@ void ClassWithBindings56::function14(float arg0, bool arg1, bool arg2, int arg3,
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 
-#ifdef MANUAL_DEBUG_BINDINGS
+#if USE_MANUAL
 
 std::string ClassWithBindings56::method0Command(std::vector<std::string> const& arguments)
 {

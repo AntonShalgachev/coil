@@ -7,7 +7,7 @@ set(RUN_CMAKE_COMPILATION_TEST OFF CACHE BOOL "Run compilation test in CMake")
 
 set(TEST_COMP_PERF OFF CACHE BOOL "Configure the project for compilation performance tests")
 set(TEST_COMP_PERF_USE_COIL OFF CACHE BOOL "Whether to use coil library for compilation performance test")
-set(TEST_COMP_PERF_USE_SOL OFF CACHE BOOL "Whether to use sol2 library for compilation performance test")
+set(TEST_COMP_PERF_USE_MANUAL OFF CACHE BOOL "Whether to use manually-written bindings for compilation performance test")
 
 set(TEST_RUNTIME_PERF OFF CACHE BOOL "Configure the project for runtime performance tests")
 
@@ -31,9 +31,6 @@ add_subdirectory(coil)
 
 if (${TEST_COMP_PERF})
     add_subdirectory(tests/compilation_performance)
-    if (${TEST_COMP_PERF_USE_SOL})
-        add_subdirectory(tests/liblua)
-    endif()
 elseif(${TEST_RUNTIME_PERF})
     add_subdirectory(tests/runtime_performance)
     add_subdirectory(tests/liblua)

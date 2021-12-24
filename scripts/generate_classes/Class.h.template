@@ -16,11 +16,11 @@ public:
     void work();
 
 #if $has_bindings
-\#ifdef DEBUG_BINDINGS
-    void registerBindings(GeneralBindings& bindings);
+\#if USE_COIL
+    void registerBindings(coil::Bindings& bindings);
 \#endif
 
-\#ifdef MANUAL_DEBUG_BINDINGS
+\#if USE_MANUAL
     void registerBindings(DumbBindings& bindings);
 \#endif
 #end if
@@ -45,7 +45,7 @@ private:
 #end for
 #if $has_bindings
 
-\#ifdef MANUAL_DEBUG_BINDINGS
+\#if USE_MANUAL
 #for $method in $methods
     std::string ${method.name}Command(std::vector<std::string> const& arguments);
 #end for

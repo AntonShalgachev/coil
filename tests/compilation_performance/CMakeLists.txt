@@ -50,8 +50,8 @@ target_compile_options(${PROJECT_NAME} PRIVATE
     ${COMPILE_OPTIONS}
 )
 
-if(${TEST_COMP_PERF_USE_SOL})
-    target_compile_definitions(${PROJECT_NAME} PRIVATE USE_SOL=1)
+if(${TEST_COMP_PERF_USE_MANUAL})
+    target_compile_definitions(${PROJECT_NAME} PRIVATE USE_MANUAL=1)
 endif()
 
 if(${TEST_COMP_PERF_USE_COIL})
@@ -67,14 +67,6 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
     VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
 )
 
-if (${TEST_COMP_PERF_USE_SOL})
-    add_dependencies(${PROJECT_NAME} liblua)
-endif()
-
 set (LINK_LIBS libcoil)
-
-if (${TEST_COMP_PERF_USE_SOL})
-    list(APPEND LINK_LIBS liblua)
-endif()
 
 target_link_libraries(${PROJECT_NAME} ${LINK_LIBS})
