@@ -162,12 +162,30 @@
           "type": "BOOL"
         },
         {
-          "name": "TEST_COMP_PERF_USE_SOL",
-          "value": "False",
+          "name": "TEST_COMP_PERF_USE_COIL",
+          "value": "True",
+          "type": "BOOL"
+        }
+      ]
+    },
+    {
+      "name": "Debug-Compilation-Perf-Manual",
+      "generator": "Ninja",
+      "configurationType": "Debug",
+      "buildRoot": "${projectDir}\\out\\build\\${name}",
+      "installRoot": "${projectDir}\\out\\install\\${name}",
+      "cmakeCommandArgs": "",
+      "buildCommandArgs": "",
+      "ctestCommandArgs": "",
+      "inheritEnvironments": [ "msvc_x64_x64" ],
+      "variables": [
+        {
+          "name": "TEST_COMP_PERF",
+          "value": "True",
           "type": "BOOL"
         },
         {
-          "name": "TEST_COMP_PERF_USE_COIL",
+          "name": "TEST_COMP_PERF_USE_MANUAL",
           "value": "True",
           "type": "BOOL"
         }

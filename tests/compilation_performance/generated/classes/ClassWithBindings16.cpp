@@ -22,40 +22,40 @@ void ClassWithBindings16::work()
     innerMap.insert_or_assign(3.14, 3.14f);
 }
 
-#ifdef DEBUG_BINDINGS
-void ClassWithBindings16::registerBindings(GeneralBindings& bindings)
+#if USE_COIL
+void ClassWithBindings16::registerBindings(coil::Bindings& bindings)
 {
-    ::bind<ClassWithBindings16>(bindings, "method0", &ClassWithBindings16::method0);
-    ::bind<ClassWithBindings16>(bindings, "method1", &ClassWithBindings16::method1);
-    ::bind<ClassWithBindings16>(bindings, "method2", &ClassWithBindings16::method2);
-    ::bind<ClassWithBindings16>(bindings, "method3", &ClassWithBindings16::method3);
-    ::bind<ClassWithBindings16>(bindings, "method4", &ClassWithBindings16::method4);
-    ::bind<ClassWithBindings16>(bindings, "method5", &ClassWithBindings16::method5);
-    ::bind<ClassWithBindings16>(bindings, "method6", &ClassWithBindings16::method6);
-    ::bind<ClassWithBindings16>(bindings, "method7", &ClassWithBindings16::method7);
-    ::bind<ClassWithBindings16>(bindings, "method8", &ClassWithBindings16::method8);
-    ::bind<ClassWithBindings16>(bindings, "method9", &ClassWithBindings16::method9);
-    ::bind<ClassWithBindings16>(bindings, "method10", &ClassWithBindings16::method10);
-    ::bind<ClassWithBindings16>(bindings, "method11", &ClassWithBindings16::method11);
-    ::bind<ClassWithBindings16>(bindings, "method12", &ClassWithBindings16::method12);
-    ::bind<ClassWithBindings16>(bindings, "method13", &ClassWithBindings16::method13);
-    ::bind<ClassWithBindings16>(bindings, "method14", &ClassWithBindings16::method14);
+    bindings.bind<ClassWithBindings16>("method0", &ClassWithBindings16::method0);
+    bindings.bind<ClassWithBindings16>("method1", &ClassWithBindings16::method1);
+    bindings.bind<ClassWithBindings16>("method2", &ClassWithBindings16::method2);
+    bindings.bind<ClassWithBindings16>("method3", &ClassWithBindings16::method3);
+    bindings.bind<ClassWithBindings16>("method4", &ClassWithBindings16::method4);
+    bindings.bind<ClassWithBindings16>("method5", &ClassWithBindings16::method5);
+    bindings.bind<ClassWithBindings16>("method6", &ClassWithBindings16::method6);
+    bindings.bind<ClassWithBindings16>("method7", &ClassWithBindings16::method7);
+    bindings.bind<ClassWithBindings16>("method8", &ClassWithBindings16::method8);
+    bindings.bind<ClassWithBindings16>("method9", &ClassWithBindings16::method9);
+    bindings.bind<ClassWithBindings16>("method10", &ClassWithBindings16::method10);
+    bindings.bind<ClassWithBindings16>("method11", &ClassWithBindings16::method11);
+    bindings.bind<ClassWithBindings16>("method12", &ClassWithBindings16::method12);
+    bindings.bind<ClassWithBindings16>("method13", &ClassWithBindings16::method13);
+    bindings.bind<ClassWithBindings16>("method14", &ClassWithBindings16::method14);
 
-    ::bind<ClassWithBindings16>(bindings, "memberVariable0", coil::variable(&ClassWithBindings16::memberVariable0));
-    ::bind<ClassWithBindings16>(bindings, "memberVariable1", coil::variable(&ClassWithBindings16::memberVariable1));
-    ::bind<ClassWithBindings16>(bindings, "memberVariable2", coil::variable(&ClassWithBindings16::memberVariable2));
-    ::bind<ClassWithBindings16>(bindings, "memberVariable3", coil::variable(&ClassWithBindings16::memberVariable3));
-    ::bind<ClassWithBindings16>(bindings, "memberVariable4", coil::variable(&ClassWithBindings16::memberVariable4));
-    ::bind<ClassWithBindings16>(bindings, "memberVariable5", coil::variable(&ClassWithBindings16::memberVariable5));
-    ::bind<ClassWithBindings16>(bindings, "memberVariable6", coil::variable(&ClassWithBindings16::memberVariable6));
-    ::bind<ClassWithBindings16>(bindings, "memberVariable7", coil::variable(&ClassWithBindings16::memberVariable7));
-    ::bind<ClassWithBindings16>(bindings, "memberVariable8", coil::variable(&ClassWithBindings16::memberVariable8));
-    ::bind<ClassWithBindings16>(bindings, "memberVariable9", coil::variable(&ClassWithBindings16::memberVariable9));
-    ::bind<ClassWithBindings16>(bindings, "memberVariable10", coil::variable(&ClassWithBindings16::memberVariable10));
-    ::bind<ClassWithBindings16>(bindings, "memberVariable11", coil::variable(&ClassWithBindings16::memberVariable11));
-    ::bind<ClassWithBindings16>(bindings, "memberVariable12", coil::variable(&ClassWithBindings16::memberVariable12));
-    ::bind<ClassWithBindings16>(bindings, "memberVariable13", coil::variable(&ClassWithBindings16::memberVariable13));
-    ::bind<ClassWithBindings16>(bindings, "memberVariable14", coil::variable(&ClassWithBindings16::memberVariable14));
+    bindings.bind<ClassWithBindings16>("memberVariable0", coil::variable(&ClassWithBindings16::memberVariable0));
+    bindings.bind<ClassWithBindings16>("memberVariable1", coil::variable(&ClassWithBindings16::memberVariable1));
+    bindings.bind<ClassWithBindings16>("memberVariable2", coil::variable(&ClassWithBindings16::memberVariable2));
+    bindings.bind<ClassWithBindings16>("memberVariable3", coil::variable(&ClassWithBindings16::memberVariable3));
+    bindings.bind<ClassWithBindings16>("memberVariable4", coil::variable(&ClassWithBindings16::memberVariable4));
+    bindings.bind<ClassWithBindings16>("memberVariable5", coil::variable(&ClassWithBindings16::memberVariable5));
+    bindings.bind<ClassWithBindings16>("memberVariable6", coil::variable(&ClassWithBindings16::memberVariable6));
+    bindings.bind<ClassWithBindings16>("memberVariable7", coil::variable(&ClassWithBindings16::memberVariable7));
+    bindings.bind<ClassWithBindings16>("memberVariable8", coil::variable(&ClassWithBindings16::memberVariable8));
+    bindings.bind<ClassWithBindings16>("memberVariable9", coil::variable(&ClassWithBindings16::memberVariable9));
+    bindings.bind<ClassWithBindings16>("memberVariable10", coil::variable(&ClassWithBindings16::memberVariable10));
+    bindings.bind<ClassWithBindings16>("memberVariable11", coil::variable(&ClassWithBindings16::memberVariable11));
+    bindings.bind<ClassWithBindings16>("memberVariable12", coil::variable(&ClassWithBindings16::memberVariable12));
+    bindings.bind<ClassWithBindings16>("memberVariable13", coil::variable(&ClassWithBindings16::memberVariable13));
+    bindings.bind<ClassWithBindings16>("memberVariable14", coil::variable(&ClassWithBindings16::memberVariable14));
 
     bindings["ClassWithBindings16_function0"] = [](coil::Context context, unsigned arg0, double arg1, double arg2, short arg3, short arg4)
     {
@@ -211,7 +211,7 @@ void ClassWithBindings16::registerBindings(GeneralBindings& bindings)
 }
 #endif
 
-#ifdef MANUAL_DEBUG_BINDINGS
+#if USE_MANUAL
 void ClassWithBindings16::registerBindings(DumbBindings& bindings)
 {
     bindings.registerCommand("ClassWithBindings16_method0", [this](auto const& args) { return method0Command(args); });
@@ -865,7 +865,7 @@ void ClassWithBindings16::function14(unsigned arg0, unsigned arg1, int arg2, dou
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 
-#ifdef MANUAL_DEBUG_BINDINGS
+#if USE_MANUAL
 
 std::string ClassWithBindings16::method0Command(std::vector<std::string> const& arguments)
 {

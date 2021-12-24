@@ -22,40 +22,40 @@ void ClassWithBindings73::work()
     innerMap.insert_or_assign(3.14, 3.14f);
 }
 
-#ifdef DEBUG_BINDINGS
-void ClassWithBindings73::registerBindings(GeneralBindings& bindings)
+#if USE_COIL
+void ClassWithBindings73::registerBindings(coil::Bindings& bindings)
 {
-    ::bind<ClassWithBindings73>(bindings, "method0", &ClassWithBindings73::method0);
-    ::bind<ClassWithBindings73>(bindings, "method1", &ClassWithBindings73::method1);
-    ::bind<ClassWithBindings73>(bindings, "method2", &ClassWithBindings73::method2);
-    ::bind<ClassWithBindings73>(bindings, "method3", &ClassWithBindings73::method3);
-    ::bind<ClassWithBindings73>(bindings, "method4", &ClassWithBindings73::method4);
-    ::bind<ClassWithBindings73>(bindings, "method5", &ClassWithBindings73::method5);
-    ::bind<ClassWithBindings73>(bindings, "method6", &ClassWithBindings73::method6);
-    ::bind<ClassWithBindings73>(bindings, "method7", &ClassWithBindings73::method7);
-    ::bind<ClassWithBindings73>(bindings, "method8", &ClassWithBindings73::method8);
-    ::bind<ClassWithBindings73>(bindings, "method9", &ClassWithBindings73::method9);
-    ::bind<ClassWithBindings73>(bindings, "method10", &ClassWithBindings73::method10);
-    ::bind<ClassWithBindings73>(bindings, "method11", &ClassWithBindings73::method11);
-    ::bind<ClassWithBindings73>(bindings, "method12", &ClassWithBindings73::method12);
-    ::bind<ClassWithBindings73>(bindings, "method13", &ClassWithBindings73::method13);
-    ::bind<ClassWithBindings73>(bindings, "method14", &ClassWithBindings73::method14);
+    bindings.bind<ClassWithBindings73>("method0", &ClassWithBindings73::method0);
+    bindings.bind<ClassWithBindings73>("method1", &ClassWithBindings73::method1);
+    bindings.bind<ClassWithBindings73>("method2", &ClassWithBindings73::method2);
+    bindings.bind<ClassWithBindings73>("method3", &ClassWithBindings73::method3);
+    bindings.bind<ClassWithBindings73>("method4", &ClassWithBindings73::method4);
+    bindings.bind<ClassWithBindings73>("method5", &ClassWithBindings73::method5);
+    bindings.bind<ClassWithBindings73>("method6", &ClassWithBindings73::method6);
+    bindings.bind<ClassWithBindings73>("method7", &ClassWithBindings73::method7);
+    bindings.bind<ClassWithBindings73>("method8", &ClassWithBindings73::method8);
+    bindings.bind<ClassWithBindings73>("method9", &ClassWithBindings73::method9);
+    bindings.bind<ClassWithBindings73>("method10", &ClassWithBindings73::method10);
+    bindings.bind<ClassWithBindings73>("method11", &ClassWithBindings73::method11);
+    bindings.bind<ClassWithBindings73>("method12", &ClassWithBindings73::method12);
+    bindings.bind<ClassWithBindings73>("method13", &ClassWithBindings73::method13);
+    bindings.bind<ClassWithBindings73>("method14", &ClassWithBindings73::method14);
 
-    ::bind<ClassWithBindings73>(bindings, "memberVariable0", coil::variable(&ClassWithBindings73::memberVariable0));
-    ::bind<ClassWithBindings73>(bindings, "memberVariable1", coil::variable(&ClassWithBindings73::memberVariable1));
-    ::bind<ClassWithBindings73>(bindings, "memberVariable2", coil::variable(&ClassWithBindings73::memberVariable2));
-    ::bind<ClassWithBindings73>(bindings, "memberVariable3", coil::variable(&ClassWithBindings73::memberVariable3));
-    ::bind<ClassWithBindings73>(bindings, "memberVariable4", coil::variable(&ClassWithBindings73::memberVariable4));
-    ::bind<ClassWithBindings73>(bindings, "memberVariable5", coil::variable(&ClassWithBindings73::memberVariable5));
-    ::bind<ClassWithBindings73>(bindings, "memberVariable6", coil::variable(&ClassWithBindings73::memberVariable6));
-    ::bind<ClassWithBindings73>(bindings, "memberVariable7", coil::variable(&ClassWithBindings73::memberVariable7));
-    ::bind<ClassWithBindings73>(bindings, "memberVariable8", coil::variable(&ClassWithBindings73::memberVariable8));
-    ::bind<ClassWithBindings73>(bindings, "memberVariable9", coil::variable(&ClassWithBindings73::memberVariable9));
-    ::bind<ClassWithBindings73>(bindings, "memberVariable10", coil::variable(&ClassWithBindings73::memberVariable10));
-    ::bind<ClassWithBindings73>(bindings, "memberVariable11", coil::variable(&ClassWithBindings73::memberVariable11));
-    ::bind<ClassWithBindings73>(bindings, "memberVariable12", coil::variable(&ClassWithBindings73::memberVariable12));
-    ::bind<ClassWithBindings73>(bindings, "memberVariable13", coil::variable(&ClassWithBindings73::memberVariable13));
-    ::bind<ClassWithBindings73>(bindings, "memberVariable14", coil::variable(&ClassWithBindings73::memberVariable14));
+    bindings.bind<ClassWithBindings73>("memberVariable0", coil::variable(&ClassWithBindings73::memberVariable0));
+    bindings.bind<ClassWithBindings73>("memberVariable1", coil::variable(&ClassWithBindings73::memberVariable1));
+    bindings.bind<ClassWithBindings73>("memberVariable2", coil::variable(&ClassWithBindings73::memberVariable2));
+    bindings.bind<ClassWithBindings73>("memberVariable3", coil::variable(&ClassWithBindings73::memberVariable3));
+    bindings.bind<ClassWithBindings73>("memberVariable4", coil::variable(&ClassWithBindings73::memberVariable4));
+    bindings.bind<ClassWithBindings73>("memberVariable5", coil::variable(&ClassWithBindings73::memberVariable5));
+    bindings.bind<ClassWithBindings73>("memberVariable6", coil::variable(&ClassWithBindings73::memberVariable6));
+    bindings.bind<ClassWithBindings73>("memberVariable7", coil::variable(&ClassWithBindings73::memberVariable7));
+    bindings.bind<ClassWithBindings73>("memberVariable8", coil::variable(&ClassWithBindings73::memberVariable8));
+    bindings.bind<ClassWithBindings73>("memberVariable9", coil::variable(&ClassWithBindings73::memberVariable9));
+    bindings.bind<ClassWithBindings73>("memberVariable10", coil::variable(&ClassWithBindings73::memberVariable10));
+    bindings.bind<ClassWithBindings73>("memberVariable11", coil::variable(&ClassWithBindings73::memberVariable11));
+    bindings.bind<ClassWithBindings73>("memberVariable12", coil::variable(&ClassWithBindings73::memberVariable12));
+    bindings.bind<ClassWithBindings73>("memberVariable13", coil::variable(&ClassWithBindings73::memberVariable13));
+    bindings.bind<ClassWithBindings73>("memberVariable14", coil::variable(&ClassWithBindings73::memberVariable14));
 
     bindings["ClassWithBindings73_function0"] = [](coil::Context context, unsigned arg0, double arg1, unsigned arg2, bool arg3, int arg4)
     {
@@ -211,7 +211,7 @@ void ClassWithBindings73::registerBindings(GeneralBindings& bindings)
 }
 #endif
 
-#ifdef MANUAL_DEBUG_BINDINGS
+#if USE_MANUAL
 void ClassWithBindings73::registerBindings(DumbBindings& bindings)
 {
     bindings.registerCommand("ClassWithBindings73_method0", [this](auto const& args) { return method0Command(args); });
@@ -862,7 +862,7 @@ void ClassWithBindings73::function14(int arg0, double arg1, unsigned arg2, doubl
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 
-#ifdef MANUAL_DEBUG_BINDINGS
+#if USE_MANUAL
 
 std::string ClassWithBindings73::method0Command(std::vector<std::string> const& arguments)
 {

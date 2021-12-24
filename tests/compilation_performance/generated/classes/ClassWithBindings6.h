@@ -30,11 +30,11 @@ class ClassWithBindings6
 public:
     void work();
 
-#ifdef DEBUG_BINDINGS
-    void registerBindings(GeneralBindings& bindings);
+#if USE_COIL
+    void registerBindings(coil::Bindings& bindings);
 #endif
 
-#ifdef MANUAL_DEBUG_BINDINGS
+#if USE_MANUAL
     void registerBindings(DumbBindings& bindings);
 #endif
 
@@ -105,7 +105,7 @@ private:
     inline static short variable13{};
     inline static bool variable14{};
 
-#ifdef MANUAL_DEBUG_BINDINGS
+#if USE_MANUAL
     std::string method0Command(std::vector<std::string> const& arguments);
     std::string method1Command(std::vector<std::string> const& arguments);
     std::string method2Command(std::vector<std::string> const& arguments);
