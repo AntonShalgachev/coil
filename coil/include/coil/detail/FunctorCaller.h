@@ -101,7 +101,7 @@ namespace coil::detail
         return func();
     }
 
-    template<typename Func, typename... Args>
+    template<typename Func, typename... Args, bool isVoid = std::is_void_v<typename detail::FuncTraitsEx<Func>::ReturnType>>
     void invoke(ExecutionResult& result, Func& func, Args&&... args)
     {
         if (!result)
@@ -111,7 +111,7 @@ namespace coil::detail
 
         try
         {
-            if constexpr (std::is_void_v<R>)
+            if constexpr (isVoid)
             {
                 invokeFunc(func, std::forward<Args>(args)...);
             }
