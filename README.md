@@ -22,7 +22,7 @@ SomeSystem system2{};
 ```cpp
 coil::Bindings bindings;
 bindings["sum"] = [](int a, int b) { return a + b; };
-bindings["foo"] = &foo;
+bindings["foo"] = coil::variable(&foo);
 bindings.bind<SomeSystem>("update", &SomeSystem::update);
 
 bindings.addObject("system1", &system1);
@@ -44,7 +44,7 @@ bindings.execute("system1.update 0.16");
 bindings.execute("system2.update 0.16");
 ```
 
-For more examples check `examples` folder or [Examples section](#examples)
+For more examples check `examples` directory or [Examples section](#examples)
 
 ## Introduction
 
@@ -68,13 +68,13 @@ The priorities of the library:
 
 ## Features
 
-* Object-oriented syntax (`object.command arg1 arg2`)
+* Object-oriented syntax (`object.command arg1 arg2`, but global commands `command arg1 arg2` are also supported)
 * Any callable objects: free functions, lambdas, member functions, objects with `operator()`
 * Variables
 * Enums (serialization has to be implemented in your code, e.g. with [magic_enum](https://github.com/Neargye/magic_enum))
 * Optional arguments
 * Variable amount of arguments (using vector-like containers)
-* Type-less arguments ()
+* Type-less arguments (to allow the command handle several types)
 * Named arguments (`object.command foo=3.14 bar=true`)
 * Human-readable `bool` serialization
 * Error handling
@@ -83,11 +83,59 @@ The priorities of the library:
 * Properties (getter/setter)
 * Configurable use of exceptions
 * No RTTI
+* No unnecessary heap allocations (Lexer operates on `string_view`s)
 * Modern C++ without dependencies
 
 ## Installation
 
+`coil` is a header-only library, so all you have to do is to copy whole `coil/include/coil` to your include directory. If your project uses CMake, you can also copy `coil/CMakeLists.txt`.
+
+<!-- Mention extern templates and moving implementation to cpp if it gets implemented -->
+
 ## Examples
+
+### Enums
+
+For enums to work with bindings, all you need to do is to provide a specialization of `TypeSerializer` for that enum type. `TypeSerializer` has a second template parameter to allow `enable_if`; this makes it possible to define a single serializer for all enum types. The quickest way is to use `magic_enum`:
+
+```cpp
+namespace coil
+{
+    template<typename E>
+    struct TypeSerializer<E, std::enable_if_t<std::is_enum_v<E>>>
+    {
+        template<typename OnError>
+        static E fromString(std::string_view str, OnError&& onError)
+        {
+            std::optional<E> optionalValue = magic_enum::enum_cast<E>(str);
+            if (optionalValue.has_value())
+                return optionalValue.value();
+
+            reportConversionError<E>(std::forward<OnError>(onError), str);
+            return E{};
+        }
+
+        static auto toString(E const& value)
+        {
+            return magic_enum::enum_name(value);
+        }
+    };
+}
+```
+
+After that you can use enums as any other objects:
+```cpp
+enum class Ability
+{
+    None,
+    NoRecoil,
+};
+Ability ability = Ability::None;
+
+bindings["ability"] = coil::variable(&ability);
+bindings.execute("ability"); // returns "None"
+bindings.execute("ability NoRecoil"); // sets the variable and returns "NoRecoil"
+```
 
 ## Extensibility
 
