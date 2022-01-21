@@ -7,7 +7,8 @@ class VariablesExample final
 public:
     static void registerExample(coil::Bindings& globalBindings)
     {
-        globalBindings.bind<VariablesExample>("run", &VariablesExample::run);
+        auto exampleBindings = globalBindings.createObjectBindings<VariablesExample>();
+        exampleBindings["run"] = &run;
     }
 
 private:

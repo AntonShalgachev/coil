@@ -7,7 +7,8 @@ class VariadicExample final
 public:
     static void registerExample(coil::Bindings& globalBindings)
     {
-        globalBindings.bind<VariadicExample>("run", &VariadicExample::run);
+        auto exampleBindings = globalBindings.createObjectBindings<VariadicExample>();
+        exampleBindings["run"] = &run;
     }
 
 private:

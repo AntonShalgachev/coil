@@ -7,7 +7,8 @@ class NamedExample final
 public:
     static void registerExample(coil::Bindings& globalBindings)
     {
-        globalBindings.bind<NamedExample>("run", &NamedExample::run);
+        auto exampleBindings = globalBindings.createObjectBindings<NamedExample>();
+        exampleBindings["run"] = &run;
     }
 
 private:
