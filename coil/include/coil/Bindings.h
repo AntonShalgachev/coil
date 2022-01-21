@@ -10,21 +10,28 @@
 #include "detail/FunctorCaller.h"
 #include "ExecutionResult.h"
 #include "utils/TypeId.h"
-#include "BindingProxy.h"
 #include "DefaultLexer.h"
 #include "Expected.h"
 #include "GeneralizedString.h"
 
 namespace coil
 {
+    using GeneralizedString = BasicGeneralizedString<std::string>;
+
+    template<typename T>
+    class BindingProxy;
+    template<typename T>
+    class ObjectBindings;
+
 	class Bindings
 	{
     public:
-        using GeneralizedString = BasicGeneralizedString<std::string>;
+        BindingProxy<void> operator[](GeneralizedString name);
 
-        auto operator[](GeneralizedString name)
+        template<typename T>
+        ObjectBindings<T> createObjectBindings()
         {
-            return BindingProxy<Bindings, GeneralizedString>(*this, std::move(name));
+            return ObjectBindings<T>{*this};
         }
 
         template<typename AnyT>
@@ -260,4 +267,58 @@ namespace coil
         std::unordered_map<utils::TypeIdT, std::unordered_map<GeneralizedString, AnyFunctor>> m_functors;
         DefaultLexer m_defaultLexer;
 	};
+
+    template<typename T>
+    class BindingProxy
+    {
+    public:
+        BindingProxy(Bindings& bindings, GeneralizedString name) : m_bindings(bindings), m_name(std::move(name)) {}
+
+        template<typename AnyT>
+        BindingProxy& operator=(AnyT&& anything) const& = delete;
+
+        template<typename AnyT>
+        BindingProxy& operator=(AnyT&& anything)&
+        {
+            m_bindings.bind<T>(m_name, std::forward<AnyT>(anything));
+            return *this;
+        }
+
+        template<typename AnyT>
+        BindingProxy& operator=(AnyT&& anything) &&
+        {
+            m_bindings.bind<T>(std::move(m_name), std::forward<AnyT>(anything));
+            return *this;
+        }
+
+        BindingProxy& operator=(std::nullptr_t)
+        {
+            m_bindings.unbind<T>(m_name);
+            return *this;
+        }
+
+    private:
+        Bindings& m_bindings;
+        GeneralizedString m_name;
+    };
+
+    template<typename T>
+    class ObjectBindings
+    {
+    public:
+        ObjectBindings(Bindings& bindings) : m_bindings(bindings) {}
+
+        BindingProxy<T> operator[](GeneralizedString name)
+        {
+            return BindingProxy<T>(m_bindings, std::move(name));
+        }
+
+    private:
+        Bindings& m_bindings;
+    };
+
+    inline BindingProxy<void> Bindings::operator[](GeneralizedString name)
+    {
+        return BindingProxy<void>(*this, std::move(name));
+    }
 }
