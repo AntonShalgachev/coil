@@ -25,15 +25,25 @@ namespace coil
     }
 
     template<typename T, typename = void>
+    struct HasCoutOperator : std::false_type {};
+    template<typename T>
+    struct HasCoutOperator<T, std::void_t<decltype(std::declval<std::ostream>() << std::declval<T>())>> : std::true_type {};
+
+    template<typename T, typename = void>
+    struct HasCinOperator : std::false_type {};
+    template<typename T>
+    struct HasCinOperator<T, std::void_t<decltype(std::declval<std::istream>() >> std::declval<T>())>> : std::true_type {};
+
+    template<typename T, typename = void>
     struct TypeSerializer
     {
         static_assert(!std::is_void_v<T>, "Void isn't a valid conversion type");
         
-        // TODO static_assert that T can be used with streams
-
         template<typename OnError>
         static T fromString(std::string_view str, OnError&& onError)
         {
+            static_assert(HasCinOperator<T>::value, "T should have operator>>, or TypeSerializer has to be specialized for type T");
+
             std::stringstream ss;
             ss << str;
 
@@ -47,8 +57,10 @@ namespace coil
             return T{};
         }
 
-        static std::string toString(T const& value)
+        static std::string toString([[maybe_unused]] T const& value)
         {
+            static_assert(HasCoutOperator<T>::value, "T should have operator<<, or TypeSerializer has to be specialized for type T");
+
             std::stringstream ss;
             ss << value;
 
@@ -169,6 +181,4 @@ namespace coil
             return TypeSerializer<T>::toString(value.value());
         }
     };
-
-    // TODO return some default string for non-convertible types
 }
