@@ -67,6 +67,14 @@ int main()
     Examples examples;
     bindExamples(bindings, examples, names);
 
+    bindings["run_all"] = [&names, &bindings]() {
+        for (std::string_view name : names)
+        {
+            auto line = std::string(name) + std::string(".run");
+            bindings.execute(line);
+        }
+    };
+
     while (!shouldExit)
     {
         std::cout << ">>> ";
