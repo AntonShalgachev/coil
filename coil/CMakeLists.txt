@@ -20,7 +20,6 @@ set(ALL_FILES
     "include/coil/detail/CallContext.h"
     "include/coil/detail/FuncTraitsEx.h"
     
-    "include/coil/BindingProxy.h"
     "include/coil/DefaultLexer.h"
     "include/coil/Expected.h"
     "include/coil/TypeName.h"
