@@ -7,7 +7,8 @@ class EnumsExample final
 public:
     static void registerExample(coil::Bindings& globalBindings)
     {
-        globalBindings.bind<EnumsExample>("run", &EnumsExample::run);
+        auto exampleBindings = globalBindings.createObjectBindings<EnumsExample>();
+        exampleBindings["run"] = &run;
     }
 
 private:
