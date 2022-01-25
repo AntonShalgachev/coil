@@ -143,6 +143,53 @@ bindings.execute("ability"); // returns "None"
 bindings.execute("ability NoRecoil"); // sets the variable and returns "NoRecoil"
 ```
 
+### Commands with a variable arguments size
+
+Some types can consume more than 1 string argument. By default that's the case for `std::vector` and `std::optional`, but you can specialize `VariadicConsumer` for other types. Suppose you have the following function:
+
+```cpp
+long sumAll(std::vector<long> const& numbers)
+{
+    return std::accumulate(numbers.begin(), numbers.end(), 0l);
+}
+```
+
+You can work with it as with any other function (i.e. just bind it to a name and call it)
+```cpp
+bindings["sum_all"] = &sumAll;
+bindings.execute("sum_all"); // returns "0"
+bindings.execute("sum_all 1"); // returns "1"
+bindings.execute("sum_all 1 2 3 5 8"); // returns "19"
+```
+
+### Any-like arguments
+
+You can use `AnyArgView` to represent an "any" argument. Internally it contains a string, which is parsed to a concrete type when needed inside the function
+
+```cpp
+void renameEntity(coil::Context context, coil::AnyArgView entity, std::string_view newName)
+{
+    Entity* target = nullptr;
+    if (auto id = entity.get<std::uint64_t>())
+        target = getEntityById(*id);
+    else if (auto name = entity.get<std::string_view>())
+        target = getEntityByName(*name);
+
+    using namespace std::literals::string_literals;
+    if (target)
+        target->name = newName;
+    else
+        context.reportError("Failed to find entity '"s + std::string{ entity.getRaw() } + "'"s);
+}
+```
+
+You can call this function then like this:
+
+```cpp
+bindings.execute("rename_entity 0 player0"); // finds an entity by the integer id
+bindings.execute("rename_entity entity1 player1"); // finds an entity by the name
+```
+
 ## Extensibility
 
 ## Limitations
