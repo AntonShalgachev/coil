@@ -22,7 +22,9 @@ namespace coil
             m_tokens.resize(0);
             m_tokenGroups.resize(0);
 
-            tokenize(str);
+            if (auto res = tokenize(str); !res)
+                return makeUnexpected(res.error());
+
             auto result = parse();
 
             if (result)
@@ -72,7 +74,7 @@ namespace coil
             return CharType::String;
         }
 
-        static TokenType convertToTokenType(CharType type)
+        static std::optional<TokenType> convertToTokenType(CharType type)
         {
             switch (type)
             {
@@ -83,28 +85,29 @@ namespace coil
                 return TokenType::Dot;
             case CharType::Assignment:
                 return TokenType::Assignment;
-            default:
-                // TODO logic error
-                break;
             }
 
-            // TODO logic error
-            return TokenType::String;
+            return {};
         }
 
-        void tokenize(std::string_view str) const
+        coil::Expected<void, std::string> tokenize(std::string_view str) const
         {
             std::size_t tokenBegin = std::string_view::npos;
             CharType currentCharType = CharType::Space;
 
-            auto tryAddPreviousToken = [this, &tokenBegin, &currentCharType, &str](std::size_t tokenEnd)
+            auto tryAddPreviousToken = [this, &tokenBegin, &currentCharType, &str](std::size_t tokenEnd) -> coil::Expected<void, std::string>
             {
                 if (tokenBegin == std::string_view::npos)
-                    return;
+                    return {};
                 if (currentCharType == CharType::Space)
-                    return;
+                    return {};
 
-                m_tokens.push_back(Token{ convertToTokenType(currentCharType), str.substr(tokenBegin, tokenEnd - tokenBegin) });
+                auto tokenType = convertToTokenType(currentCharType);
+                if (!tokenType)
+                    return makeUnexpected("Lexer internal error");
+
+                m_tokens.push_back(Token{ *tokenType, str.substr(tokenBegin, tokenEnd - tokenBegin) });
+                return {};
             };
 
             for (std::size_t i = 0; i < str.size(); i++)
@@ -113,13 +116,15 @@ namespace coil
 
                 if (currentCharType != charType)
                 {
-                    tryAddPreviousToken(i);
+                    if (auto result = tryAddPreviousToken(i); !result)
+                        return result;
+
                     tokenBegin = i;
                     currentCharType = charType;
                 }
             }
 
-            tryAddPreviousToken(str.size());
+            return tryAddPreviousToken(str.size());
         }
 
         static std::size_t const invalidIndex = static_cast<std::size_t>(-1);
@@ -185,7 +190,7 @@ namespace coil
             {
                 if (group.lacksSecondaryToken())
                 {
-                    // TODO logic error
+                    return makeUnexpected("Lexer internal error");
                 }
 
                 Token const& primaryToken = m_tokens[group.primaryTokenIndex];
