@@ -11,6 +11,7 @@ This is a modern C++17 library that allows you to call functions/methods using a
 struct SomeSystem
 {
     void update(float) {}
+    void doSomething() {}
 };
 
 int foo = 0;
@@ -23,7 +24,10 @@ SomeSystem system2{};
 coil::Bindings bindings;
 bindings["sum"] = [](int a, int b) { return a + b; };
 bindings["foo"] = coil::variable(&foo);
-bindings.bind<SomeSystem>("update", &SomeSystem::update);
+
+auto systemBindings = bindings.createObjectBindings<SomeSystem>();
+systemBindings["update"] = &SomeSystem::update;
+systemBindings["do_something"] = &SomeSystem::doSomething;
 
 bindings.addObject("system1", &system1);
 bindings.addObject("system2", &system2);
@@ -42,9 +46,11 @@ assert(*result3.returnValue == "42");
 
 bindings.execute("system1.update 0.16");
 bindings.execute("system2.update 0.16");
+bindings.execute("system1.do_something");
+bindings.execute("system2.do_something");
 ```
 
-For more examples check `examples` directory or [Examples section](#examples)
+For more examples check `examples` directory or [Quick examples](#quick-examples) section
 
 ## Introduction
 
@@ -74,7 +80,7 @@ The priorities of the library:
 * Enums (serialization has to be implemented in your code, e.g. with [magic_enum](https://github.com/Neargye/magic_enum))
 * Optional arguments
 * Variable amount of arguments (using vector-like containers)
-* Type-less arguments (to allow the command handle several types)
+* Any-like arguments (to allow the command handle several types)
 * Named arguments (`object.command foo=3.14 bar=true`)
 * Human-readable `bool` serialization
 * Error handling
@@ -92,7 +98,7 @@ The priorities of the library:
 
 <!-- Mention extern templates and moving implementation to cpp if it gets implemented -->
 
-## Examples
+## Quick examples
 
 ### Enums
 
