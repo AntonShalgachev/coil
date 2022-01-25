@@ -8,50 +8,10 @@
 #include "../utils/Types.h"
 #include "coil/TypeSerializer.h"
 #include "FuncTraitsEx.h"
+#include "coil/VariadicConsumer.h"
 
 namespace coil::detail
 {
-    // TODO move to another file
-    // TODO allow specialization
-    template<typename T>
-    struct VariadicConsumer
-    {
-        template<typename OnError>
-        static T consume(std::vector<std::string_view> const& arguments, std::size_t index, OnError&& onError)
-        {
-            return TypeSerializer<T>::fromString(arguments[index], std::forward<OnError>(onError));
-        }
-    };
-
-    template<typename T>
-    struct VariadicConsumer<std::vector<T>>
-    {
-        template<typename OnError>
-        static std::vector<T> consume(std::vector<std::string_view> const& arguments, std::size_t index, OnError&& onError)
-        {
-            std::vector<T> args;
-            args.reserve(arguments.size() - index);
-
-            for (auto i = index; i < arguments.size(); i++)
-                args.push_back(TypeSerializer<T>::fromString(arguments[i], onError));
-
-            return args;
-        }
-    };
-
-    template<typename T>
-    struct VariadicConsumer<std::optional<T>>
-    {
-        template<typename OnError>
-        static std::optional<T> consume(std::vector<std::string_view> const& arguments, std::size_t index, OnError&& onError)
-        {
-            if (index >= arguments.size())
-                return {};
-
-            return TypeSerializer<T>::fromString(arguments[index], std::forward<OnError>(onError));
-        }
-    };
-
     inline void reportInvalidArguments(std::size_t minArgs, std::size_t isUnlimited, std::size_t maxArgs, CallContext& context)
     {
         auto const& arguments = context.input.arguments;

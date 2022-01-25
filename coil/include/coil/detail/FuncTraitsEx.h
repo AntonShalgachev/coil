@@ -1,35 +1,10 @@
 #pragma once
 #include "coil/Context.h"
 #include "coil/utils/Types.h"
+#include "coil/VariadicConsumer.h"
 
 namespace coil::detail
 {
-    // TODO move to another file
-    // TODO allow specialization
-    template<typename T>
-    struct ArgCountTraits
-    {
-        static constexpr std::size_t min = 1;
-        static constexpr bool isUnlimited = false;
-        static constexpr std::size_t max = 1;
-    };
-    template<typename T>
-    struct ArgCountTraits<std::vector<T>>
-    {
-        static constexpr std::size_t min = 0;
-        static constexpr bool isUnlimited = true;
-        static constexpr std::size_t max = 0;
-    };
-    template<typename T>
-    struct ArgCountTraits<std::optional<T>>
-    {
-        static constexpr std::size_t min = 0;
-        static constexpr bool isUnlimited = false;
-        static constexpr std::size_t max = 1;
-    };
-
-    //////////////////////////////////////////////////////////////////////////
-
     // VS2017 can't handle fold expressions directly inside ArgsCounters
     template<typename... Args>
     constexpr auto sumArgs(Args&&... args)
@@ -45,9 +20,9 @@ namespace coil::detail
     template<typename... Args>
     struct ArgsCounters
     {
-        static constexpr std::size_t minArgs = sumArgs(ArgCountTraits<std::decay_t<Args>>::min...);
-        static constexpr bool isUnlimited = orArgs(ArgCountTraits<std::decay_t<Args>>::isUnlimited...);
-        static constexpr std::size_t maxArgs = sumArgs(ArgCountTraits<std::decay_t<Args>>::max...);
+        static constexpr std::size_t minArgs = sumArgs(VariadicConsumer<std::decay_t<Args>>::minArgs...);
+        static constexpr bool isUnlimited = orArgs(VariadicConsumer<std::decay_t<Args>>::isUnlimitedArgs...);
+        static constexpr std::size_t maxArgs = sumArgs(VariadicConsumer<std::decay_t<Args>>::maxArgs...);
         static_assert(maxArgs >= minArgs || isUnlimited, "For finite arguments maxArgs should not be less than minArgs");
     };
 
