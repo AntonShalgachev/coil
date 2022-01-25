@@ -2,6 +2,19 @@
 
 This is a modern C++17 library that allows you to call functions/methods using a simple object-oriented command-like scripting language. It has no dependencies and doesn't use any macros. Since `coil` relies heavily on the templates, it's header-only (optimized to reduce compile time).
 
+Table of contents:
+- [Quick peek](#quick-peek)
+- [Introduction](#introduction)
+- [Features](#features)
+- [Installation](#installation)
+- [Quick examples](#quick-examples)
+- [Extensibility](#extensibility)
+- [Limitations](#limitations)
+- [Applications](#applications)
+- [Compilation time impact](#compilation-time-impact)
+- [Runtime performance](#runtime-performance)
+- [Known problems](#known-problems)
+
 ## Quick peek
 
 <!-- TODO make sure the code compiles -->
@@ -99,6 +112,10 @@ The priorities of the library:
 <!-- Mention extern templates and moving implementation to cpp if it gets implemented -->
 
 ## Quick examples
+
+- [Enums](#enums)
+- [Commands with a variable arguments size](#commands-with-a-variable-arguments-size)
+- [Any-like arguments](#any-like-arguments)
 
 ### Enums
 
