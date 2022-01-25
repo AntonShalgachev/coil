@@ -18,52 +18,52 @@ namespace coil
         E m_value;
     };
 
+    template<typename T>
+    class Unexpected
+    {
+        static_assert(!std::is_void_v<T>, "T shouldn't be void");
+
+    public:
+        Unexpected(T value) : m_value(std::move(value)) {}
+
+        T const& value() const& { return m_value; }
+        T& value()& { return m_value; }
+        T&& value() && { return std::move(m_value); }
+
+        template<typename U>
+        operator Unexpected<U>() const&
+        {
+            static_assert(std::is_convertible_v<T const&, U>, "U should be convertible to T");
+            return Unexpected<U>{m_value};
+        }
+
+        template<typename U>
+        operator Unexpected<U>()&
+        {
+            static_assert(std::is_convertible_v<T&, U>, "U should be convertible to T");
+            return Unexpected<U>{m_value};
+        }
+
+        template<typename U>
+        operator Unexpected<U>() &&
+        {
+            static_assert(std::is_convertible_v<T&&, U>, "U should be convertible to T");
+            return Unexpected<U>{std::move(m_value)};
+        }
+
+    private:
+        T m_value;
+    };
+
     namespace detail
     {
-        template<typename T>
-        class Unexpected
-        {
-            static_assert(!std::is_void_v<T>, "T shouldn't be void");
-
-        public:
-            Unexpected(T value) : m_value(std::move(value)) {}
-
-            T const& value() const& { return m_value; }
-            T& value()& { return m_value; }
-            T&& value()&& { return std::move(m_value); }
-
-            template<typename U>
-            operator Unexpected<U>() const&
-            {
-                static_assert(std::is_convertible_v<T const&, U>, "U should be convertible to T");
-                return Unexpected<U>{m_value};
-            }
-
-            template<typename U>
-            operator Unexpected<U>()&
-            {
-                static_assert(std::is_convertible_v<T&, U>, "U should be convertible to T");
-                return Unexpected<U>{m_value};
-            }
-
-            template<typename U>
-            operator Unexpected<U>()&&
-            {
-                static_assert(std::is_convertible_v<T&&, U>, "U should be convertible to T");
-                return Unexpected<U>{std::move(m_value)};
-            }
-
-        private:
-            T m_value;
-        };
-
         struct dummy {}; // aka std::monostate
     }
 
     template<typename T>
-    detail::Unexpected<T> makeUnexpected(T value)
+    Unexpected<T> makeUnexpected(T value)
     {
-        return detail::Unexpected<std::decay_t<T>>(std::move(value));
+        return Unexpected<std::decay_t<T>>(std::move(value));
     }
 
     template<typename T, typename E>
@@ -79,7 +79,7 @@ namespace coil
         Expected() : m_expected(ExpectedType{}), m_hasValue(true) {}
 
         template<typename U>
-        Expected(detail::Unexpected<U> error) : m_unexpected(std::move(error)), m_hasValue(false)
+        Expected(Unexpected<U> error) : m_unexpected(std::move(error)), m_hasValue(false)
         {
             static_assert(std::is_convertible_v<U&&, E>, "U should be convertible to E");
         }
@@ -208,7 +208,7 @@ namespace coil
         }
 
         template<typename E2>
-        bool operator==(detail::Unexpected<E2> const& rhs) const
+        bool operator==(Unexpected<E2> const& rhs) const
         {
             return !hasValue() && error() == rhs.value();
         }
@@ -241,7 +241,7 @@ namespace coil
             if (rhs.m_hasValue)
                 new (std::addressof(m_expected)) ExpectedType(rhs.m_expected);
             else
-                new (std::addressof(m_unexpected)) detail::Unexpected<E>(rhs.m_unexpected);
+                new (std::addressof(m_unexpected)) Unexpected<E>(rhs.m_unexpected);
         }
 
         void constructFrom(Expected<T, E>&& rhs)
@@ -250,7 +250,7 @@ namespace coil
             if (rhs.m_hasValue)
                 new (std::addressof(m_expected)) ExpectedType(std::move(rhs.m_expected));
             else
-                new (std::addressof(m_unexpected)) detail::Unexpected<E>(std::move(rhs.m_unexpected));
+                new (std::addressof(m_unexpected)) Unexpected<E>(std::move(rhs.m_unexpected));
         }
 
         void destruct()
@@ -264,7 +264,7 @@ namespace coil
         union
         {
             ExpectedType m_expected;
-            detail::Unexpected<E> m_unexpected;
+            Unexpected<E> m_unexpected;
         };
         bool m_hasValue = true;
     };
