@@ -42,13 +42,32 @@ namespace
     {
         return a + b;
     }
+
+    class Object
+    {
+    public:
+        Object(int multiplier) : m_multiplier(multiplier) {}
+
+        int getData() const { return m_multiplier; }
+
+        int getMultiplied(int input)
+        {
+            return input * m_multiplier;
+        }
+
+    private:
+        int m_multiplier = 0;
+    };
 }
 
 void BasicExample::run()
 {
     coil::Bindings bindings;
 
-    bindings["hello"] = &hello;
+    bindings.bind("hello", &hello);
+    // can be simplified to:
+    // bindings["hello"] = &hello;
+
     bindings["hello_with_context"] = &helloWithContext;
     bindings["print_repeated"] = &printRepeated;
     bindings["print_quoted"] = &printQuoted;
@@ -56,10 +75,20 @@ void BasicExample::run()
     bindings["add"] = &add;
     bindings["concat"] = &concat;
 
+    auto objectBindings = bindings.createObjectBindings<Object>();
+    objectBindings["get_multiplied"] = &Object::getMultiplied;
+    // alternatively you can use this form:
+    // bindings.bind<Object>("get_multiplied", &Object::getMultiplied);
+
+    Object doubleMultiplier{ 2 };
+    Object tenfoldMultiplier{ 10 };
+    bindings.addObject("double_multiplier", &doubleMultiplier);
+    bindings.addObject("tenfold_multiplier", &tenfoldMultiplier);
+
     common::printSectionHeader("Basic function without any arguments:");
     common::executeCommand(bindings, "hello");
 
-    common::printSectionHeader("Use coil::Context to capture output in the execution result");
+    common::printSectionHeader("Use coil::Context to capture output in the execution result:");
     common::executeCommand(bindings, "hello_with_context");
 
     common::printSectionHeader("Functions with arbitrary arguments:");
@@ -82,4 +111,8 @@ void BasicExample::run()
 
     common::printSectionHeader("coil catches incompatible types:");
     common::executeCommand(bindings, "add one two");
+
+    common::printSectionHeader("You can also use add any C++ objects and call their methods:");
+    common::executeCommand(bindings, "double_multiplier.get_multiplied 10");
+    common::executeCommand(bindings, "tenfold_multiplier.get_multiplied 10");
 }
