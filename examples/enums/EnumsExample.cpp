@@ -45,9 +45,10 @@ void EnumsExample::run()
 
     // See EnumToString.h to see how the serialization is implemented
 
-    bindings.bind<PlayerAbilitySystem>("set_ability", &PlayerAbilitySystem::setAbility);
-    bindings.bind<PlayerAbilitySystem>("get_ability", &PlayerAbilitySystem::getAbility);
-    bindings.bind<PlayerAbilitySystem>("get_reset_mode", &PlayerAbilitySystem::getResetMode);
+    auto playerAbilityBindings = bindings.createObjectBindings<PlayerAbilitySystem>();
+    playerAbilityBindings["set_ability"] = &PlayerAbilitySystem::setAbility;
+    playerAbilityBindings["get_ability"] = &PlayerAbilitySystem::getAbility;
+    playerAbilityBindings["get_reset_mode"] = &PlayerAbilitySystem::getResetMode;
 
     PlayerAbilitySystem abilities;
     bindings.addObject("abilities", &abilities);

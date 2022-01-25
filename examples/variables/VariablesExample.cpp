@@ -39,8 +39,10 @@ void VariablesExample::run()
     Flags flags = Flags::Flag1 | Flags::Flag3;
 
     bindings.addObject("obj", &object);
-    bindings.bind<Object>("enabled", coil::variable(&Object::enabled));
-    bindings.bind<Object>("flags", MemberFlagsVariableWrapper{ &Object::flags });
+
+    auto objectBindings = bindings.createObjectBindings<Object>();
+    objectBindings["enabled"] = coil::variable(&Object::enabled);
+    objectBindings["flags"] = MemberFlagsVariableWrapper{ &Object::flags };
 
     bindings["time_scale"] = coil::variable(&timeScale);
     bindings["city"] = coil::variable(&city);
