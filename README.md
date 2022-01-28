@@ -88,6 +88,7 @@ The priorities of the library:
 ## Features
 
 * Object-oriented syntax (`object.command arg1 arg2`, but global commands `command arg1 arg2` are also supported)
+* Customizable syntax (see [Custom Lexer](#custom-lexer))
 * Any callable objects: free functions, lambdas, member functions, objects with `operator()`
 * Variables
 * Enums (serialization has to be implemented in your code, e.g. with [magic_enum](https://github.com/Neargye/magic_enum))
@@ -208,6 +209,180 @@ bindings.execute("rename_entity entity1 player1"); // finds an entity by the nam
 ```
 
 ## Extensibility
+
+The library allows you to specialize certain template structs to allow you to customize the behavior of `coil`.
+
+### TypeSerializer
+
+This struct is responsible for converting C++ types from/to strings. By default the following types are implemented:
+
+* Any type with `operator<<` or `operator>>`
+* Arithmetic types (integer and floating-point numbers)
+* `bool` (special specialization to allow "true" and "false" values)
+* `std::string`
+* `std::string_view`
+* `std::optional<T>`
+
+You can specialize `TypeSerializer` for your type as follows:
+
+```cpp
+struct Entity
+{
+    std::size_t id = 0;
+};
+
+namespace coil
+{
+    template<>
+    struct TypeSerializer<Entity>
+    {
+        template<typename OnError>
+        static Entity fromString(std::string_view str, OnError&& onError)
+        {
+            std::size_t index = TypeSerializer<std::size_t>::fromString(str, std::move(onError));
+            return Entity{ index };
+        }
+
+        static auto toString(Entity const& value)
+        {
+            return TypeSerializer<std::size_t>::toString(value.id);
+        }
+    };
+}
+```
+
+There is also a second template parameter to `TypeSerializer`, to make it possible to use `std::enable_if`/`std::enable_if_t`:
+
+```cpp
+namespace coil
+{
+    template<typename T>
+    struct TypeSerializer<T, std::enable_if_t<some_static_condition_v<T>>>
+    {
+        template<typename OnError>
+        static T fromString(std::string_view str, OnError&& onError)
+        {
+            // implementation
+        }
+
+        static std::string toString(T value)
+        {
+            // implementation
+        }
+    };
+}
+```
+
+See [Enums example](#enums) for more details.
+
+### VariadicConsumer
+
+If you have a type that can be used as a variadic container (which can hold 0 or more than 1 argument), you can specialize `VariadicConsumer`:
+
+```cpp
+namespace coil
+{
+    template<typename T, std::size_t N>
+    struct VariadicConsumer<std::array<T, N>>
+    {
+        // arg constraints
+        static constexpr std::size_t minArgs = N;
+        static constexpr bool isUnlimitedArgs = false;
+        static constexpr std::size_t maxArgs = N;
+
+        template<typename OnError>
+        static std::array<T, N> consume(std::vector<std::string_view> const& arguments, std::size_t index, OnError&& onError)
+        {
+            std::array<T, N> args;
+
+            // arguments is guaranteed to contain N elements starting from `index` because of the specified arg constraints
+            for (auto i = 0; i < N; i++)
+                args[i] = TypeSerializer<T>::fromString(arguments[index + i], onError);
+
+            return args;
+        }
+    };
+}
+```
+
+### TypeName
+
+Some errors display the type name to give a hint about the source of the error. For example, if the argument cannot be converted to a specified type, you may see the following error:
+```
+Error: Unable to convert 'forty-two' to type 'float'
+```
+
+By default all type names are `unknown` because it's impossible to get the type name with standard means without RTTI. However you can specialize `TypeName` for your type (or for any type):
+```cpp
+namespace coil
+{
+    template<typename T>
+    struct TypeName<T>
+    {
+        static std::string_view name()
+        {
+            return typeid(T).name();
+        }
+    };
+
+    template<>
+    struct TypeName<std::string>
+    {
+        static std::string_view name()
+        {
+            return "std::string";
+        }
+    };
+}
+```
+
+You can also chain calls to `TypeName` to get a type name for templated types:
+```cpp
+template<typename T>
+struct SomeStruct {};
+
+namespace coil
+{
+    template<typename T>
+    struct TypeName<SomeStruct<T>>
+    {
+        static std::string_view name()
+        {
+            using namespace std::literals::string_literals;
+            static std::string typeName = "SomeStruct<"s + std::string{ TypeName<T>::name() } + ">"s;
+            return typeName;
+        }
+    };
+}
+```
+
+### Custom lexer
+
+The Lexer defines syntax for the commands. `coil` comes with a default Lexer, `DefaultLexer`, which implements the following syntax:
+```
+object.command arg1 arg2 foo=1 bar=baz
+```
+
+However if you want to have another syntax (e.g. `object:command(arg1, arg2, foo=1, bar=baz)`), you can provide a custom Lexer, which would convert an input string to `coil::ExecutionInput`.
+
+To define a custom Lexer, you need to create a class with `operator()`. Then you can pass the Lexer object as a second argument to `coil::Bindings::execute`.
+
+`operator()` is exected to have this form:
+```cpp
+coil::Expected<ExecutionInputConvertibleToRef, std::string> operator()(InputString str)
+```
+
+`ExecutionInputConvertibleToRef` is anything that can be converted to `coil::ExecutionInput const&`. You can use plain value, reference, `std::reference_wrapper` or anything else.
+
+`InputString` doesn't have any restrictions, but the first argument to `coil::Bindings::execute` should be convertible to `InputString`. Usually this is a string type (`const char*`, `std::string_view`, `std::string`, etc.), but you are free to use any other type.
+
+For example, the following declarations would be compatible:
+
+```cpp
+coil::Expected<coil::ExecutionInput, std::string> operator()(std::string_view str);
+coil::Expected<coil::ExecutionInput const&, std::string> operator()(std::string str);
+coil::Expected<std::reference_wrapper<coil::ExecutionInput>, std::string> operator()(const char* str);
+```
 
 ## Limitations
 
