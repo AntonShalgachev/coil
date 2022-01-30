@@ -1,4 +1,5 @@
 #include "gtest/gtest.h"
+#include "Common.h"
 #include "coil/Expected.h"
 
 namespace

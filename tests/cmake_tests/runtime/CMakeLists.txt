@@ -1,6 +1,8 @@
 set(PROJECT_NAME cmake_tests)
 
 set(ALL_FILES
+    "Common.h"
+
     "LexerTests.cpp"
     "ExpectedTests.cpp"
     "BindingsTests.cpp"
