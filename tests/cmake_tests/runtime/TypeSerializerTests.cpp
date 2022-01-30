@@ -23,7 +23,7 @@ TEST(TypeSerializerTests, TestIntInvalidInputFromString)
 
     EXPECT_EQ(coil::TypeSerializer<int>::fromString("42foo", std::move(onError)), 0);
     EXPECT_TRUE(error.has_value());
-    EXPECT_EQ(*error, "Unable to convert '42foo' to type 'unknown'");
+    EXPECT_EQ(*error, "Unable to convert '42foo' to type 'int'");
 }
 
 TEST(TypeSerializerTests, TestIntToString)
@@ -72,17 +72,17 @@ TEST(TypeSerializerTests, TestBoolInvalidInputFromString)
 
     EXPECT_EQ(coil::TypeSerializer<bool>::fromString("2", std::move(onError)), false);
     ASSERT_TRUE(error.has_value());
-    EXPECT_EQ(*error, "Unable to convert '2' to type 'unknown'");
+    EXPECT_EQ(*error, "Unable to convert '2' to type 'bool'");
     error = {};
 
     EXPECT_EQ(coil::TypeSerializer<bool>::fromString("none", std::move(onError)), false);
     ASSERT_TRUE(error.has_value());
-    EXPECT_EQ(*error, "Unable to convert 'none' to type 'unknown'");
+    EXPECT_EQ(*error, "Unable to convert 'none' to type 'bool'");
     error = {};
 
     EXPECT_EQ(coil::TypeSerializer<bool>::fromString("-1", std::move(onError)), false);
     ASSERT_TRUE(error.has_value());
-    EXPECT_EQ(*error, "Unable to convert '-1' to type 'unknown'");
+    EXPECT_EQ(*error, "Unable to convert '-1' to type 'bool'");
     error = {};
 }
 

@@ -1,4 +1,5 @@
 #include "gtest/gtest.h"
+#include "Common.h"
 #include "coil/Bindings.h"
 #include "coil/utils/VariableWrapper.h"
 
@@ -199,6 +200,12 @@ namespace coil
             return TypeSerializer<T>::toString(value.m_payload);
         }
     };
+
+    template<>
+    struct TypeName<Object>
+    {
+        static std::string_view name() { return "Object"; }
+    };
 }
 
 TEST(BindingsTests, TestVoidFunctionCallStats)
@@ -335,7 +342,7 @@ TEST(BindingsTests, TestErrorUndefinedMethod)
     auto result = bindings.execute("obj.foo");
 
     EXPECT_EQ(result.errors.size(), 1);
-    EXPECT_PRED2(containsError, result.errors, "No function 'foo' is registered for type 'unknown'");
+    EXPECT_PRED2(containsError, result.errors, "No function 'foo' is registered for type 'Object'");
 }
 
 TEST(BindingsTests, TestErrorUndefinedObject)
@@ -389,8 +396,8 @@ TEST(BindingsTests, TestErrorWrongArgumentTypes)
     auto result = bindings.execute("sum foo bar");
 
     EXPECT_EQ(result.errors.size(), 2);
-    EXPECT_PRED2(containsError, result.errors, "Unable to convert 'foo' to type 'unknown'");
-    EXPECT_PRED2(containsError, result.errors, "Unable to convert 'bar' to type 'unknown'");
+    EXPECT_PRED2(containsError, result.errors, "Unable to convert 'foo' to type 'int'");
+    EXPECT_PRED2(containsError, result.errors, "Unable to convert 'bar' to type 'int'");
 }
 
 TEST(BindingsTests, TestErrorWrongArgumentTypesVariadic)
@@ -399,9 +406,9 @@ TEST(BindingsTests, TestErrorWrongArgumentTypesVariadic)
     auto result = bindings.execute("sum_all foo bar baz");
 
     EXPECT_EQ(result.errors.size(), 3);
-    EXPECT_PRED2(containsError, result.errors, "Unable to convert 'foo' to type 'unknown'");
-    EXPECT_PRED2(containsError, result.errors, "Unable to convert 'bar' to type 'unknown'");
-    EXPECT_PRED2(containsError, result.errors, "Unable to convert 'baz' to type 'unknown'");
+    EXPECT_PRED2(containsError, result.errors, "Unable to convert 'foo' to type 'int'");
+    EXPECT_PRED2(containsError, result.errors, "Unable to convert 'bar' to type 'int'");
+    EXPECT_PRED2(containsError, result.errors, "Unable to convert 'baz' to type 'int'");
 }
 
 TEST(BindingsTests, TestFunctionReturnValue)
