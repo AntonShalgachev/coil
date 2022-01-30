@@ -31,7 +31,7 @@ namespace coil
     }
 
     template<typename T, typename E>
-    std::ostream& operator<<(std::ostream& os, coil::Expected<T, E> const& expected)
+    std::ostream& operator<<(std::ostream& os, Expected<T, E> const& expected)
     {
         if (expected)
             return os << expected.value();
@@ -39,13 +39,10 @@ namespace coil
         return os << "'" << expected.error() << "'";
     }
 
-    namespace detail
+    template<typename E>
+    std::ostream& operator<<(std::ostream& os, Unexpected<E> const& unexpected)
     {
-        template<typename E>
-        std::ostream& operator<<(std::ostream& os, detail::Unexpected<E> const& unexpected)
-        {
-            return os << "'" << unexpected.value() << "'";
-        }
+        return os << "'" << unexpected.value() << "'";
     }
 }
 
