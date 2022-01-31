@@ -85,6 +85,8 @@ namespace coil
                 return TokenType::Dot;
             case CharType::Assignment:
                 return TokenType::Assignment;
+            default:
+                break;
             }
 
             return {};

@@ -8,7 +8,7 @@ public:
     static void registerExample(coil::Bindings& globalBindings)
     {
         auto exampleBindings = globalBindings.createObjectBindings<NamedExample>();
-        exampleBindings["run"] = &run;
+        exampleBindings["run"] = &NamedExample::run;
     }
 
 private:
