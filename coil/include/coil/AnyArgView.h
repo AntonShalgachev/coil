@@ -7,19 +7,6 @@
 
 namespace coil
 {
-    namespace detail
-    {
-        struct ErrorContainer
-        {
-            void operator()(std::string e)
-            {
-                error = std::move(e);
-            }
-
-            std::optional<std::string> error;
-        };
-    }
-
     class AnyArgView
     {
     public:
@@ -28,12 +15,7 @@ namespace coil
         template<typename T>
         Expected<T, std::string> get() const
         {
-            detail::ErrorContainer onError;
-            auto val = TypeSerializer<T>::fromString(m_value, onError);
-            if (onError.error)
-                return makeUnexpected(*std::move(onError).error);
-
-            return val;
+            return TypeSerializer<T>::fromString(m_value);
         }
 
         std::string_view getRaw() const { return m_value; }
@@ -45,8 +27,7 @@ namespace coil
     template<>
     struct TypeSerializer<AnyArgView>
     {
-        template<typename OnError>
-        static AnyArgView fromString(std::string_view str, OnError&&)
+        static Expected<AnyArgView, std::string> fromString(std::string_view str)
         {
             return AnyArgView(str);
         }

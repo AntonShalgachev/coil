@@ -13,10 +13,14 @@ namespace coil
         static constexpr bool isUnlimitedArgs = false;
         static constexpr std::size_t maxArgs = 1;
 
-        template<typename OnError>
-        static T consume(std::vector<std::string_view> const& arguments, std::size_t index, OnError&& onError)
+        static std::optional<T> consume(Context context, std::vector<std::string_view> const& arguments, std::size_t index)
         {
-            return TypeSerializer<T>::fromString(arguments[index], std::forward<OnError>(onError));
+            auto result = TypeSerializer<T>::fromString(arguments[index]);
+            if (result)
+                return *std::move(result);
+
+            context.reportError(std::move(result).error());
+            return {};
         }
     };
 
@@ -27,14 +31,22 @@ namespace coil
         static constexpr bool isUnlimitedArgs = true;
         static constexpr std::size_t maxArgs = 0;
 
-        template<typename OnError>
-        static std::vector<T> consume(std::vector<std::string_view> const& arguments, std::size_t index, OnError&& onError)
+        static std::optional<std::vector<T>> consume(Context context, std::vector<std::string_view> const& arguments, std::size_t index)
         {
             std::vector<T> args;
             args.reserve(arguments.size() - index);
 
             for (auto i = index; i < arguments.size(); i++)
-                args.push_back(TypeSerializer<T>::fromString(arguments[i], onError));
+            {
+                Expected<T, std::string> expectedArg = TypeSerializer<T>::fromString(arguments[i]);
+                if (expectedArg)
+                    args.push_back(*std::move(expectedArg));
+                else
+                    context.reportError(std::move(expectedArg).error());
+            }
+
+            if (context.hasErrors())
+                return {};
 
             return args;
         }
@@ -47,13 +59,17 @@ namespace coil
         static constexpr bool isUnlimitedArgs = false;
         static constexpr std::size_t maxArgs = 1;
 
-        template<typename OnError>
-        static std::optional<T> consume(std::vector<std::string_view> const& arguments, std::size_t index, OnError&& onError)
+        static std::optional<std::optional<T>> consume(Context context, std::vector<std::string_view> const& arguments, std::size_t index)
         {
             if (index >= arguments.size())
-                return {};
+                return std::optional<T>{};
 
-            return TypeSerializer<T>::fromString(arguments[index], std::forward<OnError>(onError));
+            Expected<T, std::string> optionalValue = TypeSerializer<T>::fromString(arguments[index]);
+            if (optionalValue)
+                return *std::move(optionalValue);
+
+            context.reportError(std::move(optionalValue).error());
+            return {};
         }
     };
 }

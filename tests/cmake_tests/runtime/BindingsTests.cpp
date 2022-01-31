@@ -189,10 +189,13 @@ namespace coil
     template<typename T>
     struct TypeSerializer<Tracker<T>>
     {
-        template<typename OnError>
-        static Tracker<T> fromString(std::string_view str, OnError&& onError)
+        static Expected<Tracker<T>, std::string> fromString(std::string_view str)
         {
-            return TypeSerializer<T>::fromString(str, std::forward<OnError>(onError));
+            Expected<T, std::string> innerValue = TypeSerializer<T>::fromString(str);
+            if (innerValue)
+                return Tracker<T>{*innerValue};
+
+            return reportConversionError<Tracker<T>>(str, innerValue.error());
         }
 
         static std::string toString(Tracker<T> const& value)
@@ -205,6 +208,17 @@ namespace coil
     struct TypeName<Object>
     {
         static std::string_view name() { return "Object"; }
+    };
+
+    template<typename T>
+    struct TypeName<Tracker<T>>
+    {
+        static std::string_view name()
+        {
+            using namespace std::literals::string_literals;
+            static std::string const typeName = "Tracker<"s + std::string(TypeName<T>::name()) + ">"s;
+            return typeName;
+        }
     };
 }
 
@@ -409,6 +423,15 @@ TEST(BindingsTests, TestErrorWrongArgumentTypesVariadic)
     EXPECT_PRED2(containsError, result.errors, "Unable to convert 'foo' to type 'int'");
     EXPECT_PRED2(containsError, result.errors, "Unable to convert 'bar' to type 'int'");
     EXPECT_PRED2(containsError, result.errors, "Unable to convert 'baz' to type 'int'");
+}
+
+TEST(BindingsTests, TestErrorWrongArgumentTypesVariable)
+{
+    coil::Bindings bindings = createBindings();
+    auto result = bindings.execute("var foo");
+
+    EXPECT_EQ(result.errors.size(), 1);
+    EXPECT_PRED2(containsError, result.errors, "Unable to convert 'foo' to type 'Tracker<int>': Unable to convert 'foo' to type 'int'");
 }
 
 TEST(BindingsTests, TestFunctionReturnValue)

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "TypeName.h"
+#include "Expected.h"
 #include "utils/Utils.h"
 
 #include <string>
@@ -13,15 +14,15 @@
 
 namespace coil
 {
-    template<typename T, typename OnError>
-    static void reportConversionError(OnError&& onError, std::string_view inputString, std::string_view details = {})
+    template<typename T>
+    static Unexpected<std::string> reportConversionError(std::string_view inputString, std::string_view details = {})
     {
         std::string_view typeName = TypeName<T>::name();
 
         if (details.empty())
-            onError(utils::formatString("Unable to convert '%.*s' to type '%.*s'", inputString.length(), inputString.data(), typeName.length(), typeName.data()));
+            return makeUnexpected(utils::formatString("Unable to convert '%.*s' to type '%.*s'", inputString.length(), inputString.data(), typeName.length(), typeName.data()));
         else
-            onError(utils::formatString("Unable to convert '%.*s' to type '%.*s': %.*s", inputString.length(), inputString.data(), typeName.length(), typeName.data(), details.length(), details.data()));
+            return makeUnexpected(utils::formatString("Unable to convert '%.*s' to type '%.*s': %.*s", inputString.length(), inputString.data(), typeName.length(), typeName.data(), details.length(), details.data()));
     }
 
     template<typename T, typename = void>
@@ -39,8 +40,7 @@ namespace coil
     {
         static_assert(!std::is_void_v<T>, "Void isn't a valid conversion type");
         
-        template<typename OnError>
-        static T fromString(std::string_view str, OnError&& onError)
+        static Expected<T, std::string> fromString(std::string_view str)
         {
             static_assert(HasCinOperator<T>::value, "T should have operator>>, or TypeSerializer has to be specialized for type T");
 
@@ -53,8 +53,7 @@ namespace coil
             if (ss.eof() && !ss.fail())
                 return value;
 
-            reportConversionError<T>(std::forward<OnError>(onError), str);
-            return T{};
+            return reportConversionError<T>(str);
         }
 
         static std::string toString([[maybe_unused]] T const& value)
@@ -71,8 +70,7 @@ namespace coil
     template<typename T>
     struct TypeSerializer<T, std::enable_if_t<std::is_arithmetic_v<T>>>
     {
-        template<typename OnError>
-        static T fromString(std::string_view str, OnError&& onError)
+        static Expected<T, std::string> fromString(std::string_view str)
         {
             auto begin = str.data();
             auto end = str.data() + str.length();
@@ -82,8 +80,7 @@ namespace coil
             if (result.ptr == end)
                 return value;
 
-            reportConversionError<T>(std::forward<OnError>(onError), str);
-            return T{};
+            return reportConversionError<T>(str);
         }
 
         static std::string toString(T value)
@@ -95,8 +92,7 @@ namespace coil
     template<>
     struct TypeSerializer<bool>
     {
-        template<typename OnError>
-        static bool fromString(std::string_view str, OnError&& onError)
+        static Expected<bool, std::string> fromString(std::string_view str)
         {
             auto equalCaseInsensitive = [](std::string_view a, std::string_view b)
             {
@@ -121,8 +117,7 @@ namespace coil
             if (equalCaseInsensitive(str, "false"))
                 return false;
 
-            reportConversionError<bool>(std::forward<OnError>(onError), str);
-            return false;
+            return reportConversionError<bool>(str);
         }
 
         static std::string toString(bool value)
@@ -134,8 +129,7 @@ namespace coil
     template<>
     struct TypeSerializer<std::string>
     {
-        template<typename OnError>
-        static std::string fromString(std::string_view str, OnError&&)
+        static Expected<std::string, std::string> fromString(std::string_view str)
         {
             return std::string{ str };
         }
@@ -149,8 +143,7 @@ namespace coil
     template<>
     struct TypeSerializer<std::string_view>
     {
-        template<typename OnError>
-        static std::string_view fromString(std::string_view str, OnError&&)
+        static Expected<std::string_view, std::string> fromString(std::string_view str)
         {
             return str;
         }
@@ -164,13 +157,12 @@ namespace coil
     template<typename T>
     struct TypeSerializer<std::optional<T>>
     {
-        template<typename OnError>
-        static std::optional<T> fromString(std::string_view str, OnError&& onError)
+        static Expected<std::optional<T>, std::string> fromString(std::string_view str)
         {
             if (str.empty())
                 return {};
 
-            return TypeSerializer<T>::fromString(str, std::forward<OnError>(onError));
+            return TypeSerializer<T>::fromString(str);
         }
 
         static std::string toString(std::optional<T> const& value)
