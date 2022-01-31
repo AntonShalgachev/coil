@@ -213,27 +213,6 @@ namespace coil
             return !hasValue() && error() == rhs.value();
         }
 
-        template<typename E2>
-        operator Expected<ExpectedType, E2>() const&
-        {
-            if (hasValue()) return value();
-            return error();
-        }
-
-        template<typename E2>
-        operator Expected<ExpectedType, E2>()&
-        {
-            if (hasValue()) return value();
-            return error();
-        }
-
-        template<typename E2>
-        operator Expected<ExpectedType, E2>() &&
-        {
-            if (hasValue()) return std::move(value());
-            return std::move(error());
-        }
-
     private:
         void constructFrom(Expected<T, E> const& rhs)
         {

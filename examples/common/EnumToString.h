@@ -18,8 +18,7 @@ namespace coil
     template<typename E>
     struct TypeSerializer<E, std::enable_if_t<std::is_enum_v<E>>>
     {
-        template<typename OnError>
-        static E fromString(std::string_view str, [[maybe_unused]] OnError&& onError)
+        static Expected<E, std::string> fromString(std::string_view str)
         {
             // Allow 0 for the flag enums which don't define a "None" flag
             if (str == "0")
@@ -34,8 +33,7 @@ namespace coil
 
             std::string names = utils::flatten(magic_enum::enum_names<E>(), "'");
 
-            reportConversionError<E>(std::forward<OnError>(onError), str, utils::formatString("Possible values are [%s]", names.c_str()));
-            return E{};
+            return reportConversionError<E>(str, utils::formatString("Possible values are [%s]", names.c_str()));
         }
 
         static auto toString(E const& value)

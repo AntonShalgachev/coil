@@ -61,46 +61,6 @@ namespace coil::detail
         return func();
     }
 
-    template<typename Func, typename... Args, bool isVoid = std::is_void_v<typename detail::FuncTraitsEx<Func>::ReturnType>>
-    void invoke(ExecutionResult& result, Func& func, Args&&... args)
-    {
-        if (!result)
-            return;
-
-        using R = typename detail::FuncTraitsEx<Func>::ReturnType;
-
-        try
-        {
-            if constexpr (isVoid)
-            {
-                invokeFunc(func, std::forward<Args>(args)...);
-            }
-            else
-            {
-                auto&& returnValue = invokeFunc(func, std::forward<Args>(args)...);
-                if (result)
-                    result.returnValue = TypeSerializer<std::decay_t<R>>::toString(returnValue);
-            }
-        }
-        catch (std::exception const& ex)
-        {
-            result.errors.push_back(utils::formatString("Exception caught during execution: %s", ex.what()));
-        }
-    }
-
-    struct ContextErrorAppender
-    {
-        ContextErrorAppender(CallContext& context) : m_context(context) {}
-
-        void operator()(std::string error) const
-        {
-            m_context.result.errors.push_back(std::move(error));
-        }
-
-    private:
-        CallContext& m_context;
-    };
-
     template<typename T>
     struct NonUserArgs
     {
@@ -111,11 +71,36 @@ namespace coil::detail
         Context& get(std::integral_constant<std::size_t, 1>) { return context; }
     };
 
+    template<typename Func, typename T, std::size_t... NonUserIndices, typename... Es, bool isVoid = std::is_void_v<typename detail::FuncTraitsEx<Func>::ReturnType>>
+    void invoke(Func& func, CallContext& context, NonUserArgs<T>& nonUserArgs, Es&&... expectedArgs)
+    {
+        if (!(expectedArgs && ...))
+            return;
+
+        using R = typename detail::FuncTraitsEx<Func>::ReturnType;
+
+        try
+        {
+            if constexpr (isVoid)
+            {
+                invokeFunc(func, nonUserArgs.get(std::integral_constant<std::size_t, NonUserIndices>{})..., *std::forward<Es>(expectedArgs)...);
+            }
+            else
+            {
+                auto&& returnValue = invokeFunc(func, nonUserArgs.get(std::integral_constant<std::size_t, NonUserIndices>{})..., *std::forward<Es>(expectedArgs)...);
+                if (!context.hasErrors())
+                    context.result.returnValue = TypeSerializer<std::decay_t<R>>::toString(returnValue);
+            }
+        }
+        catch (std::exception const& ex)
+        {
+            context.reportError(utils::formatString("Exception caught during execution: %s", ex.what()));
+        }
+    }
+
     template<typename Func, typename T, std::size_t... NonUserIndices, typename... UserArgs, std::size_t... UserIndices>
     void unpackAndInvoke(Func& func, CallContext& context, NonUserArgs<T>& nonUserArgs, std::index_sequence<NonUserIndices...>, utils::Types<UserArgs...>, std::index_sequence<UserIndices...>)
     {
-        ContextErrorAppender onError{ context };
-
-        invoke(context.result, func, nonUserArgs.get(std::integral_constant<std::size_t, NonUserIndices>{})..., VariadicConsumer<std::decay_t<UserArgs>>::consume(context.input.arguments, UserIndices, onError)...);
+        invoke<Func, T, NonUserIndices...>(func, context, nonUserArgs, VariadicConsumer<std::decay_t<UserArgs>>::consume(Context{ context }, context.input.arguments, UserIndices)...);
     }
 }
