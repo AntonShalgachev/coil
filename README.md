@@ -9,9 +9,13 @@ This is a modern C++17 library that allows you to call functions/methods using a
 Table of contents:
 - [Quick peek](#quick-peek)
 - [Introduction](#introduction)
+    - [Motivation](#motivation)
 - [Features](#features)
 - [Installation](#installation)
 - [Quick examples](#quick-examples)
+    - [Enums](#enums)
+    - [Commands with a variable arguments size](#commands-with-a-variable-arguments-size)
+    - [Any-like arguments](#any-like-arguments)
 - [Extensibility](#extensibility)
 - [Limitations](#limitations)
 - [Applications](#applications)
@@ -89,6 +93,46 @@ The priorities of the library:
 * User-friendly API
 * Runtime performance
 
+### Motivation
+
+It's very common to see a very simple debug console implementation in game engines, where you bind a command to a "command handler" taking an array of strings. The input string is then split by spaces and then the corresponding command handler is invoked with the array of raw user input.
+
+For example to bind ths command `add_inventory_item` to this function
+
+```cpp
+void addInventoryItem(std::string const& item, std::size_t amount, std::size_t slot) {}
+```
+
+you would have to write the following wrapper:
+
+```cpp
+void addInventoryItemCommand(std::vector<std::string> const& args)
+{
+    // do a bunch of checks and call `addInventoryItem` after converting arguments to the given types
+}
+```
+
+This approach has a lot of drawbacks:
+- A lot of boilerplate code:
+    - Check if the number of arguments is correct
+    - ... report a readable error if it's wrong
+    - Try to convert each string argument to a particular type
+    - Check if the conversion succeeded
+    - ... report a readable error if it didn't
+    - Run the actual command logic
+    - Convert the return value to the string and return it to the caller
+- Easy to forget/ignore something from the abovementioned steps
+    - Usually only the bare minimum is implemented with no feedback if the command arguments are wrong
+- A lot of code duplication (string to type conversion for each argument)
+- The code is usually copy-pasted, which can lead to the errors being multiplied
+    - Some code uses atoi/strtol and alike without appropriate error handling
+    - Some code might process arguments in a sophisticated way (e.g. split them by "=" to implement named arguments)
+- Not clear which arguments does the command require without having to take a look at the function implementation
+
+All this might discourage a programmer from adding a useful debug command
+
+This library is an attempt to get rid of these problems by providing a straightforward way to implement these bindings with all the "validation" logic done by the library itself in a centralized and efficient manner
+
 ## Features
 
 * Object-oriented syntax (`object.command arg1 arg2`, but global commands `command arg1 arg2` are also supported)
@@ -117,10 +161,6 @@ The priorities of the library:
 <!-- Mention extern templates and moving implementation to cpp if it gets implemented -->
 
 ## Quick examples
-
-- [Enums](#enums)
-- [Commands with a variable arguments size](#commands-with-a-variable-arguments-size)
-- [Any-like arguments](#any-like-arguments)
 
 ### Enums
 
@@ -401,6 +441,36 @@ One can easily implement a debug console in any C++ game engine using `coil`. Fo
 To implement an interactive CLI, you can execute `coil::Bindings::execute` in a simple loop. You can check the implementation of examples (see `examples` directory), they use interactive CLI
 
 ## Compilation time impact
+
+Compilation time is a number one priority of `coil`, so it's been optimized to have as little compilation overhead as possible. While the full compilation time analysis is still to be conducted, here are some preliminary metrics which have been used to improve the compilation performance.
+
+### Test project structure
+The test project contains 200 generated classes. Each class contains 15 member functions (each with 5 arguments), 15 member variables, 15 static member functions (each with 5 arguments) and 15 static member variables. Each member function contains some dummy logic to make the compiler do some measurable work. Class header files include some other classes.
+
+Out of those 200 classes, 100 of those classes additionally have optional debug bindings for each member function, member variable, static member function and static member variable. Based on the `#define` value, these debug bindings could be either disabled or could be implemented in 2 ways:
+- Using `coil`: each function/variabls is bound directly to a string via `coil::Bindings`
+- Using naive implementation. In this implementation only specific functions can be bound, specifically with this signature: `std::string(std::vector<std::string> const&)`. The function should parse all arguments from strings by itself and should return the result as a string. If the debug bindings are implemented this way, these 100 classes add an additional wrapper function per functions/variable (the wrapper function would manually check number of arguments, convert them to the target type, invoke original function and then convert its return value to string). This implementation is added to the test because it's frequently seen in the game engines I worked on.
+
+### Test procedure
+
+The test is performed for 3 configurations:
+- "Base": debug bindings disabled completely, only the class logic is compiled
+- "Coil": debug bindings are implemented using `coil`
+- "Naive": debug bindings are implemented in a naive way, where a dedicated wrapper function has to be written for each function/variable
+
+For each configuration project is generated using `cmake` (Ninja generator), then a build is performed once, discarding the compilation duration, and then the project is rebuilt 10 times (cleaning before each iteration). The durations of these 10 builds are analyzed to compute the median, average, minimum and maximum time
+
+You can see the test script here: [scripts/test_compilation/run.ps1](scripts/test_compilation/run.ps1).
+
+### Results
+
+These are the numbers I've got on my machine:
+
+| Configuration | Median (sec) | Average (sec) | Minimum (sec) | Maximum (sec) |
+| ------------- | ------------ | ------------- | ------------- | ------------- |
+| Base          | 40.864584    | 40.962194     | 40.5952767    | 41.4267213    |
+| Coil          | 43.99639     | 43.9689904    | 43.8307179    | 44.0798634    |
+| Naive         | 48.6936657   | 48.6077337    | 48.0307872    | 49.0987481    |
 
 ## Runtime performance
 
