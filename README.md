@@ -26,49 +26,40 @@ Table of contents:
 ## Quick peek
 
 <!-- TODO make sure the code compiles -->
-<!-- Get rid of ugly OOP syntax when it's implemented -->
 1. Have some regular C++ objects
 ```cpp
-struct SomeSystem
+enum class SlotType
 {
-    void update(float) {}
-    void doSomething() {}
-};
+    Hand,
+    Backpack,
+}
 
-int foo = 0;
-SomeSystem system1{};
-SomeSystem system2{};
+void addInventoryItem(std::string const& name, std::size_t amount, SlotType slot, bool autoEquip) { /*...*/ }
+
+int var = 0;
 ```
 
 2. Define some bindings
 ```cpp
 coil::Bindings bindings;
-bindings["sum"] = [](int a, int b) { return a + b; };
-bindings["foo"] = coil::variable(&foo);
-
-auto systemBindings = bindings.createObjectBindings<SomeSystem>();
-systemBindings["update"] = &SomeSystem::update;
-systemBindings["do_something"] = &SomeSystem::doSomething;
-
-bindings.addObject("system1", &system1);
-bindings.addObject("system2", &system2);
+bindings["add_inventory_item"] = addInventoryItem;
+bindings["sum"] = [&var](int a, int b) { return var + a + b; };
+bindings["var"] = coil::variable(&var);
 ```
 
 3. Execute commands
 ```cpp
+// Would add 2 pistols to the Backpack slot and would automatically equip it
+bindings.execute("add_inventory_item pistol 2 Backpack true")
+
 auto result1 = bindings.execute("sum 3 4");
 assert(*result1.returnValue == "7");
 
-bindings.execute("foo 42");
-assert(foo == 42);
+bindings.execute("var 42");
+assert(var == 42);
 
-auto result3 = bindings.execute("foo");
+auto result3 = bindings.execute("var");
 assert(*result3.returnValue == "42");
-
-bindings.execute("system1.update 0.16");
-bindings.execute("system2.update 0.16");
-bindings.execute("system1.do_something");
-bindings.execute("system2.do_something");
 ```
 
 For more examples check `examples` directory or [Quick examples](#quick-examples) section
