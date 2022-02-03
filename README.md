@@ -34,7 +34,7 @@ enum class SlotType
     Backpack,
 }
 
-void addInventoryItem(std::string const& name, std::size_t amount, SlotType slot, bool autoEquip) { /*...*/ }
+void addItem(std::string const& name, std::size_t amount, SlotType slot, bool autoEquip) { /*...*/ }
 
 int var = 0;
 ```
@@ -42,7 +42,7 @@ int var = 0;
 2. Define some bindings
 ```cpp
 coil::Bindings bindings;
-bindings["add_inventory_item"] = addInventoryItem;
+bindings["add_item"] = addItem;
 bindings["sum"] = [&var](int a, int b) { return var + a + b; };
 bindings["var"] = coil::variable(&var);
 ```
@@ -50,7 +50,7 @@ bindings["var"] = coil::variable(&var);
 3. Execute commands
 ```cpp
 // Would add 2 pistols to the Backpack slot and would automatically equip it
-bindings.execute("add_inventory_item pistol 2 Backpack true")
+bindings.execute("add_item pistol 2 Backpack true")
 
 auto result1 = bindings.execute("sum 3 4");
 assert(*result1.returnValue == "7");
