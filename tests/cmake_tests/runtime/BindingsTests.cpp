@@ -6,7 +6,7 @@
 namespace stats
 {
     std::size_t functionCalls = 0;
-    std::size_t methodCalls = 0;
+    //std::size_t methodCalls = 0;
 
     std::size_t trackerConstructions = 0;
     std::size_t trackerValueConstructions = 0;
@@ -20,7 +20,7 @@ namespace stats
     void reset()
     {
         functionCalls = 0;
-        methodCalls = 0;
+        //methodCalls = 0;
 
         trackerConstructions = 0;
         trackerValueConstructions = 0;
@@ -68,25 +68,25 @@ namespace
         context.out() << value;
     }
 
-    struct Object
-    {
-        Object(int value = 0) : value(value) {}
+    //struct Object
+    //{
+    //    Object(int value = 0) : value(value) {}
 
-        void method()
-        {
-            stats::methodCalls++;
-        }
+    //    void method()
+    //    {
+    //        stats::methodCalls++;
+    //    }
 
-        int getDouble() const
-        {
-            return value * 2;
-        }
+    //    int getDouble() const
+    //    {
+    //        return value * 2;
+    //    }
 
-        int value = 0;
-    };
+    //    int value = 0;
+    //};
 
-    Object object0;
-    Object object42{ 42 };
+    //Object object0;
+    //Object object42{ 42 };
 
     template<typename T>
     class Tracker final
@@ -154,26 +154,26 @@ namespace
     {
         coil::Bindings bindings;
 
-        bindings.bind("func", &function);
-        bindings.bind("sum", &sum);
-        bindings.bind("sum_all", &sumAll);
-        bindings.bind("sum_all_init", &sumAllInit);
-        bindings.bind("func_with_optional", &funcWithOptional);
-        bindings.bind("output", &output);
-        bindings.bind("var", coil::variable(&trackedVariable));
-        bindings.bind("create_tracker", &createTracker);
-        bindings.bind("use_tracker_by_value", &useTrackerByValue);
-        bindings.bind("use_tracker_by_ref", &useTrackerByRef);
+        bindings.add({ "func" }, &function);
+        bindings.add({ "sum" }, &sum);
+        bindings.add({ "sum_all" }, &sumAll);
+        bindings.add({ "sum_all_init" }, &sumAllInit);
+        bindings.add({ "func_with_optional" }, &funcWithOptional);
+        bindings.add({ "output" }, &output);
+        bindings.add({ "var" }, coil::variable(&trackedVariable));
+        bindings.add({ "create_tracker" }, &createTracker);
+        bindings.add({ "use_tracker_by_value" }, &useTrackerByValue);
+        bindings.add({ "use_tracker_by_ref" }, &useTrackerByRef);
 
-        bindings.bind<Object>("method", &Object::method);
-        bindings.bind<Object>("get_double", &Object::getDouble);
-        bindings.bind<Object>("get_double_explicit", [](Object const* obj)
-        {
-            return obj->getDouble();
-        });
+        //bindings.bind<Object>("method", &Object::method);
+        //bindings.bind<Object>("get_double", &Object::getDouble);
+        //bindings.bind<Object>("get_double_explicit", [](Object const* obj)
+        //{
+        //    return obj->getDouble();
+        //});
 
-        bindings.addObject("obj", &object0);
-        bindings.addObject("obj42", &object42);
+        //bindings.addObject("obj", &object0);
+        //bindings.addObject("obj42", &object42);
 
         return bindings;
     }
@@ -204,11 +204,11 @@ namespace coil
         }
     };
 
-    template<>
-    struct TypeName<Object>
-    {
-        static std::string_view name() { return "Object"; }
-    };
+    //template<>
+    //struct TypeName<Object>
+    //{
+    //    static std::string_view name() { return "Object"; }
+    //};
 
     template<typename T>
     struct TypeName<Tracker<T>>
@@ -227,36 +227,42 @@ TEST(BindingsTests, TestVoidFunctionCallStats)
     stats::reset();
 
     coil::Bindings bindings = createBindings();
-    bindings.execute("func");
+    auto result = bindings.execute("func");
+
+    EXPECT_EQ(result.errors.size(), 0);
 
     EXPECT_EQ(stats::functionCalls, 1);
-    EXPECT_EQ(stats::methodCalls, 0);
+    //EXPECT_EQ(stats::methodCalls, 0);
     EXPECT_EQ(stats::trackerAssignments, 0);
     EXPECT_EQ(stats::trackerConstructions, 0);
 }
 
-TEST(BindingsTests, TestVoidMethodCallStats)
-{
-    stats::reset();
-
-    coil::Bindings bindings = createBindings();
-    bindings.execute("obj.method");
-
-    EXPECT_EQ(stats::functionCalls, 0);
-    EXPECT_EQ(stats::methodCalls, 1);
-    EXPECT_EQ(stats::trackerAssignments, 0);
-    EXPECT_EQ(stats::trackerConstructions, 0);
-}
+//TEST(BindingsTests, TestVoidMethodCallStats)
+//{
+//    stats::reset();
+//
+//    coil::Bindings bindings = createBindings();
+//    auto result = bindings.execute("obj.method");
+//
+//    EXPECT_EQ(result.errors.size(), 0);
+//
+//    EXPECT_EQ(stats::functionCalls, 0);
+//    EXPECT_EQ(stats::methodCalls, 1);
+//    EXPECT_EQ(stats::trackerAssignments, 0);
+//    EXPECT_EQ(stats::trackerConstructions, 0);
+//}
 
 TEST(BindingsTests, TestVariableAssignmentStats)
 {
     stats::reset();
 
     coil::Bindings bindings = createBindings();
-    bindings.execute("var 42");
+    auto result = bindings.execute("var 42");
+
+    EXPECT_EQ(result.errors.size(), 0);
 
     EXPECT_EQ(stats::functionCalls, 0);
-    EXPECT_EQ(stats::methodCalls, 0);
+    //EXPECT_EQ(stats::methodCalls, 0);
     EXPECT_EQ(stats::trackerValueConstructions, 1);
     EXPECT_EQ(stats::trackerCopyConstructions, 0);
     EXPECT_EQ(stats::trackerCopyAssignments, 0);
@@ -267,7 +273,9 @@ TEST(BindingsTests, TestPassingArgumentByValueStats)
     stats::reset();
 
     coil::Bindings bindings = createBindings();
-    bindings.execute("use_tracker_by_value 42");
+    auto result = bindings.execute("use_tracker_by_value 42");
+
+    EXPECT_EQ(result.errors.size(), 0);
 
     EXPECT_EQ(stats::trackerValueConstructions, 1);
     EXPECT_EQ(stats::trackerCopyConstructions, 0);
@@ -279,7 +287,9 @@ TEST(BindingsTests, TestPassingArgumentByRefStats)
     stats::reset();
 
     coil::Bindings bindings = createBindings();
-    bindings.execute("use_tracker_by_ref 42");
+    auto result = bindings.execute("use_tracker_by_ref 42");
+
+    EXPECT_EQ(result.errors.size(), 0);
 
     EXPECT_EQ(stats::trackerValueConstructions, 1);
     EXPECT_EQ(stats::trackerCopyConstructions, 0);
@@ -291,7 +301,9 @@ TEST(BindingsTests, TestReturnByValueStats)
     stats::reset();
 
     coil::Bindings bindings = createBindings();
-    bindings.execute("create_tracker");
+    auto result = bindings.execute("create_tracker");
+
+    EXPECT_EQ(result.errors.size(), 0);
 
     EXPECT_EQ(stats::trackerValueConstructions, 1);
     EXPECT_EQ(stats::trackerCopyConstructions, 0);
@@ -304,12 +316,12 @@ TEST(BindingsTests, TestErrorStats)
 
     coil::Bindings bindings = createBindings();
     bindings.execute("foo");
-    bindings.execute("obj.foo");
-    bindings.execute("foo.method");
+    //bindings.execute("obj.foo");
+    //bindings.execute("foo.method");
     bindings.execute("foo_var 42");
 
     EXPECT_EQ(stats::functionCalls, 0);
-    EXPECT_EQ(stats::methodCalls, 0);
+    //EXPECT_EQ(stats::methodCalls, 0);
     EXPECT_EQ(stats::trackerConstructions, 0);
     EXPECT_EQ(stats::trackerAssignments, 0);
 }
@@ -323,14 +335,14 @@ TEST(BindingsTests, TestVoidFunctionCall)
     EXPECT_FALSE(result.returnValue.has_value());
 }
 
-TEST(BindingsTests, TestVoidMethodCall)
-{
-    coil::Bindings bindings = createBindings();
-    auto result = bindings.execute("obj.method");
-
-    EXPECT_EQ(result.errors.size(), 0);
-    EXPECT_FALSE(result.returnValue.has_value());
-}
+//TEST(BindingsTests, TestVoidMethodCall)
+//{
+//    coil::Bindings bindings = createBindings();
+//    auto result = bindings.execute("obj.method");
+//
+//    EXPECT_EQ(result.errors.size(), 0);
+//    EXPECT_FALSE(result.returnValue.has_value());
+//}
 
 TEST(BindingsTests, TestErrorNoFunction)
 {
@@ -350,23 +362,23 @@ TEST(BindingsTests, TestErrorUndefinedFunction)
     EXPECT_PRED2(containsError, result.errors, "No function 'foo' is registered");
 }
 
-TEST(BindingsTests, TestErrorUndefinedMethod)
-{
-    coil::Bindings bindings = createBindings();
-    auto result = bindings.execute("obj.foo");
+//TEST(BindingsTests, TestErrorUndefinedMethod)
+//{
+//    coil::Bindings bindings = createBindings();
+//    auto result = bindings.execute("obj.foo");
+//
+//    EXPECT_EQ(result.errors.size(), 1);
+//    EXPECT_PRED2(containsError, result.errors, "No function 'foo' is registered for type 'Object'");
+//}
 
-    EXPECT_EQ(result.errors.size(), 1);
-    EXPECT_PRED2(containsError, result.errors, "No function 'foo' is registered for type 'Object'");
-}
-
-TEST(BindingsTests, TestErrorUndefinedObject)
-{
-    coil::Bindings bindings = createBindings();
-    auto result = bindings.execute("foo.method");
-
-    EXPECT_EQ(result.errors.size(), 1);
-    EXPECT_PRED2(containsError, result.errors, "Object 'foo' is not registered");
-}
+//TEST(BindingsTests, TestErrorUndefinedObject)
+//{
+//    coil::Bindings bindings = createBindings();
+//    auto result = bindings.execute("foo.method");
+//
+//    EXPECT_EQ(result.errors.size(), 1);
+//    EXPECT_PRED2(containsError, result.errors, "Object 'foo' is not registered");
+//}
 
 TEST(BindingsTests, TestErrorWrongArgumentsCountWithNonUserArgs)
 {
@@ -444,41 +456,41 @@ TEST(BindingsTests, TestFunctionReturnValue)
     EXPECT_EQ(*result.returnValue, "808");
 }
 
-TEST(BindingsTests, TestMethodReturnValue)
-{
-    coil::Bindings bindings = createBindings();
-    auto result = bindings.execute("obj.get_double");
+//TEST(BindingsTests, TestMethodReturnValue)
+//{
+//    coil::Bindings bindings = createBindings();
+//    auto result = bindings.execute("obj.get_double");
+//
+//    EXPECT_EQ(result.errors.size(), 0);
+//    ASSERT_TRUE(result.returnValue.has_value());
+//    EXPECT_EQ(*result.returnValue, "0");
+//}
 
-    EXPECT_EQ(result.errors.size(), 0);
-    ASSERT_TRUE(result.returnValue.has_value());
-    EXPECT_EQ(*result.returnValue, "0");
-}
-
-TEST(BindingsTests, TestMethodWithExplicitTargetReturnValue)
-{
-    coil::Bindings bindings = createBindings();
-    auto result = bindings.execute("obj42.get_double_explicit");
-
-    EXPECT_EQ(result.errors.size(), 0);
-    ASSERT_TRUE(result.returnValue.has_value());
-    EXPECT_EQ(*result.returnValue, "84");
-}
-
-TEST(BindingsTests, TestTwoObjects)
-{
-    coil::Bindings bindings = createBindings();
-    auto result1 = bindings.execute("obj.get_double");
-    auto result2 = bindings.execute("obj42.get_double");
-
-    EXPECT_EQ(result1.errors.size(), 0);
-    EXPECT_EQ(result2.errors.size(), 0);
-
-    ASSERT_TRUE(result1.returnValue.has_value());
-    ASSERT_TRUE(result2.returnValue.has_value());
-
-    EXPECT_EQ(*result1.returnValue, "0");
-    EXPECT_EQ(*result2.returnValue, "84");
-}
+//TEST(BindingsTests, TestMethodWithExplicitTargetReturnValue)
+//{
+//    coil::Bindings bindings = createBindings();
+//    auto result = bindings.execute("obj42.get_double_explicit");
+//
+//    EXPECT_EQ(result.errors.size(), 0);
+//    ASSERT_TRUE(result.returnValue.has_value());
+//    EXPECT_EQ(*result.returnValue, "84");
+//}
+//
+//TEST(BindingsTests, TestTwoObjects)
+//{
+//    coil::Bindings bindings = createBindings();
+//    auto result1 = bindings.execute("obj.get_double");
+//    auto result2 = bindings.execute("obj42.get_double");
+//
+//    EXPECT_EQ(result1.errors.size(), 0);
+//    EXPECT_EQ(result2.errors.size(), 0);
+//
+//    ASSERT_TRUE(result1.returnValue.has_value());
+//    ASSERT_TRUE(result2.returnValue.has_value());
+//
+//    EXPECT_EQ(*result1.returnValue, "0");
+//    EXPECT_EQ(*result2.returnValue, "84");
+//}
 
 TEST(BindingsTests, TestOutput)
 {
@@ -502,29 +514,29 @@ TEST(BindingsTests, TestVariadicVector)
 TEST(BindingsTests, TestUnbind)
 {
     coil::Bindings bindings = createBindings();
-    bindings.unbind("func");
+    bindings.remove({ "func" });
     auto result = bindings.execute("func");
 
     EXPECT_EQ(result.errors.size(), 1);
     EXPECT_PRED2(containsError, result.errors, "No function 'func' is registered");
 }
 
-TEST(BindingsTests, TestUnbindMethod)
-{
-    coil::Bindings bindings = createBindings();
-    bindings.unbind<Object>("method");
-    auto result = bindings.execute("obj.method");
-
-    EXPECT_EQ(result.errors.size(), 1);
-    EXPECT_PRED2(containsError, result.errors, "No function 'method' is registered for type 'Object'");
-}
-
-TEST(BindingsTests, TestRemoveObject)
-{
-    coil::Bindings bindings = createBindings();
-    bindings.removeObject("obj");
-    auto result = bindings.execute("obj.method");
-
-    EXPECT_EQ(result.errors.size(), 1);
-    EXPECT_PRED2(containsError, result.errors, "Object 'obj' is not registered");
-}
+//TEST(BindingsTests, TestUnbindMethod)
+//{
+//    coil::Bindings bindings = createBindings();
+//    bindings.unbind<Object>("method");
+//    auto result = bindings.execute("obj.method");
+//
+//    EXPECT_EQ(result.errors.size(), 1);
+//    EXPECT_PRED2(containsError, result.errors, "No function 'method' is registered for type 'Object'");
+//}
+//
+//TEST(BindingsTests, TestRemoveObject)
+//{
+//    coil::Bindings bindings = createBindings();
+//    bindings.removeObject("obj");
+//    auto result = bindings.execute("obj.method");
+//
+//    EXPECT_EQ(result.errors.size(), 1);
+//    EXPECT_PRED2(containsError, result.errors, "Object 'obj' is not registered");
+//}
