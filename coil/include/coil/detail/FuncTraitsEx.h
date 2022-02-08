@@ -26,50 +26,21 @@ namespace coil::detail
         static_assert(maxArgs >= minArgs || isUnlimited, "For finite arguments maxArgs should not be less than minArgs");
     };
 
-    template<bool HasExplicitTarget, typename T>
-    struct NonUserArgsTraits
-    {
-        static constexpr bool hasExplicitTarget = HasExplicitTarget;
-        using ExplicitTargetType = T;
-    };
-
     template<typename Types>
     struct ArgsTraits;
 
-    template<typename T, typename... Tail>
-    struct ArgsTraits<utils::Types<T*, Tail...>> : ArgsCounters<Tail...>, NonUserArgsTraits<true, T>
-    {
-        using UserArgumentTypes = utils::Types<Tail...>;
-
-        template<std::size_t... InitialIndices>
-        using NonUserArgsIndices = std::index_sequence<InitialIndices..., 0>;
-    };
-
-    template<typename T, typename... Tail>
-    struct ArgsTraits<utils::Types<T*, Context, Tail...>> : ArgsCounters<Tail...>, NonUserArgsTraits<true, T>
-    {
-        using UserArgumentTypes = utils::Types<Tail...>;
-
-        template<std::size_t... InitialIndices>
-        using NonUserArgsIndices = std::index_sequence<InitialIndices..., 0, 1>;
-    };
-
     template<typename... Tail>
-    struct ArgsTraits<utils::Types<Context, Tail...>> : ArgsCounters<Tail...>, NonUserArgsTraits<false, void>
+    struct ArgsTraits<utils::Types<Context, Tail...>> : ArgsCounters<Tail...>
     {
         using UserArgumentTypes = utils::Types<Tail...>;
-
-        template<std::size_t... InitialIndices>
-        using NonUserArgsIndices = std::index_sequence<InitialIndices..., 1>;
+        using NonUserArgsIndices = std::index_sequence<0>;
     };
 
     template<typename... Args>
-    struct ArgsTraits<utils::Types<Args...>> : ArgsCounters<Args...>, NonUserArgsTraits<false, void>
+    struct ArgsTraits<utils::Types<Args...>> : ArgsCounters<Args...>
     {
         using UserArgumentTypes = utils::Types<Args...>;
-
-        template<std::size_t... InitialIndices>
-        using NonUserArgsIndices = std::index_sequence<InitialIndices...>;
+        using NonUserArgsIndices = std::index_sequence<>;
     };
 
     //////////////////////////////////////////////////////////////////////////

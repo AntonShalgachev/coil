@@ -9,14 +9,14 @@ namespace coil
     struct ExecutionInput
     {
         std::string_view objectName;
-        std::string_view functionName;
+        std::vector<std::string_view> categoryPath;
         std::vector<std::string_view> arguments;
         std::vector<std::pair<std::string_view, std::string_view>> namedArguments;
 
         void reset()
         {
             objectName = {};
-            functionName = {};
+            categoryPath.resize(0);
             arguments.resize(0);
             namedArguments.resize(0);
         }
@@ -24,12 +24,12 @@ namespace coil
         void setTargetAndName(std::string_view object, std::string_view function)
         {
             objectName = object;
-            functionName = function;
+            categoryPath.push_back(function);
         }
 
         auto tie() const
         {
-            return std::tie(objectName, functionName, arguments, namedArguments);
+            return std::tie(objectName, categoryPath, arguments, namedArguments);
         }
 
         bool operator==(ExecutionInput const& rhs) const
