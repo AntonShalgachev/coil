@@ -2,6 +2,7 @@
 
 #include "coil/Bindings.h"
 #include "coil/utils/MemberFunctionFunctor.h"
+#include "../coil/include/coil/utils/VariableWrapper.h"
 
 namespace services
 {
@@ -22,13 +23,12 @@ namespace services
 
         void enable()
         {
-            coil::CommandCollection commands = services::getBindings().createCollection();
+            m_commands = services::getBindings().createCollection();
+            auto& commands = *m_commands;
 
-            commands.add({ "services", "inventory", "add" }, coil::bind(&InventoryService::add, this));
+            commands["services"]["inventory"]["add"] = coil::bind(&InventoryService::add, this);
             commands["services"]["inventory"]["remove"] = coil::bind(&InventoryService::remove, this);
             commands["services"]["inventory"]["count"] = coil::bind(&InventoryService::count, this);
-
-            m_commands = std::move(commands);
         }
 
         void disable()
@@ -47,45 +47,65 @@ namespace services
 
 namespace widgets
 {
-    enum class Anchor
-    {
-        TopLeft,
-        TopRight,
-    };
-
     class Widget
     {
     public:
-        Widget() { enable(); }
+        Widget(std::string_view name) : name(name) {}
         virtual ~Widget() { disable(); }
 
         void toggle() {}
 
-        void enable()
+        virtual void enable()
         {
+            m_commands = services::getBindings().createCollection();
 
+            addCommands();
         }
 
-        void disable()
+        virtual void disable()
         {
-
+            m_commands = {};
         }
 
-        Anchor anchor = Anchor::TopLeft;
+        virtual void addCommands()
+        {
+            auto& commands = *m_commands;
+            commands["widgets"][name] = coil::bind(&Widget::toggle, this);
+            commands["widgets"][name]["anchor"] = coil::variable(&Widget::anchor, this);
+            commands["widgets"][name]["alpha"] = coil::variable(&Widget::alpha, this);
+            commands["widgets"][name]["set_params"] = [this](coil::Context context)
+            {
+                if (auto alphaArg = context.namedArgs().getOrReport<float>("alpha"))
+                    alpha = *alphaArg;
+                if (auto anchorArg = context.namedArgs().getOrReport<std::string>("anchor"))
+                    anchor = *std::move(anchorArg);
+            };
+        }
+
+        std::string_view name;
+
+        std::string anchor = "TopLeft";
         float alpha = 0.5f;
+
+    protected:
+        std::optional<coil::CommandCollection> m_commands;
     };
 
     class InventoryWidget : public Widget
     {
     public:
-        enum class Mask
-        {
-            All,
-            Weapons,
-            Keys,
-        };
+        InventoryWidget() : Widget("inventory") {}
 
-        Mask mask = Mask::All;
+        void addCommands() override
+        {
+            Widget::addCommands();
+
+            auto& commands = *m_commands;
+            commands["widgets"][name]["clear_log"] = coil::bind(&InventoryWidget::clearLog, this);
+            commands["widgets"][name]["mask"] = coil::variable(&InventoryWidget::mask, this);
+        }
+
+        std::string mask = "All";
 
         void clearLog() {}
     };
@@ -93,24 +113,27 @@ namespace widgets
 
 int main()
 {
-    services::InventoryService inventoryService;
-    widgets::InventoryWidget inventoryWidget;
+    coil::ExecutionResult res;
+    auto& bindings = services::getBindings();
 
-    //coil::Bindings bindings;
+    {
+        services::InventoryService inventoryService;
+        widgets::InventoryWidget inventoryWidget;
 
-    //bindings["cat"] = [](coil::Context) {
-    //    return "cat";
-    //};
+        inventoryWidget.enable();
 
-    //bindings["cat"]["test"] = []() {
-    //    return "cat.test";
-    //};
+        res = bindings.execute(coil::ExecutionInput{ {"widgets", "inventory"}, {}, {}});
+        res = bindings.execute(coil::ExecutionInput{ {"widgets", "inventory", "anchor"}, {"BottomLeft"}, {}});
+        res = bindings.execute(coil::ExecutionInput{ {"widgets", "inventory", "alpha"}, {"0.72"}, {}});
+        res = bindings.execute(coil::ExecutionInput{ {"widgets", "inventory", "mask"}, {"Weapons"}, {}});
+        res = bindings.execute(coil::ExecutionInput{ {"widgets", "inventory", "clear_log"}, {}, {}});
+        res = bindings.execute(coil::ExecutionInput{ {"widgets", "inventory", "set_params"}, {}, {{"alpha", "0.2"}, {"anchor", "Middle"}} });
+        res = bindings.execute(coil::ExecutionInput{ {"widgets", "inventory", "set_params"}, {}, {{"alpha", "one"}, {"anchor", "Middle"}} });
+    }
 
-    //auto res0 = bindings.execute(coil::ExecutionInput{ "", {"cat"}, {}, {} });
-    //auto res1 = bindings.execute(coil::ExecutionInput{ "", {"cat", "test"}, {}, {} });
-
-    //bindings["cat"] = nullptr;
-
-    //auto res2 = bindings.execute(coil::ExecutionInput{ "", {"cat"}, {}, {} });
-    //auto res3 = bindings.execute(coil::ExecutionInput{ "", {"cat", "test"}, {}, {} });
+    res = bindings.execute(coil::ExecutionInput{ {"widgets", "inventory"}, {}, {} });
+    res = bindings.execute(coil::ExecutionInput{ {"widgets", "inventory", "anchor"}, {"BottomLeft"}, {} });
+    res = bindings.execute(coil::ExecutionInput{ {"widgets", "inventory", "alpha"}, {"0.72"}, {} });
+    res = bindings.execute(coil::ExecutionInput{ {"widgets", "inventory", "mask"}, {"Weapons"}, {} });
+    res = bindings.execute(coil::ExecutionInput{ {"widgets", "inventory", "clear_log"}, {}, {} });
 }
