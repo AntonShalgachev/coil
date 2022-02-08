@@ -498,3 +498,33 @@ TEST(BindingsTests, TestVariadicVector)
     ASSERT_TRUE(result.returnValue.has_value());
     EXPECT_EQ(*result.returnValue, "20");
 }
+
+TEST(BindingsTests, TestUnbind)
+{
+    coil::Bindings bindings = createBindings();
+    bindings.unbind("func");
+    auto result = bindings.execute("func");
+
+    EXPECT_EQ(result.errors.size(), 1);
+    EXPECT_PRED2(containsError, result.errors, "No function 'func' is registered");
+}
+
+TEST(BindingsTests, TestUnbindMethod)
+{
+    coil::Bindings bindings = createBindings();
+    bindings.unbind<Object>("method");
+    auto result = bindings.execute("obj.method");
+
+    EXPECT_EQ(result.errors.size(), 1);
+    EXPECT_PRED2(containsError, result.errors, "No function 'method' is registered for type 'Object'");
+}
+
+TEST(BindingsTests, TestRemoveObject)
+{
+    coil::Bindings bindings = createBindings();
+    bindings.removeObject("obj");
+    auto result = bindings.execute("obj.method");
+
+    EXPECT_EQ(result.errors.size(), 1);
+    EXPECT_PRED2(containsError, result.errors, "Object 'obj' is not registered");
+}
