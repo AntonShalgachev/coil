@@ -274,9 +274,10 @@ namespace coil
         }
 
         template<typename Callable>
-        void add(std::vector<std::string_view> const& path, Callable&& callable)
+        void add(std::vector<std::string_view> path, Callable&& callable)
         {
             m_bindings->add(path, std::forward<Callable>(callable));
+            m_paths.push_back(std::move(path));
         }
 
         BindingProxy<CommandCollection> operator[](std::string_view name)
