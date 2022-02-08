@@ -173,7 +173,7 @@ namespace coil
                 if (it == targetNode->children.end())
                 {
                     std::string flatPath = utils::flatten(context.input.categoryPath, "", ".");
-                    context.result.errors.push_back(utils::formatString("No function '$s' is registered: failed to find node '%.*s'", flatPath.c_str(), pathPart.size(), pathPart.data()));
+                    context.result.errors.push_back(utils::formatString("No function '%s' is registered: failed to find node '%.*s'", flatPath.c_str(), pathPart.size(), pathPart.data()));
                     return;
                 }
 
