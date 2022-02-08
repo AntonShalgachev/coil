@@ -20,11 +20,11 @@ set(ALL_FILES
     "include/coil/detail/FunctorCaller.h"
     "include/coil/detail/CallContext.h"
     "include/coil/detail/FuncTraitsEx.h"
+    "include/coil/detail/StringWrapper.h"
     
     "include/coil/DefaultLexer.h"
     "include/coil/Expected.h"
     "include/coil/TypeName.h"
-    "include/coil/GeneralizedString.h"
     "include/coil/Property.h"
 )
 

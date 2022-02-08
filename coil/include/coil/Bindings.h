@@ -12,11 +12,11 @@
 #include "utils/TypeId.h"
 #include "DefaultLexer.h"
 #include "Expected.h"
-#include "GeneralizedString.h"
+#include "detail/StringWrapper.h"
 
 namespace coil
 {
-    using GeneralizedString = BasicGeneralizedString<std::string>;
+    using StringWrapper = BasicStringWrapper<std::string>;
 
     template<typename BindingsT>
     class BindingProxy;
@@ -166,14 +166,19 @@ namespace coil
                 return;
             }
 
+            auto reportMissingCommand = [](detail::CallContext& context)
+            {
+                std::string flatPath = utils::flatten(context.input.categoryPath, "", ".");
+                context.result.errors.push_back(utils::formatString("No function '%s' is registered", flatPath.c_str()));
+            };
+
             Node* targetNode = &m_root;
             for (auto const& pathPart : context.input.categoryPath)
             {
                 auto it = targetNode->children.find(pathPart);
                 if (it == targetNode->children.end())
                 {
-                    std::string flatPath = utils::flatten(context.input.categoryPath, "", ".");
-                    context.result.errors.push_back(utils::formatString("No function '%s' is registered: failed to find node '%.*s'", flatPath.c_str(), pathPart.size(), pathPart.data()));
+                    reportMissingCommand(context);
                     return;
                 }
 
@@ -188,8 +193,7 @@ namespace coil
 
             if (!targetNode->functor)
             {
-                // TODO add path as a string
-                context.result.errors.push_back("The selected path doesn't represent a command");
+                reportMissingCommand(context);
                 return;
             }
 
@@ -201,7 +205,7 @@ namespace coil
         struct Node
         {
             std::optional<AnyFunctor> functor;
-            std::unordered_map<GeneralizedString, std::unique_ptr<Node>> children;
+            std::unordered_map<StringWrapper, std::unique_ptr<Node>> children;
         };
 
         Node m_root;
@@ -252,23 +256,23 @@ namespace coil
         std::vector<std::string_view> m_partialPath;
     };
 
-    class CommandCollection
+    class CommandCollection final
     {
     public:
         CommandCollection(coil::Bindings& bindings) : m_bindings(&bindings) {}
-        virtual ~CommandCollection() { unregister(); }
+        ~CommandCollection() { clear(); }
 
         CommandCollection(CommandCollection&& rhs)
         {
             m_bindings = std::move(rhs.m_bindings);
-            unregister();
+            clear();
             m_paths = std::move(rhs.m_paths);
         }
 
         CommandCollection& operator=(CommandCollection&& rhs)
         {
             m_bindings = std::move(rhs.m_bindings);
-            unregister();
+            clear();
             m_paths = std::move(rhs.m_paths);
             return *this;
         }
@@ -286,7 +290,7 @@ namespace coil
         }
 
     private:
-        void unregister()
+        void clear()
         {
             for (auto const& path : m_paths)
                 m_bindings->remove(path);
