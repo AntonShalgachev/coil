@@ -203,7 +203,7 @@ namespace coil
                 if (m_input.categoryPath.empty())
                 {
                     if (type == TokenType::Dot)
-                        m_input.setTargetAndName(primaryToken.value, secondaryTokenValue);
+                        m_input.categoryPath.push_back(secondaryTokenValue);
                     else if (type == TokenType::String)
                         m_input.categoryPath.push_back(primaryToken.value);
                     else
