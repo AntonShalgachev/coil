@@ -26,7 +26,6 @@ namespace coil
 	{
     public:
         BindingProxy<Bindings> operator[](std::string_view name);
-        CommandCollection createCollection();
 
         template<typename Func>
         void add(std::vector<std::string_view> const& path, Func&& func)
@@ -256,57 +255,8 @@ namespace coil
         std::vector<std::string_view> m_partialPath;
     };
 
-    class CommandCollection final
-    {
-    public:
-        CommandCollection(coil::Bindings& bindings) : m_bindings(&bindings) {}
-        ~CommandCollection() { clear(); }
-
-        CommandCollection(CommandCollection&& rhs)
-        {
-            m_bindings = std::move(rhs.m_bindings);
-            clear();
-            m_paths = std::move(rhs.m_paths);
-        }
-
-        CommandCollection& operator=(CommandCollection&& rhs)
-        {
-            m_bindings = std::move(rhs.m_bindings);
-            clear();
-            m_paths = std::move(rhs.m_paths);
-            return *this;
-        }
-
-        template<typename Callable>
-        void add(std::vector<std::string_view> path, Callable&& callable)
-        {
-            m_bindings->add(path, std::forward<Callable>(callable));
-            m_paths.push_back(std::move(path));
-        }
-
-        BindingProxy<CommandCollection> operator[](std::string_view name)
-        {
-            return BindingProxy<CommandCollection>{ *this, { name } };
-        }
-
-    private:
-        void clear()
-        {
-            for (auto const& path : m_paths)
-                m_bindings->remove(path);
-        }
-
-        coil::Bindings* m_bindings;
-        std::vector<std::vector<std::string_view>> m_paths;
-    };
-
     inline BindingProxy<Bindings> Bindings::operator[](std::string_view name)
     {
         return BindingProxy<Bindings>{ *this, { name } };
-    }
-
-    inline CommandCollection Bindings::createCollection()
-    {
-        return CommandCollection{ *this };
     }
 }

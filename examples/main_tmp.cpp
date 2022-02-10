@@ -1,8 +1,9 @@
 #include <iostream>
 
 #include "coil/Bindings.h"
+#include "coil/CommandCollection.h"
 #include "coil/utils/MemberFunctionFunctor.h"
-#include "../coil/include/coil/utils/VariableWrapper.h"
+#include "coil/utils/VariableWrapper.h"
 
 namespace services
 {
@@ -23,7 +24,7 @@ namespace services
 
         void enable()
         {
-            m_commands = services::getBindings().createCollection();
+            m_commands = coil::CommandCollection{ services::getBindings() };
             auto& commands = *m_commands;
 
             commands["services"]["inventory"]["add"] = coil::bind(&InventoryService::add, this);
@@ -57,7 +58,7 @@ namespace widgets
 
         virtual void enable()
         {
-            m_commands = services::getBindings().createCollection();
+            m_commands = coil::CommandCollection{ services::getBindings() };
 
             addCommands();
         }
