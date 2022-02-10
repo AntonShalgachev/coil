@@ -189,15 +189,61 @@ namespace
     }
 }
 
+TEST(LexerTest, TestSpacesEmpty)
+{
+    coil::DefaultLexer lexer;
+
+    EXPECT_EQ(lexer(""), createInput({}, {}, {}));
+    EXPECT_EQ(lexer(" "), createInput({}, {}, {}));
+    EXPECT_EQ(lexer("\t"), createInput({}, {}, {}));
+    EXPECT_EQ(lexer("  "), createInput({}, {}, {}));
+    EXPECT_EQ(lexer("\t\t"), createInput({}, {}, {}));
+    EXPECT_EQ(lexer(" \t"), createInput({}, {}, {}));
+    EXPECT_EQ(lexer("\t "), createInput({}, {}, {}));
+}
+
+TEST(LexerTest, TestSpacesNoArgs)
+{
+    coil::DefaultLexer lexer;
+
+    EXPECT_EQ(lexer(" foo.bar.func "), createInput({ "foo", "bar", "func" }, {}, {}));
+    EXPECT_EQ(lexer(" foo .bar.func "), createInput({ "foo", "bar", "func" }, {}, {}));
+    EXPECT_EQ(lexer(" foo. bar.func "), createInput({ "foo", "bar", "func" }, {}, {}));
+    EXPECT_EQ(lexer(" foo . bar.func "), createInput({ "foo", "bar", "func" }, {}, {}));
+    EXPECT_EQ(lexer(" foo .bar .func "), createInput({ "foo", "bar", "func" }, {}, {}));
+    EXPECT_EQ(lexer(" foo. bar. func "), createInput({ "foo", "bar", "func" }, {}, {}));
+    EXPECT_EQ(lexer(" foo . bar . func "), createInput({ "foo", "bar", "func" }, {}, {}));
+}
+
+TEST(LexerTest, TestSpacesArgs)
+{
+    coil::DefaultLexer lexer;
+
+    EXPECT_EQ(lexer(" func arg1 arg2 "), createInput({ "func" }, { "arg1", "arg2" }, {}));
+    EXPECT_EQ(lexer(" func  arg1 arg2 "), createInput({ "func" }, { "arg1", "arg2" }, {}));
+    EXPECT_EQ(lexer(" func arg1  arg2 "), createInput({ "func" }, { "arg1", "arg2" }, {}));
+}
+
+TEST(LexerTest, TestSpacesNamedArgs)
+{
+    coil::DefaultLexer lexer;
+
+    EXPECT_EQ(lexer(" func arg1=foo arg2=bar "), createInput({ "func" }, {}, { {"arg1", "foo"}, {"arg2", "bar"} }));
+    EXPECT_EQ(lexer(" func  arg1=foo arg2=bar "), createInput({ "func" }, {}, { {"arg1", "foo"}, {"arg2", "bar"} }));
+    EXPECT_EQ(lexer(" func  arg1 =foo arg2=bar "), createInput({ "func" }, {}, { {"arg1", "foo"}, {"arg2", "bar"} }));
+    EXPECT_EQ(lexer(" func  arg1= foo arg2=bar "), createInput({ "func" }, {}, { {"arg1", "foo"}, {"arg2", "bar"} }));
+    EXPECT_EQ(lexer(" func  arg1 = foo arg2=bar "), createInput({ "func" }, {}, { {"arg1", "foo"}, {"arg2", "bar"} }));
+    EXPECT_EQ(lexer(" func  arg1 = foo arg2 =bar "), createInput({ "func" }, {}, { {"arg1", "foo"}, {"arg2", "bar"} }));
+    EXPECT_EQ(lexer(" func  arg1 = foo arg2= bar "), createInput({ "func" }, {}, { {"arg1", "foo"}, {"arg2", "bar"} }));
+    EXPECT_EQ(lexer(" func  arg1 = foo arg2 = bar "), createInput({ "func" }, {}, { {"arg1", "foo"}, {"arg2", "bar"} }));
+    EXPECT_EQ(lexer(" func  arg1 = foo  arg2 = bar "), createInput({ "func" }, {}, { {"arg1", "foo"}, {"arg2", "bar"} }));
+}
+
 TEST(LexerTests, TestEmpty)
 {
     coil::DefaultLexer lexer;
 
     EXPECT_EQ(lexer(""), createInput({}, {}, {}));
-
-    EXPECT_EQ(lexer("   "), createInput({}, {}, {}));
-    EXPECT_EQ(lexer("\t\t"), createInput({}, {}, {}));
-    EXPECT_EQ(lexer("\t  \t"), createInput({}, {}, {}));
 }
 
 TEST(LexerTests, TestNoArgs)
@@ -205,10 +251,6 @@ TEST(LexerTests, TestNoArgs)
     coil::DefaultLexer lexer;
 
     EXPECT_EQ(lexer("func"), createInput({ "func" }, {}, {}));
-
-    EXPECT_EQ(lexer(" func "), createInput({ "func" }, {}, {}));
-    EXPECT_EQ(lexer("\tfunc\t"), createInput({ "func" }, {}, {}));
-    EXPECT_EQ(lexer(" \t func \t "), createInput({ "func" }, {}, {}));
 }
 
 TEST(LexerTests, TestArgs)
@@ -217,14 +259,6 @@ TEST(LexerTests, TestArgs)
 
     EXPECT_EQ(lexer("func arg1"), createInput({ "func" }, { "arg1" }, {}));
     EXPECT_EQ(lexer("func arg1 arg2"), createInput({ "func" }, { "arg1", "arg2" }, {}));
-
-    EXPECT_EQ(lexer("func   arg1"), createInput({ "func" }, { "arg1" }, {}));
-    EXPECT_EQ(lexer("func \t arg1"), createInput({ "func" }, { "arg1" }, {}));
-    EXPECT_EQ(lexer("func\t \targ1"), createInput({ "func" }, { "arg1" }, {}));
-    EXPECT_EQ(lexer("func arg1   arg2"), createInput({ "func" }, { "arg1", "arg2" }, {}));
-    EXPECT_EQ(lexer("func arg1 \t arg2"), createInput({ "func" }, { "arg1", "arg2" }, {}));
-    EXPECT_EQ(lexer("func \t arg1 \t arg2"), createInput({ "func" }, { "arg1", "arg2" }, {}));
-    EXPECT_EQ(lexer("  func\targ1\targ2  "), createInput({ "func" }, { "arg1", "arg2" }, {}));
 }
 
 TEST(LexerTests, TestNamedArgs)
@@ -233,15 +267,6 @@ TEST(LexerTests, TestNamedArgs)
 
     EXPECT_EQ(lexer("func arg1=foo"), createInput({ "func" }, {}, { {"arg1", "foo"} }));
     EXPECT_EQ(lexer("func arg1=foo arg2=bar"), createInput({ "func" }, {}, { {"arg1", "foo"}, {"arg2", "bar"} }));
-
-    EXPECT_EQ(lexer("func arg1 = foo"), createInput({ "func" }, {}, { {"arg1", "foo"} }));
-    EXPECT_EQ(lexer("func arg1\t=\tfoo"), createInput({ "func" }, {}, { {"arg1", "foo"} }));
-    EXPECT_EQ(lexer("func arg1\t = \tfoo"), createInput({ "func" }, {}, { {"arg1", "foo"} }));
-    EXPECT_EQ(lexer("func    arg1 = foo"), createInput({ "func" }, {}, { {"arg1", "foo"} }));
-    EXPECT_EQ(lexer("func\targ1\t=\tfoo"), createInput({ "func" }, {}, { {"arg1", "foo"} }));
-    EXPECT_EQ(lexer("func\targ1=foo\targ2=bar"), createInput({ "func" }, {}, { {"arg1", "foo"}, {"arg2", "bar"} }));
-    EXPECT_EQ(lexer("func\targ1\t=\tfoo\targ2\t=\tbar"), createInput({ "func" }, {}, { {"arg1", "foo"}, {"arg2", "bar"} }));
-    EXPECT_EQ(lexer("  func  arg1\t=foo   arg2=bar  "), createInput({ "func" }, {}, { {"arg1", "foo"}, {"arg2", "bar"} }));
 }
 
 TEST(LexerTests, TestArgsAndNamedArgs)
@@ -249,9 +274,6 @@ TEST(LexerTests, TestArgsAndNamedArgs)
     coil::DefaultLexer lexer;
 
     EXPECT_EQ(lexer("func arg1 arg2 arg3=foo arg4=bar"), createInput({ "func" }, { "arg1", "arg2" }, { {"arg3", "foo"}, {"arg4", "bar"} }));
-
-    EXPECT_EQ(lexer("func   arg1  arg2\targ3 =foo  arg4=\t  bar  "), createInput({ "func" }, { "arg1", "arg2" }, { {"arg3", "foo"}, {"arg4", "bar"} }));
-    EXPECT_EQ(lexer(" func   arg1\targ2 arg3=  foo arg4\t\t=   bar"), createInput({ "func" }, { "arg1", "arg2" }, { {"arg3", "foo"}, {"arg4", "bar"} }));
 }
 
 TEST(LexerTests, TestNoArgsWithCategory)
