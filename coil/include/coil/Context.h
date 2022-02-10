@@ -18,6 +18,7 @@ namespace coil
             m_callContext.reportError(std::move(error));
         }
 
+        // TODO remove this overload?
         template<typename T, typename E>
         void reportError(coil::Expected<T, E> expected)
         {
