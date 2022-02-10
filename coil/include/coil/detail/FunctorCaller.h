@@ -54,9 +54,9 @@ namespace coil::detail
     }
 
     template<std::size_t i>
-    Context createContext(CallContext& context);
+    inline Context createContext(CallContext& context);
     template<>
-    Context createContext<0>(CallContext& context)
+    inline Context createContext<0>(CallContext& context)
     {
         return Context{ context };
     }
