@@ -123,18 +123,20 @@ int main()
 
         inventoryWidget.enable();
 
-        res = bindings.execute(coil::ExecutionInput{ {"widgets", "inventory"}, {}, {}});
-        res = bindings.execute(coil::ExecutionInput{ {"widgets", "inventory", "anchor"}, {"BottomLeft"}, {}});
-        res = bindings.execute(coil::ExecutionInput{ {"widgets", "inventory", "alpha"}, {"0.72"}, {}});
-        res = bindings.execute(coil::ExecutionInput{ {"widgets", "inventory", "mask"}, {"Weapons"}, {}});
-        res = bindings.execute(coil::ExecutionInput{ {"widgets", "inventory", "clear_log"}, {}, {}});
-        res = bindings.execute(coil::ExecutionInput{ {"widgets", "inventory", "set_params"}, {}, {{"alpha", "0.2"}, {"anchor", "Middle"}} });
-        res = bindings.execute(coil::ExecutionInput{ {"widgets", "inventory", "set_params"}, {}, {{"alpha", "one"}, {"anchor", "Middle"}} });
+        res = bindings.execute("widgets.inventory");
+        res = bindings.execute("widgets.inventory.anchor BottomLeft");
+        res = bindings.execute("widgets.inventory.alpha 0.72");
+        res = bindings.execute("widgets.inventory.mask Weapons");
+        res = bindings.execute("widgets.inventory.clear_log");
+        res = bindings.execute("widgets.inventory.set_params alpha=0.2 anchor=Middle");
+        res = bindings.execute("widgets.inventory.set_params alpha=one anchor=Middle");
     }
 
-    res = bindings.execute(coil::ExecutionInput{ {"widgets", "inventory"}, {}, {} });
-    res = bindings.execute(coil::ExecutionInput{ {"widgets", "inventory", "anchor"}, {"BottomLeft"}, {} });
-    res = bindings.execute(coil::ExecutionInput{ {"widgets", "inventory", "alpha"}, {"0.72"}, {} });
-    res = bindings.execute(coil::ExecutionInput{ {"widgets", "inventory", "mask"}, {"Weapons"}, {} });
-    res = bindings.execute(coil::ExecutionInput{ {"widgets", "inventory", "clear_log"}, {}, {} });
+    res = bindings.execute("widgets.inventory");
+    res = bindings.execute("widgets.inventory.anchor BottomLeft");
+    res = bindings.execute("widgets.inventory.alpha 0.72");
+    res = bindings.execute("widgets.inventory.mask Weapons");
+    res = bindings.execute("widgets.inventory.clear_log");
+    res = bindings.execute("widgets.inventory.set_params alpha=0.2 anchor=Middle");
+    res = bindings.execute("widgets.inventory.set_params alpha=one anchor=Middle");
 }
