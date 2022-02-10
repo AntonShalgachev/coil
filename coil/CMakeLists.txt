@@ -16,6 +16,7 @@ set(ALL_FILES
     "include/coil/NamedArgs.h"
     "include/coil/TypeSerializer.h"
     "include/coil/VariadicConsumer.h"
+    "include/coil/CommandCollection.h"
 
     "include/coil/detail/FunctorCaller.h"
     "include/coil/detail/CallContext.h"
