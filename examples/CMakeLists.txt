@@ -1,7 +1,26 @@
 set(PROJECT_NAME examples)
 
 set(ALL_FILES
-    "main_tmp.cpp"
+    "main.cpp"
+    
+    "common/ExamplesCommon.h"
+    "common/ExamplesCommon.cpp"
+    "common/CustomTypeName.h"
+    "common/EnumToString.h"
+    "common/FlagVariableWrapper.h"
+    
+    "basic/BasicExample.h"
+    "basic/BasicExample.cpp"
+    "variadic/VariadicExample.h"
+    "variadic/VariadicExample.cpp"
+    "variables/VariablesExample.h"
+    "variables/VariablesExample.cpp"
+    "named/NamedExample.h"
+    "named/NamedExample.cpp"
+    "enums/EnumsExample.h"
+    "enums/EnumsExample.cpp"
+	"errors/ErrorsExample.h"
+	"errors/ErrorsExample.cpp"
 )
 
 set (VS2017 OFF)
