@@ -46,13 +46,6 @@ namespace coil::detail
         return true;
     }
 
-    template<typename Func, typename... Args>
-    decltype(auto) invokeFunc(Func& func, Args&&... args)
-    {
-        static_assert(!utils::FuncTraits<Func>::isMethod, "Methods aren't supported");
-        return func(std::forward<Args>(args)...);
-    }
-
     template<std::size_t i>
     inline Context createContext(CallContext& context);
     template<>
@@ -73,11 +66,11 @@ namespace coil::detail
         {
             if constexpr (isVoid)
             {
-                invokeFunc(func, createContext<NonUserIndices>(context)..., *std::forward<Es>(expectedArgs)...);
+                func(createContext<NonUserIndices>(context)..., *std::forward<Es>(expectedArgs)...);
             }
             else
             {
-                auto&& returnValue = invokeFunc(func, createContext<NonUserIndices>(context)..., *std::forward<Es>(expectedArgs)...);
+                auto&& returnValue = func(createContext<NonUserIndices>(context)..., *std::forward<Es>(expectedArgs)...);
                 if (!context.hasErrors())
                     context.result.returnValue = TypeSerializer<std::decay_t<R>>::toString(returnValue);
             }
