@@ -7,50 +7,36 @@
 
 namespace coil::utils
 {
-	namespace detail
+    template<typename FuncPointer, typename C, typename... Args>
+	struct MemberFunctionFunctor
 	{
-		template<typename Func, typename ObjectReferenceT, typename Types>
-		struct MemberFunctionFunctorImpl {};
+    public:
+        MemberFunctionFunctor(FuncPointer func, C* obj) : m_func(func), m_obj(obj) {}
 
-        template<typename Func, typename T, typename... Args>
-		struct MemberFunctionFunctorImpl<Func, T, Types<Args...>>
-		{
-			//static_assert(std::is_lvalue_reference_v<T>, "ObjectReferenceT should be an L-value reference type");
+        decltype(auto) operator()(Args... args)
+        {
+            return (m_obj->*m_func)(std::move(args)...);
+        }
 
-			MemberFunctionFunctorImpl(Func&& func, T* obj) : func(std::forward<Func>(func)), obj(obj) {}
-
-			decltype(auto) operator()(Args... args)
-			{
-				return (obj->*func)(std::forward<Args>(args)...);
-			}
-
-			Func func;
-			T* obj;
-		};
-
-		template<typename Func, typename ObjectReferenceT>
-		using MemberFunctionFunctorImplT = MemberFunctionFunctorImpl<Func, ObjectReferenceT, typename FuncTraits<Func>::ArgumentTypes>;
-	}
-
-	template<typename Func, typename T>
-	struct MemberFunctionFunctor : public detail::MemberFunctionFunctorImplT<Func, T>
-	{
-		using Base = detail::MemberFunctionFunctorImplT<Func, T>;
-		using Base::Base;
+    private:
+        FuncPointer m_func = nullptr;
+        C* m_obj = nullptr;
 	};
 }
 
 namespace coil
 {
-    template<typename Func, typename T>
-	auto bind(Func&& func, T* obj)
+    // TODO implement for every const/volatile/except/ref combination
+
+    template<typename C, typename R, typename... Args>
+    auto bind(R(C::* func)(Args...), C* obj)
     {
-        using FuncTraits = utils::FuncTraits<Func>;
-
-        static_assert(FuncTraits::isMethod, "Func must be a pointer to member function");
-        static_assert(std::is_same_v<typename FuncTraits::ObjectType, std::decay_t<T>>, "Object must have the same type as the function's object type");
-        static_assert(!std::is_const_v<T> || FuncTraits::isConst, "Can't call non-const method on a const object");
-
-		return utils::MemberFunctionFunctor<Func, T>(std::forward<Func>(func), obj);
-	}
+        static_assert(!std::is_const_v<C>, "Can't bind non-const method on a const object");
+        return utils::MemberFunctionFunctor<R(C::*)(Args...), C, Args...>{ func, obj };
+    }
+    template<typename C, typename R, typename... Args>
+    auto bind(R(C::* func)(Args...) const, C const* obj)
+    {
+        return utils::MemberFunctionFunctor<R(C::*)(Args...) const, C const, Args...>{ func, obj };
+    }
 }
