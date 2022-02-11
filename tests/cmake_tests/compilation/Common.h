@@ -44,6 +44,11 @@ namespace
             return val * 2.0f;
         }
 
+        float memberFuncConst(float val) const
+        {
+            return val * 2.0f;
+        }
+
         float memberFuncWithContext(coil::Context, float val)
         {
             return val * 2.0f;
@@ -146,6 +151,7 @@ namespace
     }
 
     [[maybe_unused]] Object object;
+    [[maybe_unused]] Object const objectConst;
     [[maybe_unused]] float variable = 2.0f;
 
     [[maybe_unused]] auto lambda = [](float val)

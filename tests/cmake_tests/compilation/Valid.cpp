@@ -15,6 +15,8 @@ int main()
     cmd["foo"]["bar"] = &Object::staticFuncWithContext;
     cmd["foo"]["bar"] = coil::bind(&Object::memberFunc, &object);
     cmd["foo"]["bar"] = coil::bind(&Object::memberFuncWithContext, &object);
+    cmd["foo"]["bar"] = coil::bind(&Object::memberFuncConst, &object);
+    cmd["foo"]["bar"] = coil::bind(&Object::memberFuncConst, &objectConst);
     
     // Functors without arguments
     cmd["foo"]["bar"] = &freeFuncWithoutArgs;
