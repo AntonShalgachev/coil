@@ -8,7 +8,7 @@ if (Test-Path -Path $buildFolder) {
 mkdir $buildFolder | Out-Null
 Push-Location $buildFolder
 
-Invoke-Expression "cmake -DCMAKE_TESTS=1 -DRUN_CMAKE_COMPILATION_TEST=1 .."
+Invoke-Expression "cmake -DCMAKE_COMPILATION_TESTS=ON .."
 
 Pop-Location
 
