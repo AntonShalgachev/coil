@@ -159,7 +159,7 @@ namespace coil
 
         void execute(detail::CallContext& context)
         {
-            if (context.input.categoryPath.empty() || context.input.categoryPath.back().empty())
+            if (context.input.path.empty() || context.input.path.back().empty())
             {
                 context.result.errors.push_back("No function name is specified");
                 return;
@@ -167,12 +167,12 @@ namespace coil
 
             auto reportMissingCommand = [](detail::CallContext& context)
             {
-                std::string flatPath = utils::flatten(context.input.categoryPath, "", ".");
+                std::string flatPath = utils::flatten(context.input.path, "", ".");
                 context.result.errors.push_back(utils::formatString("No function '%s' is registered", flatPath.c_str()));
             };
 
             Node* targetNode = &m_root;
-            for (auto const& pathPart : context.input.categoryPath)
+            for (auto const& pathPart : context.input.path)
             {
                 auto it = targetNode->children.find(pathPart);
                 if (it == targetNode->children.end())
