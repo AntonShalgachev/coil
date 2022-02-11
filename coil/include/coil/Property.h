@@ -9,7 +9,7 @@ namespace coil
     public:
         using T = std::decay_t<decltype(std::declval<G>()())>;
 
-        Property(G&& getter, S&& setter) : m_getter(std::forward<G>(getter)), m_setter(std::forward<S>(setter)) {}
+        Property(G getter, S setter) : m_getter(std::move(getter)), m_setter(std::move(setter)) {}
 
         T operator()(std::optional<T> const& arg)
         {
@@ -32,48 +32,36 @@ namespace coil
     public:
         using T = std::decay_t<decltype(std::invoke(std::declval<G>(), std::declval<C*>()))>;
 
-        MemberProperty(G&& getter, S&& setter) : m_getter(std::forward<G>(getter)), m_setter(std::forward<S>(setter)) {}
+        MemberProperty(G getter, S setter, C* object) : m_getter(std::move(getter)), m_setter(std::move(setter)), m_object(object) {}
 
-        T operator()(C* target, std::optional<T> const& arg)
+        T operator()(std::optional<T> const& arg)
         {
             // TODO add user-friendly static_asserts
 
             if (arg.has_value())
-                std::invoke(m_setter, target, arg.value());
+                std::invoke(m_setter, m_object, arg.value());
 
-            return std::invoke(m_getter, target);
+            return std::invoke(m_getter, m_object);
         }
 
     private:
         G m_getter;
         S m_setter;
+        C* m_object = nullptr;
     };
 
+    // TODO rename to `property`
     template<typename G, typename S>
     auto createProperty(G&& getter, S&& setter)
     {
-        using GetterTraits = detail::FuncTraitsEx<G>;
-        using SetterTraits = detail::FuncTraitsEx<S>;
-        static constexpr bool getterHasTarget = GetterTraits::isMethod || GetterTraits::ArgsTraits::hasExplicitTarget;
-        static constexpr bool setterHasTarget = SetterTraits::isMethod || SetterTraits::ArgsTraits::hasExplicitTarget;
-
-        static_assert(getterHasTarget == setterHasTarget, "Either both or none functors should be callable with a target");
-        static constexpr bool hasTarget = getterHasTarget;
-
-        if constexpr (!hasTarget)
-        {
-            return Property{ std::forward<G>(getter), std::forward<S>(setter) };
-        }
-        else
-        {
-            using GetterTargetType = std::conditional_t<GetterTraits::ArgsTraits::hasExplicitTarget, typename GetterTraits::ArgsTraits::ExplicitTargetType, typename GetterTraits::ObjectType>;
-            using SetterTargetType = std::conditional_t<SetterTraits::ArgsTraits::hasExplicitTarget, typename SetterTraits::ArgsTraits::ExplicitTargetType, typename SetterTraits::ObjectType>;
-
-            static_assert(std::is_same_v<GetterTargetType, SetterTargetType>, "Both functors should be callable with the same target type");
-
-            using C = GetterTargetType;
-
-            return MemberProperty<C, G, S>(std::forward<G>(getter), std::forward<S>(setter));
-        }
+        return Property{ std::forward<G>(getter), std::forward<S>(setter) };
     }
+
+    template<typename C, typename G, typename S>
+    auto createProperty(G&& getter, S&& setter, C* object)
+    {
+        return MemberProperty{ std::forward<G>(getter), std::forward<S>(setter), object };
+    }
+
+    // TODO add readonly properties
 }
