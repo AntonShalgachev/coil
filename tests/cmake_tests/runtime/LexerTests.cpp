@@ -11,7 +11,7 @@ namespace coil
         os << "[{";
 
         auto delim = "";
-        for (auto const& pathPart : input.categoryPath)
+        for (auto const& pathPart : input.path)
         {
             os << delim << "'" << pathPart << "'";
             delim = ", ";
@@ -62,10 +62,10 @@ bool operator==(std::reference_wrapper<coil::ExecutionInput> const& lhs, coil::E
 
 namespace
 {
-    coil::ExecutionInput createInput(std::vector<std::string_view> categoryPath, std::vector<std::string_view> args, std::vector<std::pair<std::string_view, std::string_view>> namedArgs)
+    coil::ExecutionInput createInput(std::vector<std::string_view> path, std::vector<std::string_view> args, std::vector<std::pair<std::string_view, std::string_view>> namedArgs)
     {
         coil::ExecutionInput input;
-        input.categoryPath = std::move(categoryPath);
+        input.path = std::move(path);
         input.arguments = std::move(args);
         input.namedArguments = std::move(namedArgs);
 
@@ -123,7 +123,7 @@ namespace
         };
 
         for (std::size_t i = 0; i < pathPartsCount; i++)
-            input.categoryPath.push_back(generateNewString(false, false));
+            input.path.push_back(generateNewString(false, false));
 
         for (std::size_t i = 0; i < argsCount; i++)
             input.arguments.push_back(generateNewString(false, true));
@@ -154,7 +154,7 @@ namespace
         randomSpaces(ss);
 
         std::string_view delim = "";
-        for (auto const& part : input.categoryPath)
+        for (auto const& part : input.path)
         {
             ss << delim;
             randomSpaces(ss);
@@ -276,14 +276,14 @@ TEST(LexerTests, TestArgsAndNamedArgs)
     EXPECT_EQ(lexer("func arg1 arg2 arg3=foo arg4=bar"), createInput({ "func" }, { "arg1", "arg2" }, { {"arg3", "foo"}, {"arg4", "bar"} }));
 }
 
-TEST(LexerTests, TestNoArgsWithCategory)
+TEST(LexerTests, TestNoArgsWithNamespace)
 {
     coil::DefaultLexer lexer;
 
     EXPECT_EQ(lexer("foo.bar.func"), createInput({ "foo", "bar", "func" }, {}, {}));
 }
 
-TEST(LexerTests, TestArgsWithCategory)
+TEST(LexerTests, TestArgsWithNamespace)
 {
     coil::DefaultLexer lexer;
 
@@ -291,7 +291,7 @@ TEST(LexerTests, TestArgsWithCategory)
     EXPECT_EQ(lexer("foo.bar.func arg1 arg2"), createInput({ "foo", "bar", "func" }, { "arg1", "arg2" }, {}));
 }
 
-TEST(LexerTests, TestNamedArgsWithCategory)
+TEST(LexerTests, TestNamedArgsWithNamespace)
 {
     coil::DefaultLexer lexer;
 
@@ -299,7 +299,7 @@ TEST(LexerTests, TestNamedArgsWithCategory)
     EXPECT_EQ(lexer("foo.bar.func arg1=foo arg2=bar"), createInput({ "foo", "bar", "func" }, {}, { {"arg1", "foo"}, {"arg2", "bar"} }));
 }
 
-TEST(LexerTests, TestArgsAndNamedArgsWithCategory)
+TEST(LexerTests, TestArgsAndNamedArgsWithNamespace)
 {
     coil::DefaultLexer lexer;
 
