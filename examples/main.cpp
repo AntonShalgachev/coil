@@ -12,12 +12,6 @@
 #include "coil/Bindings.h"
 #include "coil/utils/MemberFunctionFunctor.h"
 
-//void help(std::ostream& os)
-//{
-//    //os << "Available commands:" << std::endl;
-//    //std::cout << "Some help" << std::endl;
-//}
-
 template<typename Example>
 void bindExample(coil::Bindings& bindings, Example& example, std::string_view name)
 {
