@@ -100,9 +100,10 @@ void VariadicExample::run()
     bindings["sum_all"] = &sumAll;
     bindings["scale"] = &scale;
 
-    bindings["rename_entity"] = &renameEntity;
-    bindings["print_entities"] = &printEntities;
-    bindings["add_entities"] = &addEntities;
+    auto entitiesBindings = bindings["entities"];
+    entitiesBindings["rename"] = &renameEntity;
+    entitiesBindings["list"] = &printEntities;
+    entitiesBindings["add"] = &addEntities;
 
     common::printSectionHeader("std::vector consumes all remaining arguments:");
     common::executeCommand(bindings, "sum_all");
@@ -119,10 +120,10 @@ void VariadicExample::run()
     common::executeCommand(bindings, "scale 3.14 two");
 
     common::printSectionHeader("AnyArgView can be used with any type:");
-    common::executeCommand(bindings, "add_entities 0 entity0 1 entity1 2 entity2");
-    common::executeCommand(bindings, "print_entities");
-    common::executeCommand(bindings, "rename_entity 0 player0");
-    common::executeCommand(bindings, "rename_entity entity1 player1");
-    common::executeCommand(bindings, "rename_entity 3 player3");
-    common::executeCommand(bindings, "print_entities");
+    common::executeCommand(bindings, "entities.add 0 entity0 1 entity1 2 entity2");
+    common::executeCommand(bindings, "entities.list");
+    common::executeCommand(bindings, "entities.rename 0 player0");
+    common::executeCommand(bindings, "entities.rename entity1 player1");
+    common::executeCommand(bindings, "entities.rename 3 player3");
+    common::executeCommand(bindings, "entities.list");
 }
