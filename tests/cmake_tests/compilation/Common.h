@@ -6,16 +6,15 @@
 
 namespace coil
 {
-    template<typename EnumT>
-    struct TypeSerializer<EnumT, std::enable_if_t<std::is_enum_v<EnumT>>>
+    template<typename E>
+    struct TypeSerializer<E, std::enable_if_t<std::is_enum_v<E>>>
     {
-        template<typename OnError>
-        static EnumT fromString(std::string_view str, [[maybe_unused]] OnError&& onError)
+        static Expected<E, std::string> fromString(std::string_view str)
         {
-            return EnumT{};
+            return E{};
         }
 
-        static std::string_view toString(EnumT const& value)
+        static std::string_view toString(E value)
         {
             return "";
         }
