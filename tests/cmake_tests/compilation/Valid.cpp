@@ -2,96 +2,72 @@
 
 int main()
 {
-    [[maybe_unused]] coil::Bindings cmd;
+    coil::Bindings cmd;
 
-    cmd.addObject("obj", &object);
+    // Different functor types with float argument
+    cmd["foo"]["bar"] = &freeFunc;
+    cmd["foo"]["bar"] = &freeFuncWithContext;
+    cmd["foo"]["bar"] = functor;
+    cmd["foo"]["bar"] = functorWithContext;
+    cmd["foo"]["bar"] = lambda;
+    cmd["foo"]["bar"] = lambdaWithContext;
+    cmd["foo"]["bar"] = &Object::staticFunc;
+    cmd["foo"]["bar"] = &Object::staticFuncWithContext;
+    cmd["foo"]["bar"] = coil::bind(&Object::memberFunc, &object);
+    cmd["foo"]["bar"] = coil::bind(&Object::memberFuncWithContext, &object);
+    
+    // Functors without arguments
+    cmd["foo"]["bar"] = &freeFuncWithoutArgs;
+    cmd["foo"]["bar"] = &freeFuncWithoutArgsWithContext;
+    cmd["foo"]["bar"] = []() {};
+    cmd["foo"]["bar"] = [](coil::Context) {};
 
-    cmd[""] = &freeFunc;
-    cmd[""] = &freeFuncWithContext;
-    cmd[""] = coil::variable(&variable);
-    cmd[""] = &freeFuncWithoutArgs;
-    cmd[""] = &freeFuncWithoutArgsWithContext;
-    cmd[""] = functor;
-    cmd[""] = functorWithContext;
-    cmd[""] = lambda;
-    cmd[""] = lambdaWithContext;
-    cmd[""] = &Object::staticFunc;
-    cmd[""] = &Object::staticFuncWithContext;
-    cmd.bind("", coil::bind(&Object::memberFunc, &object));
-    cmd.bind("", coil::bind(&Object::memberFuncWithContext, &object));
+    // Functors with variadic arguments
+    cmd["foo"]["bar"] = &funcVariadicVector;
+    cmd["foo"]["bar"] = &funcFloatVector;
+    cmd["foo"]["bar"] = &funcOptional;
 
-    cmd[""] = [](coil::Context) {};
+    // Functors with enums
+    cmd["foo"]["bar"] = &funcScopedEnum;
+    cmd["foo"]["bar"] = &funcUnscopedEnum;
 
-    cmd.bind<Object>("", &Object::memberFunc);
-    cmd.bind<Object>("", &Object::memberFuncWithContext);
-    cmd.bind<Object>("", &Object::memberFuncWithTarget);
-    cmd.bind<Object>("", coil::variable(&Object::memberVariable));
-    cmd.bind<Object>("", functorWithTarget);
-    cmd.bind<Object>("", functorWithTargetContext);
-    cmd.bind<Object>("", lambdaWithTarget);
-    cmd.bind<Object>("", lambdaWithTargetContext);
-    cmd.bind<Object>("", &freeFuncWithTarget);
-    cmd.bind<Object>("", &freeFuncWithConstTarget);
-    cmd.bind<Object>("", &freeFuncWithTargetContext);
-    cmd.bind<Object>("", &freeFuncWithoutArgsWithTarget);
-    cmd.bind<Object>("", &freeFuncWithoutArgsWithTargetContext);
-    cmd.bind<Object>("", [](Object*) {});
-    cmd.bind<Object>("", [](Object const*) {});
-    cmd.bind<Object>("", &freeFuncWithoutArgs);
-    cmd.bind<Object>("", &freeFunc);
-    cmd.bind<Object>("", coil::variable(&variable));
-    cmd.bind<Object>("", []() {});
-    cmd.bind<Object>("", [](int) {});
-    cmd.bind<Object>("", &Object::staticFuncWithTarget);
-    cmd.bind<Object>("", &Object::staticFuncWithTargetContext);
+    // Functors with specific parameter and return types
+    cmd["foo"]["bar"] = &funcWithType<int>;
+    cmd["foo"]["bar"] = &funcWithType<unsigned>;
+    cmd["foo"]["bar"] = &funcWithType<short>;
+    cmd["foo"]["bar"] = &funcWithType<unsigned short>;
+    cmd["foo"]["bar"] = &funcWithType<long>;
+    cmd["foo"]["bar"] = &funcWithType<unsigned long>;
+    cmd["foo"]["bar"] = &funcWithType<long long>;
+    cmd["foo"]["bar"] = &funcWithType<unsigned long long>;
+    cmd["foo"]["bar"] = &funcWithType<char>;
+    cmd["foo"]["bar"] = &funcWithType<unsigned char>;
+    cmd["foo"]["bar"] = &funcWithType<bool>;
+    cmd["foo"]["bar"] = &funcWithType<std::uint8_t>;
+    cmd["foo"]["bar"] = &funcWithType<std::uint16_t>;
+    cmd["foo"]["bar"] = &funcWithType<std::uint32_t>;
+    cmd["foo"]["bar"] = &funcWithType<std::uint64_t>;
+    cmd["foo"]["bar"] = &funcWithType<std::int8_t>;
+    cmd["foo"]["bar"] = &funcWithType<std::int16_t>;
+    cmd["foo"]["bar"] = &funcWithType<std::int32_t>;
+    cmd["foo"]["bar"] = &funcWithType<std::int64_t>;
+    cmd["foo"]["bar"] = &funcWithType<ScopedEnum>;
+    cmd["foo"]["bar"] = &funcWithType<UnscopedEnum>;
+    cmd["foo"]["bar"] = &funcWithType<std::string>;
+    cmd["foo"]["bar"] = &funcWithType<std::string_view>;
+    cmd["foo"]["bar"] = &funcWithType<std::optional<float>>;
 
-    cmd.bind<Object>("", coil::bind(&Object::memberFuncWithTarget, &object));
-    cmd.bind<Object>("", coil::bind(&Object::memberFuncWithTargetContext, &object));
+    // Variables
+    cmd["foo"]["bar"] = coil::variable(&variable);
+    cmd["foo"]["bar"] = coil::variable(&Object::memberVariable, &object);
 
-    cmd[""] = &funcVariadicVector;
-    cmd[""] = &funcFloatVector;
-    cmd[""] = &funcOptional;
-
-    cmd[""] = &funcScopedEnum;
-    cmd[""] = &funcUnscopedEnum;
-
-    cmd[""] = &funcWithType<int>;
-    cmd[""] = &funcWithType<unsigned>;
-    cmd[""] = &funcWithType<short>;
-    cmd[""] = &funcWithType<unsigned short>;
-    cmd[""] = &funcWithType<long>;
-    cmd[""] = &funcWithType<unsigned long>;
-    cmd[""] = &funcWithType<long long>;
-    cmd[""] = &funcWithType<unsigned long long>;
-    cmd[""] = &funcWithType<char>;
-    cmd[""] = &funcWithType<unsigned char>;
-    cmd[""] = &funcWithType<bool>;
-    cmd[""] = &funcWithType<std::uint8_t>;
-    cmd[""] = &funcWithType<std::uint16_t>;
-    cmd[""] = &funcWithType<std::uint32_t>;
-    cmd[""] = &funcWithType<std::uint64_t>;
-    cmd[""] = &funcWithType<std::int8_t>;
-    cmd[""] = &funcWithType<std::int16_t>;
-    cmd[""] = &funcWithType<std::int32_t>;
-    cmd[""] = &funcWithType<std::int64_t>;
-    cmd[""] = &funcWithType<ScopedEnum>;
-    cmd[""] = &funcWithType<UnscopedEnum>;
-    cmd[""] = &funcWithType<std::string>;
-    cmd[""] = &funcWithType<std::string_view>;
-    cmd[""] = &funcWithType<std::optional<float>>;
-
-    cmd.bind<Object>("", coil::createProperty(&Object::get, &Object::set));
-    cmd.bind<Object>("", coil::createProperty([](Object*) { return 1.0f; }, [](Object*, float) {}));
-    cmd.bind<Object>("", coil::createProperty(&Object::get, [](Object*, float) {}));
-    cmd.bind<Object>("", coil::createProperty([](Object*) { return 1.0f; }, & Object::set));
-
-    cmd.bind<Object>("", coil::createProperty(&getVariable, &setVariable));
-    cmd.bind<Object>("", coil::createProperty([]() { return 1.0f; }, [](float) {}));
-    cmd.bind<Object>("", coil::createProperty(&getVariable, [](float) {}));
-    cmd.bind<Object>("", coil::createProperty([]() { return 1.0f; }, & setVariable));
-
-    cmd[""] = coil::createProperty(&getVariable, &setVariable);
-    cmd[""] = coil::createProperty([]() { return 1.0f; }, [](float) {});
-    cmd[""] = coil::createProperty(&getVariable, [](float) {});
-    cmd[""] = coil::createProperty([]() { return 1.0f; }, & setVariable);
+    // Properties
+    cmd["foo"]["bar"] = coil::createProperty(&getVariable, &setVariable);
+    cmd["foo"]["bar"] = coil::createProperty([]() { return 1.0f; }, [](float) {});
+    cmd["foo"]["bar"] = coil::createProperty(&getVariable, [](float) {});
+    cmd["foo"]["bar"] = coil::createProperty([]() { return 1.0f; }, &setVariable);
+    cmd["foo"]["bar"] = coil::createProperty(&Object::get, &Object::set, &object);
+    cmd["foo"]["bar"] = coil::createProperty([](Object*) { return 1.0f; }, [](Object*, float) {}, &object);
+    cmd["foo"]["bar"] = coil::createProperty(&Object::get, [](Object*, float) {}, &object);
+    cmd["foo"]["bar"] = coil::createProperty([](Object*) { return 1.0f; }, &Object::set, &object);
 }

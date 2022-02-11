@@ -6,16 +6,15 @@
 
 namespace coil
 {
-    template<typename EnumT>
-    struct TypeSerializer<EnumT, std::enable_if_t<std::is_enum_v<EnumT>>>
+    template<typename E>
+    struct TypeSerializer<E, std::enable_if_t<std::is_enum_v<E>>>
     {
-        template<typename OnError>
-        static EnumT fromString(std::string_view str, [[maybe_unused]] OnError&& onError)
+        static Expected<E, std::string> fromString(std::string_view str)
         {
-            return EnumT{};
+            return E{};
         }
 
-        static std::string_view toString(EnumT const& value)
+        static std::string_view toString(E value)
         {
             return "";
         }
@@ -45,32 +44,12 @@ namespace
             return val * 2.0f;
         }
 
-        float memberFuncWithTarget(Object*, float val)
-        {
-            return val * 2.0f;
-        }
-
-        float memberFuncWithTargetContext(Object*, coil::Context, float val)
-        {
-            return val * 2.0f;
-        }
-
         float memberFuncWithContext(coil::Context, float val)
         {
             return val * 2.0f;
         }
 
         static float staticFunc(float val)
-        {
-            return val * 2.0f;
-        }
-
-        static float staticFuncWithTarget(Object*, float val)
-        {
-            return val * 2.0f;
-        }
-
-        static float staticFuncWithTargetContext(Object*, coil::Context, float val)
         {
             return val * 2.0f;
         }
@@ -93,30 +72,9 @@ namespace
         float memberVariable = 2.0f;
     };
 
-    struct SecondObject
-    {
-
-    };
-
     struct Functor
     {
         float operator()(float val)
-        {
-            return val * 2.0f;
-        }
-    };
-
-    struct FunctorWithTarget
-    {
-        float operator()(Object*, float val)
-        {
-            return val * 2.0f;
-        }
-    };
-
-    struct FunctorWithTargetContext
-    {
-        float operator()(Object*, coil::Context, float val)
         {
             return val * 2.0f;
         }
@@ -140,37 +98,7 @@ namespace
         return val * 2.0f;
     }
 
-    [[maybe_unused]] float freeFuncWithTarget(Object*, float val)
-    {
-        return val * 2.0f;
-    }
-
-    [[maybe_unused]] float freeFuncWithConstTarget(Object const*, float val)
-    {
-        return val * 2.0f;
-    }
-
-    [[maybe_unused]] float freeFuncWithWrongTarget(SecondObject*, float val)
-    {
-        return val * 2.0f;
-    }
-
-    [[maybe_unused]] float freeFuncWithTargetContext(Object*, coil::Context, float val)
-    {
-        return val * 2.0f;
-    }
-
     [[maybe_unused]] void freeFuncWithoutArgs()
-    {
-
-    }
-
-    [[maybe_unused]] void freeFuncWithoutArgsWithTarget(Object*)
-    {
-
-    }
-
-    [[maybe_unused]] void freeFuncWithoutArgsWithTargetContext(Object*, coil::Context)
     {
 
     }
@@ -224,21 +152,11 @@ namespace
     {
         return val * 2.0f;
     };
-    [[maybe_unused]] auto lambdaWithTarget = [](Object*, float val)
-    {
-        return val * 2.0f;
-    };
-    [[maybe_unused]] auto lambdaWithTargetContext = [](Object*, coil::Context, float val)
-    {
-        return val * 2.0f;
-    };
     [[maybe_unused]] auto lambdaWithContext = [](coil::Context, float val)
     {
         return val * 2.0f;
     };
 
     [[maybe_unused]] Functor functor;
-    [[maybe_unused]] FunctorWithTarget functorWithTarget;
-    [[maybe_unused]] FunctorWithTargetContext functorWithTargetContext;
     [[maybe_unused]] FunctorWithContext functorWithContext;
 }

@@ -30,11 +30,9 @@ message(STATUS "")
 message(STATUS "Performing compilation tests...")
 
 validate_compilation(Valid.cpp TRUE "")
-validate_compilation(WrongExplicitTarget.cpp FALSE "Explicit target should be either T* or T const*")
-validate_compilation(ExplicitTargetOnVoid.cpp FALSE "Can't bind a functor with explicit target to a type 'void'")
-validate_compilation(MemberFunctionOnVoid.cpp FALSE "Func shouldn't be a member function")
-validate_compilation(MemberVariableOnVoid.cpp FALSE "Can't bind a functor with explicit target to a type 'void'")
+validate_compilation(DirectMemberFunctionAssignment.cpp FALSE "Func shouldn't be a member function")
 validate_compilation(DirectVariableAssignment.cpp FALSE "Func should be a functor object")
+# TODO add fail tests for coil::property, coil::variable, coil::bind
 
 message(STATUS "All tests finished")
 message(STATUS "")
