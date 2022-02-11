@@ -51,7 +51,7 @@ namespace
 
         int getData() const { return m_multiplier; }
 
-        int scale(int input)
+        int scale(int input) const
         {
             return input * m_multiplier;
         }
