@@ -183,14 +183,14 @@ namespace coil
                 switch (token.type)
                 {
                 case TokenType::Assignment:
-                    if (m_input.categoryPath.empty())
+                    if (m_input.path.empty())
                         return makeUnexpected("Unexpected token '=' at the beginning of the expression");
                     if (!tokens.primaryTokenIndex)
                         return makeUnexpected("Unexpected token '=': no named for the named argument is provided");
                     nextTokenType = StringTokenType::SecondaryToken;
                     break;
                 case TokenType::Dot:
-                    if (m_input.categoryPath.empty())
+                    if (m_input.path.empty())
                         return makeUnexpected("Unexpected token '.' at the beginning of the expression");
                     if (!m_input.arguments.empty() || !m_input.namedArguments.empty() || !tokens.empty())
                         return makeUnexpected("Unexpected token '.' after an argument was specified");
@@ -200,7 +200,7 @@ namespace coil
                     switch (nextTokenType)
                     {
                     case StringTokenType::Path:
-                        m_input.categoryPath.push_back(token.value);
+                        m_input.path.push_back(token.value);
                         break;
                     case StringTokenType::PrimaryToken:
                         if (tokens.primaryTokenIndex)
