@@ -50,11 +50,11 @@ target_compile_options(${PROJECT_NAME} PRIVATE
     ${COMPILE_OPTIONS}
 )
 
-if(${TEST_COMP_PERF_USE_MANUAL})
+if(${COIL_COMPILE_TIME_WITH_MANUAL})
     target_compile_definitions(${PROJECT_NAME} PRIVATE USE_MANUAL=1)
 endif()
 
-if(${TEST_COMP_PERF_USE_COIL})
+if(${COIL_COMPILE_TIME_WITH_COIL})
     target_compile_definitions(${PROJECT_NAME} PRIVATE USE_COIL=1)
 endif()
 
