@@ -7,29 +7,41 @@ on:
     branches: [ master ]
   workflow_dispatch:
 
-env:
-  BUILD_TYPE: Debug
-
 jobs:
-  msvc2019:
+  msvc2019-ctest:
     runs-on: windows-latest
+    strategy:
+      matrix:
+        config: [Debug, Release]
 
     steps:
     - uses: actions/checkout@v2
 
-    - name: Configure CMake
+    - name: CMake (Examples + CTest + Runtime Performance)
       run: cmake -B ${{github.workspace}}/build -G "Visual Studio 16 2019" -DCOIL_COMPILATION_TESTS=ON -DCOIL_RUNTIME_TESTS=ON -DCOIL_EXAMPLES=ON -DCOIL_RUNTIME_PERFORMANCE=ON
 
-    - name: Build
-      run: |
-        cmake --build ${{github.workspace}}/build --config Debug --parallel 10
-        cmake --build ${{github.workspace}}/build --config Release --parallel 10
+    - name: Build (Examples + CTest + Runtime Performance)
+      run: cmake --build ${{github.workspace}}/build --config ${{ matrix.config }} --parallel 10
 
-    - name: Test
+    - name: CTest
       working-directory: ${{github.workspace}}/build
-      run: |
-        ctest -j 10 -C Debug
-        ctest -j 10 -C Release
+      run: ctest -j 10 -C ${{ matrix.config }}
 
     - name: Measure performance
-      run: ${{github.workspace}}/build/tests/runtime_performance/Release/runtime_performance.exe
+      run: ${{github.workspace}}/build/tests/runtime_performance/${{ matrix.config }}/runtime_performance.exe
+      if: matrix.config == 'Release'
+
+  msvc2019-compilation:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        bindings: [COIL, MANUAL]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Cmake
+      run: cmake -B ${{github.workspace}}/build -G "Visual Studio 16 2019" -DCOIL_EXAMPLES=OFF -DCOIL_COMPILE_TIME=ON -DCOIL_COMPILE_TIME_WITH_${{ matrix.bindings }}=ON
+
+    - name: Build
+      run: cmake --build ${{github.workspace}}/build --config Debug --parallel 10
