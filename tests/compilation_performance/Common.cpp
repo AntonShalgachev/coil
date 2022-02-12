@@ -1,6 +1,6 @@
 #include "Common.h"
 
-#ifdef MANUAL_DEBUG_BINDINGS
+#ifdef USE_MANUAL
 
 void DumbBindings::registerCommand(std::string name, CommandHandlerFunc func)
 {
