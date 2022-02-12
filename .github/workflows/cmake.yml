@@ -18,14 +18,19 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Configure CMake
-      run: |
-        cmake -B ${{github.workspace}}/build -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_COMPILATION_TESTS=ON -DCMAKE_RUNTIME_TESTS=OFF
-        cmake -B ${{github.workspace}}/build -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_COMPILATION_TESTS=OFF -DCMAKE_RUNTIME_TESTS=ON
+      run: cmake -B ${{github.workspace}}/build -G "Visual Studio 16 2019" -DCOIL_COMPILATION_TESTS=ON -DCOIL_RUNTIME_TESTS=ON -DCOIL_EXAMPLES=ON -DCOIL_RUNTIME_PERFORMANCE=ON
 
     - name: Build
-      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel 10
+      run: |
+      cmake --build ${{github.workspace}}/build --config Debug --parallel 10
+      cmake --build ${{github.workspace}}/build --config Release --parallel 10
 
     - name: Test
       working-directory: ${{github.workspace}}/build
-      run: ctest -j 10 -C ${{env.BUILD_TYPE}}
+      run: |
+        ctest -j 10 -C Debug
+        ctest -j 10 -C Release
+
+    - name: Measure performance
+      run: ${{github.workspace}}/build/tests/runtime_performance/Release/runtime_performance.exe
       
