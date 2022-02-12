@@ -1,5 +1,7 @@
 \#include "${name}.h"
 
+\#include "coil\utils\MemberFunctionFunctor.h"
+
 void $name::work()
 {
     std::vector<std::string> strings;
@@ -27,11 +29,11 @@ void $name::work()
 void $name::registerBindings(coil::Bindings& bindings)
 {
 #for $method in $methods
-    bindings.bind<$name>("${method.name}", &$name::${method.name});
+    bindings["${method.name}"] = coil::bind(&$name::${method.name}, this);
 #end for
 
 #for $variable in $member_variables
-    bindings.bind<$name>("${variable.name}", coil::variable(&${name}::${variable.name}));
+    bindings["${variable.name}"] = coil::variable(&${name}::${variable.name}, this);
 #end for
 
 #for $function in $functions
