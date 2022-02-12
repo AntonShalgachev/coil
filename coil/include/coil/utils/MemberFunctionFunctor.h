@@ -2,8 +2,7 @@
 
 // TODO rename file
 
-#include "Types.h"
-#include "FuncTraits.h"
+#include <type_traits>
 
 namespace coil::utils
 {
