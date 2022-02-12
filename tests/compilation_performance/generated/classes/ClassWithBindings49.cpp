@@ -1,5 +1,7 @@
 #include "ClassWithBindings49.h"
 
+#include "coil\utils\MemberFunctionFunctor.h"
+
 void ClassWithBindings49::work()
 {
     std::vector<std::string> strings;
@@ -25,37 +27,37 @@ void ClassWithBindings49::work()
 #if USE_COIL
 void ClassWithBindings49::registerBindings(coil::Bindings& bindings)
 {
-    bindings.bind<ClassWithBindings49>("method0", &ClassWithBindings49::method0);
-    bindings.bind<ClassWithBindings49>("method1", &ClassWithBindings49::method1);
-    bindings.bind<ClassWithBindings49>("method2", &ClassWithBindings49::method2);
-    bindings.bind<ClassWithBindings49>("method3", &ClassWithBindings49::method3);
-    bindings.bind<ClassWithBindings49>("method4", &ClassWithBindings49::method4);
-    bindings.bind<ClassWithBindings49>("method5", &ClassWithBindings49::method5);
-    bindings.bind<ClassWithBindings49>("method6", &ClassWithBindings49::method6);
-    bindings.bind<ClassWithBindings49>("method7", &ClassWithBindings49::method7);
-    bindings.bind<ClassWithBindings49>("method8", &ClassWithBindings49::method8);
-    bindings.bind<ClassWithBindings49>("method9", &ClassWithBindings49::method9);
-    bindings.bind<ClassWithBindings49>("method10", &ClassWithBindings49::method10);
-    bindings.bind<ClassWithBindings49>("method11", &ClassWithBindings49::method11);
-    bindings.bind<ClassWithBindings49>("method12", &ClassWithBindings49::method12);
-    bindings.bind<ClassWithBindings49>("method13", &ClassWithBindings49::method13);
-    bindings.bind<ClassWithBindings49>("method14", &ClassWithBindings49::method14);
+    bindings["method0"] = coil::bind(&ClassWithBindings49::method0, this);
+    bindings["method1"] = coil::bind(&ClassWithBindings49::method1, this);
+    bindings["method2"] = coil::bind(&ClassWithBindings49::method2, this);
+    bindings["method3"] = coil::bind(&ClassWithBindings49::method3, this);
+    bindings["method4"] = coil::bind(&ClassWithBindings49::method4, this);
+    bindings["method5"] = coil::bind(&ClassWithBindings49::method5, this);
+    bindings["method6"] = coil::bind(&ClassWithBindings49::method6, this);
+    bindings["method7"] = coil::bind(&ClassWithBindings49::method7, this);
+    bindings["method8"] = coil::bind(&ClassWithBindings49::method8, this);
+    bindings["method9"] = coil::bind(&ClassWithBindings49::method9, this);
+    bindings["method10"] = coil::bind(&ClassWithBindings49::method10, this);
+    bindings["method11"] = coil::bind(&ClassWithBindings49::method11, this);
+    bindings["method12"] = coil::bind(&ClassWithBindings49::method12, this);
+    bindings["method13"] = coil::bind(&ClassWithBindings49::method13, this);
+    bindings["method14"] = coil::bind(&ClassWithBindings49::method14, this);
 
-    bindings.bind<ClassWithBindings49>("memberVariable0", coil::variable(&ClassWithBindings49::memberVariable0));
-    bindings.bind<ClassWithBindings49>("memberVariable1", coil::variable(&ClassWithBindings49::memberVariable1));
-    bindings.bind<ClassWithBindings49>("memberVariable2", coil::variable(&ClassWithBindings49::memberVariable2));
-    bindings.bind<ClassWithBindings49>("memberVariable3", coil::variable(&ClassWithBindings49::memberVariable3));
-    bindings.bind<ClassWithBindings49>("memberVariable4", coil::variable(&ClassWithBindings49::memberVariable4));
-    bindings.bind<ClassWithBindings49>("memberVariable5", coil::variable(&ClassWithBindings49::memberVariable5));
-    bindings.bind<ClassWithBindings49>("memberVariable6", coil::variable(&ClassWithBindings49::memberVariable6));
-    bindings.bind<ClassWithBindings49>("memberVariable7", coil::variable(&ClassWithBindings49::memberVariable7));
-    bindings.bind<ClassWithBindings49>("memberVariable8", coil::variable(&ClassWithBindings49::memberVariable8));
-    bindings.bind<ClassWithBindings49>("memberVariable9", coil::variable(&ClassWithBindings49::memberVariable9));
-    bindings.bind<ClassWithBindings49>("memberVariable10", coil::variable(&ClassWithBindings49::memberVariable10));
-    bindings.bind<ClassWithBindings49>("memberVariable11", coil::variable(&ClassWithBindings49::memberVariable11));
-    bindings.bind<ClassWithBindings49>("memberVariable12", coil::variable(&ClassWithBindings49::memberVariable12));
-    bindings.bind<ClassWithBindings49>("memberVariable13", coil::variable(&ClassWithBindings49::memberVariable13));
-    bindings.bind<ClassWithBindings49>("memberVariable14", coil::variable(&ClassWithBindings49::memberVariable14));
+    bindings["memberVariable0"] = coil::variable(&ClassWithBindings49::memberVariable0, this);
+    bindings["memberVariable1"] = coil::variable(&ClassWithBindings49::memberVariable1, this);
+    bindings["memberVariable2"] = coil::variable(&ClassWithBindings49::memberVariable2, this);
+    bindings["memberVariable3"] = coil::variable(&ClassWithBindings49::memberVariable3, this);
+    bindings["memberVariable4"] = coil::variable(&ClassWithBindings49::memberVariable4, this);
+    bindings["memberVariable5"] = coil::variable(&ClassWithBindings49::memberVariable5, this);
+    bindings["memberVariable6"] = coil::variable(&ClassWithBindings49::memberVariable6, this);
+    bindings["memberVariable7"] = coil::variable(&ClassWithBindings49::memberVariable7, this);
+    bindings["memberVariable8"] = coil::variable(&ClassWithBindings49::memberVariable8, this);
+    bindings["memberVariable9"] = coil::variable(&ClassWithBindings49::memberVariable9, this);
+    bindings["memberVariable10"] = coil::variable(&ClassWithBindings49::memberVariable10, this);
+    bindings["memberVariable11"] = coil::variable(&ClassWithBindings49::memberVariable11, this);
+    bindings["memberVariable12"] = coil::variable(&ClassWithBindings49::memberVariable12, this);
+    bindings["memberVariable13"] = coil::variable(&ClassWithBindings49::memberVariable13, this);
+    bindings["memberVariable14"] = coil::variable(&ClassWithBindings49::memberVariable14, this);
 
     bindings["ClassWithBindings49_function0"] = [](coil::Context context, double arg0, short arg1, short arg2, float arg3, double arg4)
     {
