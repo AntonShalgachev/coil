@@ -1,6 +1,10 @@
 #include "coil/Bindings.h"
 #include "sol/sol.hpp"
+
+#pragma warning(push)
+#pragma warning(disable: 4701) // potentially uninitialized local variable 'newColor' used
 #include "hayai/hayai.hpp"
+#pragma warning(pop)
 
 namespace user
 {
