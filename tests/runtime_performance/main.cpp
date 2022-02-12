@@ -177,8 +177,10 @@ namespace
     BENCHMARK(Scripting, DirectFromString, runs, iterations)
     {
         using TS = coil::TypeSerializer<float>;
-        auto onError = [](auto) {};
-        user::function<0>(TS::fromString("3.14", onError), TS::fromString("0.16", onError));
+        auto arg1 = TS::fromString("3.14");
+        auto arg2 = TS::fromString("0.16");
+        if (arg1 && arg2)
+            user::function<0>(*arg1, *arg2);
     }
 }
 
