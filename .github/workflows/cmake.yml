@@ -22,8 +22,8 @@ jobs:
 
     - name: Build
       run: |
-      cmake --build ${{github.workspace}}/build --config Debug --parallel 10
-      cmake --build ${{github.workspace}}/build --config Release --parallel 10
+        cmake --build ${{github.workspace}}/build --config Debug --parallel 10
+        cmake --build ${{github.workspace}}/build --config Release --parallel 10
 
     - name: Test
       working-directory: ${{github.workspace}}/build
@@ -33,4 +33,3 @@ jobs:
 
     - name: Measure performance
       run: ${{github.workspace}}/build/tests/runtime_performance/Release/runtime_performance.exe
-      
