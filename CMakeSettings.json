@@ -10,9 +10,20 @@
       "cmakeCommandArgs": "",
       "buildCommandArgs": "",
       "ctestCommandArgs": "",
+      "addressSanitizerEnabled": true,
       "variables": [
         {
-          "name": "CMAKE_TESTS",
+          "name": "COIL_EXAMPLES",
+          "value": "true",
+          "type": "BOOL"
+        },
+        {
+          "name": "COIL_RUNTIME_PERFORMANCE",
+          "value": "True",
+          "type": "BOOL"
+        },
+        {
+          "name": "COIL_RUNTIME_TESTS",
           "value": "True",
           "type": "BOOL"
         }
@@ -30,26 +41,17 @@
       "inheritEnvironments": [ "msvc_x64_x64" ],
       "variables": [
         {
-          "name": "CMAKE_TESTS",
+          "name": "COIL_EXAMPLES",
+          "value": "true",
+          "type": "BOOL"
+        },
+        {
+          "name": "COIL_RUNTIME_PERFORMANCE",
           "value": "True",
           "type": "BOOL"
-        }
-      ]
-    },
-    {
-      "name": "Debug-AddressSanitizer",
-      "generator": "Ninja",
-      "configurationType": "Debug",
-      "buildRoot": "${projectDir}\\out\\build\\${name}",
-      "installRoot": "${projectDir}\\out\\install\\${name}",
-      "cmakeCommandArgs": "",
-      "buildCommandArgs": "",
-      "ctestCommandArgs": "",
-      "inheritEnvironments": [ "msvc_x64_x64" ],
-      "addressSanitizerEnabled": true,
-      "variables": [
+        },
         {
-          "name": "CMAKE_TESTS",
+          "name": "COIL_RUNTIME_TESTS",
           "value": "True",
           "type": "BOOL"
         }
@@ -67,7 +69,17 @@
       "inheritEnvironments": [ "clang_cl_x64_x64" ],
       "variables": [
         {
-          "name": "CMAKE_TESTS",
+          "name": "COIL_EXAMPLES",
+          "value": "true",
+          "type": "BOOL"
+        },
+        {
+          "name": "COIL_RUNTIME_PERFORMANCE",
+          "value": "True",
+          "type": "BOOL"
+        },
+        {
+          "name": "COIL_RUNTIME_TESTS",
           "value": "True",
           "type": "BOOL"
         }
@@ -85,43 +97,17 @@
       "inheritEnvironments": [ "clang_cl_x64_x64" ],
       "variables": [
         {
-          "name": "CMAKE_TESTS",
+          "name": "COIL_EXAMPLES",
+          "value": "true",
+          "type": "BOOL"
+        },
+        {
+          "name": "COIL_RUNTIME_PERFORMANCE",
           "value": "True",
           "type": "BOOL"
-        }
-      ]
-    },
-    {
-      "name": "Release-Measure-Perf",
-      "generator": "Ninja",
-      "configurationType": "RelWithDebInfo",
-      "buildRoot": "${projectDir}\\out\\build\\${name}",
-      "installRoot": "${projectDir}\\out\\install\\${name}",
-      "cmakeCommandArgs": "",
-      "buildCommandArgs": "",
-      "ctestCommandArgs": "",
-      "inheritEnvironments": [ "msvc_x64_x64" ],
-      "variables": [
+        },
         {
-          "name": "TEST_RUNTIME_PERF",
-          "value": "True",
-          "type": "BOOL"
-        }
-      ]
-    },
-    {
-      "name": "Clang-Release-Measure-Perf",
-      "generator": "Ninja",
-      "configurationType": "RelWithDebInfo",
-      "buildRoot": "${projectDir}\\out\\build\\${name}",
-      "installRoot": "${projectDir}\\out\\install\\${name}",
-      "cmakeCommandArgs": "",
-      "buildCommandArgs": "",
-      "ctestCommandArgs": "",
-      "inheritEnvironments": [ "clang_cl_x64_x64" ],
-      "variables": [
-        {
-          "name": "TEST_RUNTIME_PERF",
+          "name": "COIL_RUNTIME_TESTS",
           "value": "True",
           "type": "BOOL"
         }
@@ -136,14 +122,7 @@
       "cmakeCommandArgs": "",
       "buildCommandArgs": "",
       "ctestCommandArgs": "",
-      "inheritEnvironments": [ "msvc_x64_x64" ],
-      "variables": [
-        {
-          "name": "TEST_COMP_PERF",
-          "value": "True",
-          "type": "BOOL"
-        }
-      ]
+      "inheritEnvironments": [ "msvc_x64_x64" ]
     },
     {
       "name": "Debug-Compilation-Perf-Coil",
@@ -154,19 +133,7 @@
       "cmakeCommandArgs": "",
       "buildCommandArgs": "",
       "ctestCommandArgs": "",
-      "inheritEnvironments": [ "msvc_x64_x64" ],
-      "variables": [
-        {
-          "name": "TEST_COMP_PERF",
-          "value": "True",
-          "type": "BOOL"
-        },
-        {
-          "name": "TEST_COMP_PERF_USE_COIL",
-          "value": "True",
-          "type": "BOOL"
-        }
-      ]
+      "inheritEnvironments": [ "msvc_x64_x64" ]
     },
     {
       "name": "Debug-Compilation-Perf-Manual",
@@ -177,19 +144,7 @@
       "cmakeCommandArgs": "",
       "buildCommandArgs": "",
       "ctestCommandArgs": "",
-      "inheritEnvironments": [ "msvc_x64_x64" ],
-      "variables": [
-        {
-          "name": "TEST_COMP_PERF",
-          "value": "True",
-          "type": "BOOL"
-        },
-        {
-          "name": "TEST_COMP_PERF_USE_MANUAL",
-          "value": "True",
-          "type": "BOOL"
-        }
-      ]
+      "inheritEnvironments": [ "msvc_x64_x64" ]
     }
   ]
 }

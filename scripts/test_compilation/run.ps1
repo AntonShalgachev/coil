@@ -48,7 +48,7 @@ function Measure-SingleBuild {
         $env:CC=""
         $env:CXX=""
     }
-    Invoke-Expression "cmake -DTEST_COMP_PERF=1 -DTEST_COMP_PERF_USE_COIL=$coil -DTEST_COMP_PERF_USE_MANUAL=$manual -DCMAKE_UNITY_BUILD=$unityBuild -GNinja ../.." | Out-Null
+    Invoke-Expression "cmake -DCOIL_COMPILE_TIME=1 -DCOIL_COMPILE_TIME_WITH_COIL=$coil -DCOIL_COMPILE_TIME_WITH_MANUAL=$manual -DCMAKE_UNITY_BUILD=$unityBuild -GNinja ../.." | Out-Null
 
     Write-Host "Building 0/$Count (will be discarded)..."
     ninja | Out-Null
