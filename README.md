@@ -1,6 +1,6 @@
 # coil (COmmand Interpreter Library)
 
-This is a modern C++17 library that allows you to call functions/methods using a simple object-oriented command-like scripting language. It has no dependencies and doesn't use any macros. Since `coil` relies heavily on the templates, it's header-only (optimized to reduce compile time).
+This is a modern C++17 library that allows you to call functions using a simple yet powerful command-like scripting language. It has no dependencies and doesn't use any macros. Since `coil` relies heavily on the templates, it's header-only (optimized to reduce compile time).
 
 > ⚠️ **The library is currently under development.** Major changes are to be expected, although the main branch is kept more or less stable
 
@@ -23,110 +23,179 @@ Table of contents:
 - [Runtime performance](#runtime-performance)
 - [Known problems](#known-problems)
 
+<!-- TODO make sure the code compiles -->
 ## Quick peek
 
-<!-- TODO make sure the code compiles -->
-1. Have some regular C++ objects
+1. Have any regular variable or any callable object:
 ```cpp
-enum class SlotType
-{
-    Hand,
-    Backpack,
-}
-
-void addItem(std::string const& name, std::size_t amount, SlotType slot, bool autoEquip) { /*...*/ }
-
-int var = 0;
+int sum(int a, int b) { return a + b; }
+int variable = 42;
 ```
 
-2. Define some bindings
+2. Create command bindings:
 ```cpp
 coil::Bindings bindings;
-bindings["add_item"] = addItem;
-bindings["sum"] = [&var](int a, int b) { return var + a + b; };
-bindings["var"] = coil::variable(&var);
+bindings["sum"] = &sum;
+bindings["var"] = coil::variable(&variable);
 ```
-
-3. Execute commands
+3. Execute the command when you need it:
 ```cpp
-// Would add 2 pistols to the Backpack slot and would automatically equip it
-bindings.execute("add_item pistol 2 Backpack true")
-
-auto result1 = bindings.execute("sum 3 4");
-assert(*result1.returnValue == "7");
-
-bindings.execute("var 42");
-assert(var == 42);
-
-auto result3 = bindings.execute("var");
-assert(*result3.returnValue == "42");
+bindings.execute("sum 5 8"); // calls `sum`, returns "13" as a string
+bindings.execute("var"); // returns "42"
+bindings.execute("var 84"); // changes variable to 84, returns "84"
+assert(variable == 84);
 ```
 
-For more examples check `examples` directory or [Quick examples](#quick-examples) section
+## Features overview
+
+### Nested commands
+You can organize your commands with the help of "namespaces". The nesting level is unlimited:
+
+```cpp
+bindings["global_command"] = [](int arg) {};
+bindings["namespace"]["command"] = [](int arg) {};
+bindings["ns1"]["ns2"]["command"] = [](int arg) {};
+
+bindings.execute("global_command 42")
+bindings.execute("namespace.command 42")
+bindings.execute("ns1.ns2.command 42")
+```
+
+The following would also work (namespaces can have a "root" command):
+```cpp
+bindings["widgets"]["fps"] = []() { /*Show 'fps' widget*/ };
+bindings["widgets"]["fps"]["pos"] = [](Anchor anchor) { /*Set position*/ };
+
+bindings.execute("widgets.fps"); // shows the widget
+bindings.execute("widgets.fps.pos TopLeft"); // changes its position
+```
+
+That can be useful to make the command names more intuitive (and also allows a better suggestion implementation):
+```
+inventory.add item_id
+inventory.debug true
+graphics.vulkan.some_parameter 0.6
+graphics.opengl.some_parameter 0.7
+```
+
+### Functions
+Any C++ functor object can be used for the command:
+```cpp
+struct Functor
+{
+    double operator()(int val) { /*...*/ }
+};
+double func(int val) { /*...*/ }
+
+bindings["functor"] = Functor{};
+bindings["func"] = &func;
+bindings["lambda"] = [](int val) { /*...*/ };
+```
+
+You can also bind member functions to a specific objects:
+```cpp
+struct InventoryManager
+{
+    void add(std::string const& id, std::size_t amount) { /*...*/ }
+};
+InventoryManager inventoryManager;
+
+bindings["inventory"]["add"] = coil::bind(&InventoryManager::add, &inventoryManager);
+```
+
+> Make sure that `inventoryManager` isn't destroyed during the command lifetime
+
+### Variables
+You can create a command which gets/sets the value of a variable:
+```cpp
+int variable = 42;
+
+bindings["var"] = coil::variable(&variable);
+
+bindings.execute("var"); // returns variable value
+bindings.execute("var 17"); // modifies the variable and returns its value
+```
+
+As with the functions, you can bind a member variable to a specific object:
+```cpp
+struct InventoryManager
+{
+    bool debugMode = false;
+};
+
+InventoryManager inventoryManager;
+
+bindings["inventory"]["debug"] = coil::variable(&InventoryManager::debugMode, &inventoryManager);
+```
+
+> Make sure that `inventoryManager` isn't destroyed during the command lifetime
+
+### Enums
+As soon as there is a `TypeSerializer` specialization for your enum type, you can use it in your commands:
+
+```cpp
+enum class DebugMode { Off, Limited, Full };
+DebugMode debugMode = DebugMode::Off;
+
+class Widget
+{
+    enum class Anchor { TopLeft, TopRight, BottomLeft, BottomRight };
+    void show(Anchor anchor) { /*...*/ }
+}
+Widget widget;
+
+bindings["debugmode"] = coil::variable(&debugMode);
+bindings["widget"]["show"] = coil::bind(&Widget::show, &widget);
+```
+
+One way to specialize `TypeSerializer` for enums is to use `magic_enum`. See `enums` example to see how it can be done
+
+### Named arguments
+You can create commands with the named arguments:
+```
+savegame save_tag type=Memory delay=0.5
+```
+
+You can access all the named arguments via a `coil::Context` object:
+```cpp
+enum class SaveGameType { Disk, Memory };
+void saveGame(coil::Context context, std::string tag)
+{
+    auto& namedArgs = context.namedArgs();
+
+    auto type = namedArgs.getOrReport<SaveGameType>("type", coil::NamedArgs::ArgType::Required);
+    auto delay = namedArgs.getOrReport<float>("delay", coil::NamedArgs::ArgType::Optional, 0.0f);
+
+    // use *type and *delay
+}
+
+bindings["savegame"] = &saveGame;
+
+bindings.execute("savegame save_tag type=Memory");
+bindings.execute("savegame save_tag type=Disk delay=0.5");
+```
+
+### Command text output
+### Error handling
+### Any-like arguments
+### Custom user types
+### Properties
+### Optional arguments
+### Variadic arguments
 
 ## Introduction
 
 `coil` allows you to bind a name string to any callable object (function, method, lambda, etc.) and then use that name to invoke it. Arguments are automatically converted to match the callable's signature.
 
-The library is designed to hide the implementation detail from the end user: you don't have to inherit your objects from anything (or change them in any other way) to make the bindings work. That means that you can even bind methods of standard C++ objects (like `string`, `vector`, etc.):
-```cpp
-std::string str = "Hello, world!";
-bindings.bind<std::string>("substr", &std::string::substr);
-bindings.addObject("str", &str);
-auto result = bindings.execute("str.substr 7 5");
-assert(*result.returnValue == "world");
-```
-
-`coil` doesn't use any dependencies or macros: everything is implemented in pure C++ with the help of templates. The library is optimized to reduce compilation time as much as possible. Moreover, naive bindings implementation takes more time to compile (see [Compilation time impact](#compilation-time-impact)).
+The library doesn't use any dependencies or macros: everything is implemented in pure C++ with the help of templates. The library is optimized to reduce compilation time as much as possible. Moreover, naive bindings implementation takes more time to compile (see [Compilation time impact](#compilation-time-impact)).
 
 The priorities of the library:
 * Low compilation time overhead
 * User-friendly API
 * Runtime performance
 
-### Motivation
-
-It's very common to see a very simple debug console implementation in game engines, where you bind a command to a "command handler" taking an array of strings. The input string is then split by spaces and then the corresponding command handler is invoked with the array of raw user input.
-
-For example to bind ths command `add_inventory_item` to this function
-
-```cpp
-void addInventoryItem(std::string const& item, std::size_t amount, std::size_t slot) {}
-```
-
-you would have to write the following wrapper:
-
-```cpp
-void addInventoryItemCommand(std::vector<std::string> const& args)
-{
-    // do a bunch of checks and call `addInventoryItem` after converting arguments to the given types
-}
-```
-
-This approach has a lot of drawbacks:
-- A lot of boilerplate code:
-    - Check if the number of arguments is correct
-    - ... report a readable error if it's wrong
-    - Try to convert each string argument to a particular type
-    - Check if the conversion succeeded
-    - ... report a readable error if it didn't
-    - Run the actual command logic
-    - Convert the return value to the string and return it to the caller
-- Easy to forget/ignore something from the abovementioned steps
-    - Usually only the bare minimum is implemented with no feedback if the command arguments are wrong
-- A lot of code duplication (string to type conversion for each argument)
-- The code is usually copy-pasted, which can lead to the errors being multiplied
-    - Some code uses atoi/strtol and alike without appropriate error handling
-    - Some code might process arguments in a sophisticated way (e.g. split them by "=" to implement named arguments)
-- Not clear which arguments does the command require without having to take a look at the function implementation
-
-All this might discourage a programmer from adding a useful debug command
-
-This library is an attempt to get rid of these problems by providing a straightforward way to implement these bindings with all the "validation" logic done by the library itself in a centralized and efficient manner
-
 ## Features
 
-* Object-oriented syntax (`object.command arg1 arg2`, but global commands `command arg1 arg2` are also supported)
 * Customizable syntax (see [Custom Lexer](#custom-lexer))
 * Any callable objects: free functions, lambdas, member functions, objects with `operator()`
 * Variables
@@ -418,6 +487,46 @@ coil::Expected<coil::ExecutionInput, std::string> operator()(std::string_view st
 coil::Expected<coil::ExecutionInput const&, std::string> operator()(std::string str);
 coil::Expected<std::reference_wrapper<coil::ExecutionInput>, std::string> operator()(const char* str);
 ```
+
+## Motivation
+
+It's very common to see a very simple debug console implementation in game engines, where you bind a command to a "command handler" taking an array of strings. The input string is then split by spaces and then the corresponding command handler is invoked with the array of raw user input.
+
+For example to bind ths command `add_inventory_item` to this function
+
+```cpp
+void addInventoryItem(std::string const& item, std::size_t amount, std::size_t slot) {}
+```
+
+you would have to write the following wrapper:
+
+```cpp
+void addInventoryItemCommand(std::vector<std::string> const& args)
+{
+    // do a bunch of checks and call `addInventoryItem` after converting arguments to the given types
+}
+```
+
+This approach has a lot of drawbacks:
+- A lot of boilerplate code:
+    - Check if the number of arguments is correct
+    - ... report a readable error if it's wrong
+    - Try to convert each string argument to a particular type
+    - Check if the conversion succeeded
+    - ... report a readable error if it didn't
+    - Run the actual command logic
+    - Convert the return value to the string and return it to the caller
+- Easy to forget/ignore something from the abovementioned steps
+    - Usually only the bare minimum is implemented with no feedback if the command arguments are wrong
+- A lot of code duplication (string to type conversion for each argument)
+- The code is usually copy-pasted, which can lead to the errors being multiplied
+    - Some code uses atoi/strtol and alike without appropriate error handling
+    - Some code might process arguments in a sophisticated way (e.g. split them by "=" to implement named arguments)
+- Not clear which arguments does the command require without having to take a look at the function implementation
+
+All this might discourage a programmer from adding a useful debug command
+
+This library is an attempt to get rid of these problems by providing a straightforward way to implement these bindings with all the "validation" logic done by the library itself in a centralized and efficient manner
 
 ## Limitations
 
