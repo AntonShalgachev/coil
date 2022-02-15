@@ -192,22 +192,24 @@ namespace coil
     class Expected : public ExpectedBase<T, E>
     {
     public:
-        using ExpectedBase::ExpectedBase;
-        using ExpectedBase::operator bool;
-        using ExpectedBase::operator==;
+        using Base = ExpectedBase<T, E>;
 
-        Expected(T value) : ExpectedBase(std::move(value)) {}
+        using Base::ExpectedBase;
+        using Base::operator bool;
+        using Base::operator==;
+
+        Expected(T value) : Base(std::move(value)) {}
 
         template<typename T2, typename E2>
         bool operator==(Expected<T2, E2> const& rhs) const
         {
             static_assert(!std::is_void_v<T2>, "Can't compare T with void");
 
-            if (hasValue() && rhs.hasValue())
+            if (this->hasValue() && rhs.hasValue())
                 return value() == rhs.value();
 
-            if (!hasValue() && !rhs.hasValue())
-                return error() == rhs.error();
+            if (!this->hasValue() && !rhs.hasValue())
+                return this->error() == rhs.error();
 
             return false;
         }
@@ -215,28 +217,28 @@ namespace coil
         template<typename T2>
         bool operator==(T2 const& rhs) const
         {
-            return hasValue() && value() == rhs;
+            return this->hasValue() && value() == rhs;
         }
 
         T const& value() const&
         {
-            if (!hasValue())
-                throw BadExpectedAccess<E>(error());
-            return m_expected;
+            if (!this->hasValue())
+                throw BadExpectedAccess<E>(this->error());
+            return this->m_expected;
         }
 
         T& value() &
         {
-            if (!hasValue())
-                throw BadExpectedAccess<E>(error());
-            return m_expected;
+            if (!this->hasValue())
+                throw BadExpectedAccess<E>(this->error());
+            return this->m_expected;
         }
 
         T&& value() &&
         {
-            if (!hasValue())
-                throw BadExpectedAccess<E>(error());
-            return std::move(m_expected);
+            if (!this->hasValue())
+                throw BadExpectedAccess<E>(this->error());
+            return std::move(this->m_expected);
         }
 
         T const& operator*() const& { return value(); }
@@ -251,20 +253,22 @@ namespace coil
     class Expected<void, E> : public ExpectedBase<detail::dummy, E>
     {
     public:
-        using ExpectedBase::ExpectedBase;
-        using ExpectedBase::operator bool;
-        using ExpectedBase::operator==;
+        using Base = ExpectedBase<detail::dummy, E>;
 
-        Expected() : ExpectedBase(detail::dummy{}) {}
+        using Base::ExpectedBase;
+        using Base::operator bool;
+        using Base::operator==;
+
+        Expected() : Base(detail::dummy{}) {}
 
         template<typename E2>
         bool operator==(Expected<void, E2> const& rhs) const
         {
-            if (hasValue() && rhs.hasValue())
+            if (this->hasValue() && rhs.hasValue())
                 return true;
 
-            if (!hasValue() && !rhs.hasValue())
-                return error() == rhs.error();
+            if (!this->hasValue() && !rhs.hasValue())
+                return this->error() == rhs.error();
 
             return false;
         }
