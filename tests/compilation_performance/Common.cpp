@@ -2,6 +2,8 @@
 
 #ifdef USE_MANUAL
 
+#include <cctype>
+
 void DumbBindings::registerCommand(std::string name, CommandHandlerFunc func)
 {
     m_commands.insert_or_assign(std::move(name), std::move(func));
