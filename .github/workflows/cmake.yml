@@ -13,9 +13,16 @@ jobs:
     strategy:
       matrix:
         config: [Debug, Release]
+        clang: [true, false]
 
     steps:
     - uses: actions/checkout@v2
+
+    - name: Set up Clang
+      if: matrix.clang
+      run: |
+        $env:CC="clang-cl"
+        $env:CXX="clang-cl"
 
     - name: CMake (Examples + CTest + Runtime Performance)
       run: cmake -B ${{github.workspace}}/build -G "Visual Studio 15 2017" -DCOIL_COMPILATION_TESTS=ON -DCOIL_RUNTIME_TESTS=ON -DCOIL_EXAMPLES=ON -DCOIL_RUNTIME_PERFORMANCE=ON
@@ -36,9 +43,16 @@ jobs:
     strategy:
       matrix:
         config: [Debug, Release]
+        clang: [true, false]
 
     steps:
     - uses: actions/checkout@v2
+
+    - name: Set up Clang
+      if: matrix.clang
+      run: |
+        $env:CC="clang-cl"
+        $env:CXX="clang-cl"
 
     - name: CMake (Examples + CTest + Runtime Performance)
       run: cmake -B ${{github.workspace}}/build -G "Visual Studio 16 2019" -DCOIL_COMPILATION_TESTS=ON -DCOIL_RUNTIME_TESTS=ON -DCOIL_EXAMPLES=ON -DCOIL_RUNTIME_PERFORMANCE=ON
