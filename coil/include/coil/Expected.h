@@ -194,7 +194,7 @@ namespace coil
     public:
         using Base = ExpectedBase<T, E>;
 
-        using Base::ExpectedBase;
+        using Base::Base;
         using Base::operator bool;
         using Base::operator==;
 
@@ -255,7 +255,7 @@ namespace coil
     public:
         using Base = ExpectedBase<detail::dummy, E>;
 
-        using Base::ExpectedBase;
+        using Base::Base;
         using Base::operator bool;
         using Base::operator==;
 
