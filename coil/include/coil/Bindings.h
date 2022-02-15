@@ -31,7 +31,6 @@ namespace coil
         {
             using UnqualifiedFunc = std::decay_t<Func>;
             using FuncTraits = detail::FuncTraitsEx<UnqualifiedFunc>;
-            using ArgsTraits = typename FuncTraits::ArgsTraits;
 
             static_assert(FuncTraits::isFunc, "Func should be a functor object");
             static_assert(!std::is_member_function_pointer_v<UnqualifiedFunc>, "Func shouldn't be a member function");
