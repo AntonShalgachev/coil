@@ -529,7 +529,7 @@ TEST(BindingsTests, TestVariadicVector)
 TEST(BindingsTests, TestUnbind)
 {
     coil::Bindings bindings = createBindings();
-    bindings["func"] = nullptr;
+    bindings["func"] = {};
     auto result = bindings.execute("func");
 
     EXPECT_EQ(result.errors.size(), 1);
@@ -539,7 +539,7 @@ TEST(BindingsTests, TestUnbind)
 TEST(BindingsTests, TestUnbindWithCategory)
 {
     coil::Bindings bindings = createBindings();
-    bindings["ns"]["func"] = nullptr;
+    bindings["ns"]["func"] = {};
     auto result = bindings.execute("ns.func");
 
     EXPECT_EQ(result.errors.size(), 1);

@@ -248,7 +248,6 @@ namespace coil
             m_bindings.remove(m_partialPath);
             return *this;
         }
-        // TODO support empty braces along with nullptr
 
     private:
         BindingsT& m_bindings;
