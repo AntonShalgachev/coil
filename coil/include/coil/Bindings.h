@@ -9,115 +9,75 @@
 #include "utils/Utils.h"
 #include "detail/FunctorCaller.h"
 #include "ExecutionResult.h"
-#include "utils/TypeId.h"
 #include "DefaultLexer.h"
 #include "Expected.h"
-#include "GeneralizedString.h"
+#include "detail/StringWrapper.h"
 
 namespace coil
 {
-    using GeneralizedString = BasicGeneralizedString<std::string>;
+    using StringWrapper = BasicStringWrapper<std::string>;
 
-    template<typename T>
+    template<typename BindingsT>
     class BindingProxy;
-    template<typename T>
-    class ObjectBindings;
+    class CommandCollection;
 
 	class Bindings
 	{
     public:
-        BindingProxy<void> operator[](GeneralizedString name);
+        BindingProxy<Bindings> operator[](std::string_view name);
 
-        template<typename T>
-        ObjectBindings<T> createObjectBindings()
-        {
-            return ObjectBindings<T>{*this};
-        }
-
-        template<typename AnyT>
-        void bind(GeneralizedString name, AnyT&& anything)
-        {
-            return bind<void, AnyT>(std::move(name), std::forward<AnyT>(anything));
-        }
-
-        template<typename T, typename Func>
-        void bind(GeneralizedString name, Func&& func)
+        template<typename Func>
+        void add(std::vector<std::string_view> const& path, Func&& func)
         {
             using UnqualifiedFunc = std::decay_t<Func>;
             using FuncTraits = detail::FuncTraitsEx<UnqualifiedFunc>;
             using ArgsTraits = typename FuncTraits::ArgsTraits;
 
             static_assert(FuncTraits::isFunc, "Func should be a functor object");
+            static_assert(!std::is_member_function_pointer_v<UnqualifiedFunc>, "Func shouldn't be a member function");
 
-            // TODO assert that user parameters of Func are either values or const-references
-            // TODO assert that Context parameter is non-const reference and is at second optional position
-            // TODO assert that variadic args are at the end of the function
-
-            static_assert(!std::is_const_v<T>, "T shouldn't be const");
-            static_assert(!std::is_pointer_v<T>, "T shouldn't be a pointer");
-
-            if constexpr (std::is_void_v<T>)
-                static_assert(!std::is_member_function_pointer_v<UnqualifiedFunc>, "Func shouldn't be a member function");
-
-            if constexpr (ArgsTraits::hasExplicitTarget)
+            Node* targetNode = &m_root;
+            for (auto const& pathPart : path)
             {
-                static_assert(!std::is_void_v<T>, "Can't bind a functor with explicit target to a type 'void'");
-                static_assert(std::is_same_v<T, std::decay_t<typename ArgsTraits::ExplicitTargetType>>, "Explicit target should be either T* or T const*");
+                auto& subtree = targetNode->children[pathPart];
+                if (!subtree)
+                    subtree = std::make_unique<Node>();
+
+                targetNode = subtree.get();
             }
 
-            if (name.getView().empty())
-                return;
-
-            UnqualifiedFunc unqualifiedFunc{ std::move(func) };
-
-            auto& typeFunctors = m_functors[utils::typeId<T>()];
-            typeFunctors.insert_or_assign(std::move(name), AnyFunctor{ std::move(unqualifiedFunc), &Bindings::functorTrampoline<T, UnqualifiedFunc> });
+            targetNode->functor = AnyFunctor{ UnqualifiedFunc{ std::move(func) }, &Bindings::functorTrampoline<UnqualifiedFunc> };
         }
 
-        void unbind(std::string_view name) { return unbind<void>(name); }
-
-        template<typename T>
-        void unbind(std::string_view name)
-		{
-			if (name.empty())
-				return;
-
-            if (auto it = m_functors.find(utils::typeId<T>()); it != m_functors.end())
-                it->second.erase(name);
-        }
-
-        void unbindAll() { return unbindAll<void>(); }
-
-        template<typename T>
-        void unbindAll()
+        void remove(std::vector<std::string_view> const& path)
         {
-            if (auto it = m_functors.find(utils::typeId<T>()); it != m_functors.end())
-                it->second.clear();
+            Node* targetNode = &m_root;
+            for (auto const& pathPart : path)
+            {
+                auto it = targetNode->children.find(pathPart);
+                if (it == targetNode->children.end())
+                {
+                    // TODO report error?
+                    return;
+                }
+
+                if (!it->second)
+                {
+                    // TODO report error?
+                    return;
+                }
+
+                targetNode = it->second.get();
+            }
+
+            targetNode->functor = {};
         }
 
-        template<typename T>
-        void addObject(GeneralizedString name, T* object)
-		{
-            // TODO allow const objects
-			static_assert(!std::is_const_v<T>, "T shouldn't be const");
-
-            // TODO validate for nullptr
-
-			if (name.getView().empty())
-				return;
-
-            m_objects.insert_or_assign(std::move(name), AnyObject{ object, &Bindings::objectTrampoline<T> });
-        }
-
-        void removeObject(std::string_view name)
+        void clear()
         {
-            if (name.empty())
-                return;
-
-            m_objects.erase(name);
+            m_root.children.clear();
+            m_root.functor = {};
         }
-
-        void removeAllObjects() { m_objects.clear(); }
 
         ExecutionResult execute(std::string_view command)
         {
@@ -150,31 +110,10 @@ namespace coil
         }
 
     private:
-        struct AnyObject
-        {
-            using TrampolineT = void(Bindings::*)(std::any const&, detail::CallContext&);
-
-            AnyObject(std::any object, TrampolineT trampoline)
-                : m_object(std::move(object))
-                , m_trampoline(trampoline)
-            {
-
-            }
-
-            void invokeTrampoline(Bindings* self, detail::CallContext& context) const
-            {
-                std::invoke(m_trampoline, self, m_object, context);
-            }
-
-        private:
-            std::any m_object;
-            TrampolineT m_trampoline;
-        };
-
         struct AnyFunctor
         {
         public:
-            using TrampolineT = void(Bindings::*)(std::any const&, std::any&, detail::CallContext&);
+            using TrampolineT = void(*)(std::any&, detail::CallContext&);
 
             AnyFunctor(std::any functor, TrampolineT trampoline)
                 : functor(std::move(functor))
@@ -183,9 +122,9 @@ namespace coil
 
             }
 
-            void invokeTrampoline(Bindings* self, std::any const& anyObject, detail::CallContext& context)
+            void invokeTrampoline(detail::CallContext& context)
             {
-                std::invoke(m_trampoline, self, anyObject, functor, context);
+                m_trampoline(functor, context);
             }
 
         private:
@@ -193,34 +132,16 @@ namespace coil
             TrampolineT m_trampoline;
         };
 
-        void invokeFunctorTrampoline(utils::TypeIdT typeId, std::string_view typeName, std::any const& anyObject, detail::CallContext& context)
-        {
-            auto&& functionName = context.input.functionName;
-
-            auto& typeFunctors = m_functors[typeId];
-            if (auto it = typeFunctors.find(functionName); it != typeFunctors.end())
-                return it->second.invokeTrampoline(this, anyObject, context);
-
-            if (typeName.empty())
-                context.result.errors.push_back(utils::formatString("No function '%.*s' is registered", functionName.size(), functionName.data()));
-            else
-                context.result.errors.push_back(utils::formatString("No function '%.*s' is registered for type '%.*s'", functionName.size(), functionName.data(), typeName.size(), typeName.data()));
-        }
-
-        template<typename T>
-        void objectTrampoline(std::any const& anyObject, detail::CallContext& context)
-        {
-            if constexpr (std::is_void_v<T>)
-                return invokeFunctorTrampoline(utils::typeId<T>(), "", anyObject, context);
-            else
-                return invokeFunctorTrampoline(utils::typeId<T>(), TypeName<T>::name(), anyObject, context);
-        }
-
-        template<typename T, typename FuncT>
-        void functorTrampoline([[maybe_unused]] std::any const& anyObject, std::any& anyFunctor, detail::CallContext& context)
+        template<typename FuncT>
+        static void functorTrampoline(std::any& anyFunctor, detail::CallContext& context)
         {
             FuncT* functor = std::any_cast<FuncT>(&anyFunctor);
-            auto&& object = std::any_cast<T*>(&anyObject);
+
+            if (!functor)
+            {
+                context.result.errors.push_back("Internal error");
+                return;
+            }
 
             using FuncTraits = detail::FuncTraitsEx<FuncT>;
             using ArgsTraits = typename FuncTraits::ArgsTraits;
@@ -230,95 +151,111 @@ namespace coil
 
             using UserArgTypes = typename ArgsTraits::UserArgumentTypes;
             using UserArgIndicesType = typename UserArgTypes::IndicesType;
+            using NonUserArgsIndicesType = typename ArgsTraits::NonUserArgsIndices;
 
-            detail::NonUserArgs<T> nonUserArgs{ *object, Context{context} };
-
-            if constexpr (FuncTraits::template isMethodOfType<T>)
-                detail::unpackAndInvoke(*functor, context, nonUserArgs, typename ArgsTraits::template NonUserArgsIndices<0>{}, UserArgTypes{}, UserArgIndicesType{});
-            else
-                detail::unpackAndInvoke(*functor, context, nonUserArgs, typename ArgsTraits::template NonUserArgsIndices<>{}, UserArgTypes{}, UserArgIndicesType{});
+            detail::unpackAndInvoke(*functor, context, NonUserArgsIndicesType{}, UserArgTypes{}, UserArgIndicesType{});
         }
 
         void execute(detail::CallContext& context)
         {
-            if (context.input.functionName.empty())
+            if (context.input.path.empty() || context.input.path.back().empty())
             {
                 context.result.errors.push_back("No function name is specified");
                 return;
             }
 
-            auto&& objectName = context.input.objectName;
-
-            if (objectName.empty())
-                return objectTrampoline<void>(static_cast<void*>(nullptr), context);
-
-            auto it = m_objects.find(objectName);
-            if (it == m_objects.end())
+            auto reportMissingCommand = [](detail::CallContext& context)
             {
-                context.result.errors.push_back(utils::formatString("Object '%.*s' is not registered", objectName.size(), objectName.data()));
+                std::string flatPath = utils::flatten(context.input.path, "", ".");
+                context.result.errors.push_back(utils::formatString("No function '%s' is registered", flatPath.c_str()));
+            };
+
+            Node* targetNode = &m_root;
+            for (auto const& pathPart : context.input.path)
+            {
+                auto it = targetNode->children.find(pathPart);
+                if (it == targetNode->children.end())
+                {
+                    reportMissingCommand(context);
+                    return;
+                }
+
+                if (!it->second)
+                {
+                    context.result.errors.push_back("Internal error");
+                    return;
+                }
+
+                targetNode = it->second.get();
+            }
+
+            if (!targetNode->functor)
+            {
+                reportMissingCommand(context);
                 return;
             }
 
-            AnyObject& obj = it->second;
-            obj.invokeTrampoline(this, context);
+            targetNode->functor->invokeTrampoline(context);
         }
 
-        std::unordered_map<GeneralizedString, AnyObject> m_objects;
-        std::unordered_map<utils::TypeIdT, std::unordered_map<GeneralizedString, AnyFunctor>> m_functors;
         DefaultLexer m_defaultLexer;
+
+        struct Node
+        {
+            std::optional<AnyFunctor> functor;
+            std::unordered_map<StringWrapper, std::unique_ptr<Node>> children;
+        };
+
+        Node m_root;
 	};
 
-    template<typename T>
+    template<typename BindingsT>
     class BindingProxy
     {
     public:
-        BindingProxy(Bindings& bindings, GeneralizedString name) : m_bindings(bindings), m_name(std::move(name)) {}
+        BindingProxy(BindingsT& bindings, std::vector<std::string_view> partialPath) : m_bindings(bindings), m_partialPath(std::move(partialPath)) {}
+
+        BindingProxy operator[](std::string_view name) const& = delete;
+        BindingProxy operator[](std::string_view name) &
+        {
+            std::vector<std::string_view> newPartialPath = m_partialPath;
+            newPartialPath.push_back(name);
+            return BindingProxy{ m_bindings, std::move(newPartialPath) };
+        }
+        BindingProxy operator[](std::string_view name) &&
+        {
+            std::vector<std::string_view> newPartialPath = std::move(m_partialPath);
+            newPartialPath.push_back(name);
+            return BindingProxy{ m_bindings, std::move(newPartialPath) };
+        }
 
         template<typename AnyT>
         BindingProxy& operator=(AnyT&& anything) const& = delete;
-
         template<typename AnyT>
-        BindingProxy& operator=(AnyT&& anything)&
+        BindingProxy& operator=(AnyT&& anything) &
         {
-            m_bindings.bind<T>(m_name, std::forward<AnyT>(anything));
+            m_bindings.add(m_partialPath, std::forward<AnyT>(anything));
             return *this;
         }
-
         template<typename AnyT>
         BindingProxy& operator=(AnyT&& anything) &&
         {
-            m_bindings.bind<T>(std::move(m_name), std::forward<AnyT>(anything));
+            m_bindings.add(std::move(m_partialPath), std::forward<AnyT>(anything));
             return *this;
         }
-
         BindingProxy& operator=(std::nullptr_t)
         {
-            m_bindings.unbind<T>(m_name);
+            m_bindings.remove(m_partialPath);
             return *this;
         }
 
     private:
-        Bindings& m_bindings;
-        GeneralizedString m_name;
+        BindingsT& m_bindings;
+        std::vector<std::string_view> m_partialPath;
     };
 
-    template<typename T>
-    class ObjectBindings
+    inline BindingProxy<Bindings> Bindings::operator[](std::string_view name)
     {
-    public:
-        ObjectBindings(Bindings& bindings) : m_bindings(bindings) {}
-
-        BindingProxy<T> operator[](GeneralizedString name)
-        {
-            return BindingProxy<T>(m_bindings, std::move(name));
-        }
-
-    private:
-        Bindings& m_bindings;
-    };
-
-    inline BindingProxy<void> Bindings::operator[](GeneralizedString name)
-    {
-        return BindingProxy<void>(*this, std::move(name));
+        return BindingProxy<Bindings>{ *this, { name } };
     }
 }

@@ -44,12 +44,7 @@ namespace
             return val * 2.0f;
         }
 
-        float memberFuncWithTarget(Object*, float val)
-        {
-            return val * 2.0f;
-        }
-
-        float memberFuncWithTargetContext(Object*, coil::Context, float val)
+        float memberFuncConst(float val) const
         {
             return val * 2.0f;
         }
@@ -60,16 +55,6 @@ namespace
         }
 
         static float staticFunc(float val)
-        {
-            return val * 2.0f;
-        }
-
-        static float staticFuncWithTarget(Object*, float val)
-        {
-            return val * 2.0f;
-        }
-
-        static float staticFuncWithTargetContext(Object*, coil::Context, float val)
         {
             return val * 2.0f;
         }
@@ -92,30 +77,9 @@ namespace
         float memberVariable = 2.0f;
     };
 
-    struct SecondObject
-    {
-
-    };
-
     struct Functor
     {
         float operator()(float val)
-        {
-            return val * 2.0f;
-        }
-    };
-
-    struct FunctorWithTarget
-    {
-        float operator()(Object*, float val)
-        {
-            return val * 2.0f;
-        }
-    };
-
-    struct FunctorWithTargetContext
-    {
-        float operator()(Object*, coil::Context, float val)
         {
             return val * 2.0f;
         }
@@ -139,37 +103,7 @@ namespace
         return val * 2.0f;
     }
 
-    [[maybe_unused]] float freeFuncWithTarget(Object*, float val)
-    {
-        return val * 2.0f;
-    }
-
-    [[maybe_unused]] float freeFuncWithConstTarget(Object const*, float val)
-    {
-        return val * 2.0f;
-    }
-
-    [[maybe_unused]] float freeFuncWithWrongTarget(SecondObject*, float val)
-    {
-        return val * 2.0f;
-    }
-
-    [[maybe_unused]] float freeFuncWithTargetContext(Object*, coil::Context, float val)
-    {
-        return val * 2.0f;
-    }
-
     [[maybe_unused]] void freeFuncWithoutArgs()
-    {
-
-    }
-
-    [[maybe_unused]] void freeFuncWithoutArgsWithTarget(Object*)
-    {
-
-    }
-
-    [[maybe_unused]] void freeFuncWithoutArgsWithTargetContext(Object*, coil::Context)
     {
 
     }
@@ -217,17 +151,10 @@ namespace
     }
 
     [[maybe_unused]] Object object;
+    [[maybe_unused]] Object const objectConst;
     [[maybe_unused]] float variable = 2.0f;
 
     [[maybe_unused]] auto lambda = [](float val)
-    {
-        return val * 2.0f;
-    };
-    [[maybe_unused]] auto lambdaWithTarget = [](Object*, float val)
-    {
-        return val * 2.0f;
-    };
-    [[maybe_unused]] auto lambdaWithTargetContext = [](Object*, coil::Context, float val)
     {
         return val * 2.0f;
     };
@@ -237,7 +164,5 @@ namespace
     };
 
     [[maybe_unused]] Functor functor;
-    [[maybe_unused]] FunctorWithTarget functorWithTarget;
-    [[maybe_unused]] FunctorWithTargetContext functorWithTargetContext;
     [[maybe_unused]] FunctorWithContext functorWithContext;
 }

@@ -10,17 +10,12 @@
 #include "errors/ErrorsExample.h"
 
 #include "coil/Bindings.h"
-
-void help()
-{
-    std::cout << "Some help" << std::endl;
-}
+#include "coil/utils/MemberFunctionFunctor.h"
 
 template<typename Example>
 void bindExample(coil::Bindings& bindings, Example& example, std::string_view name)
 {
-    Example::registerExample(bindings);
-    bindings.addObject(name, &example);
+    bindings[name] = coil::bind(&Example::run, &example);
 }
 
 template<typename... Examples, std::size_t... Is>
@@ -37,16 +32,6 @@ void bindExamples(coil::Bindings& bindings, std::tuple<Examples...>& examples, s
 
 int main()
 {
-    bool shouldExit = false;
-
-    coil::Bindings bindings;
-
-    bindings["help"] = &help;
-    bindings["exit"] = [&shouldExit]()
-    {
-        shouldExit = true;
-    };
-
     using Examples = std::tuple<BasicExample
         , VariadicExample
         , VariablesExample
@@ -64,16 +49,57 @@ int main()
         "errors",
     };
 
+    std::array<std::string_view, 4> commands = {
+        "help",
+        "list",
+        "run_all",
+        "exit",
+    };
+
+    bool shouldExit = false;
+
+    coil::Bindings bindings;
+
+    bindings["help"] = [&commands, &names](coil::Context context)
+    {
+        context.out() << "Available commands:" << std::endl;
+        for (std::string_view name : names)
+            context.out() << '\t' << name << std::endl;
+        context.out() << std::endl;
+        for (std::string_view name : commands)
+            context.out() << '\t' << name << std::endl;
+    };
+    bindings["exit"] = [&shouldExit]()
+    {
+        shouldExit = true;
+    };
+    bindings["list"] = [&names](coil::Context context)
+    {
+        context.out() << "Available examples:" << std::endl;
+        for (std::string_view name : names)
+            context.out() << '\t' << name << std::endl;
+    };
+    bindings["run_all"] = [&names, &bindings]()
+    {
+        for (std::string_view name : names)
+            bindings.execute(name);
+    };
+
     Examples examples;
     bindExamples(bindings, examples, names);
 
-    bindings["run_all"] = [&names, &bindings]() {
-        for (std::string_view name : names)
-        {
-            auto line = std::string(name) + std::string(".run");
-            bindings.execute(line);
-        }
+    auto execute = [&bindings](std::string_view str)
+    {
+        auto result = bindings.execute(str);
+
+        for (const auto& error : result.errors)
+            std::cout << "Error: " << error << std::endl;
+        std::cout << result.output.str();
+        if (result.returnValue)
+            std::cout << "Return value: '" << *result.returnValue << "'" << std::endl;
     };
+
+    execute("help");
 
     while (!shouldExit)
     {
@@ -81,12 +107,7 @@ int main()
         std::string line;
         std::getline(std::cin, line);
 
-        auto result = bindings.execute(line);
-
-        for (const auto& error : result.errors)
-            std::cout << "Error: " << error << std::endl;
-        if (result.returnValue)
-            std::cout << "Return value: '" << *result.returnValue << "'" << std::endl;
+        execute(line);
     }
 
     return 0;

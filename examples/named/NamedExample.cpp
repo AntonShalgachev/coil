@@ -155,25 +155,27 @@ void NamedExample::run()
 {
     coil::Bindings bindings;
 
-    bindings["print_items"] = &printItems;
-    bindings["add_item"] = &addItem;
+    auto inventoryBindings = bindings["inventory"];
+    inventoryBindings["list"] = &printItems;
+    inventoryBindings["add"] = &addItem;
+
     bindings["print_args"] = &printArgs;
     bindings["print_floats"] = &printFloats;
     bindings["save_game"] = &saveGame;
     bindings["required_and_optional"] = &requiredAndOptional;
 
     common::printSectionHeader("NamedArgs can be used to specify named arguments:");
-    common::executeCommand(bindings, "print_items");
-    common::executeCommand(bindings, "print_items name = if");
-    common::executeCommand(bindings, "print_items min_amount=2");
-    common::executeCommand(bindings, "print_items min_amount=2 source=reward");
-    common::executeCommand(bindings, "print_items source=reward type=weapon");
+    common::executeCommand(bindings, "inventory.list");
+    common::executeCommand(bindings, "inventory.list name = if");
+    common::executeCommand(bindings, "inventory.list min_amount=2");
+    common::executeCommand(bindings, "inventory.list min_amount=2 source=reward");
+    common::executeCommand(bindings, "inventory.list source=reward type=weapon");
 
     common::printSectionHeader("You can also use normal arguments with it");
-    common::executeCommand(bindings, "add_item 8 pistol");
-    common::executeCommand(bindings, "add_item 9 dollar type=Currency amount=10");
-    common::executeCommand(bindings, "add_item 10 key2 type=Key");
-    common::executeCommand(bindings, "print_items");
+    common::executeCommand(bindings, "inventory.add 8 pistol");
+    common::executeCommand(bindings, "inventory.add 9 dollar type=Currency amount=10");
+    common::executeCommand(bindings, "inventory.add 10 key2 type=Key");
+    common::executeCommand(bindings, "inventory.list");
 
     common::printSectionHeader("You can iterate over NamedArgs:");
     common::executeCommand(bindings, "print_args arg1 = value1 arg2 = 0.1 arg3 = true arg4 = 3.1415");
@@ -187,8 +189,8 @@ void NamedExample::run()
 
     common::printSectionHeader("You can use special method to automatically report the errors if the input is bad");
     common::executeCommand(bindings, "save_game type=Memori delay=none");
-    common::executeCommand(bindings, "print_items min_amount=2.5");
-    common::executeCommand(bindings, "add_item -9 unicorn type=Something");
+    common::executeCommand(bindings, "inventory.list min_amount=2.5");
+    common::executeCommand(bindings, "inventory.add -9 unicorn type=Something");
     common::executeCommand(bindings, "save_game");
     common::executeCommand(bindings, "required_and_optional");
     common::executeCommand(bindings, "required_and_optional required=3.14");

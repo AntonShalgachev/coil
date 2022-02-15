@@ -6,7 +6,7 @@ set(ALL_FILES
     "include/coil/utils/Utils.h"
     "include/coil/utils/MemberFunctionFunctor.h"
     "include/coil/utils/VariableWrapper.h"
-    "include/coil/utils/TypeId.h"
+    
 
     "include/coil/Bindings.h"
     "include/coil/ExecutionResult.h"
@@ -16,15 +16,16 @@ set(ALL_FILES
     "include/coil/NamedArgs.h"
     "include/coil/TypeSerializer.h"
     "include/coil/VariadicConsumer.h"
+    "include/coil/CommandCollection.h"
 
     "include/coil/detail/FunctorCaller.h"
     "include/coil/detail/CallContext.h"
     "include/coil/detail/FuncTraitsEx.h"
+    "include/coil/detail/StringWrapper.h"
     
     "include/coil/DefaultLexer.h"
     "include/coil/Expected.h"
     "include/coil/TypeName.h"
-    "include/coil/GeneralizedString.h"
     "include/coil/Property.h"
 )
 

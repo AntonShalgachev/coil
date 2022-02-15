@@ -8,9 +8,17 @@ namespace coil
 {
     std::ostream& operator<<(std::ostream& os, coil::ExecutionInput const& input)
     {
-        os << "['" << input.objectName << "' , '" << input.functionName << "', {";
+        os << "[{";
 
         auto delim = "";
+        for (auto const& pathPart : input.path)
+        {
+            os << delim << "'" << pathPart << "'";
+            delim = ", ";
+        }
+        os << "} {";
+
+        delim = "";
         for (auto const& arg : input.arguments)
         {
             os << delim << "'" << arg << "'";
@@ -54,12 +62,10 @@ bool operator==(std::reference_wrapper<coil::ExecutionInput> const& lhs, coil::E
 
 namespace
 {
-    coil::ExecutionInput createInput(std::string_view objectName, std::string_view functionName, std::vector<std::string_view> args, std::vector<std::pair<std::string_view, std::string_view>> namedArgs)
+    coil::ExecutionInput createInput(std::vector<std::string_view> path, std::vector<std::string_view> args, std::vector<std::pair<std::string_view, std::string_view>> namedArgs)
     {
         coil::ExecutionInput input;
-        input.objectName = objectName;
-        input.functionName = functionName;
-
+        input.path = std::move(path);
         input.arguments = std::move(args);
         input.namedArguments = std::move(namedArgs);
 
@@ -96,12 +102,14 @@ namespace
         ExecutionInputWithStorage inputWithStorage;
         coil::ExecutionInput& input = inputWithStorage.input;
 
+        std::uniform_int_distribution<std::size_t> pathPartsCountDist{ 1, 3 };
         std::uniform_int_distribution<std::size_t> argsCountDist{ 0, 3 };
 
         std::size_t argsCount = argsCountDist(engine);
         std::size_t namedArgsCount = argsCountDist(engine);
+        std::size_t pathPartsCount = pathPartsCountDist(engine);
 
-        std::size_t const maxStorageSize = 2 + argsCount + 2 * namedArgsCount;
+        std::size_t const maxStorageSize = pathPartsCount + argsCount + 2 * namedArgsCount;
         inputWithStorage.storage.reserve(maxStorageSize);
 
         auto generateNewString = [&storage = inputWithStorage.storage, &engine, &generation, maxStorageSize](bool allowEmpty, bool allowNumber)
@@ -114,8 +122,8 @@ namespace
             return std::string_view{ storage.back() };
         };
 
-        input.objectName = generateNewString(true, false);
-        input.functionName = generateNewString(false, false);
+        for (std::size_t i = 0; i < pathPartsCount; i++)
+            input.path.push_back(generateNewString(false, false));
 
         for (std::size_t i = 0; i < argsCount; i++)
             input.arguments.push_back(generateNewString(false, true));
@@ -145,16 +153,18 @@ namespace
 
         randomSpaces(ss);
 
-        if (!input.objectName.empty())
+        std::string_view delim = "";
+        for (auto const& part : input.path)
         {
+            ss << delim;
             randomSpaces(ss);
-            ss << input.objectName;
-            randomSpaces(ss);
-            ss << '.';
-            randomSpaces(ss);
+            ss << part;
+
+            delim = ".";
         }
 
-        ss << input.functionName << ' ';
+        ss << ' ';
+
         randomSpaces(ss);
 
         for (auto const& arg : input.arguments)
@@ -179,180 +189,160 @@ namespace
     }
 }
 
+TEST(LexerTest, TestSpacesEmpty)
+{
+    coil::DefaultLexer lexer;
+
+    EXPECT_EQ(lexer(""), createInput({}, {}, {}));
+    EXPECT_EQ(lexer(" "), createInput({}, {}, {}));
+    EXPECT_EQ(lexer("\t"), createInput({}, {}, {}));
+    EXPECT_EQ(lexer("  "), createInput({}, {}, {}));
+    EXPECT_EQ(lexer("\t\t"), createInput({}, {}, {}));
+    EXPECT_EQ(lexer(" \t"), createInput({}, {}, {}));
+    EXPECT_EQ(lexer("\t "), createInput({}, {}, {}));
+}
+
+TEST(LexerTest, TestSpacesNoArgs)
+{
+    coil::DefaultLexer lexer;
+
+    EXPECT_EQ(lexer(" foo.bar.func "), createInput({ "foo", "bar", "func" }, {}, {}));
+    EXPECT_EQ(lexer(" foo .bar.func "), createInput({ "foo", "bar", "func" }, {}, {}));
+    EXPECT_EQ(lexer(" foo. bar.func "), createInput({ "foo", "bar", "func" }, {}, {}));
+    EXPECT_EQ(lexer(" foo . bar.func "), createInput({ "foo", "bar", "func" }, {}, {}));
+    EXPECT_EQ(lexer(" foo .bar .func "), createInput({ "foo", "bar", "func" }, {}, {}));
+    EXPECT_EQ(lexer(" foo. bar. func "), createInput({ "foo", "bar", "func" }, {}, {}));
+    EXPECT_EQ(lexer(" foo . bar . func "), createInput({ "foo", "bar", "func" }, {}, {}));
+}
+
+TEST(LexerTest, TestSpacesArgs)
+{
+    coil::DefaultLexer lexer;
+
+    EXPECT_EQ(lexer(" func arg1 arg2 "), createInput({ "func" }, { "arg1", "arg2" }, {}));
+    EXPECT_EQ(lexer(" func  arg1 arg2 "), createInput({ "func" }, { "arg1", "arg2" }, {}));
+    EXPECT_EQ(lexer(" func arg1  arg2 "), createInput({ "func" }, { "arg1", "arg2" }, {}));
+}
+
+TEST(LexerTest, TestSpacesNamedArgs)
+{
+    coil::DefaultLexer lexer;
+
+    EXPECT_EQ(lexer(" func arg1=foo arg2=bar "), createInput({ "func" }, {}, { {"arg1", "foo"}, {"arg2", "bar"} }));
+    EXPECT_EQ(lexer(" func  arg1=foo arg2=bar "), createInput({ "func" }, {}, { {"arg1", "foo"}, {"arg2", "bar"} }));
+    EXPECT_EQ(lexer(" func  arg1 =foo arg2=bar "), createInput({ "func" }, {}, { {"arg1", "foo"}, {"arg2", "bar"} }));
+    EXPECT_EQ(lexer(" func  arg1= foo arg2=bar "), createInput({ "func" }, {}, { {"arg1", "foo"}, {"arg2", "bar"} }));
+    EXPECT_EQ(lexer(" func  arg1 = foo arg2=bar "), createInput({ "func" }, {}, { {"arg1", "foo"}, {"arg2", "bar"} }));
+    EXPECT_EQ(lexer(" func  arg1 = foo arg2 =bar "), createInput({ "func" }, {}, { {"arg1", "foo"}, {"arg2", "bar"} }));
+    EXPECT_EQ(lexer(" func  arg1 = foo arg2= bar "), createInput({ "func" }, {}, { {"arg1", "foo"}, {"arg2", "bar"} }));
+    EXPECT_EQ(lexer(" func  arg1 = foo arg2 = bar "), createInput({ "func" }, {}, { {"arg1", "foo"}, {"arg2", "bar"} }));
+    EXPECT_EQ(lexer(" func  arg1 = foo  arg2 = bar "), createInput({ "func" }, {}, { {"arg1", "foo"}, {"arg2", "bar"} }));
+}
+
 TEST(LexerTests, TestEmpty)
 {
     coil::DefaultLexer lexer;
 
-    EXPECT_EQ(lexer(""), createInput("", "", {}, {}));
-
-    EXPECT_EQ(lexer(""), createInput("", "", {}, {}));
-    EXPECT_EQ(lexer("   "), createInput("", "", {}, {}));
-    EXPECT_EQ(lexer("\t\t"), createInput("", "", {}, {}));
-    EXPECT_EQ(lexer("\t  \t"), createInput("", "", {}, {}));
+    EXPECT_EQ(lexer(""), createInput({}, {}, {}));
 }
 
 TEST(LexerTests, TestNoArgs)
 {
     coil::DefaultLexer lexer;
 
-    EXPECT_EQ(lexer("func"), createInput("", "func", {}, {}));
-
-    EXPECT_EQ(lexer(" func "), createInput("", "func", {}, {}));
-    EXPECT_EQ(lexer("\tfunc\t"), createInput("", "func", {}, {}));
-    EXPECT_EQ(lexer(" \t func \t "), createInput("", "func", {}, {}));
+    EXPECT_EQ(lexer("func"), createInput({ "func" }, {}, {}));
 }
 
 TEST(LexerTests, TestArgs)
 {
     coil::DefaultLexer lexer;
 
-    EXPECT_EQ(lexer("func arg1"), createInput("", "func", { "arg1" }, {}));
-    EXPECT_EQ(lexer("func arg1 arg2"), createInput("", "func", { "arg1", "arg2" }, {}));
-
-    EXPECT_EQ(lexer("func   arg1"), createInput("", "func", { "arg1" }, {}));
-    EXPECT_EQ(lexer("func \t arg1"), createInput("", "func", { "arg1" }, {}));
-    EXPECT_EQ(lexer("func\t \targ1"), createInput("", "func", { "arg1" }, {}));
-    EXPECT_EQ(lexer("func arg1   arg2"), createInput("", "func", { "arg1", "arg2" }, {}));
-    EXPECT_EQ(lexer("func arg1 \t arg2"), createInput("", "func", { "arg1", "arg2" }, {}));
-    EXPECT_EQ(lexer("func \t arg1 \t arg2"), createInput("", "func", { "arg1", "arg2" }, {}));
-    EXPECT_EQ(lexer("  func\targ1\targ2  "), createInput("", "func", { "arg1", "arg2" }, {}));
+    EXPECT_EQ(lexer("func arg1"), createInput({ "func" }, { "arg1" }, {}));
+    EXPECT_EQ(lexer("func arg1 arg2"), createInput({ "func" }, { "arg1", "arg2" }, {}));
 }
 
 TEST(LexerTests, TestNamedArgs)
 {
     coil::DefaultLexer lexer;
 
-    EXPECT_EQ(lexer("func arg1=foo"), createInput("", "func", {}, { {"arg1", "foo"} }));
-    EXPECT_EQ(lexer("func arg1=foo arg2=bar"), createInput("", "func", {}, { {"arg1", "foo"}, {"arg2", "bar"} }));
-
-    EXPECT_EQ(lexer("func arg1 = foo"), createInput("", "func", {}, { {"arg1", "foo"} }));
-    EXPECT_EQ(lexer("func arg1\t=\tfoo"), createInput("", "func", {}, { {"arg1", "foo"} }));
-    EXPECT_EQ(lexer("func arg1\t = \tfoo"), createInput("", "func", {}, { {"arg1", "foo"} }));
-    EXPECT_EQ(lexer("func    arg1 = foo"), createInput("", "func", {}, { {"arg1", "foo"} }));
-    EXPECT_EQ(lexer("func\targ1\t=\tfoo"), createInput("", "func", {}, { {"arg1", "foo"} }));
-    EXPECT_EQ(lexer("func\targ1=foo\targ2=bar"), createInput("", "func", {}, { {"arg1", "foo"}, {"arg2", "bar"} }));
-    EXPECT_EQ(lexer("func\targ1\t=\tfoo\targ2\t=\tbar"), createInput("", "func", {}, { {"arg1", "foo"}, {"arg2", "bar"} }));
-    EXPECT_EQ(lexer("  func  arg1\t=foo   arg2=bar  "), createInput("", "func", {}, { {"arg1", "foo"}, {"arg2", "bar"} }));
+    EXPECT_EQ(lexer("func arg1=foo"), createInput({ "func" }, {}, { {"arg1", "foo"} }));
+    EXPECT_EQ(lexer("func arg1=foo arg2=bar"), createInput({ "func" }, {}, { {"arg1", "foo"}, {"arg2", "bar"} }));
 }
 
 TEST(LexerTests, TestArgsAndNamedArgs)
 {
     coil::DefaultLexer lexer;
 
-    EXPECT_EQ(lexer("func arg1 arg2 arg3=foo arg4=bar"), createInput("", "func", { "arg1", "arg2" }, { {"arg3", "foo"}, {"arg4", "bar"} }));
-
-    EXPECT_EQ(lexer("func   arg1  arg2\targ3 =foo  arg4=\t  bar  "), createInput("", "func", { "arg1", "arg2" }, { {"arg3", "foo"}, {"arg4", "bar"} }));
-    EXPECT_EQ(lexer(" func   arg1\targ2 arg3=  foo arg4\t\t=   bar"), createInput("", "func", { "arg1", "arg2" }, { {"arg3", "foo"}, {"arg4", "bar"} }));
+    EXPECT_EQ(lexer("func arg1 arg2 arg3=foo arg4=bar"), createInput({ "func" }, { "arg1", "arg2" }, { {"arg3", "foo"}, {"arg4", "bar"} }));
 }
 
-TEST(LexerTests, TestNoArgsWithTarget)
+TEST(LexerTests, TestNoArgsWithNamespace)
 {
     coil::DefaultLexer lexer;
 
-    EXPECT_EQ(lexer("obj.func"), createInput("obj", "func", {}, {}));
-
-    EXPECT_EQ(lexer(" obj.func "), createInput("obj", "func", {}, {}));
-    EXPECT_EQ(lexer("\tobj .func\t"), createInput("obj", "func", {}, {}));
-    EXPECT_EQ(lexer(" \t obj.\tfunc \t "), createInput("obj", "func", {}, {}));
-    EXPECT_EQ(lexer(" \t obj .\tfunc \t "), createInput("obj", "func", {}, {}));
-    EXPECT_EQ(lexer(" \t obj.func \t "), createInput("obj", "func", {}, {}));
+    EXPECT_EQ(lexer("foo.bar.func"), createInput({ "foo", "bar", "func" }, {}, {}));
 }
 
-TEST(LexerTests, TestArgsWithTarget)
+TEST(LexerTests, TestArgsWithNamespace)
 {
     coil::DefaultLexer lexer;
 
-    EXPECT_EQ(lexer("obj.func arg1"), createInput("obj", "func", { "arg1" }, {}));
-    EXPECT_EQ(lexer("obj.func arg1 arg2"), createInput("obj", "func", { "arg1", "arg2" }, {}));
-
-    EXPECT_EQ(lexer("obj.func   arg1"), createInput("obj", "func", { "arg1" }, {}));
-    EXPECT_EQ(lexer("obj . func   arg1"), createInput("obj", "func", { "arg1" }, {}));
-    EXPECT_EQ(lexer("obj\t.\tfunc   arg1"), createInput("obj", "func", { "arg1" }, {}));
-    EXPECT_EQ(lexer("obj .func \t arg1"), createInput("obj", "func", { "arg1" }, {}));
-    EXPECT_EQ(lexer("obj\t.func\t \targ1"), createInput("obj", "func", { "arg1" }, {}));
-    EXPECT_EQ(lexer("obj.\tfunc arg1   arg2"), createInput("obj", "func", { "arg1", "arg2" }, {}));
-    EXPECT_EQ(lexer("obj \t. func arg1 \t arg2"), createInput("obj", "func", { "arg1", "arg2" }, {}));
-    EXPECT_EQ(lexer("obj. \tfunc \t arg1 \t arg2"), createInput("obj", "func", { "arg1", "arg2" }, {}));
-    EXPECT_EQ(lexer("  obj.func\targ1\targ2  "), createInput("obj", "func", { "arg1", "arg2" }, {}));
+    EXPECT_EQ(lexer("foo.bar.func arg1"), createInput({ "foo", "bar", "func" }, { "arg1" }, {}));
+    EXPECT_EQ(lexer("foo.bar.func arg1 arg2"), createInput({ "foo", "bar", "func" }, { "arg1", "arg2" }, {}));
 }
 
-TEST(LexerTests, TestNamedArgsWithTarget)
+TEST(LexerTests, TestNamedArgsWithNamespace)
 {
     coil::DefaultLexer lexer;
 
-    EXPECT_EQ(lexer("obj.func arg1=foo"), createInput("obj", "func", {}, { {"arg1", "foo"} }));
-    EXPECT_EQ(lexer("obj.func arg1=foo arg2=bar"), createInput("obj", "func", {}, { {"arg1", "foo"}, {"arg2", "bar"} }));
-
-    EXPECT_EQ(lexer("obj .func arg1 = foo"), createInput("obj", "func", {}, { {"arg1", "foo"} }));
-    EXPECT_EQ(lexer("obj. func arg1\t=\tfoo"), createInput("obj", "func", {}, { {"arg1", "foo"} }));
-    EXPECT_EQ(lexer("obj.  func arg1\t = \tfoo"), createInput("obj", "func", {}, { {"arg1", "foo"} }));
-    EXPECT_EQ(lexer("obj  .func    arg1 = foo"), createInput("obj", "func", {}, { {"arg1", "foo"} }));
-    EXPECT_EQ(lexer("obj . func\targ1\t=\tfoo"), createInput("obj", "func", {}, { {"arg1", "foo"} }));
-    EXPECT_EQ(lexer("obj \t. \tfunc\targ1=foo\targ2=bar"), createInput("obj", "func", {}, { {"arg1", "foo"}, {"arg2", "bar"} }));
-    EXPECT_EQ(lexer("obj\t.\tfunc\targ1\t=\tfoo\targ2\t=\tbar"), createInput("obj", "func", {}, { {"arg1", "foo"}, {"arg2", "bar"} }));
-    EXPECT_EQ(lexer("  obj.func  arg1\t=foo   arg2=bar  "), createInput("obj", "func", {}, { {"arg1", "foo"}, {"arg2", "bar"} }));
+    EXPECT_EQ(lexer("foo.bar.func arg1=foo"), createInput({ "foo", "bar", "func" }, {}, { {"arg1", "foo"} }));
+    EXPECT_EQ(lexer("foo.bar.func arg1=foo arg2=bar"), createInput({ "foo", "bar", "func" }, {}, { {"arg1", "foo"}, {"arg2", "bar"} }));
 }
 
-TEST(LexerTests, TestArgsAndNamedArgsWithTarget)
+TEST(LexerTests, TestArgsAndNamedArgsWithNamespace)
 {
     coil::DefaultLexer lexer;
 
-    EXPECT_EQ(lexer("obj.func arg1 arg2 arg3=foo arg4=bar"), createInput("obj", "func", { "arg1", "arg2" }, { {"arg3", "foo"}, {"arg4", "bar"} }));
-
-    EXPECT_EQ(lexer("obj .\tfunc   arg1  arg2\targ3 =foo  arg4=\t  bar  "), createInput("obj", "func", { "arg1", "arg2" }, { {"arg3", "foo"}, {"arg4", "bar"} }));
-    EXPECT_EQ(lexer(" obj. \tfunc   arg1\targ2 arg3=  foo arg4\t\t=   bar"), createInput("obj", "func", { "arg1", "arg2" }, { {"arg3", "foo"}, {"arg4", "bar"} }));
+    EXPECT_EQ(lexer("foo.bar.func arg1 arg2=foo"), createInput({ "foo", "bar", "func" }, { "arg1" }, { {"arg2", "foo"} }));
+    EXPECT_EQ(lexer("foo.bar.func arg1 arg2=foo arg3=foo"), createInput({ "foo", "bar", "func" }, { "arg1" }, { {"arg2", "foo"}, {"arg3", "foo"} }));
+    EXPECT_EQ(lexer("foo.bar.func arg1 arg2 arg3=foo"), createInput({ "foo", "bar", "func" }, { "arg1", "arg2" }, { {"arg3", "foo"} }));
+    EXPECT_EQ(lexer("foo.bar.func arg1 arg2 arg3=foo arg4=bar"), createInput({ "foo", "bar", "func" }, { "arg1", "arg2" }, { {"arg3", "foo"}, {"arg4", "bar"} }));
 }
 
 TEST(LexerTests, TestIntegerArgs)
 {
     coil::DefaultLexer lexer;
 
-    EXPECT_EQ(lexer("func 1"), createInput("", "func", { "1" }, {}));
-    EXPECT_EQ(lexer("func 1 arg"), createInput("", "func", { "1", "arg" }, {}));
-    EXPECT_EQ(lexer("func 1 arg 2"), createInput("", "func", { "1", "arg", "2" }, {}));
-
-    EXPECT_EQ(lexer("obj.func 1"), createInput("obj", "func", { "1" }, {}));
-    EXPECT_EQ(lexer("obj.func 1 arg"), createInput("obj", "func", { "1", "arg" }, {}));
-    EXPECT_EQ(lexer("obj.func 1 arg 2"), createInput("obj", "func", { "1", "arg", "2" }, {}));
+    EXPECT_EQ(lexer("foo.bar.func 1"), createInput({ "foo", "bar", "func" }, { "1" }, {}));
+    EXPECT_EQ(lexer("foo.bar.func 1 arg"), createInput({ "foo", "bar", "func" }, { "1", "arg" }, {}));
+    EXPECT_EQ(lexer("foo.bar.func 1 arg 2"), createInput({ "foo", "bar", "func" }, { "1", "arg", "2" }, {}));
 }
 
 TEST(LexerTests, TestIntegerNamedArgs)
 {
     coil::DefaultLexer lexer;
 
-    EXPECT_EQ(lexer("func arg1=1"), createInput("", "func", {}, { { "arg1", "1" } }));
-    EXPECT_EQ(lexer("func arg1=1 arg2=arg"), createInput("", "func", {}, { { "arg1", "1" }, { "arg2", "arg" } }));
-    EXPECT_EQ(lexer("func arg1=1 arg2=arg arg3=2"), createInput("", "func", {}, { { "arg1", "1" }, { "arg2", "arg" }, { "arg3", "2" } }));
-
-    EXPECT_EQ(lexer("obj.func arg1=1"), createInput("obj", "func", {}, { { "arg1", "1" } }));
-    EXPECT_EQ(lexer("obj.func arg1=1 arg2=arg"), createInput("obj", "func", {}, { { "arg1", "1" }, { "arg2", "arg" } }));
-    EXPECT_EQ(lexer("obj.func arg1=1 arg2=arg arg3=2"), createInput("obj", "func", {}, { { "arg1", "1" }, { "arg2", "arg" }, { "arg3", "2" } }));
+    EXPECT_EQ(lexer("foo.bar.func arg1=1"), createInput({ "foo", "bar", "func" }, {}, { { "arg1", "1" } }));
+    EXPECT_EQ(lexer("foo.bar.func arg1=1 arg2=arg"), createInput({ "foo", "bar", "func" }, {}, { { "arg1", "1" }, { "arg2", "arg" } }));
+    EXPECT_EQ(lexer("foo.bar.func arg1=1 arg2=arg arg3=2"), createInput({ "foo", "bar", "func" }, {}, { { "arg1", "1" }, { "arg2", "arg" }, { "arg3", "2" } }));
 }
 
 TEST(LexerTests, TestFloatArgs)
 {
     coil::DefaultLexer lexer;
 
-    EXPECT_EQ(lexer("func 3.14"), createInput("", "func", { "3.14" }, {}));
-    EXPECT_EQ(lexer("func 3.14 arg"), createInput("", "func", { "3.14", "arg" }, {}));
-    EXPECT_EQ(lexer("func 3.14 arg 2.0"), createInput("", "func", { "3.14", "arg", "2.0" }, {}));
-
-    EXPECT_EQ(lexer("obj.func 3.14"), createInput("obj", "func", { "3.14" }, {}));
-    EXPECT_EQ(lexer("obj.func 3.14 arg"), createInput("obj", "func", { "3.14", "arg" }, {}));
-    EXPECT_EQ(lexer("obj.func 3.14 arg 2.0"), createInput("obj", "func", { "3.14", "arg", "2.0" }, {}));
+    EXPECT_EQ(lexer("foo.bar.func 3.14"), createInput({ "foo", "bar", "func" }, { "3.14" }, {}));
+    EXPECT_EQ(lexer("foo.bar.func 3.14 arg"), createInput({ "foo", "bar", "func" }, { "3.14", "arg" }, {}));
+    EXPECT_EQ(lexer("foo.bar.func 3.14 arg 2.0"), createInput({ "foo", "bar", "func" }, { "3.14", "arg", "2.0" }, {}));
 }
 
 TEST(LexerTests, TestFloatNamedArgs)
 {
     coil::DefaultLexer lexer;
 
-    EXPECT_EQ(lexer("func arg1=3.14"), createInput("", "func", {}, { { "arg1", "3.14" } }));
-    EXPECT_EQ(lexer("func arg1=3.14 arg2=arg"), createInput("", "func", {}, { { "arg1", "3.14" }, { "arg2", "arg" } }));
-    EXPECT_EQ(lexer("func arg1=3.14 arg2=arg arg3=2.0"), createInput("", "func", {}, { { "arg1", "3.14" }, { "arg2", "arg" }, { "arg3", "2.0" } }));
-
-    EXPECT_EQ(lexer("obj.func arg1=3.14"), createInput("obj", "func", {}, { { "arg1", "3.14" } }));
-    EXPECT_EQ(lexer("obj.func arg1=3.14 arg2=arg"), createInput("obj", "func", {}, { { "arg1", "3.14" }, { "arg2", "arg" } }));
-    EXPECT_EQ(lexer("obj.func arg1=3.14 arg2=arg arg3=2.0"), createInput("obj", "func", {}, { { "arg1", "3.14" }, { "arg2", "arg" }, { "arg3", "2.0" } }));
+    EXPECT_EQ(lexer("foo.bar.func arg1=3.14"), createInput({ "foo", "bar", "func" }, {}, { { "arg1", "3.14" } }));
+    EXPECT_EQ(lexer("foo.bar.func arg1=3.14 arg2=arg"), createInput({ "foo", "bar", "func" }, {}, { { "arg1", "3.14" }, { "arg2", "arg" } }));
+    EXPECT_EQ(lexer("foo.bar.func arg1=3.14 arg2=arg arg3=2.0"), createInput({ "foo", "bar", "func" }, {}, { { "arg1", "3.14" }, { "arg2", "arg" }, { "arg3", "2.0" } }));
 }
 
 //TEST(LexerTests, TestShortFloatArgs)
@@ -388,18 +378,17 @@ TEST(LexerTests, TestErrors)
     EXPECT_EQ(lexer(".func"), coil::makeUnexpected("Unexpected token '.' at the beginning of the expression"));
     EXPECT_EQ(lexer("=val"), coil::makeUnexpected("Unexpected token '=' at the beginning of the expression"));
 
-    EXPECT_EQ(lexer("target.func=arg"), coil::makeUnexpected("Unexpected token '='; previous token group is already complete"));
-    EXPECT_EQ(lexer("target.func arg=val=foo"), coil::makeUnexpected("Unexpected token '='; previous token group is already complete"));
-    EXPECT_EQ(lexer("target.func.foo"), coil::makeUnexpected("Unexpected token '.'; previous token group is already complete"));
+    EXPECT_EQ(lexer("target.func=arg"), coil::makeUnexpected("Unexpected token '=': no named for the named argument is provided"));
+    EXPECT_EQ(lexer("target.func arg=val=foo"), coil::makeUnexpected("Unexpected token '=': no named for the named argument is provided"));
 
-    EXPECT_EQ(lexer("target.func arg="), coil::makeUnexpected("Unexpected token '=' at the end of the expression"));
-    EXPECT_EQ(lexer("target."), coil::makeUnexpected("Unexpected token '.' at the end of the expression"));
+    EXPECT_EQ(lexer("target.func arg="), coil::makeUnexpected("Expected an argument value, found end of string"));
+    EXPECT_EQ(lexer("target."), coil::makeUnexpected("Expected a command name, found end of string"));
 
-    EXPECT_EQ(lexer("target.=foo"), coil::makeUnexpected("Unexpected token '='; previous token group already has a token"));
-    EXPECT_EQ(lexer("target.func arg=.foo"), coil::makeUnexpected("Unexpected token '.'; previous token group already has a token"));
+    EXPECT_EQ(lexer("target.=foo"), coil::makeUnexpected("Unexpected token '=': no named for the named argument is provided"));
+    EXPECT_EQ(lexer("target.func arg=.foo"), coil::makeUnexpected("Unexpected token '.' after an argument was specified"));
 
-    EXPECT_EQ(lexer("arg1 arg2=foo obj.func"), coil::makeUnexpected("Unexpected token '.' when the function name has already been defined"));
-    EXPECT_EQ(lexer("obj.func obj2.func2"), coil::makeUnexpected("Unexpected token '.' when the function name has already been defined"));
+    EXPECT_EQ(lexer("arg1 arg2=foo obj.func"), coil::makeUnexpected("Unexpected token '.' after an argument was specified"));
+    EXPECT_EQ(lexer("obj.func obj2.func2"), coil::makeUnexpected("Unexpected token '.' after an argument was specified"));
 }
 
 TEST(LexerTests, TestGenerated)
