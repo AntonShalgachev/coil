@@ -48,6 +48,8 @@ assert(variable == 84);
 
 ## Features overview
 
+Here you'll find a brief overview of the features. You can check the examples (`examples` directory) for more details.
+
 ### Nested commands
 You can organize your commands with the help of "namespaces". The nesting level is unlimited:
 
@@ -103,7 +105,7 @@ InventoryManager inventoryManager;
 bindings["inventory"]["add"] = coil::bind(&InventoryManager::add, &inventoryManager);
 ```
 
-> Make sure that `inventoryManager` isn't destroyed during the command lifetime
+> ⚠️ Make sure that `inventoryManager` isn't destroyed during the command lifetime
 
 ### Variables
 You can create a command which gets/sets the value of a variable:
@@ -128,7 +130,7 @@ InventoryManager inventoryManager;
 bindings["inventory"]["debug"] = coil::variable(&InventoryManager::debugMode, &inventoryManager);
 ```
 
-> Make sure that `inventoryManager` isn't destroyed during the command lifetime
+> ⚠️ Make sure that `inventoryManager` isn't destroyed during the command lifetime
 
 ### Enums
 As soon as there is a `TypeSerializer` specialization for your enum type, you can use it in your commands:
@@ -151,12 +153,12 @@ bindings["widget"]["show"] = coil::bind(&Widget::show, &widget);
 One way to specialize `TypeSerializer` for enums is to use `magic_enum`. See `enums` example to see how it can be done
 
 ### Named arguments
-You can create commands with the named arguments:
+`coil` allows you to create commands with the named arguments:
 ```
 savegame save_tag type=Memory delay=0.5
 ```
 
-You can access all the named arguments via a `coil::Context` object:
+Named arguments can be queried via a `coil::Context` object:
 ```cpp
 enum class SaveGameType { Disk, Memory };
 void saveGame(coil::Context context, std::string tag)
@@ -174,6 +176,10 @@ bindings["savegame"] = &saveGame;
 bindings.execute("savegame save_tag type=Memory");
 bindings.execute("savegame save_tag type=Disk delay=0.5");
 ```
+
+`coil::Context` is a transparent argument, which means it's passed automatically if it's the first function argument
+
+See `named` example for more details (optional/required arguments, error handling, etc.)
 
 ### Command text output
 ### Error handling
