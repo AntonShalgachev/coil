@@ -20,17 +20,14 @@ namespace coil
         {
             m_input.reset();
             m_tokens.resize(0);
-            m_tokenGroups.resize(0);
 
             if (auto res = tokenize(str); !res)
-                return makeUnexpected(res.error());
+                return makeUnexpected(std::move(res).error());
 
-            auto result = parse();
+            if (auto res = parse(); !res)
+                return makeUnexpected(std::move(res).error());
 
-            if (result)
-                return std::ref(m_input);
-
-            return makeUnexpected(std::move(result).error());
+            return std::ref(m_input);
         }
 
     private:
@@ -129,96 +126,107 @@ namespace coil
             return tryAddPreviousToken(str.size());
         }
 
-        static std::size_t const invalidIndex = static_cast<std::size_t>(-1);
-
-        struct TokenGroup
-        {
-            std::size_t primaryTokenIndex = invalidIndex;
-            std::size_t secondaryTokenIndex = invalidIndex;
-            std::size_t separatorTokenIndex = invalidIndex;
-
-            bool lacksSecondaryToken() const
-            {
-                bool const separatorTokenValid = separatorTokenIndex != invalidIndex;
-                bool const secondaryTokenValid = secondaryTokenIndex != invalidIndex;
-                return separatorTokenValid && !secondaryTokenValid;
-            }
-        };
-
-        Expected<void, std::string> groupTokens() const
-        {
-            for (std::size_t i = 0; i < m_tokens.size(); i++)
-            {
-                bool const hasPreviousGroup = !m_tokenGroups.empty();
-
-                if (m_tokens[i].type == TokenType::String)
-                {
-                    if (hasPreviousGroup && m_tokenGroups.back().lacksSecondaryToken())
-                        m_tokenGroups.back().secondaryTokenIndex = i;
-                    else
-                        m_tokenGroups.push_back(TokenGroup{ i, invalidIndex, invalidIndex });
-                }
-                else
-                {
-                    std::string_view tokenValue = m_tokens[i].value;
-
-                    if (!hasPreviousGroup)
-                        return makeUnexpected(utils::formatString("Unexpected token '%.*s' at the beginning of the expression", tokenValue.size(), tokenValue.data()));
-
-                    TokenGroup& previousGroup = m_tokenGroups.back();
-
-                    if (previousGroup.secondaryTokenIndex != invalidIndex)
-                        return makeUnexpected(utils::formatString("Unexpected token '%.*s'; previous token group is already complete", tokenValue.size(), tokenValue.data()));
-                    if (previousGroup.separatorTokenIndex != invalidIndex)
-                        return makeUnexpected(utils::formatString("Unexpected token '%.*s'; previous token group already has a token", tokenValue.size(), tokenValue.data()));
-                    if (i + 1 >= m_tokens.size())
-                        return makeUnexpected(utils::formatString("Unexpected token '%.*s' at the end of the expression", tokenValue.size(), tokenValue.data()));
-
-                    previousGroup.separatorTokenIndex = i;
-                }
-            }
-
-            return {};
-        }
-
         Expected<void, std::string> parse() const
         {
-            auto tokenGroups = groupTokens();
+            if (m_tokens.empty())
+                return {};
 
-            if (!tokenGroups)
-                return makeUnexpected(tokenGroups.error());
-
-            for (TokenGroup const& group : m_tokenGroups)
+            struct ArgTokens
             {
-                if (group.lacksSecondaryToken())
+                std::optional<std::size_t> primaryTokenIndex;
+                std::optional<std::size_t> secondaryTokenIndex;
+
+                void reset()
                 {
-                    return makeUnexpected("Lexer internal error");
+                    primaryTokenIndex = {};
+                    secondaryTokenIndex = {};
                 }
 
-                Token const& primaryToken = m_tokens[group.primaryTokenIndex];
-
-                TokenType type = group.separatorTokenIndex != invalidIndex ? m_tokens[group.separatorTokenIndex].type : TokenType::String;
-                std::string_view secondaryTokenValue = group.secondaryTokenIndex != invalidIndex ? m_tokens[group.secondaryTokenIndex].value : std::string_view{};
-
-                if (m_input.functionName.empty())
+                bool empty()
                 {
-                    if (type == TokenType::Dot)
-                        m_input.setTargetAndName(primaryToken.value, secondaryTokenValue);
-                    else if (type == TokenType::String)
-                        m_input.functionName = primaryToken.value;
-                    else
-                        return makeUnexpected("Unexpected named argument at the beginning of the expression");
+                    return !primaryTokenIndex && !secondaryTokenIndex;
+                }
+            };
+
+            enum class StringTokenType
+            {
+                Path,
+                PrimaryToken,
+                SecondaryToken,
+            };
+
+            ArgTokens tokens;
+            StringTokenType nextTokenType = StringTokenType::Path;
+
+            auto addCurrentTokens = [this, &tokens]() {
+                if (!tokens.primaryTokenIndex)
+                    return;
+
+                std::string_view primaryValue = m_tokens[*tokens.primaryTokenIndex].value;
+                if (tokens.secondaryTokenIndex)
+                {
+                    std::string_view secondaryValue = m_tokens[*tokens.secondaryTokenIndex].value;
+                    m_input.namedArguments.emplace_back(primaryValue, secondaryValue);
                 }
                 else
                 {
-                    if (type == TokenType::Assignment)
-                        m_input.namedArguments.emplace_back(primaryToken.value, secondaryTokenValue);
-                    else if (type == TokenType::String)
-                        m_input.arguments.emplace_back(primaryToken.value);
-                    else
-                        return makeUnexpected("Unexpected token '.' when the function name has already been defined");
+                    m_input.arguments.push_back(primaryValue);
+                }
+
+                tokens.reset();
+            };
+
+            for (std::size_t i = 0; i < m_tokens.size(); i++)
+            {
+                Token const& token = m_tokens[i];
+
+                switch (token.type)
+                {
+                case TokenType::Assignment:
+                    if (m_input.path.empty())
+                        return makeUnexpected("Unexpected token '=' at the beginning of the expression");
+                    if (!tokens.primaryTokenIndex)
+                        return makeUnexpected("Unexpected token '=': no named for the named argument is provided");
+                    nextTokenType = StringTokenType::SecondaryToken;
+                    break;
+                case TokenType::Dot:
+                    if (m_input.path.empty())
+                        return makeUnexpected("Unexpected token '.' at the beginning of the expression");
+                    if (!m_input.arguments.empty() || !m_input.namedArguments.empty() || !tokens.empty())
+                        return makeUnexpected("Unexpected token '.' after an argument was specified");
+                    nextTokenType = StringTokenType::Path;
+                    break;
+                case TokenType::String:
+                    switch (nextTokenType)
+                    {
+                    case StringTokenType::Path:
+                        m_input.path.push_back(token.value);
+                        break;
+                    case StringTokenType::PrimaryToken:
+                        if (tokens.primaryTokenIndex)
+                            addCurrentTokens();
+                        tokens.primaryTokenIndex = i;
+                        break;
+                    case StringTokenType::SecondaryToken:
+                        if (!tokens.primaryTokenIndex)
+                            return makeUnexpected("Internal error");
+
+                        tokens.secondaryTokenIndex = i;
+                        addCurrentTokens();
+                        break;
+                    }
+
+                    nextTokenType = StringTokenType::PrimaryToken;
+                    break;
                 }
             }
+
+            if (nextTokenType == StringTokenType::Path)
+                return makeUnexpected("Expected a command name, found end of string");
+            if (nextTokenType == StringTokenType::SecondaryToken)
+                return makeUnexpected("Expected an argument value, found end of string");
+
+            addCurrentTokens();
 
             return {};
         }
@@ -226,6 +234,5 @@ namespace coil
         // TODO not thread safe
         mutable ExecutionInput m_input;
         mutable std::vector<Token> m_tokens;
-        mutable std::vector<TokenGroup> m_tokenGroups;
     };
 }

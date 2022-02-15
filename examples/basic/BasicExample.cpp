@@ -3,6 +3,7 @@
 #include "common/ExamplesCommon.h"
 
 #include <iostream>
+#include "coil/utils/MemberFunctionFunctor.h"
 
 namespace
 {
@@ -50,7 +51,7 @@ namespace
 
         int getData() const { return m_multiplier; }
 
-        int getMultiplied(int input)
+        int scale(int input) const
         {
             return input * m_multiplier;
         }
@@ -63,11 +64,8 @@ namespace
 void BasicExample::run()
 {
     coil::Bindings bindings;
-
-    bindings.bind("hello", &hello);
-    // can be simplified to:
-    // bindings["hello"] = &hello;
-
+    
+    bindings["hello"] = &hello;
     bindings["hello_with_context"] = &helloWithContext;
     bindings["print_repeated"] = &printRepeated;
     bindings["print_quoted"] = &printQuoted;
@@ -75,15 +73,14 @@ void BasicExample::run()
     bindings["add"] = &add;
     bindings["concat"] = &concat;
 
-    auto objectBindings = bindings.createObjectBindings<Object>();
-    objectBindings["get_multiplied"] = &Object::getMultiplied;
-    // alternatively you can use this form:
-    // bindings.bind<Object>("get_multiplied", &Object::getMultiplied);
+    Object scaler{ 2 };
 
-    Object doubleMultiplier{ 2 };
-    Object tenfoldMultiplier{ 10 };
-    bindings.addObject("double_multiplier", &doubleMultiplier);
-    bindings.addObject("tenfold_multiplier", &tenfoldMultiplier);
+    bindings["scaler"] = [&scaler](coil::Context context)
+    {
+        context.out() << "This object scales by " << scaler.getData();
+    };
+    bindings["scaler"]["scale"] = coil::bind(&Object::scale, &scaler);
+    bindings["foo"]["bar"]["baz"]["qux"] = []() { return 42; };
 
     common::printSectionHeader("Basic function without any arguments:");
     common::executeCommand(bindings, "hello");
@@ -112,7 +109,8 @@ void BasicExample::run()
     common::printSectionHeader("coil catches incompatible types:");
     common::executeCommand(bindings, "add one two");
 
-    common::printSectionHeader("You can also use add any C++ objects and call their methods:");
-    common::executeCommand(bindings, "double_multiplier.get_multiplied 10");
-    common::executeCommand(bindings, "tenfold_multiplier.get_multiplied 10");
+    common::printSectionHeader("You can nest commands as much as you like");
+    common::executeCommand(bindings, "scaler");
+    common::executeCommand(bindings, "scaler.scale 10");
+    common::executeCommand(bindings, "foo.bar.baz.qux");
 }

@@ -38,12 +38,12 @@ template<typename E, typename C>
 struct MemberFlagsVariableWrapper
 {
 public:
-    MemberFlagsVariableWrapper(E C::* variable) : m_variable(variable)
+    MemberFlagsVariableWrapper(E C::* variable, C* object) : m_variable(variable), m_object(object)
     {
         static_assert(!std::is_const_v<E>, "Variable shouldn't be const");
     }
 
-    E const& operator()(C* target, std::vector<E> const& args)
+    E const& operator()(std::vector<E> const& args)
     {
         if (!args.empty())
         {
@@ -53,17 +53,18 @@ public:
             for (auto arg : args)
                 newValue = static_cast<UT>(newValue) | static_cast<UT>(arg);
 
-            get(target) = static_cast<E>(newValue);
+            get() = static_cast<E>(newValue);
         }
 
-        return get(target);
+        return get();
     }
 
 private:
-    E& get(C* target)
+    E& get()
     {
-        return target->*m_variable;
+        return m_object->*m_variable;
     }
 
     E C::* m_variable = nullptr;
+    C* m_object = nullptr;
 };

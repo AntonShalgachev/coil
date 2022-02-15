@@ -6,6 +6,7 @@
 #include "common/EnumToString.h"
 
 #include <iostream>
+#include "coil/utils/MemberFunctionFunctor.h"
 
 namespace
 {
@@ -42,16 +43,13 @@ namespace
 void EnumsExample::run()
 {
     coil::Bindings bindings;
+    PlayerAbilitySystem abilities;
 
     // See EnumToString.h to see how the serialization is implemented
 
-    auto playerAbilityBindings = bindings.createObjectBindings<PlayerAbilitySystem>();
-    playerAbilityBindings["set_ability"] = &PlayerAbilitySystem::setAbility;
-    playerAbilityBindings["get_ability"] = &PlayerAbilitySystem::getAbility;
-    playerAbilityBindings["get_reset_mode"] = &PlayerAbilitySystem::getResetMode;
-
-    PlayerAbilitySystem abilities;
-    bindings.addObject("abilities", &abilities);
+    bindings["abilities"]["set_ability"] = coil::bind(&PlayerAbilitySystem::setAbility, &abilities);
+    bindings["abilities"]["get_ability"] = coil::bind(&PlayerAbilitySystem::getAbility, &abilities);
+    bindings["abilities"]["get_reset_mode"] = coil::bind(&PlayerAbilitySystem::getResetMode, &abilities);
 
     common::printSectionHeader("Enums can be used as long as a corresponding TypeSerializer is specialized:");
     common::executeCommand(bindings, "abilities.set_ability SpeedBoost AfterDelay");

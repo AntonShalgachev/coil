@@ -1,5 +1,7 @@
 #pragma once
 
+// TODO rename file
+
 #include <optional>
 
 namespace coil::utils
@@ -36,26 +38,27 @@ namespace coil::utils
     struct MemberVariableWrapper
     {
     public:
-        MemberVariableWrapper(T C::* variable) : m_variable(variable)
+        MemberVariableWrapper(T C::* variable, C* object) : m_variable(variable), m_object(object)
         {
             static_assert(!std::is_const_v<T>, "Variable shouldn't be const");
         }
 
-        T const& operator()(C* target, std::optional<T> arg)
+        T const& operator()(std::optional<T> arg)
         {
             if (arg.has_value())
-                get(target) = std::move(arg).value();
+                get() = std::move(arg).value();
 
-            return get(target);
+            return get();
         }
 
     private:
-        T& get(C* target)
+        T& get()
         {
-            return target->*m_variable;
+            return m_object->*m_variable;
         }
 
         T C::* m_variable = nullptr;
+        C* m_object = nullptr;
     };
 }
 
@@ -68,8 +71,8 @@ namespace coil
     }
 
     template<typename T, typename C>
-    auto variable(T C::* var)
+    auto variable(T C::* var, C* object)
     {
-        return utils::MemberVariableWrapper<T, C>{ var };
+        return utils::MemberVariableWrapper<T, C>{ var, object };
     }
 }
