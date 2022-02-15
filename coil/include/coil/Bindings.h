@@ -46,7 +46,7 @@ namespace coil
                 targetNode = subtree.get();
             }
 
-            targetNode->functor = AnyFunctor{ UnqualifiedFunc{ std::move(func) }, &Bindings::functorTrampoline<UnqualifiedFunc> };
+            targetNode->functor = AnyFunctor{ UnqualifiedFunc{ std::move(func) }, &detail::functorTrampoline<UnqualifiedFunc> };
         }
 
         void remove(std::vector<std::string_view> const& path)
@@ -131,30 +131,6 @@ namespace coil
             std::any functor;
             TrampolineT m_trampoline;
         };
-
-        template<typename FuncT>
-        static void functorTrampoline(std::any& anyFunctor, detail::CallContext& context)
-        {
-            FuncT* functor = std::any_cast<FuncT>(&anyFunctor);
-
-            if (!functor)
-            {
-                context.result.errors.push_back("Internal error");
-                return;
-            }
-
-            using FuncTraits = detail::FuncTraitsEx<FuncT>;
-            using ArgsTraits = typename FuncTraits::ArgsTraits;
-
-            if (!validateArguments(ArgsTraits::minArgs, ArgsTraits::isUnlimited, ArgsTraits::maxArgs, context))
-                return;
-
-            using UserArgTypes = typename ArgsTraits::UserArgumentTypes;
-            using UserArgIndicesType = typename UserArgTypes::IndicesType;
-            using NonUserArgsIndicesType = typename ArgsTraits::NonUserArgsIndices;
-
-            detail::unpackAndInvoke(*functor, context, NonUserArgsIndicesType{}, UserArgTypes{}, UserArgIndicesType{});
-        }
 
         void execute(detail::CallContext& context)
         {

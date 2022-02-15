@@ -86,4 +86,28 @@ namespace coil::detail
     {
         invoke<Func, NonUserIndices...>(func, context, VariadicConsumer<std::decay_t<UserArgs>>::consume(Context{ context }, context.input.arguments, UserIndices)...);
     }
+
+    template<typename FuncT>
+    void functorTrampoline(std::any& anyFunctor, detail::CallContext& context)
+    {
+        FuncT* functor = std::any_cast<FuncT>(&anyFunctor);
+
+        if (!functor)
+        {
+            context.result.errors.push_back("Internal error");
+            return;
+        }
+
+        using FuncTraits = detail::FuncTraitsEx<FuncT>;
+        using ArgsTraits = typename FuncTraits::ArgsTraits;
+
+        if (!validateArguments(ArgsTraits::minArgs, ArgsTraits::isUnlimited, ArgsTraits::maxArgs, context))
+            return;
+
+        using UserArgTypes = typename ArgsTraits::UserArgumentTypes;
+        using UserArgIndicesType = typename UserArgTypes::IndicesType;
+        using NonUserArgsIndicesType = typename ArgsTraits::NonUserArgsIndices;
+
+        unpackAndInvoke(*functor, context, NonUserArgsIndicesType{}, UserArgTypes{}, UserArgIndicesType{});
+    }
 }
