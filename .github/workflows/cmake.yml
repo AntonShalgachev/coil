@@ -13,16 +13,9 @@ jobs:
     strategy:
       matrix:
         config: [Debug, Release]
-        clang: [true, false]
 
     steps:
     - uses: actions/checkout@v2
-
-    - name: Set up Clang
-      if: matrix.clang
-      run: |
-        $env:CC="clang-cl"
-        $env:CXX="clang-cl"
 
     - name: CMake (Examples + CTest + Runtime Performance)
       run: cmake -B ${{github.workspace}}/build -G "Visual Studio 15 2017" -DCOIL_COMPILATION_TESTS=ON -DCOIL_RUNTIME_TESTS=ON -DCOIL_EXAMPLES=ON -DCOIL_RUNTIME_PERFORMANCE=ON
@@ -43,19 +36,18 @@ jobs:
     strategy:
       matrix:
         config: [Debug, Release]
-        clang: [true, false]
+        compiler: [cl, clang]
 
     steps:
     - uses: actions/checkout@v2
 
-    - name: Set up Clang
-      if: matrix.clang
-      run: |
-        $env:CC="clang-cl"
-        $env:CXX="clang-cl"
+    - name: CMake (Examples + CTest + Runtime Performance)
+      if: compiler.cl
+      run: cmake -B ${{github.workspace}}/build -G "Visual Studio 16 2019" -DCOIL_COMPILATION_TESTS=ON -DCOIL_RUNTIME_TESTS=ON -DCOIL_EXAMPLES=ON -DCOIL_RUNTIME_PERFORMANCE=ON
 
     - name: CMake (Examples + CTest + Runtime Performance)
-      run: cmake -B ${{github.workspace}}/build -G "Visual Studio 16 2019" -DCOIL_COMPILATION_TESTS=ON -DCOIL_RUNTIME_TESTS=ON -DCOIL_EXAMPLES=ON -DCOIL_RUNTIME_PERFORMANCE=ON
+      if: compiler.clang
+      run: cmake -B ${{github.workspace}}/build -G "Visual Studio 16 2019" -T ClangCL -DCOIL_COMPILATION_TESTS=ON -DCOIL_RUNTIME_TESTS=ON -DCOIL_EXAMPLES=ON -DCOIL_RUNTIME_PERFORMANCE=ON
 
     - name: Build (Examples + CTest + Runtime Performance)
       run: cmake --build ${{github.workspace}}/build --config ${{ matrix.config }} --parallel 10
