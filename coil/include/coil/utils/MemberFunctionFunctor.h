@@ -30,6 +30,6 @@ namespace coil
     {
         using Traits = utils::FuncTraits<FuncPointer>;
         static_assert(!std::is_const_v<C> || Traits::isConst, "Can't bind a const object to a non-constant member function");
-        return utils::MemberFunctionFunctor{ func, obj, Traits::ArgumentTypes{} };
+        return utils::MemberFunctionFunctor{ func, obj, typename Traits::ArgumentTypes{} };
     }
 }
