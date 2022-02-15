@@ -5,7 +5,7 @@
 
 namespace coil::utils
 {
-    template<typename R, typename... Args>
+    template<bool IsConst, typename R, typename... Args>
     struct BaseFuncTraits
     {
     public:
@@ -13,6 +13,7 @@ namespace coil::utils
 
         using ReturnType = R;
         using ArgumentTypes = Types<Args...>;
+        static constexpr bool isConst = IsConst;
     };
 
     // General types
@@ -24,45 +25,40 @@ namespace coil::utils
 
     // Free functions
     template<typename R, typename... Args>
-    struct FuncTraitsImpl<R(*)(Args...)> : public BaseFuncTraits<R, Args...> {};
+    struct FuncTraitsImpl<R(*)(Args...)> : public BaseFuncTraits<false, R, Args...> {};
     template<typename R, typename... Args>
-    struct FuncTraitsImpl<R(*)(Args...) noexcept> : public BaseFuncTraits<R, Args...> {};
+    struct FuncTraitsImpl<R(*)(Args...) noexcept> : public BaseFuncTraits<false, R, Args...> {};
 
     // Pointer to member function
-#define COIL_MEMBER_FUNCTION_SPECIALIZATION(QUALIFIERS) \
+#define COIL_MEMBER_FUNCTION_SPECIALIZATION(QUALIFIERS, IS_CONST) \
     template<typename R, typename T, typename... Args> \
-    struct FuncTraitsImpl<R(T::*)(Args...) QUALIFIERS> : public BaseFuncTraits<R, Args...> {}
+    struct FuncTraitsImpl<R(T::*)(Args...) QUALIFIERS> : public BaseFuncTraits<IS_CONST, R, Args...> {}
 
-#pragma warning(push)
-#pragma warning(disable: 4003) // to allow calling macro with no arguments
+    COIL_MEMBER_FUNCTION_SPECIALIZATION(, false);
+    COIL_MEMBER_FUNCTION_SPECIALIZATION(volatile, false);
+    COIL_MEMBER_FUNCTION_SPECIALIZATION(&, false);
+    COIL_MEMBER_FUNCTION_SPECIALIZATION(volatile&, false);
+    COIL_MEMBER_FUNCTION_SPECIALIZATION(&&, false);
+    COIL_MEMBER_FUNCTION_SPECIALIZATION(volatile&&, false);
+    COIL_MEMBER_FUNCTION_SPECIALIZATION(noexcept, false);
+    COIL_MEMBER_FUNCTION_SPECIALIZATION(volatile noexcept, false);
+    COIL_MEMBER_FUNCTION_SPECIALIZATION(&noexcept, false);
+    COIL_MEMBER_FUNCTION_SPECIALIZATION(volatile& noexcept, false);
+    COIL_MEMBER_FUNCTION_SPECIALIZATION(&& noexcept, false);
+    COIL_MEMBER_FUNCTION_SPECIALIZATION(volatile&& noexcept, false);
 
-    COIL_MEMBER_FUNCTION_SPECIALIZATION();
-    COIL_MEMBER_FUNCTION_SPECIALIZATION(volatile);
-    COIL_MEMBER_FUNCTION_SPECIALIZATION(&);
-    COIL_MEMBER_FUNCTION_SPECIALIZATION(volatile&);
-    COIL_MEMBER_FUNCTION_SPECIALIZATION(&&);
-    COIL_MEMBER_FUNCTION_SPECIALIZATION(volatile&&);
-    COIL_MEMBER_FUNCTION_SPECIALIZATION(noexcept);
-    COIL_MEMBER_FUNCTION_SPECIALIZATION(volatile noexcept);
-    COIL_MEMBER_FUNCTION_SPECIALIZATION(&noexcept);
-    COIL_MEMBER_FUNCTION_SPECIALIZATION(volatile& noexcept);
-    COIL_MEMBER_FUNCTION_SPECIALIZATION(&& noexcept);
-    COIL_MEMBER_FUNCTION_SPECIALIZATION(volatile&& noexcept);
-
-    COIL_MEMBER_FUNCTION_SPECIALIZATION(const);
-    COIL_MEMBER_FUNCTION_SPECIALIZATION(const volatile);
-    COIL_MEMBER_FUNCTION_SPECIALIZATION(const&);
-    COIL_MEMBER_FUNCTION_SPECIALIZATION(const volatile&);
-    COIL_MEMBER_FUNCTION_SPECIALIZATION(const&&);
-    COIL_MEMBER_FUNCTION_SPECIALIZATION(const volatile&&);
-    COIL_MEMBER_FUNCTION_SPECIALIZATION(const noexcept);
-    COIL_MEMBER_FUNCTION_SPECIALIZATION(const volatile noexcept);
-    COIL_MEMBER_FUNCTION_SPECIALIZATION(const& noexcept);
-    COIL_MEMBER_FUNCTION_SPECIALIZATION(const volatile& noexcept);
-    COIL_MEMBER_FUNCTION_SPECIALIZATION(const&& noexcept);
-    COIL_MEMBER_FUNCTION_SPECIALIZATION(const volatile&& noexcept);
-
-#pragma warning(pop)
+    COIL_MEMBER_FUNCTION_SPECIALIZATION(const, true);
+    COIL_MEMBER_FUNCTION_SPECIALIZATION(const volatile, true);
+    COIL_MEMBER_FUNCTION_SPECIALIZATION(const&, true);
+    COIL_MEMBER_FUNCTION_SPECIALIZATION(const volatile&, true);
+    COIL_MEMBER_FUNCTION_SPECIALIZATION(const&&, true);
+    COIL_MEMBER_FUNCTION_SPECIALIZATION(const volatile&&, true);
+    COIL_MEMBER_FUNCTION_SPECIALIZATION(const noexcept, true);
+    COIL_MEMBER_FUNCTION_SPECIALIZATION(const volatile noexcept, true);
+    COIL_MEMBER_FUNCTION_SPECIALIZATION(const& noexcept, true);
+    COIL_MEMBER_FUNCTION_SPECIALIZATION(const volatile& noexcept, true);
+    COIL_MEMBER_FUNCTION_SPECIALIZATION(const&& noexcept, true);
+    COIL_MEMBER_FUNCTION_SPECIALIZATION(const volatile&& noexcept, true);
 
 #undef COIL_MEMBER_FUNCTION_SPECIALIZATION
 
