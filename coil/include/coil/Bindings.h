@@ -30,7 +30,7 @@ namespace coil
         void add(std::vector<std::string_view> const& path, Func&& func)
         {
             using UnqualifiedFunc = std::decay_t<Func>;
-            using FuncTraits = detail::FuncTraitsEx<UnqualifiedFunc>;
+            using FuncTraits = utils::FuncTraits<UnqualifiedFunc>;
 
             static_assert(FuncTraits::isFunc, "Func should be a functor object");
             static_assert(!std::is_member_function_pointer_v<UnqualifiedFunc>, "Func shouldn't be a member function");
