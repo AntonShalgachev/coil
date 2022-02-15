@@ -42,11 +42,11 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: CMake (Examples + CTest + Runtime Performance)
-      if: compiler.cl
+      if: matrix.compiler == 'cl'
       run: cmake -B ${{github.workspace}}/build -G "Visual Studio 16 2019" -DCOIL_COMPILATION_TESTS=ON -DCOIL_RUNTIME_TESTS=ON -DCOIL_EXAMPLES=ON -DCOIL_RUNTIME_PERFORMANCE=ON
 
     - name: CMake (Examples + CTest + Runtime Performance)
-      if: compiler.clang
+      if: matrix.compiler == 'clang'
       run: cmake -B ${{github.workspace}}/build -G "Visual Studio 16 2019" -T ClangCL -DCOIL_COMPILATION_TESTS=ON -DCOIL_RUNTIME_TESTS=ON -DCOIL_EXAMPLES=ON -DCOIL_RUNTIME_PERFORMANCE=ON
 
     - name: Build (Examples + CTest + Runtime Performance)
