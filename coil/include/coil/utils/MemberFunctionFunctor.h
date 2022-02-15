@@ -2,7 +2,7 @@
 
 // TODO rename file
 
-#include <type_traits>
+#include "FuncTraits.h"
 
 namespace coil::utils
 {
@@ -10,7 +10,7 @@ namespace coil::utils
 	struct MemberFunctionFunctor
 	{
     public:
-        MemberFunctionFunctor(FuncPointer func, C* obj) : m_func(func), m_obj(obj) {}
+        MemberFunctionFunctor(FuncPointer func, C* obj, utils::Types<Args...>) : m_func(func), m_obj(obj) {}
 
         decltype(auto) operator()(Args... args)
         {
@@ -25,17 +25,11 @@ namespace coil::utils
 
 namespace coil
 {
-    // TODO implement for every const/volatile/except/ref combination
-
-    template<typename C, typename R, typename... Args>
-    auto bind(R(C::* func)(Args...), C* obj)
+    template<typename FuncPointer, typename C>
+    auto bind(FuncPointer func, C* obj)
     {
-        static_assert(!std::is_const_v<C>, "Can't bind non-const method on a const object");
-        return utils::MemberFunctionFunctor<R(C::*)(Args...), C, Args...>{ func, obj };
-    }
-    template<typename C, typename R, typename... Args>
-    auto bind(R(C::* func)(Args...) const, C const* obj)
-    {
-        return utils::MemberFunctionFunctor<R(C::*)(Args...) const, C const, Args...>{ func, obj };
+        using Traits = utils::FuncTraits<FuncPointer>;
+        static_assert(!std::is_const_v<C> || Traits::isConst, "Can't bind a const object to a non-constant member function");
+        return utils::MemberFunctionFunctor{ func, obj, Traits::ArgumentTypes{} };
     }
 }
