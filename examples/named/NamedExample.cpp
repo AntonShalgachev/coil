@@ -136,7 +136,7 @@ namespace
         else if (auto valueInt = requiredAnyArg->get<int>())
             context.out() << "Required: " << *valueInt << std::endl;
         else
-            context.reportErrors(std::move(valueBool), std::move(valueInt));
+            context.reportErrors(std::move(valueBool).error(), std::move(valueInt).error());
 
         auto optionalAnyArg = namedArgs.getOrReport("optional", coil::NamedArgs::ArgType::Optional);
         if (optionalAnyArg)
@@ -146,7 +146,7 @@ namespace
             else if (auto valueInt = optionalAnyArg->get<int>())
                 context.out() << "Optional: " << *valueInt << std::endl;
             else
-                context.reportErrors(std::move(valueBool), std::move(valueInt));
+                context.reportErrors(std::move(valueBool).error(), std::move(valueInt).error());
         }
     }
 }

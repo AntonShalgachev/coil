@@ -18,17 +18,10 @@ namespace coil
             m_callContext.reportError(std::move(error));
         }
 
-        // TODO remove this overload?
-        template<typename T, typename E>
-        void reportError(coil::Expected<T, E> expected)
-        {
-            return m_callContext.reportError(std::move(expected));
-        }
-
         template<typename... Ts>
         void reportErrors(Ts&&... errors)
         {
-            return m_callContext.reportErrors(std::forward<Ts>(errors)...);
+            (reportError(std::forward<Ts>(errors)), ...);
         }
 
         bool hasErrors() const

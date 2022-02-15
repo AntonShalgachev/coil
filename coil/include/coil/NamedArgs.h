@@ -121,7 +121,7 @@ namespace coil
             if (auto anyArg = get(key))
                 return *anyArg;
             else if (argType == ArgType::Required)
-                m_context.reportError(std::move(anyArg));
+                m_context.reportError(std::move(anyArg).error());
 
             return {};
         }
@@ -134,7 +134,7 @@ namespace coil
             else if (argType == ArgType::Optional && value.error().type == coil::NamedArgs::Error::Type::MissingKey)
                 return defaultValue;
             else
-                m_context.reportError(std::move(value));
+                m_context.reportError(std::move(value).error());
 
             return {};
         }
