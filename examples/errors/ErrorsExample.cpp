@@ -22,7 +22,7 @@ namespace
         if (asFloat)
             return *asFloat;
         
-        context.reportError(std::move(asFloat));
+        context.reportError(std::move(asFloat).error());
         return 0.0f;
     }
 
@@ -35,7 +35,7 @@ namespace
         else if (auto asFloat = arg.get<float>())
             return "float";
         else
-            context.reportErrors("Unknown type", std::move(asBool), std::move(asInt), std::move(asFloat));
+            context.reportErrors("Unknown type", std::move(asBool).error(), std::move(asInt).error(), std::move(asFloat).error());
 
         return {};
     }
