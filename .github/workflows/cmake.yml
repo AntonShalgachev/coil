@@ -32,7 +32,7 @@ jobs:
       if: matrix.config == 'Release'
       
   msvc2019-ctest:
-    runs-on: windows-latest
+    runs-on: windows-2019
     strategy:
       matrix:
         config: [Debug, Release]
@@ -76,7 +76,7 @@ jobs:
       run: cmake --build ${{github.workspace}}/build --config Debug --parallel 10
 
   msvc2019-compilation:
-    runs-on: windows-latest
+    runs-on: windows-2019
     strategy:
       matrix:
         bindings: [COIL, MANUAL]
