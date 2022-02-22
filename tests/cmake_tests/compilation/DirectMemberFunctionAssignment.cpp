@@ -4,5 +4,5 @@ int main()
 {
     coil::Bindings cmd;
 
-    cmd["foo"]["bar"] = &Object::memberFunc;
+    cmd["foo.bar"] = &Object::memberFunc;
 }

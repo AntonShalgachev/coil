@@ -47,9 +47,9 @@ void EnumsExample::run()
 
     // See EnumToString.h to see how the serialization is implemented
 
-    bindings["abilities"]["set_ability"] = coil::bind(&PlayerAbilitySystem::setAbility, &abilities);
-    bindings["abilities"]["get_ability"] = coil::bind(&PlayerAbilitySystem::getAbility, &abilities);
-    bindings["abilities"]["get_reset_mode"] = coil::bind(&PlayerAbilitySystem::getResetMode, &abilities);
+    bindings["abilities.set_ability"] = coil::bind(&PlayerAbilitySystem::setAbility, &abilities);
+    bindings["abilities.get_ability"] = coil::bind(&PlayerAbilitySystem::getAbility, &abilities);
+    bindings["abilities.get_reset_mode"] = coil::bind(&PlayerAbilitySystem::getResetMode, &abilities);
 
     common::printSectionHeader("Enums can be used as long as a corresponding TypeSerializer is specialized:");
     common::executeCommand(bindings, "abilities.set_ability SpeedBoost AfterDelay");
