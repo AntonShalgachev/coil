@@ -155,9 +155,8 @@ void NamedExample::run()
 {
     coil::Bindings bindings;
 
-    auto inventoryBindings = bindings["inventory"];
-    inventoryBindings["list"] = &printItems;
-    inventoryBindings["add"] = &addItem;
+    bindings["inventory.list"] = &printItems;
+    bindings["inventory.add"] = &addItem;
 
     bindings["print_args"] = &printArgs;
     bindings["print_floats"] = &printFloats;

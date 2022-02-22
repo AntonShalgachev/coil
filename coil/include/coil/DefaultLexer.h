@@ -114,8 +114,6 @@ namespace coil
 
         Expected<void, std::string> parse() const
         {
-            m_input.path = { "" };
-
             if (m_tokens.empty())
                 return {};
 
@@ -123,7 +121,7 @@ namespace coil
             if (firstToken.type != TokenType::String)
                 return makeUnexpected(utils::formatString("Unexpected token '%.*s' at the beginning of the expression", firstToken.value.size(), firstToken.value.data()));
 
-            m_input.path = { firstToken.value };
+            m_input.name = firstToken.value;
 
             struct ArgTokens
             {
