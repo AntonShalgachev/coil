@@ -35,15 +35,12 @@ namespace coil
         {
             Space,
             String,
-            Number,
-            Dot,
             Assignment,
         };
 
         enum class TokenType
         {
             String,
-            Dot,
             Assignment,
         };
 
@@ -53,20 +50,12 @@ namespace coil
             std::string_view value;
         };
 
-        static CharType getCharType(CharType currentCharType, unsigned char c)
+        static CharType getCharType(unsigned char c)
         {
             if (c == '=')
                 return CharType::Assignment;
             if (std::isspace(c))
                 return CharType::Space;
-
-            if (c == '.' && currentCharType == CharType::Number)
-                return CharType::Number;
-            if (c == '.' && currentCharType != CharType::Number)
-                return CharType::Dot;
-
-            if (std::isdigit(c) && currentCharType != CharType::String)
-                return CharType::Number;
 
             return CharType::String;
         }
@@ -76,10 +65,7 @@ namespace coil
             switch (type)
             {
             case CharType::String:
-            case CharType::Number:
                 return TokenType::String;
-            case CharType::Dot:
-                return TokenType::Dot;
             case CharType::Assignment:
                 return TokenType::Assignment;
             default:
@@ -111,7 +97,7 @@ namespace coil
 
             for (std::size_t i = 0; i < str.size(); i++)
             {
-                CharType charType = getCharType(currentCharType, str[i]);
+                CharType charType = getCharType(str[i]);
 
                 if (currentCharType != charType)
                 {
@@ -128,8 +114,16 @@ namespace coil
 
         Expected<void, std::string> parse() const
         {
+            m_input.path = { "" };
+
             if (m_tokens.empty())
                 return {};
+
+            Token const& firstToken = m_tokens.front();
+            if (firstToken.type != TokenType::String)
+                return makeUnexpected(utils::formatString("Unexpected token '%.*s' at the beginning of the expression", firstToken.value.size(), firstToken.value.data()));
+
+            m_input.path = { firstToken.value };
 
             struct ArgTokens
             {
@@ -150,13 +144,12 @@ namespace coil
 
             enum class StringTokenType
             {
-                Path,
                 PrimaryToken,
                 SecondaryToken,
             };
 
             ArgTokens tokens;
-            StringTokenType nextTokenType = StringTokenType::Path;
+            StringTokenType nextTokenType = StringTokenType::PrimaryToken;
 
             auto addCurrentTokens = [this, &tokens]() {
                 if (!tokens.primaryTokenIndex)
@@ -176,32 +169,20 @@ namespace coil
                 tokens.reset();
             };
 
-            for (std::size_t i = 0; i < m_tokens.size(); i++)
+            for (std::size_t i = 1; i < m_tokens.size(); i++)
             {
                 Token const& token = m_tokens[i];
 
                 switch (token.type)
                 {
                 case TokenType::Assignment:
-                    if (m_input.path.empty())
-                        return makeUnexpected("Unexpected token '=' at the beginning of the expression");
                     if (!tokens.primaryTokenIndex)
                         return makeUnexpected("Unexpected token '=': no named for the named argument is provided");
                     nextTokenType = StringTokenType::SecondaryToken;
                     break;
-                case TokenType::Dot:
-                    if (m_input.path.empty())
-                        return makeUnexpected("Unexpected token '.' at the beginning of the expression");
-                    if (!m_input.arguments.empty() || !m_input.namedArguments.empty() || !tokens.empty())
-                        return makeUnexpected("Unexpected token '.' after an argument was specified");
-                    nextTokenType = StringTokenType::Path;
-                    break;
                 case TokenType::String:
                     switch (nextTokenType)
                     {
-                    case StringTokenType::Path:
-                        m_input.path.push_back(token.value);
-                        break;
                     case StringTokenType::PrimaryToken:
                         if (tokens.primaryTokenIndex)
                             addCurrentTokens();
@@ -221,8 +202,6 @@ namespace coil
                 }
             }
 
-            if (nextTokenType == StringTokenType::Path)
-                return makeUnexpected("Expected a command name, found end of string");
             if (nextTokenType == StringTokenType::SecondaryToken)
                 return makeUnexpected("Expected an argument value, found end of string");
 
