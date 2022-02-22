@@ -102,18 +102,16 @@ namespace coil
 
         void execute(detail::CallContext& context)
         {
-            if (context.input.path.empty() || context.input.path.back().empty())
+            if (context.input.name.empty())
             {
                 context.result.errors.push_back("No function name is specified");
                 return;
             }
 
-            // TODO fix
-            std::string fullName = utils::flatten(context.input.path, "", ".");
-            auto it = m_commands.find(fullName);
+            auto it = m_commands.find(context.input.name);
             if (it == m_commands.end())
             {
-                context.result.errors.push_back(utils::formatString("No function '%s' is registered", fullName.c_str()));
+                context.result.errors.push_back(utils::formatString("No function '%.*s' is registered", context.input.name.size(), context.input.name.data()));
                 return;
             }
 
@@ -129,51 +127,23 @@ namespace coil
     class BindingProxy
     {
     public:
-        BindingProxy(BindingsT& bindings, std::vector<std::string_view> partialPath) : m_bindings(bindings), m_partialPath(std::move(partialPath)) {}
-
-        BindingProxy operator[](std::string_view name) const& = delete;
-        BindingProxy operator[](std::string_view name) &
-        {
-            std::vector<std::string_view> newPartialPath = m_partialPath;
-            newPartialPath.push_back(name);
-            return BindingProxy{ m_bindings, std::move(newPartialPath) };
-        }
-        BindingProxy operator[](std::string_view name) &&
-        {
-            std::vector<std::string_view> newPartialPath = std::move(m_partialPath);
-            newPartialPath.push_back(name);
-            return BindingProxy{ m_bindings, std::move(newPartialPath) };
-        }
+        BindingProxy(BindingsT& bindings, std::string_view name) : m_bindings(bindings), m_name(name) {}
 
         template<typename AnyT>
-        BindingProxy& operator=(AnyT&& anything) const& = delete;
-        template<typename AnyT>
-        BindingProxy& operator=(AnyT&& anything) &
+        BindingProxy& operator=(AnyT&& anything)
         {
-            // TODO fix
-            std::string fullName = utils::flatten(m_partialPath, "", ".");
-            m_bindings.add(fullName, std::forward<AnyT>(anything));
-            return *this;
-        }
-        template<typename AnyT>
-        BindingProxy& operator=(AnyT&& anything) &&
-        {
-            // TODO fix
-            std::string fullName = utils::flatten(m_partialPath, "", ".");
-            m_bindings.add(fullName, std::forward<AnyT>(anything));
+            m_bindings.add(m_name, std::forward<AnyT>(anything));
             return *this;
         }
         BindingProxy& operator=(std::nullptr_t)
         {
-            // TODO fix
-            std::string fullName = utils::flatten(m_partialPath, "", ".");
-            m_bindings.remove(fullName);
+            m_bindings.remove(m_name);
             return *this;
         }
 
     private:
         BindingsT& m_bindings;
-        std::vector<std::string_view> m_partialPath;
+        std::string_view m_name;
     };
 
     inline BindingProxy<Bindings> Bindings::operator[](std::string_view name)

@@ -8,17 +8,9 @@ namespace coil
 {
     std::ostream& operator<<(std::ostream& os, coil::ExecutionInput const& input)
     {
-        os << "[{";
+        os << "[" << "'" << input.name << "'" << ": {";
 
         auto delim = "";
-        for (auto const& pathPart : input.path)
-        {
-            os << delim << "'" << pathPart << "'";
-            delim = ", ";
-        }
-        os << "} {";
-
-        delim = "";
         for (auto const& arg : input.arguments)
         {
             os << delim << "'" << arg << "'";
@@ -62,10 +54,10 @@ bool operator==(std::reference_wrapper<coil::ExecutionInput> const& lhs, coil::E
 
 namespace
 {
-    coil::ExecutionInput createInput(std::string_view command, std::vector<std::string_view> args, std::vector<std::pair<std::string_view, std::string_view>> namedArgs)
+    coil::ExecutionInput createInput(std::string_view name, std::vector<std::string_view> args, std::vector<std::pair<std::string_view, std::string_view>> namedArgs)
     {
         coil::ExecutionInput input;
-        input.path = { command };
+        input.name = name;
         input.arguments = std::move(args);
         input.namedArguments = std::move(namedArgs);
 
@@ -120,7 +112,7 @@ namespace
             return std::string_view{ storage.back() };
         };
 
-        input.path.push_back(generateNewString(false, false));
+        input.name = generateNewString(false, false);
 
         for (std::size_t i = 0; i < argsCount; i++)
             input.arguments.push_back(generateNewString(false, true));
@@ -149,19 +141,7 @@ namespace
         std::stringstream ss;
 
         randomSpaces(ss);
-
-        std::string_view delim = "";
-        for (auto const& part : input.path)
-        {
-            ss << delim;
-            randomSpaces(ss);
-            ss << part;
-
-            delim = ".";
-        }
-
-        ss << ' ';
-
+        ss << input.name << ' ';
         randomSpaces(ss);
 
         for (auto const& arg : input.arguments)

@@ -8,20 +8,20 @@ namespace coil
 {
     struct ExecutionInput
     {
-        std::vector<std::string_view> path;
+        std::string_view name;
         std::vector<std::string_view> arguments;
         std::vector<std::pair<std::string_view, std::string_view>> namedArguments;
 
         void reset()
         {
-            path.resize(0);
+            name = {};
             arguments.resize(0);
             namedArguments.resize(0);
         }
 
         auto tie() const
         {
-            return std::tie(path, arguments, namedArguments);
+            return std::tie(name, arguments, namedArguments);
         }
 
         bool operator==(ExecutionInput const& rhs) const

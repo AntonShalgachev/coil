@@ -27,8 +27,7 @@ namespace coil::detail
         else
             expectedMessage = utils::formatString("%d", minArgs);
 
-        std::string fullName = utils::flatten(context.input.path, "", ".");
-        auto errorMessage = utils::formatString("Wrong number of arguments to '%s': expected %s, got %d", fullName.c_str(), expectedMessage.c_str(), actualArgsCount);
+        auto errorMessage = utils::formatString("Wrong number of arguments to '%.*s': expected %s, got %d", context.input.name.size(), context.input.name.data(), expectedMessage.c_str(), actualArgsCount);
 
         context.result.errors.push_back(std::move(errorMessage));
     }
