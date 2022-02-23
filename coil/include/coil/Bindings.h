@@ -19,7 +19,6 @@ namespace coil
 
     template<typename BindingsT>
     class BindingProxy;
-    class CommandCollection;
 
 	class Bindings
 	{

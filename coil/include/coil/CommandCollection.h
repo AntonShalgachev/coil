@@ -3,6 +3,8 @@
 #include <vector>
 #include <string_view>
 
+// TODO update this file and use it in the examples
+
 namespace coil
 {
     class CommandCollection final
@@ -13,15 +15,17 @@ namespace coil
 
         CommandCollection(CommandCollection&& rhs)
         {
-            m_bindings = std::move(rhs.m_bindings);
             clear();
+
+            m_bindings = std::move(rhs.m_bindings);
             m_paths = std::move(rhs.m_paths);
         }
 
         CommandCollection& operator=(CommandCollection&& rhs)
         {
-            m_bindings = std::move(rhs.m_bindings);
             clear();
+
+            m_bindings = std::move(rhs.m_bindings);
             m_paths = std::move(rhs.m_paths);
             return *this;
         }
