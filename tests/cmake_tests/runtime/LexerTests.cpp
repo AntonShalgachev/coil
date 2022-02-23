@@ -247,24 +247,37 @@ TEST(LexerTests, TestCompositeArgs)
 {
     coil::DefaultLexer lexer;
 
-    EXPECT_EQ(lexer("func arg1,arg2"), createInput("func", args(Val{ "arg1,arg2", {"arg1", "arg2"}}), {}));
-    EXPECT_EQ(lexer("func (arg1 arg2)"), createInput("func", args(Val{ "arg1 arg2", {"arg1", "arg2"}}), {}));
-    EXPECT_EQ(lexer("func (arg1,arg2)"), createInput("func", args(Val{ "arg1,arg2", {"arg1", "arg2"}}), {}));
-    EXPECT_EQ(lexer("func (arg1, arg2)"), createInput("func", args(Val{ "arg1, arg2", {"arg1", "arg2"}}), {}));
-    EXPECT_EQ(lexer("func (arg1 , arg2)"), createInput("func", args(Val{ "arg1 , arg2", {"arg1", "arg2"}}), {}));
-    EXPECT_EQ(lexer("func ( arg1 , arg2 )"), createInput("func", args(Val{ " arg1 , arg2 ", {"arg1", "arg2"}}), {}));
-    EXPECT_EQ(lexer("func ( arg1 arg2 )"), createInput("func", args(Val{ " arg1 arg2 ", {"arg1", "arg2"}}), {}));
+    EXPECT_EQ(lexer("func arg1,arg2"), createInput("func", args(Val{ "arg1,arg2", {"arg1", "arg2"} }), {}));
+    EXPECT_EQ(lexer("func (arg1 arg2)"), createInput("func", args(Val{ "arg1 arg2", {"arg1", "arg2"} }), {}));
+    EXPECT_EQ(lexer("func (arg1,arg2)"), createInput("func", args(Val{ "arg1,arg2", {"arg1", "arg2"} }), {}));
+    EXPECT_EQ(lexer("func (arg1, arg2)"), createInput("func", args(Val{ "arg1, arg2", {"arg1", "arg2"} }), {}));
+    EXPECT_EQ(lexer("func (arg1 , arg2)"), createInput("func", args(Val{ "arg1 , arg2", {"arg1", "arg2"} }), {}));
+    EXPECT_EQ(lexer("func ( arg1 , arg2 )"), createInput("func", args(Val{ " arg1 , arg2 ", {"arg1", "arg2"} }), {}));
+    EXPECT_EQ(lexer("func ( arg1 arg2 )"), createInput("func", args(Val{ " arg1 arg2 ", {"arg1", "arg2"} }), {}));
 }
 
-TEST(LexerTests, TestCompositeArgsEdgeCases)
+TEST(LexerTests, TestCompositeNamedArgs)
 {
     coil::DefaultLexer lexer;
 
-    EXPECT_EQ(lexer("func arg(um)ent"), createInput("func", args("arg", "um", "ent"), {}));
-    EXPECT_EQ(lexer("func ()"), createInput("func", args(Val{ "", {} }), {}));
-    EXPECT_EQ(lexer("func ( )"), createInput("func", args(Val{ " ", {} }), {}));
-    EXPECT_EQ(lexer("func (,)"), createInput("func", args(Val{ ",", {} }), {}));
-    EXPECT_EQ(lexer("func ( , )"), createInput("func", args(Val{ " , ", {} }), {}));
+    EXPECT_EQ(lexer("func arg=arg1,arg2"), createInput("func", args(), { { "arg", Val{ "arg1,arg2", {"arg1", "arg2"} } } }));
+    EXPECT_EQ(lexer("func arg=(arg1 arg2)"), createInput("func", args(), { { "arg", Val{ "arg1 arg2", {"arg1", "arg2"} } } }));
+    EXPECT_EQ(lexer("func arg=(arg1,arg2)"), createInput("func", args(), { { "arg", Val{ "arg1,arg2", {"arg1", "arg2"} } } }));
+    EXPECT_EQ(lexer("func arg=(arg1, arg2)"), createInput("func", args(), { { "arg", Val{ "arg1, arg2", {"arg1", "arg2"} } } }));
+    EXPECT_EQ(lexer("func arg=(arg1 , arg2)"), createInput("func", args(), { { "arg", Val{ "arg1 , arg2", {"arg1", "arg2"} } } }));
+    EXPECT_EQ(lexer("func arg=( arg1 , arg2 )"), createInput("func", args(), { { "arg", Val{ " arg1 , arg2 ", {"arg1", "arg2"} } } }));
+    EXPECT_EQ(lexer("func arg=( arg1 arg2 )"), createInput("func", args(), { { "arg", Val{ " arg1 arg2 ", {"arg1", "arg2"} } } }));
+}
+
+TEST(LexerTests, TestCompositeNamedArgsEdgeCases)
+{
+    coil::DefaultLexer lexer;
+
+    EXPECT_EQ(lexer("func arg=arg(um)ent"), createInput("func", args("um", "ent"), { {"arg", Val{"arg"}} }));
+    EXPECT_EQ(lexer("func arg=()"), createInput("func", args(), { {"arg", Val{ "", {} }} }));
+    EXPECT_EQ(lexer("func arg=( )"), createInput("func", args(), { {"arg", Val{ " ", {} }} }));
+    EXPECT_EQ(lexer("func arg=(,)"), createInput("func", args(), { {"arg", Val{ ",", {} }} }));
+    EXPECT_EQ(lexer("func arg=( , )"), createInput("func", args(), { {"arg", Val{ " , ", {} }} }));
 }
 
 TEST(LexerTests, TestEmpty)
