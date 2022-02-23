@@ -8,7 +8,7 @@ namespace coil
     class NamedAnyArgView
     {
     public:
-        NamedAnyArgView(std::string_view key, std::string_view value) : m_key(key), m_value(value) {}
+        NamedAnyArgView(std::string_view key, ArgValue value) : m_key(key), m_value(value) {}
 
         std::string_view key() const { return m_key; }
         AnyArgView value() const { return m_value; }

@@ -55,7 +55,7 @@ namespace
         if (target)
             target->name = newName;
         else
-            context.reportError("Failed to find entity '"s + std::string{ entity.getRaw() } + "'"s);
+            context.reportError("Failed to find entity '"s + std::string{ entity.getRaw().value } + "'"s);
     }
 
     void printEntities(coil::Context context)
@@ -81,9 +81,9 @@ namespace
             auto optionalName = args[i + 1].get<std::string_view>();
 
             if (!optionalId)
-                context.reportError("Argument "s + std::to_string(i) + ": expected id, got '"s + std::string{ args[i].getRaw() } + "'"s);
+                context.reportError("Argument "s + std::to_string(i) + ": expected id, got '"s + std::string{ args[i].getRaw().value } + "'"s);
             if (!optionalName)
-                context.reportError("Argument "s + std::to_string(i) + ": expected name, got '"s + std::string{ args[i + 1].getRaw() } + "'"s);
+                context.reportError("Argument "s + std::to_string(i) + ": expected name, got '"s + std::string{ args[i + 1].getRaw().value } + "'"s);
 
             if (!optionalId || !optionalName)
                 return;

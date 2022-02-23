@@ -18,22 +18,22 @@ namespace coil
     template<typename E>
     struct TypeSerializer<E, std::enable_if_t<std::is_enum_v<E>>>
     {
-        static Expected<E, std::string> fromString(std::string_view str)
+        static Expected<E, std::string> fromString(ArgValue const& str)
         {
             // Allow 0 for the flag enums which don't define a "None" flag
-            if (str == "0")
+            if (str.value == "0")
                 return static_cast<E>(0);
 
             // This makes enum names case-insensitive
             auto pred = [](unsigned char a, unsigned char b) { return std::tolower(a) == std::tolower(b); };
-            std::optional<E> optionalValue = magic_enum::enum_cast<E>(str, std::move(pred));
+            std::optional<E> optionalValue = magic_enum::enum_cast<E>(str.value, std::move(pred));
 
             if (optionalValue.has_value())
                 return optionalValue.value();
 
             std::string names = utils::flatten(magic_enum::enum_names<E>(), "'");
 
-            return reportConversionError<E>(str, utils::formatString("Possible values are [%s]", names.c_str()));
+            return reportConversionError<E>(str.value, utils::formatString("Possible values are [%s]", names.c_str()));
         }
 
         static auto toString(E const& value)

@@ -3,6 +3,7 @@
 #include "TypeName.h"
 #include "Expected.h"
 #include "utils/Utils.h"
+#include "ArgValue.h"
 
 #include <string>
 #include <sstream>
@@ -40,12 +41,12 @@ namespace coil
     {
         static_assert(!std::is_void_v<T>, "Void isn't a valid conversion type");
         
-        static Expected<T, std::string> fromString(std::string_view str)
+        static Expected<T, std::string> fromString(ArgValue const& str)
         {
             static_assert(HasCinOperator<T>::value, "T should have operator>>, or TypeSerializer has to be specialized for type T");
 
             std::stringstream ss;
-            ss << str;
+            ss << str.value;
 
             T value{};
             ss >> value;
@@ -53,7 +54,7 @@ namespace coil
             if (ss.eof() && !ss.fail())
                 return value;
 
-            return reportConversionError<T>(str);
+            return reportConversionError<T>(str.value);
         }
 
         static std::string toString([[maybe_unused]] T const& value)
@@ -70,17 +71,17 @@ namespace coil
     template<typename T>
     struct TypeSerializer<T, std::enable_if_t<std::is_arithmetic_v<T>>>
     {
-        static Expected<T, std::string> fromString(std::string_view str)
+        static Expected<T, std::string> fromString(ArgValue const& str)
         {
-            auto begin = str.data();
-            auto end = str.data() + str.length();
+            auto begin = str.value.data();
+            auto end = str.value.data() + str.value.length();
 
             T value{};
             std::from_chars_result result = std::from_chars(begin, end, value);
             if (result.ptr == end)
                 return value;
 
-            return reportConversionError<T>(str);
+            return reportConversionError<T>(str.value);
         }
 
         static std::string toString(T value)
@@ -92,7 +93,7 @@ namespace coil
     template<>
     struct TypeSerializer<bool>
     {
-        static Expected<bool, std::string> fromString(std::string_view str)
+        static Expected<bool, std::string> fromString(ArgValue const& str)
         {
             auto equalCaseInsensitive = [](std::string_view a, std::string_view b)
             {
@@ -107,17 +108,17 @@ namespace coil
                 return true;
             };
 
-            if (str == "1")
+            if (str.value == "1")
                 return true;
-            if (str == "0")
+            if (str.value == "0")
                 return false;
 
-            if (equalCaseInsensitive(str, "true"))
+            if (equalCaseInsensitive(str.value, "true"))
                 return true;
-            if (equalCaseInsensitive(str, "false"))
+            if (equalCaseInsensitive(str.value, "false"))
                 return false;
 
-            return reportConversionError<bool>(str);
+            return reportConversionError<bool>(str.value);
         }
 
         static std::string toString(bool value)
@@ -129,9 +130,9 @@ namespace coil
     template<>
     struct TypeSerializer<std::string>
     {
-        static Expected<std::string, std::string> fromString(std::string_view str)
+        static Expected<std::string, std::string> fromString(ArgValue const& str)
         {
-            return std::string{ str };
+            return std::string{ str.value };
         }
 
         static std::string toString(std::string const& value)
@@ -143,9 +144,9 @@ namespace coil
     template<>
     struct TypeSerializer<std::string_view>
     {
-        static Expected<std::string_view, std::string> fromString(std::string_view str)
+        static Expected<std::string_view, std::string> fromString(ArgValue const& str)
         {
-            return str;
+            return str.value;
         }
 
         static std::string toString(std::string_view value)
@@ -157,12 +158,12 @@ namespace coil
     template<typename T>
     struct TypeSerializer<std::optional<T>>
     {
-        static Expected<std::optional<T>, std::string> fromString(std::string_view str)
+        static Expected<std::optional<T>, std::string> fromString(ArgValue const& str)
         {
-            if (str.empty())
+            if (str.value.empty())
                 return {};
 
-            return TypeSerializer<T>::fromString(str);
+            return TypeSerializer<T>::fromString(str.value);
         }
 
         static std::string toString(std::optional<T> const& value)

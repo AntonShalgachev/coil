@@ -75,6 +75,12 @@ namespace coil
             return {};
         }
 
+        static ArgValue createArgValue(std::string_view value)
+        {
+            // TODO implement
+            return ArgValue{ value };
+        }
+
         coil::Expected<void, std::string> tokenize(std::string_view str) const
         {
             std::size_t tokenBegin = std::string_view::npos;
@@ -157,11 +163,11 @@ namespace coil
                 if (tokens.secondaryTokenIndex)
                 {
                     std::string_view secondaryValue = m_tokens[*tokens.secondaryTokenIndex].value;
-                    m_input.namedArguments.emplace_back(primaryValue, secondaryValue);
+                    m_input.namedArguments.emplace_back(primaryValue, createArgValue(primaryValue));
                 }
                 else
                 {
-                    m_input.arguments.push_back(primaryValue);
+                    m_input.arguments.push_back(createArgValue(primaryValue));
                 }
 
                 tokens.reset();

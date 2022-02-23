@@ -23,12 +23,12 @@ namespace coil
     template<>
     struct TypeSerializer<WithoutDefaultConstructor>
     {
-        static Expected<WithoutDefaultConstructor, std::string> fromString(std::string_view str)
+        static Expected<WithoutDefaultConstructor, std::string> fromString(ArgValue const& str)
         {
             Expected<int, std::string> innerValue = TypeSerializer<int>::fromString(str);
 
             if (!innerValue)
-                return reportConversionError<WithoutDefaultConstructor>(str, innerValue.error());
+                return reportConversionError<WithoutDefaultConstructor>(str.value, innerValue.error());
 
             return WithoutDefaultConstructor{ *innerValue };
         }
@@ -48,39 +48,49 @@ namespace coil
 
 TEST(TypeSerializerTests, TestIntValidInputFromString)
 {
-    EXPECT_EQ(coil::TypeSerializer<int>::fromString("42"), 42);
+    using namespace std::literals;
+
+    EXPECT_EQ(coil::TypeSerializer<int>::fromString("42"sv), 42);
 }
 
 TEST(TypeSerializerTests, TestIntInvalidInputFromString)
 {
-    EXPECT_EQ(coil::TypeSerializer<int>::fromString("42foo"), coil::makeUnexpected("Unable to convert '42foo' to type 'int'"));
+    using namespace std::literals;
+
+    EXPECT_EQ(coil::TypeSerializer<int>::fromString("42foo"sv), coil::makeUnexpected("Unable to convert '42foo' to type 'int'"));
 }
 
 TEST(TypeSerializerTests, TestIntToString)
 {
+    using namespace std::literals;
+
     EXPECT_EQ(coil::TypeSerializer<int>::toString(42), "42");
 }
 
 TEST(TypeSerializerTests, TestBoolValidInputFromString)
 {
-    EXPECT_EQ(coil::TypeSerializer<bool>::fromString("false"), false);
-    EXPECT_EQ(coil::TypeSerializer<bool>::fromString("False"), false);
-    EXPECT_EQ(coil::TypeSerializer<bool>::fromString("FALse"), false);
-    EXPECT_EQ(coil::TypeSerializer<bool>::fromString("FALSE"), false);
-    EXPECT_EQ(coil::TypeSerializer<bool>::fromString("0"), false);
+    using namespace std::literals;
 
-    EXPECT_EQ(coil::TypeSerializer<bool>::fromString("true"), true);
-    EXPECT_EQ(coil::TypeSerializer<bool>::fromString("True"), true);
-    EXPECT_EQ(coil::TypeSerializer<bool>::fromString("TRue"), true);
-    EXPECT_EQ(coil::TypeSerializer<bool>::fromString("TRUE"), true);
-    EXPECT_EQ(coil::TypeSerializer<bool>::fromString("1"), true);
+    EXPECT_EQ(coil::TypeSerializer<bool>::fromString("false"sv), false);
+    EXPECT_EQ(coil::TypeSerializer<bool>::fromString("False"sv), false);
+    EXPECT_EQ(coil::TypeSerializer<bool>::fromString("FALse"sv), false);
+    EXPECT_EQ(coil::TypeSerializer<bool>::fromString("FALSE"sv), false);
+    EXPECT_EQ(coil::TypeSerializer<bool>::fromString("0"sv), false);
+
+    EXPECT_EQ(coil::TypeSerializer<bool>::fromString("true"sv), true);
+    EXPECT_EQ(coil::TypeSerializer<bool>::fromString("True"sv), true);
+    EXPECT_EQ(coil::TypeSerializer<bool>::fromString("TRue"sv), true);
+    EXPECT_EQ(coil::TypeSerializer<bool>::fromString("TRUE"sv), true);
+    EXPECT_EQ(coil::TypeSerializer<bool>::fromString("1"sv), true);
 }
 
 TEST(TypeSerializerTests, TestBoolInvalidInputFromString)
 {
-    EXPECT_EQ(coil::TypeSerializer<bool>::fromString("2"), coil::makeUnexpected("Unable to convert '2' to type 'bool'"));
-    EXPECT_EQ(coil::TypeSerializer<bool>::fromString("none"), coil::makeUnexpected("Unable to convert 'none' to type 'bool'"));
-    EXPECT_EQ(coil::TypeSerializer<bool>::fromString("-1"), coil::makeUnexpected("Unable to convert '-1' to type 'bool'"));
+    using namespace std::literals;
+
+    EXPECT_EQ(coil::TypeSerializer<bool>::fromString("2"sv), coil::makeUnexpected("Unable to convert '2' to type 'bool'"));
+    EXPECT_EQ(coil::TypeSerializer<bool>::fromString("none"sv), coil::makeUnexpected("Unable to convert 'none' to type 'bool'"));
+    EXPECT_EQ(coil::TypeSerializer<bool>::fromString("-1"sv), coil::makeUnexpected("Unable to convert '-1' to type 'bool'"));
 }
 
 TEST(TypeSerializerTests, TestBoolToString)
@@ -91,15 +101,21 @@ TEST(TypeSerializerTests, TestBoolToString)
 
 TEST(TypeSerializerTests, TestUserTypeFromStringValid)
 {
-    EXPECT_EQ(coil::TypeSerializer<WithoutDefaultConstructor>::fromString("42"), WithoutDefaultConstructor{ 42 });
+    using namespace std::literals;
+
+    EXPECT_EQ(coil::TypeSerializer<WithoutDefaultConstructor>::fromString("42"sv), WithoutDefaultConstructor{ 42 });
 }
 
 TEST(TypeSerializerTests, TestUserTypeFromStringInvalid)
 {
-    EXPECT_EQ(coil::TypeSerializer<WithoutDefaultConstructor>::fromString("foo"), coil::makeUnexpected("Unable to convert 'foo' to type 'WithoutDefaultConstructor': Unable to convert 'foo' to type 'int'"));
+    using namespace std::literals;
+
+    EXPECT_EQ(coil::TypeSerializer<WithoutDefaultConstructor>::fromString("foo"sv), coil::makeUnexpected("Unable to convert 'foo' to type 'WithoutDefaultConstructor': Unable to convert 'foo' to type 'int'"));
 }
 
 TEST(TypeSerializerTests, TestUserTypeToString)
 {
+    using namespace std::literals;
+
     EXPECT_EQ(coil::TypeSerializer<WithoutDefaultConstructor>::toString(WithoutDefaultConstructor{ 42 }), "WithoutDefaultConstructor{42}");
 }
