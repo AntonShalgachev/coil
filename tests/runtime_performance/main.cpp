@@ -35,7 +35,7 @@ namespace util
 namespace
 {
     coil::Bindings cmd;
-    coil::ExecutionInput cmdInput{ {"long_function_name_please0"}, {"3.14", "0.16"}, {} };
+    coil::ExecutionInput cmdInput{ "long_function_name_please0", {{"3.14"}, {"0.16"}}, {} };
 
     sol::state lua;
 
@@ -73,9 +73,11 @@ namespace
 
     BENCHMARK(Scripting, DirectFromString, runs, iterations)
     {
+        using namespace std::literals;
+
         using TS = coil::TypeSerializer<float>;
-        auto arg1 = TS::fromString("3.14");
-        auto arg2 = TS::fromString("0.16");
+        auto arg1 = TS::fromString("3.14"sv);
+        auto arg2 = TS::fromString("0.16"sv);
         if (arg1 && arg2)
             user::function<0>(*arg1, *arg2);
     }

@@ -7,10 +7,11 @@
 
 namespace coil
 {
+    // TODO it's not a "view" anymore
     class AnyArgView
     {
     public:
-        AnyArgView(std::string_view value) : m_value(value) {}
+        AnyArgView(ArgValue value) : m_value(std::move(value)) {}
 
         template<typename T>
         Expected<T, std::string> get() const
@@ -18,23 +19,24 @@ namespace coil
             return TypeSerializer<T>::fromString(m_value);
         }
 
-        std::string_view getRaw() const { return m_value; }
+        // TODO rename?
+        ArgValue const& getRaw() const { return m_value; }
 
     private:
-        std::string_view m_value;
+        ArgValue m_value;
     };
 
     template<>
     struct TypeSerializer<AnyArgView>
     {
-        static Expected<AnyArgView, std::string> fromString(std::string_view str)
+        static Expected<AnyArgView, std::string> fromString(ArgValue value)
         {
-            return AnyArgView(str);
+            return AnyArgView(value);
         }
 
         static std::string toString(AnyArgView const& value)
         {
-            return std::string{ value.getRaw() };
+            return std::string{ value.getRaw().value };
         }
     };
 }

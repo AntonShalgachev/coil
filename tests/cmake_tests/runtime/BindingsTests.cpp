@@ -172,13 +172,13 @@ namespace coil
     template<typename T>
     struct TypeSerializer<Tracker<T>>
     {
-        static Expected<Tracker<T>, std::string> fromString(std::string_view str)
+        static Expected<Tracker<T>, std::string> fromString(ArgValue const& str)
         {
             Expected<T, std::string> innerValue = TypeSerializer<T>::fromString(str);
             if (innerValue)
                 return Tracker<T>{*innerValue};
 
-            return reportConversionError<Tracker<T>>(str, innerValue.error());
+            return reportConversionError<Tracker<T>>(str.value, innerValue.error());
         }
 
         static std::string toString(Tracker<T> const& value)
