@@ -163,7 +163,7 @@ namespace coil
                 if (tokens.secondaryTokenIndex)
                 {
                     std::string_view secondaryValue = m_tokens[*tokens.secondaryTokenIndex].value;
-                    m_input.namedArguments.emplace_back(primaryValue, createArgValue(primaryValue));
+                    m_input.namedArguments.emplace_back(primaryValue, createArgValue(secondaryValue));
                 }
                 else
                 {
