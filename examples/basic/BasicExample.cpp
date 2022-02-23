@@ -79,8 +79,8 @@ void BasicExample::run()
     {
         context.out() << "This object scales by " << scaler.getData();
     };
-    bindings["scaler"]["scale"] = coil::bind(&Object::scale, &scaler);
-    bindings["foo"]["bar"]["baz"]["qux"] = []() { return 42; };
+    bindings["scaler.scale"] = coil::bind(&Object::scale, &scaler);
+    bindings["foo.bar.baz.qux"] = []() { return 42; };
 
     common::printSectionHeader("Basic function without any arguments:");
     common::executeCommand(bindings, "hello");
