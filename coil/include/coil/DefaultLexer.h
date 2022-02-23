@@ -33,6 +33,7 @@ namespace coil
     private:
         enum class CharType
         {
+            Group,
             Space,
             String,
             Assignment,
@@ -56,6 +57,10 @@ namespace coil
                 return CharType::Assignment;
             if (std::isspace(c))
                 return CharType::Space;
+
+            // TODO add other chars
+            if (c == '(' || c == ')' || c == '"')
+                return CharType::Group;
 
             return CharType::String;
         }
@@ -83,39 +88,44 @@ namespace coil
 
         coil::Expected<void, std::string> tokenize(std::string_view str) const
         {
-            std::size_t tokenBegin = std::string_view::npos;
-            CharType currentCharType = CharType::Space;
-
-            auto tryAddPreviousToken = [this, &tokenBegin, &currentCharType, &str](std::size_t tokenEnd) -> coil::Expected<void, std::string>
-            {
-                if (tokenBegin == std::string_view::npos)
-                    return {};
-                if (currentCharType == CharType::Space)
-                    return {};
-
-                auto tokenType = convertToTokenType(currentCharType);
-                if (!tokenType)
-                    return makeUnexpected("Lexer internal error");
-
-                m_tokens.push_back(Token{ *tokenType, str.substr(tokenBegin, tokenEnd - tokenBegin) });
-                return {};
-            };
-
             for (std::size_t i = 0; i < str.size(); i++)
             {
+                while ((i < str.size()) && getCharType(str[i]) == CharType::Space)
+                    i++;
+
+                if (i >= str.size())
+                    break;
+
+                std::size_t tokenBegin = i;
                 CharType charType = getCharType(str[i]);
-
-                if (currentCharType != charType)
+                switch (charType)
                 {
-                    if (auto result = tryAddPreviousToken(i); !result)
-                        return result;
+                case CharType::String:
+                    i++;
+                    while ((i < str.size()) && getCharType(str[i]) == CharType::String)
+                        i++;
 
-                    tokenBegin = i;
-                    currentCharType = charType;
+                    m_tokens.push_back(Token{ TokenType::String, str.substr(tokenBegin, i - tokenBegin) });
+                    i--; // return to the last 'String' char
+                    break;
+                case CharType::Assignment:
+                    m_tokens.push_back(Token{ TokenType::Assignment, str.substr(i, 1) });
+                    break;
+                case CharType::Group:
+                    i++;
+                    while ((i < str.size()) && getCharType(str[i]) != CharType::Group)
+                        i++;
+
+                    if (i >= str.size())
+                        return makeUnexpected(utils::formatString("Token '%c' doesn't have an opening/closing token", str[tokenBegin]));
+
+                    m_tokens.push_back(Token{ TokenType::String, str.substr(tokenBegin + 1, i - tokenBegin - 1) });
+                    break;
                 }
+                
             }
 
-            return tryAddPreviousToken(str.size());
+            return {};
         }
 
         Expected<void, std::string> parse() const
