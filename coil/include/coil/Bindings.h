@@ -27,55 +27,24 @@ namespace coil
         BindingProxy<Bindings> operator[](std::string_view name);
 
         template<typename Func>
-        void add(std::vector<std::string_view> const& path, Func&& func)
+        void add(std::string_view name, Func&& func)
         {
             using UnqualifiedFunc = std::decay_t<Func>;
-            using FuncTraits = utils::FuncTraits<UnqualifiedFunc>;
 
-            static_assert(FuncTraits::isFunc, "Func should be a functor object");
+            static_assert(utils::FuncTraits<UnqualifiedFunc>::isFunc, "Func should be a functor object");
             static_assert(!std::is_member_function_pointer_v<UnqualifiedFunc>, "Func shouldn't be a member function");
 
-            Node* targetNode = &m_root;
-            for (auto const& pathPart : path)
-            {
-                auto& subtree = targetNode->children[pathPart];
-                if (!subtree)
-                    subtree = std::make_unique<Node>();
-
-                targetNode = subtree.get();
-            }
-
-            targetNode->functor = AnyFunctor{ UnqualifiedFunc{ std::move(func) }, &detail::functorTrampoline<UnqualifiedFunc> };
+            m_commands.insert_or_assign(name, AnyFunctor{ UnqualifiedFunc{ std::move(func) }, &detail::functorTrampoline<UnqualifiedFunc> });
         }
 
-        void remove(std::vector<std::string_view> const& path)
+        void remove(std::string_view name)
         {
-            Node* targetNode = &m_root;
-            for (auto const& pathPart : path)
-            {
-                auto it = targetNode->children.find(pathPart);
-                if (it == targetNode->children.end())
-                {
-                    // TODO report error?
-                    return;
-                }
-
-                if (!it->second)
-                {
-                    // TODO report error?
-                    return;
-                }
-
-                targetNode = it->second.get();
-            }
-
-            targetNode->functor = {};
+            m_commands.erase(name);
         }
 
         void clear()
         {
-            m_root.children.clear();
-            m_root.functor = {};
+            m_commands.clear();
         }
 
         ExecutionResult execute(std::string_view command)
@@ -133,100 +102,48 @@ namespace coil
 
         void execute(detail::CallContext& context)
         {
-            if (context.input.path.empty() || context.input.path.back().empty())
+            if (context.input.name.empty())
             {
                 context.result.errors.push_back("No function name is specified");
                 return;
             }
 
-            auto reportMissingCommand = [](detail::CallContext& context)
+            auto it = m_commands.find(context.input.name);
+            if (it == m_commands.end())
             {
-                std::string flatPath = utils::flatten(context.input.path, "", ".");
-                context.result.errors.push_back(utils::formatString("No function '%s' is registered", flatPath.c_str()));
-            };
-
-            Node* targetNode = &m_root;
-            for (auto const& pathPart : context.input.path)
-            {
-                auto it = targetNode->children.find(pathPart);
-                if (it == targetNode->children.end())
-                {
-                    reportMissingCommand(context);
-                    return;
-                }
-
-                if (!it->second)
-                {
-                    context.result.errors.push_back("Internal error");
-                    return;
-                }
-
-                targetNode = it->second.get();
-            }
-
-            if (!targetNode->functor)
-            {
-                reportMissingCommand(context);
+                context.result.errors.push_back(utils::formatString("No function '%.*s' is registered", context.input.name.size(), context.input.name.data()));
                 return;
             }
 
-            targetNode->functor->invokeTrampoline(context);
+            it->second.invokeTrampoline(context);
         }
 
         DefaultLexer m_defaultLexer;
 
-        struct Node
-        {
-            std::optional<AnyFunctor> functor;
-            std::unordered_map<StringWrapper, std::unique_ptr<Node>> children;
-        };
-
-        Node m_root;
+        std::unordered_map<StringWrapper, AnyFunctor> m_commands;
 	};
 
     template<typename BindingsT>
     class BindingProxy
     {
     public:
-        BindingProxy(BindingsT& bindings, std::vector<std::string_view> partialPath) : m_bindings(bindings), m_partialPath(std::move(partialPath)) {}
-
-        BindingProxy operator[](std::string_view name) const& = delete;
-        BindingProxy operator[](std::string_view name) &
-        {
-            std::vector<std::string_view> newPartialPath = m_partialPath;
-            newPartialPath.push_back(name);
-            return BindingProxy{ m_bindings, std::move(newPartialPath) };
-        }
-        BindingProxy operator[](std::string_view name) &&
-        {
-            std::vector<std::string_view> newPartialPath = std::move(m_partialPath);
-            newPartialPath.push_back(name);
-            return BindingProxy{ m_bindings, std::move(newPartialPath) };
-        }
+        BindingProxy(BindingsT& bindings, std::string_view name) : m_bindings(bindings), m_name(name) {}
 
         template<typename AnyT>
-        BindingProxy& operator=(AnyT&& anything) const& = delete;
-        template<typename AnyT>
-        BindingProxy& operator=(AnyT&& anything) &
+        BindingProxy& operator=(AnyT&& anything)
         {
-            m_bindings.add(m_partialPath, std::forward<AnyT>(anything));
-            return *this;
-        }
-        template<typename AnyT>
-        BindingProxy& operator=(AnyT&& anything) &&
-        {
-            m_bindings.add(std::move(m_partialPath), std::forward<AnyT>(anything));
+            m_bindings.add(m_name, std::forward<AnyT>(anything));
             return *this;
         }
         BindingProxy& operator=(std::nullptr_t)
         {
-            m_bindings.remove(m_partialPath);
+            m_bindings.remove(m_name);
             return *this;
         }
 
     private:
         BindingsT& m_bindings;
-        std::vector<std::string_view> m_partialPath;
+        std::string_view m_name;
     };
 
     inline BindingProxy<Bindings> Bindings::operator[](std::string_view name)

@@ -134,24 +134,24 @@ namespace
         coil::Bindings bindings;
 
         bindings["func"] = &function;
-        bindings["ns"]["func"] = &function;
+        bindings["ns.func"] = &function;
 
         bindings["sum"] = &sum;
-        bindings["ns"]["sum"] = &sum;
+        bindings["ns.sum"] = &sum;
 
         bindings["sum_all"] = &sumAll;
 
         bindings["sum_all_init"] = &sumAllInit;
-        bindings["ns"]["sum_all_init"] = &sumAllInit;
+        bindings["ns.sum_all_init"] = &sumAllInit;
 
         bindings["func_with_optional"] = &funcWithOptional;
-        bindings["ns"]["func_with_optional"] = &funcWithOptional;
+        bindings["ns.func_with_optional"] = &funcWithOptional;
 
         bindings["output"] = &output;
-        bindings["ns"]["output"] = &output;
+        bindings["ns.output"] = &output;
 
         bindings["var"] = coil::variable(&variable);
-        bindings["ns"]["var"] = coil::variable(&variable);
+        bindings["ns.var"] = coil::variable(&variable);
 
         bindings["tracker_var"] = coil::variable(&trackedVariable);
         bindings["create_tracker"] = &createTracker;
@@ -539,7 +539,7 @@ TEST(BindingsTests, TestUnbind)
 TEST(BindingsTests, TestUnbindWithCategory)
 {
     coil::Bindings bindings = createBindings();
-    bindings["ns"]["func"] = {};
+    bindings["ns.func"] = {};
     auto result = bindings.execute("ns.func");
 
     EXPECT_EQ(result.errors.size(), 1);

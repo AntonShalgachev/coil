@@ -100,10 +100,9 @@ void VariadicExample::run()
     bindings["sum_all"] = &sumAll;
     bindings["scale"] = &scale;
 
-    auto entitiesBindings = bindings["entities"];
-    entitiesBindings["rename"] = &renameEntity;
-    entitiesBindings["list"] = &printEntities;
-    entitiesBindings["add"] = &addEntities;
+    bindings["entities.rename"] = &renameEntity;
+    bindings["entities.list"] = &printEntities;
+    bindings["entities.add"] = &addEntities;
 
     common::printSectionHeader("std::vector consumes all remaining arguments:");
     common::executeCommand(bindings, "sum_all");
