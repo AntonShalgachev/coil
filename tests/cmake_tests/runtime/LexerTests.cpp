@@ -10,7 +10,7 @@ namespace coil
     {
         os << "'" << value.value << "'";
 
-        if (value.subvalues.size() > 1)
+        if (value.subvalues.size() != 1 || value.subvalues[0] != value.value)
         {
             os << "(";
 
@@ -248,10 +248,12 @@ TEST(LexerTests, TestCompositeArgs)
     coil::DefaultLexer lexer;
 
     EXPECT_EQ(lexer("func arg1,arg2"), createInput("func", args(Val{ "arg1,arg2", {"arg1", "arg2"}}), {}));
+    EXPECT_EQ(lexer("func (arg1 arg2)"), createInput("func", args(Val{ "arg1 arg2", {"arg1", "arg2"}}), {}));
     EXPECT_EQ(lexer("func (arg1,arg2)"), createInput("func", args(Val{ "arg1,arg2", {"arg1", "arg2"}}), {}));
     EXPECT_EQ(lexer("func (arg1, arg2)"), createInput("func", args(Val{ "arg1, arg2", {"arg1", "arg2"}}), {}));
     EXPECT_EQ(lexer("func (arg1 , arg2)"), createInput("func", args(Val{ "arg1 , arg2", {"arg1", "arg2"}}), {}));
     EXPECT_EQ(lexer("func ( arg1 , arg2 )"), createInput("func", args(Val{ " arg1 , arg2 ", {"arg1", "arg2"}}), {}));
+    EXPECT_EQ(lexer("func ( arg1 arg2 )"), createInput("func", args(Val{ " arg1 arg2 ", {"arg1", "arg2"}}), {}));
 }
 
 TEST(LexerTests, TestCompositeArgsEdgeCases)
@@ -259,9 +261,10 @@ TEST(LexerTests, TestCompositeArgsEdgeCases)
     coil::DefaultLexer lexer;
 
     EXPECT_EQ(lexer("func arg(um)ent"), createInput("func", args("arg", "um", "ent"), {}));
-    EXPECT_EQ(lexer("func ()"), createInput("func", args(Val{ "", {""} }), {}));
-    EXPECT_EQ(lexer("func (,)"), createInput("func", args(Val{ ",", {"", ""} }), {}));
-    EXPECT_EQ(lexer("func ( , )"), createInput("func", args(Val{ " , ", {"", ""} }), {}));
+    EXPECT_EQ(lexer("func ()"), createInput("func", args(Val{ "", {} }), {}));
+    EXPECT_EQ(lexer("func ( )"), createInput("func", args(Val{ " ", {} }), {}));
+    EXPECT_EQ(lexer("func (,)"), createInput("func", args(Val{ ",", {} }), {}));
+    EXPECT_EQ(lexer("func ( , )"), createInput("func", args(Val{ " , ", {} }), {}));
 }
 
 TEST(LexerTests, TestEmpty)
