@@ -50,36 +50,6 @@ assert(variable == 84);
 
 Here you'll find a brief overview of the features. You can check the examples (`examples` directory) for more details.
 
-### Nested commands
-You can organize your commands with the help of "namespaces". The nesting level is unlimited:
-
-```cpp
-bindings["global_command"] = [](int arg) {};
-bindings["namespace"]["command"] = [](int arg) {};
-bindings["ns1"]["ns2"]["command"] = [](int arg) {};
-
-bindings.execute("global_command 42")
-bindings.execute("namespace.command 42")
-bindings.execute("ns1.ns2.command 42")
-```
-
-The following would also work (namespaces can have a "root" command):
-```cpp
-bindings["widgets"]["fps"] = []() { /*Show 'fps' widget*/ };
-bindings["widgets"]["fps"]["pos"] = [](Anchor anchor) { /*Set position*/ };
-
-bindings.execute("widgets.fps"); // shows the widget
-bindings.execute("widgets.fps.pos TopLeft"); // changes its position
-```
-
-That can be useful to make the command names more intuitive (and also allows a better suggestion implementation):
-```
-inventory.add item_id
-inventory.debug true
-graphics.vulkan.some_parameter 0.6
-graphics.opengl.some_parameter 0.7
-```
-
 ### Functions
 Any C++ functor object can be used for the command:
 ```cpp
@@ -102,7 +72,7 @@ struct InventoryManager
 };
 InventoryManager inventoryManager;
 
-bindings["inventory"]["add"] = coil::bind(&InventoryManager::add, &inventoryManager);
+bindings["inventory.add"] = coil::bind(&InventoryManager::add, &inventoryManager);
 ```
 
 > ⚠️ Make sure that `inventoryManager` isn't destroyed during the command lifetime
@@ -127,7 +97,7 @@ struct InventoryManager
 
 InventoryManager inventoryManager;
 
-bindings["inventory"]["debug"] = coil::variable(&InventoryManager::debugMode, &inventoryManager);
+bindings["inventory.debug"] = coil::variable(&InventoryManager::debugMode, &inventoryManager);
 ```
 
 > ⚠️ Make sure that `inventoryManager` isn't destroyed during the command lifetime
@@ -147,7 +117,7 @@ class Widget
 Widget widget;
 
 bindings["debugmode"] = coil::variable(&debugMode);
-bindings["widget"]["show"] = coil::bind(&Widget::show, &widget);
+bindings["widget.show"] = coil::bind(&Widget::show, &widget);
 ```
 
 One way to specialize `TypeSerializer` for enums is to use `magic_enum`. See `enums` example to see how it can be done
