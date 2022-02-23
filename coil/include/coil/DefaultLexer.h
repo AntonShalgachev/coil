@@ -51,11 +51,22 @@ namespace coil
             std::string_view value;
         };
 
+        static bool isSpace(unsigned char c)
+        {
+            return std::isspace(c);
+        }
+
+        static bool isGroupSeparator(unsigned char c)
+        {
+            // TODO add other chars
+            return c == ',' || c == ';' || c == '|' || isSpace(c);
+        }
+
         static CharType getCharType(unsigned char c)
         {
             if (c == '=')
                 return CharType::Assignment;
-            if (std::isspace(c))
+            if (isSpace(c))
                 return CharType::Space;
 
             // TODO add other chars
@@ -80,10 +91,32 @@ namespace coil
             return {};
         }
 
-        static ArgValue createArgValue(std::string_view value)
+        std::vector<std::string_view> splitGroup(std::string_view str) const
+        {
+            std::vector<std::string_view> result;
+
+            for (std::size_t i = 0; i < str.size(); i++)
+            {
+                while ((i < str.size()) && isGroupSeparator(str[i]))
+                    i++;
+
+                if (i >= str.size())
+                    break;
+
+                std::size_t stringBegin = i;
+                while ((i < str.size()) && !isGroupSeparator(str[i]))
+                    i++;
+
+                result.push_back(str.substr(stringBegin, i - stringBegin));
+            }
+
+            return result;
+        }
+
+        ArgValue createArgValue(std::string_view groupValue) const
         {
             // TODO implement
-            return ArgValue{ value };
+            return ArgValue{ groupValue, splitGroup(groupValue) };
         }
 
         coil::Expected<void, std::string> tokenize(std::string_view str) const
@@ -121,6 +154,8 @@ namespace coil
 
                     m_tokens.push_back(Token{ TokenType::String, str.substr(tokenBegin + 1, i - tokenBegin - 1) });
                     break;
+                default:
+                    return makeUnexpected("Internal error");
                 }
                 
             }
