@@ -15,6 +15,8 @@
 
 namespace coil
 {
+    // TODO rename
+    // TODO make inputString 'coil::ArgValue'
     template<typename T>
     static Unexpected<std::string> reportConversionError(std::string_view inputString, std::string_view details = {})
     {
