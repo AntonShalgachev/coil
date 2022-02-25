@@ -112,7 +112,7 @@ namespace coil
         static Expected<Vec2, std::string> fromString(ArgValue const& str)
         {
             if (str.subvalues.size() != 2)
-                return reportConversionError<Vec2>(str.value, utils::formatString("Expected 2 subvalues, got %d", str.subvalues.size()));
+                return makeSerializationError<Vec2>(str, 2);
 
             auto x = TypeSerializer<float>::fromString(str.subvalues[0]);
             auto y = TypeSerializer<float>::fromString(str.subvalues[1]);

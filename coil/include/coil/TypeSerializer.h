@@ -28,6 +28,12 @@ namespace coil
             return makeUnexpected(utils::formatString("Unable to convert '%.*s' to type '%.*s': %.*s", inputString.length(), inputString.data(), typeName.length(), typeName.data(), details.length(), details.data()));
     }
 
+    template<typename T>
+    static Unexpected<std::string> makeSerializationError(ArgValue const& input, std::size_t expectedSubvalues)
+    {
+        return reportConversionError<T>(input.value, utils::formatString("Expected %d subvalues, got %d", expectedSubvalues, input.subvalues.size()));
+    }
+
     template<typename T, typename = void>
     struct HasCoutOperator : std::false_type {};
     template<typename T>
