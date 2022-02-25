@@ -11,6 +11,7 @@ namespace coil
     public:
         Context(detail::CallContext& callContext) : m_callContext(callContext), m_namedArgs(callContext) {}
 
+        // TODO rename to `log`?
         std::ostream& out() { return m_callContext.out(); }
 
         void reportError(std::string error)
