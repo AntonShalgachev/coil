@@ -56,10 +56,22 @@ namespace coil
             return std::isspace(c);
         }
 
+        static bool isGroupChar(unsigned char c)
+        {
+            // TODO make configurable?
+            static std::vector<unsigned char> chars = { '(', ')', '"' };
+            return std::find(chars.begin(), chars.end(), c) != chars.end();
+        }
+
         static bool isGroupSeparator(unsigned char c)
         {
-            // TODO add other chars
-            return c == ',' || c == ';' || c == '|' || isSpace(c);
+            // TODO make configurable?
+            static std::vector<unsigned char> chars = { ',', ';', '|' };
+
+            if (isSpace(c))
+                return true;
+
+            return std::find(chars.begin(), chars.end(), c) != chars.end();
         }
 
         static CharType getCharType(unsigned char c)
@@ -68,9 +80,7 @@ namespace coil
                 return CharType::Assignment;
             if (isSpace(c))
                 return CharType::Space;
-
-            // TODO add other chars
-            if (c == '(' || c == ')' || c == '"')
+            if (isGroupChar(c))
                 return CharType::Group;
 
             return CharType::String;
