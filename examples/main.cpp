@@ -8,6 +8,7 @@
 #include "named/NamedExample.h"
 #include "enums/EnumsExample.h"
 #include "errors/ErrorsExample.h"
+#include "usertypes/UsertypesExample.h"
 
 #include "coil/Bindings.h"
 #include "coil/utils/MemberFunctionFunctor.h"
@@ -38,6 +39,7 @@ int main()
         , NamedExample
         , EnumsExample
         , ErrorsExample
+        , UsertypesExample
     >;
 
     std::array<std::string_view, std::tuple_size_v<Examples>> names = {
@@ -47,6 +49,7 @@ int main()
         "named",
         "enums",
         "errors",
+        "usertypes",
     };
 
     std::array<std::string_view, 4> commands = {
