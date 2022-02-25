@@ -196,7 +196,7 @@ namespace coil
             if (innerValue)
                 return Tracker<T>{*innerValue};
 
-            return reportConversionError<Tracker<T>>(input, innerValue.error());
+            return makeSerializationError<Tracker<T>>(input, innerValue.error());
         }
 
         static std::string toString(Tracker<T> const& value)
@@ -217,9 +217,9 @@ namespace coil
             auto field2 = TypeSerializer<int>::fromString(input.subvalues[1]);
 
             if (!field1)
-                return reportConversionError<CompoundType>(input, field1.error());
+                return makeSerializationError<CompoundType>(input, field1.error());
             if (!field2)
-                return reportConversionError<CompoundType>(input, field2.error());
+                return makeSerializationError<CompoundType>(input, field2.error());
 
             return CompoundType{ *field1, *field2 };
         }

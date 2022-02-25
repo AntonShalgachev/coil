@@ -15,9 +15,8 @@
 
 namespace coil
 {
-    // TODO rename
     template<typename T>
-    static Unexpected<std::string> reportConversionError(ArgValue const& input, std::string_view details = {})
+    static Unexpected<std::string> makeSerializationError(ArgValue const& input, std::string_view details = {})
     {
         std::string_view typeName = TypeName<T>::name();
 
@@ -30,7 +29,7 @@ namespace coil
     template<typename T>
     static Unexpected<std::string> makeSerializationError(ArgValue const& input, std::size_t expectedSubvalues)
     {
-        return reportConversionError<T>(input, utils::formatString("Expected %d subvalues, got %d", expectedSubvalues, input.subvalues.size()));
+        return makeSerializationError<T>(input, utils::formatString("Expected %d subvalues, got %d", expectedSubvalues, input.subvalues.size()));
     }
 
     template<typename T, typename = void>
@@ -61,7 +60,7 @@ namespace coil
             if (ss.eof() && !ss.fail())
                 return value;
 
-            return reportConversionError<T>(input);
+            return makeSerializationError<T>(input);
         }
 
         static std::string toString([[maybe_unused]] T const& value)
@@ -88,7 +87,7 @@ namespace coil
             if (result.ptr == end)
                 return value;
 
-            return reportConversionError<T>(input);
+            return makeSerializationError<T>(input);
         }
 
         static std::string toString(T value)
@@ -125,7 +124,7 @@ namespace coil
             if (equalCaseInsensitive(input.value, "false"))
                 return false;
 
-            return reportConversionError<bool>(input);
+            return makeSerializationError<bool>(input);
         }
 
         static std::string toString(bool value)

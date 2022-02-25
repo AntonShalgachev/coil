@@ -33,7 +33,7 @@ namespace coil
 
             std::string names = utils::flatten(magic_enum::enum_names<E>(), "'");
 
-            return reportConversionError<E>(input, utils::formatString("Possible values are [%s]", names.c_str()));
+            return makeSerializationError<E>(input, utils::formatString("Possible values are [%s]", names.c_str()));
         }
 
         static auto toString(E const& value)
