@@ -3,6 +3,7 @@
 #include "TypeName.h"
 #include "Expected.h"
 #include "utils/Utils.h"
+#include "ArgValue.h"
 
 #include <string>
 #include <sstream>
@@ -15,14 +16,20 @@
 namespace coil
 {
     template<typename T>
-    static Unexpected<std::string> reportConversionError(std::string_view inputString, std::string_view details = {})
+    static Unexpected<std::string> makeSerializationError(ArgValue const& input, std::string_view details = {})
     {
         std::string_view typeName = TypeName<T>::name();
 
         if (details.empty())
-            return makeUnexpected(utils::formatString("Unable to convert '%.*s' to type '%.*s'", inputString.length(), inputString.data(), typeName.length(), typeName.data()));
+            return makeUnexpected(utils::formatString("Unable to convert '%.*s' to type '%.*s'", input.value.length(), input.value.data(), typeName.length(), typeName.data()));
         else
-            return makeUnexpected(utils::formatString("Unable to convert '%.*s' to type '%.*s': %.*s", inputString.length(), inputString.data(), typeName.length(), typeName.data(), details.length(), details.data()));
+            return makeUnexpected(utils::formatString("Unable to convert '%.*s' to type '%.*s': %.*s", input.value.length(), input.value.data(), typeName.length(), typeName.data(), details.length(), details.data()));
+    }
+
+    template<typename T>
+    static Unexpected<std::string> makeSerializationError(ArgValue const& input, std::size_t expectedSubvalues)
+    {
+        return makeSerializationError<T>(input, utils::formatString("Expected %d subvalues, got %d", expectedSubvalues, input.subvalues.size()));
     }
 
     template<typename T, typename = void>
@@ -40,12 +47,12 @@ namespace coil
     {
         static_assert(!std::is_void_v<T>, "Void isn't a valid conversion type");
         
-        static Expected<T, std::string> fromString(std::string_view str)
+        static Expected<T, std::string> fromString(ArgValue const& input)
         {
             static_assert(HasCinOperator<T>::value, "T should have operator>>, or TypeSerializer has to be specialized for type T");
 
             std::stringstream ss;
-            ss << str;
+            ss << input.value;
 
             T value{};
             ss >> value;
@@ -53,7 +60,7 @@ namespace coil
             if (ss.eof() && !ss.fail())
                 return value;
 
-            return reportConversionError<T>(str);
+            return makeSerializationError<T>(input);
         }
 
         static std::string toString([[maybe_unused]] T const& value)
@@ -70,17 +77,17 @@ namespace coil
     template<typename T>
     struct TypeSerializer<T, std::enable_if_t<std::is_arithmetic_v<T>>>
     {
-        static Expected<T, std::string> fromString(std::string_view str)
+        static Expected<T, std::string> fromString(ArgValue const& input)
         {
-            auto begin = str.data();
-            auto end = str.data() + str.length();
+            auto begin = input.value.data();
+            auto end = input.value.data() + input.value.length();
 
             T value{};
             std::from_chars_result result = std::from_chars(begin, end, value);
             if (result.ptr == end)
                 return value;
 
-            return reportConversionError<T>(str);
+            return makeSerializationError<T>(input);
         }
 
         static std::string toString(T value)
@@ -92,7 +99,7 @@ namespace coil
     template<>
     struct TypeSerializer<bool>
     {
-        static Expected<bool, std::string> fromString(std::string_view str)
+        static Expected<bool, std::string> fromString(ArgValue const& input)
         {
             auto equalCaseInsensitive = [](std::string_view a, std::string_view b)
             {
@@ -107,17 +114,17 @@ namespace coil
                 return true;
             };
 
-            if (str == "1")
+            if (input.value == "1")
                 return true;
-            if (str == "0")
+            if (input.value == "0")
                 return false;
 
-            if (equalCaseInsensitive(str, "true"))
+            if (equalCaseInsensitive(input.value, "true"))
                 return true;
-            if (equalCaseInsensitive(str, "false"))
+            if (equalCaseInsensitive(input.value, "false"))
                 return false;
 
-            return reportConversionError<bool>(str);
+            return makeSerializationError<bool>(input);
         }
 
         static std::string toString(bool value)
@@ -129,9 +136,9 @@ namespace coil
     template<>
     struct TypeSerializer<std::string>
     {
-        static Expected<std::string, std::string> fromString(std::string_view str)
+        static Expected<std::string, std::string> fromString(ArgValue const& input)
         {
-            return std::string{ str };
+            return std::string{ input.value };
         }
 
         static std::string toString(std::string const& value)
@@ -143,9 +150,9 @@ namespace coil
     template<>
     struct TypeSerializer<std::string_view>
     {
-        static Expected<std::string_view, std::string> fromString(std::string_view str)
+        static Expected<std::string_view, std::string> fromString(ArgValue const& input)
         {
-            return str;
+            return input.value;
         }
 
         static std::string toString(std::string_view value)
@@ -157,12 +164,12 @@ namespace coil
     template<typename T>
     struct TypeSerializer<std::optional<T>>
     {
-        static Expected<std::optional<T>, std::string> fromString(std::string_view str)
+        static Expected<std::optional<T>, std::string> fromString(ArgValue const& input)
         {
-            if (str.empty())
+            if (input.value.empty())
                 return {};
 
-            return TypeSerializer<T>::fromString(str);
+            return TypeSerializer<T>::fromString(input.value);
         }
 
         static std::string toString(std::optional<T> const& value)

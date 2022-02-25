@@ -129,6 +129,22 @@ namespace
     void useTrackerByValue(Tracker<int>) {}
     void useTrackerByRef(Tracker<int> const&) {}
 
+    struct CompoundType
+    {
+        int field1{};
+        int field2{};
+
+        bool operator==(CompoundType const& rhs) const
+        {
+            return field1 == rhs.field1 && field2 == rhs.field2;
+        }
+    };
+
+    CompoundType getCompound(CompoundType const& val)
+    {
+        return val;
+    }
+
     coil::Bindings createBindings()
     {
         coil::Bindings bindings;
@@ -158,6 +174,8 @@ namespace
         bindings["use_tracker_by_value"] = &useTrackerByValue;
         bindings["use_tracker_by_ref"] = &useTrackerByRef;
 
+        bindings["get_compound"] = &getCompound;
+
         return bindings;
     }
 
@@ -172,18 +190,45 @@ namespace coil
     template<typename T>
     struct TypeSerializer<Tracker<T>>
     {
-        static Expected<Tracker<T>, std::string> fromString(std::string_view str)
+        static Expected<Tracker<T>, std::string> fromString(ArgValue const& input)
         {
-            Expected<T, std::string> innerValue = TypeSerializer<T>::fromString(str);
+            Expected<T, std::string> innerValue = TypeSerializer<T>::fromString(input);
             if (innerValue)
                 return Tracker<T>{*innerValue};
 
-            return reportConversionError<Tracker<T>>(str, innerValue.error());
+            return makeSerializationError<Tracker<T>>(input, innerValue.error());
         }
 
         static std::string toString(Tracker<T> const& value)
         {
             return TypeSerializer<T>::toString(value.m_payload);
+        }
+    };
+
+    template<>
+    struct TypeSerializer<CompoundType>
+    {
+        static Expected<CompoundType, std::string> fromString(ArgValue const& input)
+        {
+            if (input.subvalues.size() != 2)
+                return makeSerializationError<CompoundType>(input, 2);
+
+            auto field1 = TypeSerializer<int>::fromString(input.subvalues[0]);
+            auto field2 = TypeSerializer<int>::fromString(input.subvalues[1]);
+
+            if (!field1)
+                return makeSerializationError<CompoundType>(input, field1.error());
+            if (!field2)
+                return makeSerializationError<CompoundType>(input, field2.error());
+
+            return CompoundType{ *field1, *field2 };
+        }
+
+        static std::string toString(CompoundType const& value)
+        {
+            std::stringstream ss;
+            ss << "CompoundType{" << value.field1 << ',' << value.field2 << '}';
+            return ss.str();
         }
     };
 
@@ -196,6 +241,12 @@ namespace coil
             static std::string const typeName = "Tracker<"s + std::string(TypeName<T>::name()) + ">"s;
             return typeName;
         }
+    };
+
+    template<>
+    struct TypeName<CompoundType>
+    {
+        static std::string_view name() { return "CompoundType"; }
     };
 }
 
@@ -366,6 +417,26 @@ TEST(BindingsTests, TestVariableWriteWithCategory)
     ASSERT_TRUE(result.returnValue.has_value());
     EXPECT_EQ(*result.returnValue, "365");
     EXPECT_EQ(variable, 365);
+}
+
+TEST(BindingsTests, TestCompoundSyntax)
+{
+    coil::Bindings bindings = createBindings();
+
+    auto testCompound = [&bindings](std::string_view command, std::string_view expectedResult) {
+        auto result = bindings.execute(command);
+
+        EXPECT_EQ(result.errors.size(), 0);
+        ASSERT_TRUE(result.returnValue.has_value());
+        EXPECT_EQ(*result.returnValue, expectedResult);
+    };
+
+    testCompound("get_compound ( 6 , 28 )", "CompoundType{6,28}");
+    testCompound("get_compound (6 , 28)", "CompoundType{6,28}");
+    testCompound("get_compound (6, 28)", "CompoundType{6,28}");
+    testCompound("get_compound (6 28)", "CompoundType{6,28}");
+    testCompound("get_compound (6,28)", "CompoundType{6,28}");
+    testCompound("get_compound 6,28", "CompoundType{6,28}");
 }
 
 TEST(BindingsTests, TestErrorNoFunction)
