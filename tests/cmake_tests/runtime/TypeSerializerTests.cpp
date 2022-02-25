@@ -4,18 +4,28 @@
 
 namespace
 {
-    class WithoutDefaultConstructor
+    struct WithoutDefaultConstructor
     {
-    public:
-        WithoutDefaultConstructor(int value) : m_value(value) {}
+        WithoutDefaultConstructor(int value) : value(value) {}
 
-        int m_value = 0;
+        bool operator==(WithoutDefaultConstructor const& rhs) const
+        {
+            return value == rhs.value;
+        }
+
+        int value = 0;
     };
 
-    bool operator==(WithoutDefaultConstructor const& lhs, WithoutDefaultConstructor const& rhs)
+    struct CompoundType
     {
-        return lhs.m_value == rhs.m_value;
-    }
+        int field1{};
+        int field2{};
+
+        bool operator==(CompoundType const& rhs) const
+        {
+            return field1 == rhs.field1 && field2 == rhs.field2;
+        }
+    };
 }
 
 namespace coil
@@ -25,7 +35,7 @@ namespace coil
     {
         static Expected<WithoutDefaultConstructor, std::string> fromString(ArgValue const& str)
         {
-            Expected<int, std::string> innerValue = TypeSerializer<int>::fromString(str);
+            auto innerValue = TypeSerializer<int>::fromString(str);
 
             if (!innerValue)
                 return reportConversionError<WithoutDefaultConstructor>(str.value, innerValue.error());
@@ -35,7 +45,34 @@ namespace coil
 
         static std::string toString(WithoutDefaultConstructor const& value)
         {
-            return "WithoutDefaultConstructor{" + std::to_string(value.m_value) + "}";
+            return "WithoutDefaultConstructor{" + std::to_string(value.value) + "}";
+        }
+    };
+
+    template<>
+    struct TypeSerializer<CompoundType>
+    {
+        static Expected<CompoundType, std::string> fromString(ArgValue const& str)
+        {
+            if (str.subvalues.size() != 2)
+                return makeSerializationError<CompoundType>(str, 2);
+
+            auto field1 = TypeSerializer<int>::fromString(str.subvalues[0]);
+            auto field2 = TypeSerializer<int>::fromString(str.subvalues[1]);
+
+            if (!field1)
+                return reportConversionError<CompoundType>(str.value, field1.error());
+            if (!field2)
+                return reportConversionError<CompoundType>(str.value, field2.error());
+
+            return CompoundType{ *field1, *field2 };
+        }
+
+        static std::string toString(CompoundType const& value)
+        {
+            std::stringstream ss;
+            ss << "CompoundType{" << value.field1 << ',' << value.field2 << '}';
+            return ss.str();
         }
     };
 
@@ -43,6 +80,12 @@ namespace coil
     struct TypeName<WithoutDefaultConstructor>
     {
         static std::string_view name() { return "WithoutDefaultConstructor"; }
+    };
+
+    template<>
+    struct TypeName<CompoundType>
+    {
+        static std::string_view name() { return "CompoundType"; }
     };
 }
 
@@ -118,4 +161,16 @@ TEST(TypeSerializerTests, TestUserTypeToString)
     using namespace std::literals;
 
     EXPECT_EQ(coil::TypeSerializer<WithoutDefaultConstructor>::toString(WithoutDefaultConstructor{ 42 }), "WithoutDefaultConstructor{42}");
+}
+
+TEST(TypeSerializerTests, TestCompoundUserTypeFromStringValid)
+{
+    EXPECT_EQ(coil::TypeSerializer<CompoundType>::fromString({ "6, 28", {"6", "28"} }), (CompoundType{ 6, 28 }));
+}
+
+TEST(TypeSerializerTests, TestCompoundUserTypeFromStringInvalid)
+{
+    EXPECT_EQ(coil::TypeSerializer<CompoundType>::fromString({ "6, 28, 496", {"6", "28", "496"} }), coil::makeUnexpected("Unable to convert '6, 28, 496' to type 'CompoundType': Expected 2 subvalues, got 3"));
+    EXPECT_EQ(coil::TypeSerializer<CompoundType>::fromString({ "6", {"6"} }), coil::makeUnexpected("Unable to convert '6' to type 'CompoundType': Expected 2 subvalues, got 1"));
+    EXPECT_EQ(coil::TypeSerializer<CompoundType>::fromString({ "six, 28", {"six", "28"} }), coil::makeUnexpected("Unable to convert 'six, 28' to type 'CompoundType': Unable to convert 'six' to type 'int'"));
 }
