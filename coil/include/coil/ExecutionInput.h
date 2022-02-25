@@ -17,8 +17,8 @@ namespace coil
         void reset()
         {
             name = {};
-            arguments.resize(0);
-            namedArguments.resize(0);
+            arguments.clear();
+            namedArguments.clear();
         }
 
         auto tie() const
