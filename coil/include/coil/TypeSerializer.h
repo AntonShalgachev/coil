@@ -49,6 +49,7 @@ namespace coil
     {
         static_assert(!std::is_void_v<T>, "Void isn't a valid conversion type");
         
+        // TODO rename `str` to `input`
         static Expected<T, std::string> fromString(ArgValue const& str)
         {
             static_assert(HasCinOperator<T>::value, "T should have operator>>, or TypeSerializer has to be specialized for type T");
