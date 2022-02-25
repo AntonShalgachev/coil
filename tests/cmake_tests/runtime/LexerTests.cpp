@@ -6,16 +6,16 @@
 
 namespace coil
 {
-    std::ostream& operator<<(std::ostream& os, coil::ArgValue const& value)
+    std::ostream& operator<<(std::ostream& os, coil::ArgValue const& input)
     {
-        os << "'" << value.value << "'";
+        os << "'" << input.value << "'";
 
-        if (value.subvalues.size() != 1 || value.subvalues[0] != value.value)
+        if (input.subvalues.size() != 1 || input.subvalues[0] != input.value)
         {
             os << "(";
 
             auto prefix = "";
-            for (std::string_view subvalue : value.subvalues)
+            for (std::string_view subvalue : input.subvalues)
             {
                 os << prefix << "'" << subvalue << "'";
                 prefix = ", ";

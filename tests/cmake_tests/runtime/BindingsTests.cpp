@@ -190,13 +190,13 @@ namespace coil
     template<typename T>
     struct TypeSerializer<Tracker<T>>
     {
-        static Expected<Tracker<T>, std::string> fromString(ArgValue const& str)
+        static Expected<Tracker<T>, std::string> fromString(ArgValue const& input)
         {
-            Expected<T, std::string> innerValue = TypeSerializer<T>::fromString(str);
+            Expected<T, std::string> innerValue = TypeSerializer<T>::fromString(input);
             if (innerValue)
                 return Tracker<T>{*innerValue};
 
-            return reportConversionError<Tracker<T>>(str.value, innerValue.error());
+            return reportConversionError<Tracker<T>>(input, innerValue.error());
         }
 
         static std::string toString(Tracker<T> const& value)
@@ -208,18 +208,18 @@ namespace coil
     template<>
     struct TypeSerializer<CompoundType>
     {
-        static Expected<CompoundType, std::string> fromString(ArgValue const& str)
+        static Expected<CompoundType, std::string> fromString(ArgValue const& input)
         {
-            if (str.subvalues.size() != 2)
-                return makeSerializationError<CompoundType>(str, 2);
+            if (input.subvalues.size() != 2)
+                return makeSerializationError<CompoundType>(input, 2);
 
-            auto field1 = TypeSerializer<int>::fromString(str.subvalues[0]);
-            auto field2 = TypeSerializer<int>::fromString(str.subvalues[1]);
+            auto field1 = TypeSerializer<int>::fromString(input.subvalues[0]);
+            auto field2 = TypeSerializer<int>::fromString(input.subvalues[1]);
 
             if (!field1)
-                return reportConversionError<CompoundType>(str.value, field1.error());
+                return reportConversionError<CompoundType>(input, field1.error());
             if (!field2)
-                return reportConversionError<CompoundType>(str.value, field2.error());
+                return reportConversionError<CompoundType>(input, field2.error());
 
             return CompoundType{ *field1, *field2 };
         }

@@ -9,7 +9,7 @@ namespace coil
     template<typename E>
     struct TypeSerializer<E, std::enable_if_t<std::is_enum_v<E>>>
     {
-        static Expected<E, std::string> fromString(ArgValue const& str)
+        static Expected<E, std::string> fromString(ArgValue const& input)
         {
             return E{};
         }
