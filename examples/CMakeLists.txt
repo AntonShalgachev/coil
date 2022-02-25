@@ -21,6 +21,8 @@ set(ALL_FILES
     "enums/EnumsExample.cpp"
 	"errors/ErrorsExample.h"
 	"errors/ErrorsExample.cpp"
+    "usertypes/UsertypesExample.h"
+    "usertypes/UsertypesExample.cpp"
 )
 
 set (VS2017 OFF)

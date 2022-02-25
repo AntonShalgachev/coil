@@ -70,6 +70,7 @@ namespace coil
         return utils::VariableWrapper<T>{ var };
     }
 
+    // TODO remove? Just get a variable from object
     template<typename T, typename C>
     auto variable(T C::* var, C* object)
     {

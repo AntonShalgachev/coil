@@ -13,9 +13,9 @@ namespace coil
         static constexpr bool isUnlimitedArgs = false;
         static constexpr std::size_t maxArgs = 1;
 
-        static std::optional<T> consume(Context context, std::vector<std::string_view> const& arguments, std::size_t index)
+        static std::optional<T> consume(Context context, ExecutionInput const& input, std::size_t index)
         {
-            auto result = TypeSerializer<T>::fromString(arguments[index]);
+            auto result = TypeSerializer<T>::fromString(input.arguments[index]);
             if (result)
                 return *std::move(result);
 
@@ -31,8 +31,10 @@ namespace coil
         static constexpr bool isUnlimitedArgs = true;
         static constexpr std::size_t maxArgs = 0;
 
-        static std::optional<std::vector<T>> consume(Context context, std::vector<std::string_view> const& arguments, std::size_t index)
+        static std::optional<std::vector<T>> consume(Context context, ExecutionInput const& input, std::size_t index)
         {
+            auto const& arguments = input.arguments;
+
             std::vector<T> args;
             args.reserve(arguments.size() - index);
 
@@ -59,8 +61,10 @@ namespace coil
         static constexpr bool isUnlimitedArgs = false;
         static constexpr std::size_t maxArgs = 1;
 
-        static std::optional<std::optional<T>> consume(Context context, std::vector<std::string_view> const& arguments, std::size_t index)
+        static std::optional<std::optional<T>> consume(Context context, ExecutionInput const& input, std::size_t index)
         {
+            auto const& arguments = input.arguments;
+
             if (index >= arguments.size())
                 return std::optional<T>{};
 

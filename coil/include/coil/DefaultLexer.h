@@ -33,6 +33,7 @@ namespace coil
     private:
         enum class CharType
         {
+            Group,
             Space,
             String,
             Assignment,
@@ -50,12 +51,37 @@ namespace coil
             std::string_view value;
         };
 
+        static bool isSpace(unsigned char c)
+        {
+            return std::isspace(c);
+        }
+
+        static bool isGroupChar(unsigned char c)
+        {
+            // TODO make configurable?
+            static std::vector<unsigned char> chars = { '(', ')', '"' };
+            return std::find(chars.begin(), chars.end(), c) != chars.end();
+        }
+
+        static bool isGroupSeparator(unsigned char c)
+        {
+            // TODO make configurable?
+            static std::vector<unsigned char> chars = { ',', ';', '|' };
+
+            if (isSpace(c))
+                return true;
+
+            return std::find(chars.begin(), chars.end(), c) != chars.end();
+        }
+
         static CharType getCharType(unsigned char c)
         {
             if (c == '=')
                 return CharType::Assignment;
-            if (std::isspace(c))
+            if (isSpace(c))
                 return CharType::Space;
+            if (isGroupChar(c))
+                return CharType::Group;
 
             return CharType::String;
         }
@@ -75,41 +101,75 @@ namespace coil
             return {};
         }
 
-        coil::Expected<void, std::string> tokenize(std::string_view str) const
+        std::vector<std::string_view> splitGroup(std::string_view str) const
         {
-            std::size_t tokenBegin = std::string_view::npos;
-            CharType currentCharType = CharType::Space;
-
-            auto tryAddPreviousToken = [this, &tokenBegin, &currentCharType, &str](std::size_t tokenEnd) -> coil::Expected<void, std::string>
-            {
-                if (tokenBegin == std::string_view::npos)
-                    return {};
-                if (currentCharType == CharType::Space)
-                    return {};
-
-                auto tokenType = convertToTokenType(currentCharType);
-                if (!tokenType)
-                    return makeUnexpected("Lexer internal error");
-
-                m_tokens.push_back(Token{ *tokenType, str.substr(tokenBegin, tokenEnd - tokenBegin) });
-                return {};
-            };
+            std::vector<std::string_view> result;
 
             for (std::size_t i = 0; i < str.size(); i++)
             {
-                CharType charType = getCharType(str[i]);
+                while ((i < str.size()) && isGroupSeparator(str[i]))
+                    i++;
 
-                if (currentCharType != charType)
-                {
-                    if (auto result = tryAddPreviousToken(i); !result)
-                        return result;
+                if (i >= str.size())
+                    break;
 
-                    tokenBegin = i;
-                    currentCharType = charType;
-                }
+                std::size_t stringBegin = i;
+                while ((i < str.size()) && !isGroupSeparator(str[i]))
+                    i++;
+
+                result.push_back(str.substr(stringBegin, i - stringBegin));
             }
 
-            return tryAddPreviousToken(str.size());
+            return result;
+        }
+
+        ArgValue createArgValue(std::string_view input) const
+        {
+            return ArgValue{ input, splitGroup(input) };
+        }
+
+        coil::Expected<void, std::string> tokenize(std::string_view str) const
+        {
+            for (std::size_t i = 0; i < str.size(); i++)
+            {
+                while ((i < str.size()) && getCharType(str[i]) == CharType::Space)
+                    i++;
+
+                if (i >= str.size())
+                    break;
+
+                std::size_t tokenBegin = i;
+                CharType charType = getCharType(str[i]);
+                switch (charType)
+                {
+                case CharType::String:
+                    i++;
+                    while ((i < str.size()) && getCharType(str[i]) == CharType::String)
+                        i++;
+
+                    m_tokens.push_back(Token{ TokenType::String, str.substr(tokenBegin, i - tokenBegin) });
+                    i--; // return to the last 'String' char
+                    break;
+                case CharType::Assignment:
+                    m_tokens.push_back(Token{ TokenType::Assignment, str.substr(i, 1) });
+                    break;
+                case CharType::Group:
+                    i++;
+                    while ((i < str.size()) && getCharType(str[i]) != CharType::Group)
+                        i++;
+
+                    if (i >= str.size())
+                        return makeUnexpected(utils::formatString("Token '%c' doesn't have an opening/closing token", str[tokenBegin]));
+
+                    m_tokens.push_back(Token{ TokenType::String, str.substr(tokenBegin + 1, i - tokenBegin - 1) });
+                    break;
+                default:
+                    return makeUnexpected("Internal error");
+                }
+                
+            }
+
+            return {};
         }
 
         Expected<void, std::string> parse() const
@@ -157,11 +217,11 @@ namespace coil
                 if (tokens.secondaryTokenIndex)
                 {
                     std::string_view secondaryValue = m_tokens[*tokens.secondaryTokenIndex].value;
-                    m_input.namedArguments.emplace_back(primaryValue, secondaryValue);
+                    m_input.namedArguments.emplace_back(primaryValue, createArgValue(secondaryValue));
                 }
                 else
                 {
-                    m_input.arguments.push_back(primaryValue);
+                    m_input.arguments.push_back(createArgValue(primaryValue));
                 }
 
                 tokens.reset();
@@ -176,6 +236,8 @@ namespace coil
                 case TokenType::Assignment:
                     if (!tokens.primaryTokenIndex)
                         return makeUnexpected("Unexpected token '=': no named for the named argument is provided");
+                    if (nextTokenType == StringTokenType::SecondaryToken)
+                        return makeUnexpected("Expected an argument value, found '='");
                     nextTokenType = StringTokenType::SecondaryToken;
                     break;
                 case TokenType::String:
