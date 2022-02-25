@@ -38,7 +38,7 @@ namespace coil
             auto innerValue = TypeSerializer<int>::fromString(input);
 
             if (!innerValue)
-                return reportConversionError<WithoutDefaultConstructor>(input, innerValue.error());
+                return makeSerializationError<WithoutDefaultConstructor>(input, innerValue.error());
 
             return WithoutDefaultConstructor{ *innerValue };
         }
@@ -61,9 +61,9 @@ namespace coil
             auto field2 = TypeSerializer<int>::fromString(input.subvalues[1]);
 
             if (!field1)
-                return reportConversionError<CompoundType>(input, field1.error());
+                return makeSerializationError<CompoundType>(input, field1.error());
             if (!field2)
-                return reportConversionError<CompoundType>(input, field2.error());
+                return makeSerializationError<CompoundType>(input, field2.error());
 
             return CompoundType{ *field1, *field2 };
         }

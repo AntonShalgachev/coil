@@ -92,7 +92,7 @@ namespace coil
                 // You can pass additional information to this function, which could clarify
                 // what went wrong. Here we pass `index.error()`, which is an error message
                 // from the index deserialization with the details
-                return reportConversionError<EntityId>(input, index.error());
+                return makeSerializationError<EntityId>(input, index.error());
             }
 
             return EntityId{ *index };
@@ -118,9 +118,9 @@ namespace coil
             auto y = TypeSerializer<float>::fromString(input.subvalues[1]);
 
             if (!x)
-                return reportConversionError<Vec2>(input, x.error());
+                return makeSerializationError<Vec2>(input, x.error());
             if (!y)
-                return reportConversionError<Vec2>(input, y.error());
+                return makeSerializationError<Vec2>(input, y.error());
 
             return Vec2{ *x, *y };
         }
