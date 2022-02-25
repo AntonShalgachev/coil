@@ -31,7 +31,7 @@ namespace coil
     {
         static Expected<AnyArgView, std::string> fromString(ArgValue value)
         {
-            return AnyArgView(value);
+            return AnyArgView(std::move(value));
         }
 
         static std::string toString(AnyArgView const& value)
