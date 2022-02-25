@@ -38,14 +38,6 @@ namespace entities
         return EntityId{ newId };
     }
 
-    std::optional<std::string_view> getName(EntityId id)
-    {
-        if (id.index >= entityNames.size())
-            return {};
-
-        return entityNames[id.index];
-    }
-
     std::optional<EntityId> find(std::string const& name)
     {
         auto it = std::find(entityNames.begin(), entityNames.end(), name);
