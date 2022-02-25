@@ -33,12 +33,12 @@ namespace coil
     template<>
     struct TypeSerializer<WithoutDefaultConstructor>
     {
-        static Expected<WithoutDefaultConstructor, std::string> fromString(ArgValue const& str)
+        static Expected<WithoutDefaultConstructor, std::string> fromString(ArgValue const& input)
         {
-            auto innerValue = TypeSerializer<int>::fromString(str);
+            auto innerValue = TypeSerializer<int>::fromString(input);
 
             if (!innerValue)
-                return reportConversionError<WithoutDefaultConstructor>(str.value, innerValue.error());
+                return reportConversionError<WithoutDefaultConstructor>(input, innerValue.error());
 
             return WithoutDefaultConstructor{ *innerValue };
         }
@@ -52,18 +52,18 @@ namespace coil
     template<>
     struct TypeSerializer<CompoundType>
     {
-        static Expected<CompoundType, std::string> fromString(ArgValue const& str)
+        static Expected<CompoundType, std::string> fromString(ArgValue const& input)
         {
-            if (str.subvalues.size() != 2)
-                return makeSerializationError<CompoundType>(str, 2);
+            if (input.subvalues.size() != 2)
+                return makeSerializationError<CompoundType>(input, 2);
 
-            auto field1 = TypeSerializer<int>::fromString(str.subvalues[0]);
-            auto field2 = TypeSerializer<int>::fromString(str.subvalues[1]);
+            auto field1 = TypeSerializer<int>::fromString(input.subvalues[0]);
+            auto field2 = TypeSerializer<int>::fromString(input.subvalues[1]);
 
             if (!field1)
-                return reportConversionError<CompoundType>(str.value, field1.error());
+                return reportConversionError<CompoundType>(input, field1.error());
             if (!field2)
-                return reportConversionError<CompoundType>(str.value, field2.error());
+                return reportConversionError<CompoundType>(input, field2.error());
 
             return CompoundType{ *field1, *field2 };
         }

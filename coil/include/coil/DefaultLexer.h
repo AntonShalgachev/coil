@@ -113,10 +113,9 @@ namespace coil
             return result;
         }
 
-        ArgValue createArgValue(std::string_view groupValue) const
+        ArgValue createArgValue(std::string_view input) const
         {
-            // TODO implement
-            return ArgValue{ groupValue, splitGroup(groupValue) };
+            return ArgValue{ input, splitGroup(input) };
         }
 
         coil::Expected<void, std::string> tokenize(std::string_view str) const

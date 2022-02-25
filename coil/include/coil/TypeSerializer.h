@@ -16,22 +16,21 @@
 namespace coil
 {
     // TODO rename
-    // TODO make inputString 'coil::ArgValue'
     template<typename T>
-    static Unexpected<std::string> reportConversionError(std::string_view inputString, std::string_view details = {})
+    static Unexpected<std::string> reportConversionError(ArgValue const& input, std::string_view details = {})
     {
         std::string_view typeName = TypeName<T>::name();
 
         if (details.empty())
-            return makeUnexpected(utils::formatString("Unable to convert '%.*s' to type '%.*s'", inputString.length(), inputString.data(), typeName.length(), typeName.data()));
+            return makeUnexpected(utils::formatString("Unable to convert '%.*s' to type '%.*s'", input.value.length(), input.value.data(), typeName.length(), typeName.data()));
         else
-            return makeUnexpected(utils::formatString("Unable to convert '%.*s' to type '%.*s': %.*s", inputString.length(), inputString.data(), typeName.length(), typeName.data(), details.length(), details.data()));
+            return makeUnexpected(utils::formatString("Unable to convert '%.*s' to type '%.*s': %.*s", input.value.length(), input.value.data(), typeName.length(), typeName.data(), details.length(), details.data()));
     }
 
     template<typename T>
     static Unexpected<std::string> makeSerializationError(ArgValue const& input, std::size_t expectedSubvalues)
     {
-        return reportConversionError<T>(input.value, utils::formatString("Expected %d subvalues, got %d", expectedSubvalues, input.subvalues.size()));
+        return reportConversionError<T>(input, utils::formatString("Expected %d subvalues, got %d", expectedSubvalues, input.subvalues.size()));
     }
 
     template<typename T, typename = void>
@@ -49,13 +48,12 @@ namespace coil
     {
         static_assert(!std::is_void_v<T>, "Void isn't a valid conversion type");
         
-        // TODO rename `str` to `input`
-        static Expected<T, std::string> fromString(ArgValue const& str)
+        static Expected<T, std::string> fromString(ArgValue const& input)
         {
             static_assert(HasCinOperator<T>::value, "T should have operator>>, or TypeSerializer has to be specialized for type T");
 
             std::stringstream ss;
-            ss << str.value;
+            ss << input.value;
 
             T value{};
             ss >> value;
@@ -63,7 +61,7 @@ namespace coil
             if (ss.eof() && !ss.fail())
                 return value;
 
-            return reportConversionError<T>(str.value);
+            return reportConversionError<T>(input);
         }
 
         static std::string toString([[maybe_unused]] T const& value)
@@ -80,17 +78,17 @@ namespace coil
     template<typename T>
     struct TypeSerializer<T, std::enable_if_t<std::is_arithmetic_v<T>>>
     {
-        static Expected<T, std::string> fromString(ArgValue const& str)
+        static Expected<T, std::string> fromString(ArgValue const& input)
         {
-            auto begin = str.value.data();
-            auto end = str.value.data() + str.value.length();
+            auto begin = input.value.data();
+            auto end = input.value.data() + input.value.length();
 
             T value{};
             std::from_chars_result result = std::from_chars(begin, end, value);
             if (result.ptr == end)
                 return value;
 
-            return reportConversionError<T>(str.value);
+            return reportConversionError<T>(input);
         }
 
         static std::string toString(T value)
@@ -102,7 +100,7 @@ namespace coil
     template<>
     struct TypeSerializer<bool>
     {
-        static Expected<bool, std::string> fromString(ArgValue const& str)
+        static Expected<bool, std::string> fromString(ArgValue const& input)
         {
             auto equalCaseInsensitive = [](std::string_view a, std::string_view b)
             {
@@ -117,17 +115,17 @@ namespace coil
                 return true;
             };
 
-            if (str.value == "1")
+            if (input.value == "1")
                 return true;
-            if (str.value == "0")
+            if (input.value == "0")
                 return false;
 
-            if (equalCaseInsensitive(str.value, "true"))
+            if (equalCaseInsensitive(input.value, "true"))
                 return true;
-            if (equalCaseInsensitive(str.value, "false"))
+            if (equalCaseInsensitive(input.value, "false"))
                 return false;
 
-            return reportConversionError<bool>(str.value);
+            return reportConversionError<bool>(input);
         }
 
         static std::string toString(bool value)
@@ -139,9 +137,9 @@ namespace coil
     template<>
     struct TypeSerializer<std::string>
     {
-        static Expected<std::string, std::string> fromString(ArgValue const& str)
+        static Expected<std::string, std::string> fromString(ArgValue const& input)
         {
-            return std::string{ str.value };
+            return std::string{ input.value };
         }
 
         static std::string toString(std::string const& value)
@@ -153,9 +151,9 @@ namespace coil
     template<>
     struct TypeSerializer<std::string_view>
     {
-        static Expected<std::string_view, std::string> fromString(ArgValue const& str)
+        static Expected<std::string_view, std::string> fromString(ArgValue const& input)
         {
-            return str.value;
+            return input.value;
         }
 
         static std::string toString(std::string_view value)
@@ -167,12 +165,12 @@ namespace coil
     template<typename T>
     struct TypeSerializer<std::optional<T>>
     {
-        static Expected<std::optional<T>, std::string> fromString(ArgValue const& str)
+        static Expected<std::optional<T>, std::string> fromString(ArgValue const& input)
         {
-            if (str.value.empty())
+            if (input.value.empty())
                 return {};
 
-            return TypeSerializer<T>::fromString(str.value);
+            return TypeSerializer<T>::fromString(input.value);
         }
 
         static std::string toString(std::optional<T> const& value)

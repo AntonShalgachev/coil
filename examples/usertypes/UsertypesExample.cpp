@@ -84,15 +84,15 @@ namespace coil
     template<>
     struct TypeSerializer<EntityId>
     {
-        static Expected<EntityId, std::string> fromString(ArgValue const& str)
+        static Expected<EntityId, std::string> fromString(ArgValue const& input)
         {
-            auto index = TypeSerializer<std::size_t>::fromString(str);
+            auto index = TypeSerializer<std::size_t>::fromString(input);
             if (!index)
             {
                 // You can pass additional information to this function, which could clarify
                 // what went wrong. Here we pass `index.error()`, which is an error message
                 // from the index deserialization with the details
-                return reportConversionError<EntityId>(str.value, index.error());
+                return reportConversionError<EntityId>(input, index.error());
             }
 
             return EntityId{ *index };
@@ -109,18 +109,18 @@ namespace coil
     template<>
     struct TypeSerializer<Vec2>
     {
-        static Expected<Vec2, std::string> fromString(ArgValue const& str)
+        static Expected<Vec2, std::string> fromString(ArgValue const& input)
         {
-            if (str.subvalues.size() != 2)
-                return makeSerializationError<Vec2>(str, 2);
+            if (input.subvalues.size() != 2)
+                return makeSerializationError<Vec2>(input, 2);
 
-            auto x = TypeSerializer<float>::fromString(str.subvalues[0]);
-            auto y = TypeSerializer<float>::fromString(str.subvalues[1]);
+            auto x = TypeSerializer<float>::fromString(input.subvalues[0]);
+            auto y = TypeSerializer<float>::fromString(input.subvalues[1]);
 
             if (!x)
-                return reportConversionError<Vec2>(str.value, x.error());
+                return reportConversionError<Vec2>(input, x.error());
             if (!y)
-                return reportConversionError<Vec2>(str.value, y.error());
+                return reportConversionError<Vec2>(input, y.error());
 
             return Vec2{ *x, *y };
         }
