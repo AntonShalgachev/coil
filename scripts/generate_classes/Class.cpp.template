@@ -33,7 +33,7 @@ void $name::registerBindings(coil::Bindings& bindings)
 #end for
 
 #for $variable in $member_variables
-    bindings["${variable.name}"] = coil::variable(&${name}::${variable.name}, this);
+    bindings["${variable.name}"] = coil::variable(&${variable.name});
 #end for
 
 #for $function in $functions

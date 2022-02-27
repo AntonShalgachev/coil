@@ -43,21 +43,21 @@ void ClassWithBindings97::registerBindings(coil::Bindings& bindings)
     bindings["method13"] = coil::bind(&ClassWithBindings97::method13, this);
     bindings["method14"] = coil::bind(&ClassWithBindings97::method14, this);
 
-    bindings["memberVariable0"] = coil::variable(&ClassWithBindings97::memberVariable0, this);
-    bindings["memberVariable1"] = coil::variable(&ClassWithBindings97::memberVariable1, this);
-    bindings["memberVariable2"] = coil::variable(&ClassWithBindings97::memberVariable2, this);
-    bindings["memberVariable3"] = coil::variable(&ClassWithBindings97::memberVariable3, this);
-    bindings["memberVariable4"] = coil::variable(&ClassWithBindings97::memberVariable4, this);
-    bindings["memberVariable5"] = coil::variable(&ClassWithBindings97::memberVariable5, this);
-    bindings["memberVariable6"] = coil::variable(&ClassWithBindings97::memberVariable6, this);
-    bindings["memberVariable7"] = coil::variable(&ClassWithBindings97::memberVariable7, this);
-    bindings["memberVariable8"] = coil::variable(&ClassWithBindings97::memberVariable8, this);
-    bindings["memberVariable9"] = coil::variable(&ClassWithBindings97::memberVariable9, this);
-    bindings["memberVariable10"] = coil::variable(&ClassWithBindings97::memberVariable10, this);
-    bindings["memberVariable11"] = coil::variable(&ClassWithBindings97::memberVariable11, this);
-    bindings["memberVariable12"] = coil::variable(&ClassWithBindings97::memberVariable12, this);
-    bindings["memberVariable13"] = coil::variable(&ClassWithBindings97::memberVariable13, this);
-    bindings["memberVariable14"] = coil::variable(&ClassWithBindings97::memberVariable14, this);
+    bindings["memberVariable0"] = coil::variable(&memberVariable0);
+    bindings["memberVariable1"] = coil::variable(&memberVariable1);
+    bindings["memberVariable2"] = coil::variable(&memberVariable2);
+    bindings["memberVariable3"] = coil::variable(&memberVariable3);
+    bindings["memberVariable4"] = coil::variable(&memberVariable4);
+    bindings["memberVariable5"] = coil::variable(&memberVariable5);
+    bindings["memberVariable6"] = coil::variable(&memberVariable6);
+    bindings["memberVariable7"] = coil::variable(&memberVariable7);
+    bindings["memberVariable8"] = coil::variable(&memberVariable8);
+    bindings["memberVariable9"] = coil::variable(&memberVariable9);
+    bindings["memberVariable10"] = coil::variable(&memberVariable10);
+    bindings["memberVariable11"] = coil::variable(&memberVariable11);
+    bindings["memberVariable12"] = coil::variable(&memberVariable12);
+    bindings["memberVariable13"] = coil::variable(&memberVariable13);
+    bindings["memberVariable14"] = coil::variable(&memberVariable14);
 
     bindings["ClassWithBindings97_function0"] = [](coil::Context context, int arg0, bool arg1, int arg2, double arg3, unsigned arg4)
     {
