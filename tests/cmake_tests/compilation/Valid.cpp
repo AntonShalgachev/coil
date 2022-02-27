@@ -61,7 +61,7 @@ int main()
 
     // Variables
     cmd["foo.bar"] = coil::variable(&variable);
-    cmd["foo.bar"] = coil::variable(&Object::memberVariable, &object);
+    cmd["foo.bar"] = coil::variable(&object.memberVariable);
 
     // Properties
     cmd["foo.bar"] = coil::createProperty(&getVariable, &setVariable);

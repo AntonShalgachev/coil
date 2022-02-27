@@ -38,8 +38,8 @@ void VariablesExample::run()
     std::string city = "Moscow";
     Flags flags = Flags::Flag1 | Flags::Flag3;
 
-    bindings["obj.enabled"] = coil::variable(&Object::enabled, &object);
-    bindings["obj.flags"] = MemberFlagsVariableWrapper{ &Object::flags, &object };
+    bindings["obj.enabled"] = coil::variable(&object.enabled);
+    bindings["obj.flags"] = FlagsVariableWrapper{ &object.flags };
 
     bindings["time_scale"] = coil::variable(&timeScale);
     bindings["city"] = coil::variable(&city);
