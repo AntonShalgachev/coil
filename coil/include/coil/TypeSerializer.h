@@ -2,7 +2,7 @@
 
 #include "TypeName.h"
 #include "Expected.h"
-#include "utils/Utils.h"
+#include "Utils.h"
 #include "ArgValue.h"
 
 #include <string>
@@ -21,15 +21,15 @@ namespace coil
         std::string_view typeName = TypeName<T>::name();
 
         if (details.empty())
-            return makeUnexpected(utils::formatString("Unable to convert '%.*s' to type '%.*s'", input.value.length(), input.value.data(), typeName.length(), typeName.data()));
+            return makeUnexpected(formatString("Unable to convert '%.*s' to type '%.*s'", input.value.length(), input.value.data(), typeName.length(), typeName.data()));
         else
-            return makeUnexpected(utils::formatString("Unable to convert '%.*s' to type '%.*s': %.*s", input.value.length(), input.value.data(), typeName.length(), typeName.data(), details.length(), details.data()));
+            return makeUnexpected(formatString("Unable to convert '%.*s' to type '%.*s': %.*s", input.value.length(), input.value.data(), typeName.length(), typeName.data(), details.length(), details.data()));
     }
 
     template<typename T>
     static Unexpected<std::string> makeSerializationError(ArgValue const& input, std::size_t expectedSubvalues)
     {
-        return makeSerializationError<T>(input, utils::formatString("Expected %d subvalues, got %d", expectedSubvalues, input.subvalues.size()));
+        return makeSerializationError<T>(input, formatString("Expected %d subvalues, got %d", expectedSubvalues, input.subvalues.size()));
     }
 
     template<typename T, typename = void>

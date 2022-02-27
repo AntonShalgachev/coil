@@ -23,6 +23,7 @@ set(ALL_FILES
 	"errors/ErrorsExample.cpp"
     "usertypes/UsertypesExample.h"
     "usertypes/UsertypesExample.cpp"
+    "common/Utils.h"
 )
 
 set (VS2017 OFF)

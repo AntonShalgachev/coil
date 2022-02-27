@@ -21,13 +21,13 @@ namespace coil::detail
 
         std::string expectedMessage;
         if (isVariadic && isUnlimited)
-            expectedMessage = utils::formatString("at least %d", minArgs);
+            expectedMessage = formatString("at least %d", minArgs);
         else if (isVariadic && !isUnlimited)
-            expectedMessage = utils::formatString("from %d to %d", minArgs, maxArgs);
+            expectedMessage = formatString("from %d to %d", minArgs, maxArgs);
         else
-            expectedMessage = utils::formatString("%d", minArgs);
+            expectedMessage = formatString("%d", minArgs);
 
-        auto errorMessage = utils::formatString("Wrong number of arguments to '%.*s': expected %s, got %d", context.input.name.size(), context.input.name.data(), expectedMessage.c_str(), actualArgsCount);
+        auto errorMessage = formatString("Wrong number of arguments to '%.*s': expected %s, got %d", context.input.name.size(), context.input.name.data(), expectedMessage.c_str(), actualArgsCount);
 
         context.result.errors.push_back(std::move(errorMessage));
     }
@@ -76,7 +76,7 @@ namespace coil::detail
         }
         catch (std::exception const& ex)
         {
-            context.reportError(utils::formatString("Exception caught during execution: %s", ex.what()));
+            context.reportError(formatString("Exception caught during execution: %s", ex.what()));
         }
     }
 

@@ -91,7 +91,7 @@ namespace coil
         {
             auto it = find(key);
             if (it == end())
-                return makeUnexpected(Error(Error::Type::MissingKey, utils::formatString("Missing named argument '%.*s'", key.size(), key.data())));
+                return makeUnexpected(Error(Error::Type::MissingKey, formatString("Missing named argument '%.*s'", key.size(), key.data())));
 
             return it->value();
         }
