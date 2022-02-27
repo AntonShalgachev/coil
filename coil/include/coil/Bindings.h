@@ -5,7 +5,7 @@
 #include <unordered_map>
 #include <any>
 
-#include "detail/FuncTraitsEx.h"
+#include "detail/FuncTraits.h"
 #include "utils/Utils.h"
 #include "detail/FunctorCaller.h"
 #include "ExecutionResult.h"

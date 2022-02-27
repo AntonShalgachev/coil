@@ -7,7 +7,7 @@
 #include "CallContext.h"
 #include "../utils/Types.h"
 #include "coil/TypeSerializer.h"
-#include "FuncTraitsEx.h"
+#include "FuncTraits.h"
 #include "coil/VariadicConsumer.h"
 
 namespace coil::detail

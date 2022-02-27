@@ -2,7 +2,7 @@
 
 // TODO rename file
 
-#include "coil/detail/FuncTraitsEx.h"
+#include "coil/detail/FuncTraits.h"
 
 namespace coil::utils
 {
