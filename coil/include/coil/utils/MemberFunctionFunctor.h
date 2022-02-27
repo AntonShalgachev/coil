@@ -2,7 +2,7 @@
 
 // TODO rename file
 
-#include "FuncTraits.h"
+#include "coil/detail/FuncTraitsEx.h"
 
 namespace coil::utils
 {
@@ -28,7 +28,7 @@ namespace coil
     template<typename FuncPointer, typename C>
     auto bind(FuncPointer func, C* obj)
     {
-        using Traits = utils::FuncTraits<FuncPointer>;
+        using Traits = detail::FuncTraits<FuncPointer>;
         static_assert(!std::is_const_v<C> || Traits::isConst, "Can't bind a const object to a non-constant member function");
         return utils::MemberFunctionFunctor{ func, obj, typename Traits::ArgumentTypes{} };
     }

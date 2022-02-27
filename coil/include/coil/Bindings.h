@@ -5,7 +5,7 @@
 #include <unordered_map>
 #include <any>
 
-#include "utils/FuncTraits.h"
+#include "detail/FuncTraitsEx.h"
 #include "utils/Utils.h"
 #include "detail/FunctorCaller.h"
 #include "ExecutionResult.h"
@@ -30,7 +30,7 @@ namespace coil
         {
             using UnqualifiedFunc = std::decay_t<Func>;
 
-            static_assert(utils::FuncTraits<UnqualifiedFunc>::isFunc, "Func should be a functor object");
+            static_assert(detail::FuncTraits<UnqualifiedFunc>::isFunc, "Func should be a functor object");
             static_assert(!std::is_member_function_pointer_v<UnqualifiedFunc>, "Func shouldn't be a member function");
 
             m_commands.insert_or_assign(name, AnyFunctor{ UnqualifiedFunc{ std::move(func) }, &detail::functorTrampoline<UnqualifiedFunc> });
