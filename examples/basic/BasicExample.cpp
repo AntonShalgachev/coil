@@ -3,7 +3,7 @@
 #include "common/ExamplesCommon.h"
 
 #include <iostream>
-#include "coil/utils/MemberFunctionFunctor.h"
+#include "coil/Bind.h"
 
 namespace
 {
