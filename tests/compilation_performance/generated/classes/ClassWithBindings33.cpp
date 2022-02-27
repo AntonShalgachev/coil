@@ -1,7 +1,5 @@
 #include "ClassWithBindings33.h"
 
-#include "coil\utils\MemberFunctionFunctor.h"
-
 void ClassWithBindings33::work()
 {
     std::vector<std::string> strings;
