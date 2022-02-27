@@ -1,7 +1,7 @@
 set(PROJECT_NAME libcoil)
 
 set(ALL_FILES
-    "include/coil/utils/Types.h"
+    "include/coil/Types.h"
     "include/coil/Utils.h"
     "include/coil/utils/MemberFunctionFunctor.h"
     "include/coil/utils/VariableWrapper.h"

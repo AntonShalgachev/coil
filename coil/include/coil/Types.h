@@ -4,7 +4,7 @@
 
 #include "coil/TypeName.h"
 
-namespace coil::utils
+namespace coil
 {
 	template<typename... Args>
 	struct Types
