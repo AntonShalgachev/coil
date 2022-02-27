@@ -7,6 +7,7 @@
 
 #include "coil/TypeSerializer.h"
 
+#include "Utils.h"
 #include "magic_enum.hpp"
 
 namespace coil
@@ -31,9 +32,9 @@ namespace coil
             if (optionalValue.has_value())
                 return optionalValue.value();
 
-            std::string names = utils::flatten(magic_enum::enum_names<E>(), "'");
+            std::string names = ::utils::flatten(magic_enum::enum_names<E>(), "'");
 
-            return makeSerializationError<E>(input, utils::formatString("Possible values are [%s]", names.c_str()));
+            return makeSerializationError<E>(input, formatString("Possible values are [%s]", names.c_str()));
         }
 
         static auto toString(E const& value)

@@ -6,7 +6,7 @@
 #include <any>
 
 #include "detail/FuncTraits.h"
-#include "utils/Utils.h"
+#include "Utils.h"
 #include "detail/FunctorCaller.h"
 #include "ExecutionResult.h"
 #include "DefaultLexer.h"
@@ -110,7 +110,7 @@ namespace coil
             auto it = m_commands.find(context.input.name);
             if (it == m_commands.end())
             {
-                context.result.errors.push_back(utils::formatString("No function '%.*s' is registered", context.input.name.size(), context.input.name.data()));
+                context.result.errors.push_back(formatString("No function '%.*s' is registered", context.input.name.size(), context.input.name.data()));
                 return;
             }
 

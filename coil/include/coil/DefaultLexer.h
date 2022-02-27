@@ -7,7 +7,7 @@
 #include "DefaultLexer.h"
 #include "ExecutionInput.h"
 #include "Expected.h"
-#include "utils/Utils.h"
+#include "Utils.h"
 
 namespace coil
 {
@@ -159,7 +159,7 @@ namespace coil
                         i++;
 
                     if (i >= str.size())
-                        return makeUnexpected(utils::formatString("Token '%c' doesn't have an opening/closing token", str[tokenBegin]));
+                        return makeUnexpected(formatString("Token '%c' doesn't have an opening/closing token", str[tokenBegin]));
 
                     m_tokens.push_back(Token{ TokenType::String, str.substr(tokenBegin + 1, i - tokenBegin - 1) });
                     break;
@@ -179,7 +179,7 @@ namespace coil
 
             Token const& firstToken = m_tokens.front();
             if (firstToken.type != TokenType::String)
-                return makeUnexpected(utils::formatString("Unexpected token '%.*s' at the beginning of the expression", firstToken.value.size(), firstToken.value.data()));
+                return makeUnexpected(formatString("Unexpected token '%.*s' at the beginning of the expression", firstToken.value.size(), firstToken.value.data()));
 
             m_input.name = firstToken.value;
 
