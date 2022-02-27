@@ -1,7 +1,5 @@
 \#include "${name}.h"
 
-\#include "coil\utils\MemberFunctionFunctor.h"
-
 void $name::work()
 {
     std::vector<std::string> strings;

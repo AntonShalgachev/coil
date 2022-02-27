@@ -1,7 +1,5 @@
 #include "ClassWithoutBindings20.h"
 
-#include "coil\utils\MemberFunctionFunctor.h"
-
 void ClassWithoutBindings20::work()
 {
     std::vector<std::string> strings;

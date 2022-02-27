@@ -3,7 +3,8 @@
 #if USE_COIL
 
 #include "coil/Bindings.h"
-#include "coil/utils/VariableWrapper.h"
+#include "coil/Variable.h"
+#include "coil/Bind.h"
 
 #elif USE_MANUAL
 
