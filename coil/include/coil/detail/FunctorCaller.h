@@ -59,7 +59,7 @@ namespace coil::detail
         if (!(expectedArgs && ...))
             return;
 
-        using R = typename detail::FuncTraitsEx<Func>::ReturnType;
+        using R = typename detail::FuncTraits<Func>::ReturnType;
 
         try
         {
@@ -97,7 +97,7 @@ namespace coil::detail
             return;
         }
 
-        using FuncTraits = detail::FuncTraitsEx<FuncT>;
+        using FuncTraits = detail::FuncTraits<FuncT>;
         using ArgsTraits = typename FuncTraits::ArgsTraits;
 
         if (!validateArguments(ArgsTraits::minArgs, ArgsTraits::isUnlimited, ArgsTraits::maxArgs, context))
