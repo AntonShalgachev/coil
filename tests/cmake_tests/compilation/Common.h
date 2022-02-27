@@ -1,8 +1,8 @@
 #include "coil/Bindings.h"
 #include "coil/AnyArgView.h"
 #include "coil/Property.h"
-#include "coil/utils/VariableWrapper.h"
-#include "coil/utils/MemberFunctionFunctor.h"
+#include "coil/Variable.h"
+#include "coil/Bind.h"
 
 namespace coil
 {
