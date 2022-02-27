@@ -53,7 +53,7 @@ namespace coil::detail
         return Context{ context };
     }
 
-    template<typename Func, std::size_t... NonUserIndices, typename... Es, bool isVoid = std::is_void_v<typename detail::FuncTraitsEx<Func>::ReturnType>>
+    template<typename Func, std::size_t... NonUserIndices, typename... Es>
     void invoke(Func& func, CallContext& context, Es&&... expectedArgs)
     {
         if (!(expectedArgs && ...))
@@ -63,7 +63,7 @@ namespace coil::detail
 
         try
         {
-            if constexpr (isVoid)
+            if constexpr (std::is_void_v<R>)
             {
                 func(createContext<NonUserIndices>(context)..., *std::forward<Es>(expectedArgs)...);
             }

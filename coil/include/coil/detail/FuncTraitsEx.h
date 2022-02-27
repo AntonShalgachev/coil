@@ -5,24 +5,12 @@
 
 namespace coil::detail
 {
-    // VS2017 can't handle fold expressions directly inside ArgsCounters
-    template<typename... Args>
-    constexpr auto sumArgs(Args&&... args)
-    {
-        return (0 + ... + args);
-    }
-    template<typename... Args>
-    constexpr bool orArgs(Args&&... args)
-    {
-        return (false || ... || args);
-    }
-
     template<typename... Args>
     struct ArgsCounters
     {
-        static constexpr std::size_t minArgs = sumArgs(VariadicConsumer<std::decay_t<Args>>::minArgs...);
-        static constexpr bool isUnlimited = orArgs(VariadicConsumer<std::decay_t<Args>>::isUnlimitedArgs...);
-        static constexpr std::size_t maxArgs = sumArgs(VariadicConsumer<std::decay_t<Args>>::maxArgs...);
+        static constexpr std::size_t minArgs = (VariadicConsumer<std::decay_t<Args>>::minArgs + ... + 0);
+        static constexpr bool isUnlimited = (VariadicConsumer<std::decay_t<Args>>::isUnlimitedArgs || ... || false);
+        static constexpr std::size_t maxArgs = (VariadicConsumer<std::decay_t<Args>>::maxArgs + ... + 0);
         static_assert(maxArgs >= minArgs || isUnlimited, "For finite arguments maxArgs should not be less than minArgs");
     };
 
