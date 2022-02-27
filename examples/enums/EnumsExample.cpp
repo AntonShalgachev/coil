@@ -6,7 +6,7 @@
 #include "common/EnumToString.h"
 
 #include <iostream>
-#include "coil/utils/MemberFunctionFunctor.h"
+#include "coil/Bind.h"
 
 namespace
 {

@@ -3,7 +3,7 @@ set(PROJECT_NAME libcoil)
 set(ALL_FILES
     "include/coil/Types.h"
     "include/coil/Utils.h"
-    "include/coil/utils/MemberFunctionFunctor.h"
+    "include/coil/Bind.h"
     "include/coil/Variable.h"
     
 
