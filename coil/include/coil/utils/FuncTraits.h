@@ -66,6 +66,7 @@ namespace coil::utils
     struct FuncTraits : FuncTraitsImpl<Func> {};
 
     // TODO support qualified operator()
+    // TODO use C++20 concepts
     template<typename Func>
     struct FuncTraits<Func, std::void_t<decltype(&Func::operator())>> : public FuncTraitsImpl<decltype(&Func::operator())> {};
 }
