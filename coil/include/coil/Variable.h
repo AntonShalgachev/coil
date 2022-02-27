@@ -1,10 +1,8 @@
 #pragma once
 
-// TODO rename file
-
 #include <optional>
 
-namespace coil::utils
+namespace coil
 {
     // TODO support const variables
 
@@ -33,13 +31,10 @@ namespace coil::utils
 
         T* m_variable = nullptr;
     };
-}
 
-namespace coil
-{
     template<typename T>
     auto variable(T* var)
     {
-        return utils::VariableWrapper<T>{ var };
+        return VariableWrapper<T>{ var };
     }
 }

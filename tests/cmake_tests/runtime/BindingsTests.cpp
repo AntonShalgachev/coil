@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
 #include "Common.h"
 #include "coil/Bindings.h"
-#include "coil/utils/VariableWrapper.h"
+#include "coil/Variable.h"
 
 namespace stats
 {
