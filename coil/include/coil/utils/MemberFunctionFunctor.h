@@ -10,7 +10,7 @@ namespace coil::utils
 	struct MemberFunctionFunctor
 	{
     public:
-        MemberFunctionFunctor(FuncPointer func, C* obj, utils::Types<Args...>) : m_func(func), m_obj(obj) {}
+        MemberFunctionFunctor(FuncPointer func, C* obj, Types<Args...>) : m_func(func), m_obj(obj) {}
 
         decltype(auto) operator()(Args... args)
         {

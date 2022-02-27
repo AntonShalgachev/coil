@@ -5,7 +5,7 @@
 #include <optional>
 
 #include "CallContext.h"
-#include "../utils/Types.h"
+#include "coil/Types.h"
 #include "coil/TypeSerializer.h"
 #include "FuncTraits.h"
 #include "coil/VariadicConsumer.h"
@@ -81,7 +81,7 @@ namespace coil::detail
     }
 
     template<typename Func, std::size_t... NonUserIndices, typename... UserArgs, std::size_t... UserIndices>
-    void unpackAndInvoke(Func& func, CallContext& context, std::index_sequence<NonUserIndices...>, utils::Types<UserArgs...>, std::index_sequence<UserIndices...>)
+    void unpackAndInvoke(Func& func, CallContext& context, std::index_sequence<NonUserIndices...>, Types<UserArgs...>, std::index_sequence<UserIndices...>)
     {
         invoke<Func, NonUserIndices...>(func, context, VariadicConsumer<std::decay_t<UserArgs>>::consume(Context{ context }, context.input, UserIndices)...);
     }

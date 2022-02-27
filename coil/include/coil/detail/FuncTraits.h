@@ -1,6 +1,6 @@
 #pragma once
 #include "coil/Context.h"
-#include "coil/utils/Types.h"
+#include "coil/Types.h"
 #include "coil/VariadicConsumer.h"
 
 #include <type_traits>
@@ -19,14 +19,14 @@ namespace coil::detail
     template<typename... Args>
     struct ArgsTraits : ArgsCounters<Args...>
     {
-        using UserArgumentTypes = utils::Types<Args...>;
+        using UserArgumentTypes = Types<Args...>;
         using NonUserArgsIndices = std::index_sequence<>;
     };
 
     template<typename... Tail>
     struct ArgsTraits<Context, Tail...> : ArgsCounters<Tail...>
     {
-        using UserArgumentTypes = utils::Types<Tail...>;
+        using UserArgumentTypes = Types<Tail...>;
         using NonUserArgsIndices = std::index_sequence<0>;
     };
 
@@ -37,7 +37,7 @@ namespace coil::detail
         static constexpr bool isFunc = true;
 
         using ReturnType = R;
-        using ArgumentTypes = utils::Types<Args...>;
+        using ArgumentTypes = Types<Args...>;
         using ArgsTraits = ArgsTraits<Args...>;
         static constexpr bool isConst = IsConst;
     };
