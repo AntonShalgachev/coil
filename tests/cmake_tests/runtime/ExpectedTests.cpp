@@ -308,3 +308,69 @@ TEST(ExpectedTests, TestValueErrorMoveAssignment)
     ASSERT_TRUE(e2);
     EXPECT_EQ(*e2, V{ 42 });
 }
+
+TEST(ExpectedTests, TestUnexpectedAccess)
+{
+    coil::Expected<V, E> e = coil::makeUnexpected(E{ 0.0f });
+
+    resetStats();
+
+    EXPECT_THROW({
+        try
+        {
+            *e;
+        }
+        catch (coil::BadExpectedAccess<E> const& e)
+        {
+            EXPECT_STREQ("Bad expected access", e.what());
+            throw;
+        }
+    }, coil::BadExpectedAccess<E>);
+    
+    EXPECT_EQ(E::copies, 1);
+}
+
+TEST(ExpectedTests, TestUnexpectedAccessConst)
+{
+    coil::Expected<V, E> const e = coil::makeUnexpected(E{ 0.0f });
+
+    resetStats();
+
+    EXPECT_THROW({
+        try
+        {
+            *e;
+        }
+        catch (coil::BadExpectedAccess<E> const& e)
+        {
+            EXPECT_STREQ("Bad expected access", e.what());
+            throw;
+        }
+    }, coil::BadExpectedAccess<E>);
+
+    EXPECT_EQ(E::copies, 1);
+}
+
+TEST(ExpectedTests, TestUnexpectedAccessRvalue)
+{
+    auto createError = []() -> coil::Expected<V, E>
+    {
+        return coil::makeUnexpected(E{ 0.0f });
+    };
+
+    resetStats();
+
+    EXPECT_THROW({
+        try
+        {
+            *createError();
+        }
+        catch (coil::BadExpectedAccess<E> const& e)
+        {
+            EXPECT_STREQ("Bad expected access", e.what());
+            throw;
+        }
+    }, coil::BadExpectedAccess<E>);
+
+    EXPECT_EQ(E::copies, 0);
+}
