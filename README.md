@@ -1,5 +1,7 @@
 # coil (COmmand Interpreter Library)
 
+[![codecov](https://codecov.io/gh/AntonShalgachev/coil/branch/master/graph/badge.svg?token=VFJT3W6568)](https://codecov.io/gh/AntonShalgachev/coil)
+
 This is a modern C++17 library that allows you to call functions using a simple yet powerful command-like scripting language. It has no dependencies and doesn't use any macros. Since `coil` relies heavily on the templates, it's header-only (optimized to reduce compile time).
 
 > ⚠️ **The library is currently under development.** Major changes are to be expected, although the main branch is kept more or less stable
