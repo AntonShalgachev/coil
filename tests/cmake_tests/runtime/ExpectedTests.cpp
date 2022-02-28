@@ -235,6 +235,28 @@ TEST(ExpectedTests, TestErrorCopyAssignment)
     EXPECT_EQ(e2.error(), E{ 3.14f });
 }
 
+TEST(ExpectedTests, TestValueErrorCopyAssignment)
+{
+    coil::Expected<V, E> e1 = V{ 42 };
+    coil::Expected<V, E> e2 = coil::makeUnexpected(E{ 0.0f });
+
+    resetStats();
+
+    e2 = e1;
+
+    EXPECT_EQ(E::moves, 0);
+    EXPECT_EQ(V::moves, 0);
+    EXPECT_GE(E::copyAssignments, 0);
+    EXPECT_GE(V::copyAssignments, 0);
+    EXPECT_GE(E::copyConstructions, 0);
+    EXPECT_GE(V::copyConstructions, 1);
+
+    ASSERT_TRUE(e1);
+    EXPECT_EQ(*e1, V{ 42 });
+    ASSERT_TRUE(e2);
+    EXPECT_EQ(*e2, V{ 42 });
+}
+
 TEST(ExpectedTests, TestValueMoveAssignment)
 {
     coil::Expected<V, E> e1 = V{ 42 };
@@ -247,8 +269,6 @@ TEST(ExpectedTests, TestValueMoveAssignment)
     EXPECT_EQ(V::copies, 0);
     EXPECT_GE(V::moveAssignments, 1);
 
-    ASSERT_TRUE(e1);
-    EXPECT_EQ(*e1, V{ 0 });
     ASSERT_TRUE(e2);
     EXPECT_EQ(*e2, V{ 42 });
 }
@@ -265,8 +285,26 @@ TEST(ExpectedTests, TestErrorMoveAssignment)
     EXPECT_EQ(E::copies, 0);
     EXPECT_GE(E::moveAssignments, 1);
 
-    ASSERT_FALSE(e1);
-    EXPECT_EQ(e1.error(), E{ 0.0f });
     ASSERT_FALSE(e2);
     EXPECT_EQ(e2.error(), E{ 3.14f });
+}
+
+TEST(ExpectedTests, TestValueErrorMoveAssignment)
+{
+    coil::Expected<V, E> e1 = V{ 42 };
+    coil::Expected<V, E> e2 = coil::makeUnexpected(E{ 0.0f });
+
+    resetStats();
+
+    e2 = std::move(e1);
+
+    EXPECT_EQ(E::copies, 0);
+    EXPECT_EQ(V::copies, 0);
+    EXPECT_GE(E::moveAssignments, 0);
+    EXPECT_GE(V::moveAssignments, 0);
+    EXPECT_GE(E::moveConstructions, 0);
+    EXPECT_GE(V::moveConstructions, 1);
+
+    ASSERT_TRUE(e2);
+    EXPECT_EQ(*e2, V{ 42 });
 }
