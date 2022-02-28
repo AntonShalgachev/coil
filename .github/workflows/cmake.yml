@@ -66,6 +66,26 @@ jobs:
       run: ${{github.workspace}}/build/tests/runtime_performance/${{ matrix.config }}/runtime_performance.exe
       if: matrix.config == 'Release'
 
+    - name: Setup OpenCppCoverage
+      if: matrix.compiler == 'cl' && matrix.config == 'Release'
+      run: |
+        choco install OpenCppCoverage -y
+        echo "C:\Program Files\OpenCppCoverage" >> $env:GITHUB_PATH
+
+    - name: Generate code coverage report
+      if: matrix.compiler == 'cl' && matrix.config == 'Release'
+      shell: cmd
+      run: OpenCppCoverage.exe --sources ${{github.workspace}}\coil\include\coil --export_type cobertura:Codecov.xml -- ${{github.workspace}}\build\tests\cmake_tests\runtime\${{matrix.config}}\cmake_tests.exe
+
+    - name: Upload report to Codecov
+      if: matrix.compiler == 'cl' && matrix.config == 'Release'
+      uses: codecov/codecov-action@v1.3.2
+      with:
+        files: ./Codecov.xml
+        fail_ci_if_error: true
+        functionalities: fix
+
+
   msvc2019-compilation:
     runs-on: windows-2019
     strategy:
