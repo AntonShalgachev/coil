@@ -145,7 +145,7 @@ namespace coil
 
         E const& error() const& { return m_unexpected.value(); }
         E& error() & { return m_unexpected.value(); }
-        E&& error() && { return std::move(m_unexpected.value()); }
+        E&& error() && { return std::move(m_unexpected).value(); }
 
         template<typename E2>
         bool operator==(Unexpected<E2> const& rhs) const
@@ -237,13 +237,13 @@ namespace coil
         T&& value() &&
         {
             if (!this->hasValue())
-                throw BadExpectedAccess<E>(this->error());
-            return std::move(this->m_expected);
+                throw BadExpectedAccess<E>(std::move(*this).error());
+            return std::move(*this).m_expected;
         }
 
         T const& operator*() const& { return value(); }
         T& operator*() & { return value(); }
-        T&& operator*() && { return std::move(value()); }
+        T&& operator*() && { return std::move(*this).value(); }
 
         T const* operator->() const { return &value(); }
         T* operator->() { return &value(); }
