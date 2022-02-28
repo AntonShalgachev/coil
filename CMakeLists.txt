@@ -11,6 +11,7 @@ set(COIL_COMPILE_TIME OFF CACHE BOOL "Configure the project for compilation perf
 set(COIL_COMPILE_TIME_WITH_COIL OFF CACHE BOOL "Whether to use coil library for compilation performance test")
 set(COIL_COMPILE_TIME_WITH_MANUAL OFF CACHE BOOL "Whether to use manually-written bindings for compilation performance test")
 
+# TODO move to examples/tests/etc.
 set(CMAKE_CONFIGURATION_TYPES
     "Debug"
     "Release"
@@ -19,12 +20,14 @@ set(CMAKE_CONFIGURATION_TYPES
     CACHE STRING "" FORCE
 )
 
+# TODO find a cleaner way to do it
 if(CMAKE_CXX_FLAGS MATCHES "/W[0-4]")
     set(OLD_FLAGS ${CMAKE_CXX_FLAGS})
     string(REGEX REPLACE "/W[0-4]" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
     message(STATUS "CMAKE_CXX_FLAGS changed from '${OLD_FLAGS}' to '${CMAKE_CXX_FLAGS}'")
 endif()
 
+# TODO move to examples/tests/etc.
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 add_subdirectory(coil)
@@ -46,19 +49,3 @@ endif()
 if(${COIL_COMPILE_TIME})
     add_subdirectory(tests/compilation_performance)
 endif()
-
-##################
-
-# if (${COIL_COMPILE_TIME})
-#     # add_subdirectory(tests/compilation_performance)
-# elseif(${COIL_RUNTIME_PERFORMANCE})
-#     # add_subdirectory(tests/runtime_performance)
-#     # add_subdirectory(tests/liblua)
-# elseif(${COIL_RUNTIME_TESTS})
-#     # enable_testing()
-#     # add_subdirectory(tests/cmake_tests/runtime)
-# elseif(${COIL_COMPILATION_TESTS})
-#     # add_subdirectory(tests/cmake_tests/compilation)
-# else()
-#     # add_subdirectory(examples)
-# endif()
