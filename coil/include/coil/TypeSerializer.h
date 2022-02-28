@@ -46,7 +46,7 @@ namespace coil
     struct TypeSerializer
     {
         static_assert(!std::is_void_v<T>, "Void isn't a valid conversion type");
-        
+
         static Expected<T, std::string> fromString(ArgValue const& input)
         {
             static_assert(HasCinOperator<T>::value, "T should have operator>>, or TypeSerializer has to be specialized for type T");

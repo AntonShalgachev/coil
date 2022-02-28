@@ -20,8 +20,8 @@ namespace coil
     template<typename BindingsT>
     class BindingProxy;
 
-	class Bindings
-	{
+    class Bindings
+    {
     public:
         BindingProxy<Bindings> operator[](std::string_view name);
 
@@ -71,7 +71,7 @@ namespace coil
 
         ExecutionResult execute(ExecutionInput const& input)
         {
-            detail::CallContext context{input};
+            detail::CallContext context{ input };
             execute(context);
             return std::move(context).result;
         }
@@ -120,7 +120,7 @@ namespace coil
         DefaultLexer m_defaultLexer;
 
         std::unordered_map<StringWrapper, AnyFunctor> m_commands;
-	};
+    };
 
     template<typename BindingsT>
     class BindingProxy
