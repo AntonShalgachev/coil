@@ -5,8 +5,8 @@
 namespace coil
 {
     template<typename FuncPointer, typename C, typename... Args>
-	struct MemberFunctionFunctor
-	{
+    struct MemberFunctionFunctor
+    {
     public:
         MemberFunctionFunctor(FuncPointer func, C* obj, Types<Args...>) : m_func(func), m_obj(obj) {}
 
@@ -18,7 +18,7 @@ namespace coil
     private:
         FuncPointer m_func = nullptr;
         C* m_obj = nullptr;
-	};
+    };
 
     template<typename FuncPointer, typename C>
     auto bind(FuncPointer func, C* obj)

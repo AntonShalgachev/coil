@@ -11,8 +11,8 @@ namespace coil
         char const* what() const noexcept override { return "Bad expected access"; }
 
         E const& error() const& { return m_value; }
-        E& error() & { return m_value; }
-        E&& error() && { return std::move(m_value); }
+        E& error()& { return m_value; }
+        E&& error()&& { return std::move(m_value); }
 
     private:
         E m_value;
@@ -27,8 +27,8 @@ namespace coil
         Unexpected(T value) : m_value(std::move(value)) {}
 
         T const& value() const& { return m_value; }
-        T& value() & { return m_value; }
-        T&& value() && { return std::move(m_value); }
+        T& value()& { return m_value; }
+        T&& value()&& { return std::move(m_value); }
 
         template<typename U>
         operator Unexpected<U>() const&
@@ -38,14 +38,14 @@ namespace coil
         }
 
         template<typename U>
-        operator Unexpected<U>() &
+        operator Unexpected<U>()&
         {
             static_assert(std::is_convertible_v<T&, U>, "U should be convertible to T");
             return Unexpected<U>{m_value};
         }
 
         template<typename U>
-        operator Unexpected<U>() &&
+        operator Unexpected<U>()&&
         {
             static_assert(std::is_convertible_v<T&&, U>, "U should be convertible to T");
             return Unexpected<U>{std::move(m_value)};
@@ -144,8 +144,8 @@ namespace coil
         }
 
         E const& error() const& { return m_unexpected.value(); }
-        E& error() & { return m_unexpected.value(); }
-        E&& error() && { return std::move(m_unexpected).value(); }
+        E& error()& { return m_unexpected.value(); }
+        E&& error()&& { return std::move(m_unexpected).value(); }
 
         template<typename E2>
         bool operator==(Unexpected<E2> const& rhs) const
@@ -227,14 +227,14 @@ namespace coil
             return this->m_expected;
         }
 
-        T& value() &
+        T& value()&
         {
             if (!this->hasValue())
                 throw BadExpectedAccess<E>(this->error());
             return this->m_expected;
         }
 
-        T&& value() &&
+        T&& value()&&
         {
             if (!this->hasValue())
                 throw BadExpectedAccess<E>(std::move(*this).error());
@@ -242,8 +242,8 @@ namespace coil
         }
 
         T const& operator*() const& { return value(); }
-        T& operator*() & { return value(); }
-        T&& operator*() && { return std::move(*this).value(); }
+        T& operator*()& { return value(); }
+        T&& operator*()&& { return std::move(*this).value(); }
 
         T const* operator->() const { return &value(); }
         T* operator->() { return &value(); }

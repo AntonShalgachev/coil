@@ -6,11 +6,11 @@
 
 namespace coil
 {
-	template<typename... Args>
-	struct Types
-	{
-		static std::size_t constexpr size = sizeof...(Args);
-		using IndicesType = std::make_index_sequence<size>;
+    template<typename... Args>
+    struct Types
+    {
+        static std::size_t constexpr size = sizeof...(Args);
+        using IndicesType = std::make_index_sequence<size>;
 
         static auto names()
         {
@@ -20,5 +20,5 @@ namespace coil
         {
             return std::array<std::string_view, size>{ TypeName<std::decay_t<Args>>::name()... };
         }
-	};
+    };
 }

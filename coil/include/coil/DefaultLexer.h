@@ -166,7 +166,7 @@ namespace coil
                 default:
                     return makeUnexpected("Internal error");
                 }
-                
+
             }
 
             return {};
@@ -209,7 +209,8 @@ namespace coil
             ArgTokens tokens;
             StringTokenType nextTokenType = StringTokenType::PrimaryToken;
 
-            auto addCurrentTokens = [this, &tokens]() {
+            auto addCurrentTokens = [this, &tokens]()
+            {
                 if (!tokens.primaryTokenIndex)
                     return;
 

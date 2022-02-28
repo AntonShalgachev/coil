@@ -7,15 +7,15 @@
 
 namespace coil
 {
-	struct ExecutionResult
+    struct ExecutionResult
     {
         operator bool() const
         {
             return errors.empty();
         }
 
-		std::vector<std::string> errors;
-		std::optional<std::string> returnValue;
+        std::vector<std::string> errors;
+        std::optional<std::string> returnValue;
         std::stringstream output;
-	};
+    };
 }
