@@ -17,14 +17,14 @@ namespace coil::detail
     };
 
     template<typename... Args>
-    struct ArgsTraits : ArgsCounters<Args...>
+    struct ArgsTraitsImpl : ArgsCounters<Args...>
     {
         using UserArgumentTypes = Types<Args...>;
         using NonUserArgsIndices = std::index_sequence<>;
     };
 
     template<typename... Tail>
-    struct ArgsTraits<Context, Tail...> : ArgsCounters<Tail...>
+    struct ArgsTraitsImpl<Context, Tail...> : ArgsCounters<Tail...>
     {
         using UserArgumentTypes = Types<Tail...>;
         using NonUserArgsIndices = std::index_sequence<0>;
@@ -38,7 +38,7 @@ namespace coil::detail
 
         using ReturnType = R;
         using ArgumentTypes = Types<Args...>;
-        using ArgsTraits = ArgsTraits<Args...>;
+        using ArgsTraits = ArgsTraitsImpl<Args...>;
         static constexpr bool isConst = IsConst;
     };
 

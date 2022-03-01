@@ -75,6 +75,11 @@ bool operator==(std::reference_wrapper<coil::ExecutionInput> const& lhs, coil::E
 
 namespace
 {
+    coil::ArgValue createValue(std::string_view input)
+    {
+        return coil::ArgValue{ input, {input} };
+    }
+
     template<typename... Args>
     auto args(Args&&... args)
     {
@@ -192,11 +197,6 @@ namespace
         randomSpaces(ss);
 
         return ss.str();
-    }
-
-    coil::ArgValue createValue(std::string_view input)
-    {
-        return coil::ArgValue{ input, {input} };
     }
 }
 
