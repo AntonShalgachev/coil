@@ -1,5 +1,4 @@
 #include "coil/Bindings.h"
-#include "sol/sol.hpp"
 
 #pragma warning(push)
 #pragma warning(disable: 4701) // potentially uninitialized local variable 'newColor' used
@@ -37,8 +36,6 @@ namespace
     coil::Bindings cmd;
     coil::ExecutionInput cmdInput{ "long_function_name_please0", {{"3.14"}, {"0.16"}}, {} };
 
-    sol::state lua;
-
     std::size_t constexpr freeFuncsCount = 500;
 
     void prepare()
@@ -49,7 +46,6 @@ namespace
         {
             auto name = "long_function_name_please" + std::to_string(i);
             cmd[name] = functions[i];
-            lua[name] = functions[i];
         }
     }
 
@@ -64,11 +60,6 @@ namespace
     BENCHMARK(Scripting, CoilNoParse, runs, iterations)
     {
         cmd.execute(cmdInput);
-    }
-
-    BENCHMARK(Scripting, Sol, runs, iterations)
-    {
-        lua.script("long_function_name_please0(3.14, 0.16)");
     }
 
     BENCHMARK(Scripting, DirectFromString, runs, iterations)
