@@ -1,11 +1,10 @@
-name: CMake Tests
+name: Windows
 
 on:
   push:
     branches: [ master ]
   pull_request:
     branches: [ master ]
-  workflow_dispatch:
 
 jobs:
   msvc2019-ctest:
@@ -14,27 +13,21 @@ jobs:
       matrix:
         config: [Debug, Release]
         compiler: [cl, clang]
-
     steps:
     - uses: actions/checkout@v2
-
-    - name: CMake (Examples + CTest + Runtime Performance)
+    - name: CMake (cl)
       if: matrix.compiler == 'cl'
       run: cmake -B ${{github.workspace}}/build -G "Visual Studio 16 2019" -DCOIL_COMPILATION_TESTS=ON -DCOIL_RUNTIME_TESTS=ON -DCOIL_EXAMPLES=ON -DCOIL_RUNTIME_PERFORMANCE=ON
-
-    - name: CMake (Examples + CTest + Runtime Performance)
+    - name: CMake (clang)
       if: matrix.compiler == 'clang'
       run: cmake -B ${{github.workspace}}/build -G "Visual Studio 16 2019" -T ClangCL -DCOIL_COMPILATION_TESTS=ON -DCOIL_RUNTIME_TESTS=ON -DCOIL_EXAMPLES=ON -DCOIL_RUNTIME_PERFORMANCE=ON
-
-    - name: Build (Examples + CTest + Runtime Performance)
-      run: cmake --build ${{github.workspace}}/build --config ${{ matrix.config }} --parallel 10
-
+    - name: Build
+      run: cmake --build ${{github.workspace}}/build --config ${{matrix.config}} --parallel 10
     - name: CTest
       working-directory: ${{github.workspace}}/build
-      run: ctest -j 10 -C ${{ matrix.config }}
-
+      run: ctest -j 10 -C ${{matrix.config}}
     - name: Measure performance
-      run: ${{github.workspace}}/build/tests/runtime_performance/${{ matrix.config }}/runtime_performance.exe
+      run: ${{github.workspace}}/build/tests/runtime_performance/${{matrix.config}}/runtime_performance.exe
       if: matrix.config == 'Release'
       
   msvc2022-ctest:
@@ -43,40 +36,31 @@ jobs:
       matrix:
         config: [Debug, Release]
         compiler: [cl, clang]
-
     steps:
     - uses: actions/checkout@v2
-
-    - name: CMake (Examples + CTest + Runtime Performance)
+    - name: CMake (cl)
       if: matrix.compiler == 'cl'
       run: cmake -B ${{github.workspace}}/build -G "Visual Studio 17 2022" -DCOIL_COMPILATION_TESTS=ON -DCOIL_RUNTIME_TESTS=ON -DCOIL_EXAMPLES=ON -DCOIL_RUNTIME_PERFORMANCE=ON
-
-    - name: CMake (Examples + CTest + Runtime Performance)
+    - name: CMake (clang)
       if: matrix.compiler == 'clang'
       run: cmake -B ${{github.workspace}}/build -G "Visual Studio 17 2022" -T ClangCL -DCOIL_COMPILATION_TESTS=ON -DCOIL_RUNTIME_TESTS=ON -DCOIL_EXAMPLES=ON -DCOIL_RUNTIME_PERFORMANCE=ON
-
-    - name: Build (Examples + CTest + Runtime Performance)
-      run: cmake --build ${{github.workspace}}/build --config ${{ matrix.config }} --parallel 10
-
+    - name: Build
+      run: cmake --build ${{github.workspace}}/build --config ${{matrix.config}} --parallel 10
     - name: CTest
       working-directory: ${{github.workspace}}/build
-      run: ctest -j 10 -C ${{ matrix.config }}
-
+      run: ctest -j 10 -C ${{matrix.config}}
     - name: Measure performance
-      run: ${{github.workspace}}/build/tests/runtime_performance/${{ matrix.config }}/runtime_performance.exe
+      run: ${{github.workspace}}/build/tests/runtime_performance/${{matrix.config}}/runtime_performance.exe
       if: matrix.config == 'Release'
-
     - name: Setup OpenCppCoverage
       if: matrix.compiler == 'cl' && matrix.config == 'Debug'
       run: |
         choco install OpenCppCoverage -y
         echo "C:\Program Files\OpenCppCoverage" >> $env:GITHUB_PATH
-
     - name: Generate code coverage report
       if: matrix.compiler == 'cl' && matrix.config == 'Debug'
       shell: cmd
       run: OpenCppCoverage.exe --sources ${{github.workspace}}\coil\include\coil --export_type cobertura:Codecov.xml -- ${{github.workspace}}\build\tests\cmake_tests\runtime\${{matrix.config}}\cmake_tests.exe
-
     - name: Upload report to Codecov
       if: matrix.compiler == 'cl' && matrix.config == 'Debug'
       uses: codecov/codecov-action@v1.3.2
@@ -85,52 +69,15 @@ jobs:
         fail_ci_if_error: true
         functionalities: fix
 
-  ubuntu-ctest:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        config: [Debug, Release]
-
-    steps:
-    - uses: actions/checkout@v2
-
-    - name: Set up GCC
-      uses: egor-tensin/setup-gcc@v1
-      with:
-        version: 11
-        platform: x64
-
-    - name: Verify GCC and CMake versions
-      run: |
-        gcc --version
-        cmake --version
-
-    - name: CMake
-      run: cmake -B ${{github.workspace}}/build -DCOIL_COMPILATION_TESTS=ON -DCOIL_RUNTIME_TESTS=ON -DCOIL_EXAMPLES=ON -DCOIL_RUNTIME_PERFORMANCE=ON -DCMAKE_BUILD_TYPE=${{matrix.config}}
-
-    - name: Build
-      run: cmake --build ${{github.workspace}}/build --parallel 10
-
-    - name: CTest
-      working-directory: ${{github.workspace}}/build
-      run: ctest -j 10 -C ${{matrix.config}}
-
-    - name: Measure performance
-      run: ${{github.workspace}}/build/tests/runtime_performance/runtime_performance
-      if: matrix.config == 'Release'
-
   msvc2019-compilation:
     runs-on: windows-2019
     strategy:
       matrix:
         bindings: [COIL, MANUAL]
-
     steps:
     - uses: actions/checkout@v2
-
     - name: Cmake
       run: cmake -B ${{github.workspace}}/build -G "Visual Studio 16 2019" -DCOIL_EXAMPLES=OFF -DCOIL_COMPILE_TIME=ON -DCOIL_COMPILE_TIME_WITH_${{ matrix.bindings }}=ON
-
     - name: Build
       run: cmake --build ${{github.workspace}}/build --config Debug --parallel 10
 
@@ -139,12 +86,9 @@ jobs:
     strategy:
       matrix:
         bindings: [COIL, MANUAL]
-
     steps:
     - uses: actions/checkout@v2
-
     - name: Cmake
       run: cmake -B ${{github.workspace}}/build -G "Visual Studio 17 2022" -DCOIL_EXAMPLES=OFF -DCOIL_COMPILE_TIME=ON -DCOIL_COMPILE_TIME_WITH_${{ matrix.bindings }}=ON
-
     - name: Build
       run: cmake --build ${{github.workspace}}/build --config Debug --parallel 10
