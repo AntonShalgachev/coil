@@ -2,6 +2,7 @@
 
 #include "common/ExamplesCommon.h"
 #include <iostream>
+#include <cmath>
 
 namespace
 {
