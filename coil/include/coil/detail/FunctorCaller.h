@@ -97,8 +97,8 @@ namespace coil::detail
 
         if (!functor)
         {
-            context.result.errors.push_back("Internal error");
-            return;
+            context.result.errors.push_back("Internal error"); // @NOCOVERAGE
+            return; // @NOCOVERAGE
         }
 
         using FuncTraits = detail::FuncTraits<FuncT>;

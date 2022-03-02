@@ -164,7 +164,7 @@ namespace coil
                     m_tokens.push_back(Token{ TokenType::String, str.substr(tokenBegin + 1, i - tokenBegin - 1) });
                     break;
                 default:
-                    return makeUnexpected("Internal error");
+                    return makeUnexpected("Internal error"); // @NOCOVERAGE
                 }
 
             }
@@ -251,7 +251,7 @@ namespace coil
                         break;
                     case StringTokenType::SecondaryToken:
                         if (!tokens.primaryTokenIndex)
-                            return makeUnexpected("Internal error");
+                            return makeUnexpected("Internal error"); // @NOCOVERAGE
 
                         tokens.secondaryTokenIndex = i;
                         addCurrentTokens();
