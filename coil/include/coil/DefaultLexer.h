@@ -19,7 +19,7 @@ namespace coil
         Expected<std::reference_wrapper<ExecutionInput>, std::string> operator()(std::string_view str) const
         {
             m_input.reset();
-            m_tokens.resize(0);
+            m_tokens.clear();
 
             if (auto res = tokenize(str); !res)
                 return makeUnexpected(std::move(res).error());
@@ -47,6 +47,8 @@ namespace coil
 
         struct Token
         {
+            Token(TokenType type, std::string_view value) : type(type), value(value) {}
+
             TokenType type = TokenType::String;
             std::string_view value;
         };
@@ -147,11 +149,11 @@ namespace coil
                     while ((i < str.size()) && getCharType(str[i]) == CharType::String)
                         i++;
 
-                    m_tokens.push_back(Token{ TokenType::String, str.substr(tokenBegin, i - tokenBegin) });
+                    m_tokens.emplace_back(TokenType::String, str.substr(tokenBegin, i - tokenBegin));
                     i--; // return to the last 'String' char
                     break;
                 case CharType::Assignment:
-                    m_tokens.push_back(Token{ TokenType::Assignment, str.substr(i, 1) });
+                    m_tokens.emplace_back(TokenType::Assignment, str.substr(i, 1));
                     break;
                 case CharType::Group:
                     i++;
@@ -161,7 +163,7 @@ namespace coil
                     if (i >= str.size())
                         return makeUnexpected(formatString("Token '%c' doesn't have an opening/closing token", str[tokenBegin]));
 
-                    m_tokens.push_back(Token{ TokenType::String, str.substr(tokenBegin + 1, i - tokenBegin - 1) });
+                    m_tokens.emplace_back(TokenType::String, str.substr(tokenBegin + 1, i - tokenBegin - 1));
                     break;
                 default:
                     return makeUnexpected("Internal error"); // @NOCOVERAGE
