@@ -3,6 +3,8 @@
 #include "coil/Bindings.h"
 #include "coil/Variable.h"
 
+#include <stdexcept>
+
 namespace stats
 {
     std::size_t functionCalls = 0;
@@ -145,6 +147,16 @@ namespace
         return val;
     }
 
+    void throwStdException()
+    {
+        throw std::runtime_error("Test runtime exception");
+    }
+
+    void throwNonStdException()
+    {
+        throw 42;
+    }
+
     coil::Bindings createBindings()
     {
         coil::Bindings bindings;
@@ -175,6 +187,9 @@ namespace
         bindings["use_tracker_by_ref"] = &useTrackerByRef;
 
         bindings["get_compound"] = &getCompound;
+
+        bindings["throw_std_exception"] = &throwStdException;
+        bindings["throw_non_std_exception"] = &throwNonStdException;
 
         return bindings;
     }
@@ -601,18 +616,76 @@ TEST(BindingsTests, TestUnbind)
 {
     coil::Bindings bindings = createBindings();
     bindings["func"] = {};
-    auto result = bindings.execute("func");
+    auto result1 = bindings.execute("func");
+    auto result2 = bindings.execute("ns.func");
 
-    EXPECT_EQ(result.errors.size(), 1);
-    EXPECT_PRED2(containsError, result.errors, "No function 'func' is registered");
+    EXPECT_EQ(result1.errors.size(), 1);
+    EXPECT_PRED2(containsError, result1.errors, "No function 'func' is registered");
+
+    EXPECT_EQ(result2.errors.size(), 0);
 }
 
 TEST(BindingsTests, TestUnbindWithCategory)
 {
     coil::Bindings bindings = createBindings();
     bindings["ns.func"] = {};
-    auto result = bindings.execute("ns.func");
+    auto result1 = bindings.execute("func");
+    auto result2 = bindings.execute("ns.func");
+
+    EXPECT_EQ(result1.errors.size(), 0);
+
+    EXPECT_EQ(result2.errors.size(), 1);
+    EXPECT_PRED2(containsError, result2.errors, "No function 'ns.func' is registered");
+}
+
+TEST(BindingsTests, TestClear)
+{
+    coil::Bindings bindings = createBindings();
+    bindings.clear();
+    auto result1 = bindings.execute("func");
+    auto result2 = bindings.execute("ns.func");
+
+    EXPECT_EQ(result1.errors.size(), 1);
+    EXPECT_PRED2(containsError, result1.errors, "No function 'func' is registered");
+
+    EXPECT_EQ(result2.errors.size(), 1);
+    EXPECT_PRED2(containsError, result2.errors, "No function 'ns.func' is registered");
+}
+
+TEST(BindingsTests, TestSyntaxError)
+{
+    coil::Bindings bindings = createBindings();
+
+    auto result = bindings.execute("func = arg");
 
     EXPECT_EQ(result.errors.size(), 1);
-    EXPECT_PRED2(containsError, result.errors, "No function 'ns.func' is registered");
+    EXPECT_PRED2(containsError, result.errors, "Syntax error: Unexpected token '=': no named for the named argument is provided");
+}
+
+TEST(BindingsTests, TestStdException)
+{
+    coil::Bindings bindings = createBindings();
+
+    coil::ExecutionResult result;
+
+    EXPECT_NO_THROW({
+        result = bindings.execute("throw_std_exception");
+    });
+
+    EXPECT_EQ(result.errors.size(), 1);
+    EXPECT_PRED2(containsError, result.errors, "Exception caught during execution: Test runtime exception");
+}
+
+TEST(BindingsTests, TestNonStdException)
+{
+    coil::Bindings bindings = createBindings();
+
+    coil::ExecutionResult result;
+
+    EXPECT_NO_THROW({
+        result = bindings.execute("throw_non_std_exception");
+    });
+
+    EXPECT_EQ(result.errors.size(), 1);
+    EXPECT_PRED2(containsError, result.errors, "Exception caught during execution");
 }
