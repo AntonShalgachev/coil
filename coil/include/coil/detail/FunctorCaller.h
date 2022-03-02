@@ -78,6 +78,10 @@ namespace coil::detail
         {
             context.reportError(formatString("Exception caught during execution: %s", ex.what()));
         }
+        catch (...)
+        {
+            context.reportError("Exception caught during execution");
+        }
     }
 
     template<typename Func, std::size_t... NonUserIndices, typename... UserArgs, std::size_t... UserIndices>
