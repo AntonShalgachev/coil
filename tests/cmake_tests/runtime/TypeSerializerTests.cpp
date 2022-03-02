@@ -177,3 +177,10 @@ TEST(TypeSerializerTests, TestCompoundUserTypeToString)
 {
     EXPECT_EQ(coil::TypeSerializer<CompoundType>::toString(CompoundType{ 6, 28 }), "CompoundType{6,28}");
 }
+
+TEST(TypeSerializerTests, TestUnknownTypeName)
+{
+    using namespace std::literals;
+
+    EXPECT_EQ(coil::TypeSerializer<float>::fromString("not_float"sv), coil::makeUnexpected("Unable to convert 'not_float' to type 'unknown'"));
+}
