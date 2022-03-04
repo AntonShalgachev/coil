@@ -143,10 +143,10 @@ namespace
         std::size_t const maxStorageSize = 1 + argsMax + argsMax * (2 + subargsMax);
         storage.reserve(maxStorageSize);
 
-        auto addToStorage = [maxStorageSize](std::string str)
+        auto addToStorage = [](std::string str)
         {
             // to prevent storage reallocation
-            if (storage.size() >= maxStorageSize)
+            if (storage.size() >= storage.capacity())
                 throw std::runtime_error("generateRandomInput: Maximum allocations reached");
 
             storage.push_back(std::move(str));
