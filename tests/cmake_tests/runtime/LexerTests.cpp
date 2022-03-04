@@ -96,12 +96,6 @@ namespace
         return input;
     }
 
-    struct ExecutionInputWithStorage
-    {
-        coil::ExecutionInput input;
-        std::vector<std::string> storage;
-    };
-
     template<typename RandomEngine>
     std::string generateRandomString(RandomEngine& engine, std::size_t generation, bool allowEmpty, bool allowNumber)
     {
@@ -128,24 +122,28 @@ namespace
     };
 
     template<typename RandomEngine>
-    ExecutionInputWithStorage generateRandomInput(RandomEngine& engine)
+    coil::ExecutionInput generateRandomInput(RandomEngine& engine)
     {
+        static std::vector<std::string> storage;
         std::size_t generation = 0;
 
-        ExecutionInputWithStorage inputWithStorage;
-        coil::ExecutionInput& input = inputWithStorage.input;
+        coil::ExecutionInput input;
 
-        std::uniform_int_distribution<std::size_t> argsCountDist{ 0, 3 };
-        std::uniform_int_distribution<std::size_t> compositeArgsCountDist{ 1, 3 };
+        std::size_t const argsMax = 3;
+        std::size_t const subargsMax = 3;
+
+        std::uniform_int_distribution<std::size_t> argsCountDist{ 0, argsMax };
+        std::uniform_int_distribution<std::size_t> compositeArgsCountDist{ 1, subargsMax };
 
         std::size_t argsCount = argsCountDist(engine);
         std::size_t namedArgsCount = argsCountDist(engine);
         std::size_t compositeArgsCount = compositeArgsCountDist(engine);
 
-        std::size_t const maxStorageSize = 1 + argsCount + namedArgsCount * (2 + compositeArgsCount);
-        inputWithStorage.storage.reserve(maxStorageSize);
+        storage.clear();
+        std::size_t const maxStorageSize = 1 + argsMax + argsMax * (2 + subargsMax);
+        storage.reserve(maxStorageSize);
 
-        auto addToStorage = [&storage = inputWithStorage.storage, maxStorageSize](std::string str)
+        auto addToStorage = [maxStorageSize](std::string str)
         {
             // to prevent storage reallocation
             if (storage.size() >= maxStorageSize)
@@ -200,7 +198,7 @@ namespace
             input.namedArguments.emplace_back(key, value);
         }
 
-        return inputWithStorage;
+        return input;
     }
 
     template<typename RandomEngine>
@@ -457,9 +455,9 @@ TEST(LexerTests, TestGenerated)
 
     for (std::size_t i = 0; i < generationsCount; i++)
     {
-        auto inputWithStorage = generateRandomInput(engine);
-        auto str = generateRandomInputString(engine, inputWithStorage.input);
+        auto input = generateRandomInput(engine);
+        auto str = generateRandomInputString(engine, input);
 
-        EXPECT_EQ(lexer(str), inputWithStorage.input);
+        EXPECT_EQ(lexer(str), input);
     }
 }
