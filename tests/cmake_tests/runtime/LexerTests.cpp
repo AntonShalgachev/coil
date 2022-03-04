@@ -119,31 +119,73 @@ namespace
     }
 
     template<typename RandomEngine>
+    auto addRandomSpaces(std::ostream& os, RandomEngine& engine)
+    {
+        std::uniform_int_distribution<std::size_t> amountDist{ 0, 2 };
+        std::size_t amount = amountDist(engine);
+        for (std::size_t i = 0; i < amount; i++)
+            os << ' ';
+    };
+
+    template<typename RandomEngine>
     ExecutionInputWithStorage generateRandomInput(RandomEngine& engine)
     {
-        // TODO generate also composite arguments
-
         std::size_t generation = 0;
 
         ExecutionInputWithStorage inputWithStorage;
         coil::ExecutionInput& input = inputWithStorage.input;
 
         std::uniform_int_distribution<std::size_t> argsCountDist{ 0, 3 };
+        std::uniform_int_distribution<std::size_t> compositeArgsCountDist{ 1, 3 };
 
         std::size_t argsCount = argsCountDist(engine);
         std::size_t namedArgsCount = argsCountDist(engine);
+        std::size_t compositeArgsCount = compositeArgsCountDist(engine);
 
-        std::size_t const maxStorageSize = 1 + argsCount + 2 * namedArgsCount;
+        std::size_t const maxStorageSize = 1 + argsCount + namedArgsCount * (2 + compositeArgsCount);
         inputWithStorage.storage.reserve(maxStorageSize);
 
-        auto generateNewString = [&storage = inputWithStorage.storage, &engine, &generation, maxStorageSize](bool allowEmpty, bool allowNumber)
+        auto addToStorage = [&storage = inputWithStorage.storage, maxStorageSize](std::string str)
         {
             // to prevent storage reallocation
             if (storage.size() >= maxStorageSize)
                 throw std::runtime_error("generateRandomInput: Maximum allocations reached");
 
-            storage.push_back(generateRandomString(engine, generation++, allowEmpty, allowNumber));
+            storage.push_back(std::move(str));
             return std::string_view{ storage.back() };
+        };
+
+        auto generateNewString = [&addToStorage, &engine, &generation](bool allowEmpty, bool allowNumber)
+        {
+            return addToStorage(generateRandomString(engine, generation++, allowEmpty, allowNumber));
+        };
+
+        auto generateCompositeArgs = [&addToStorage, &generateNewString, &engine](std::size_t count)
+        {
+            std::vector<std::string_view> subvalues;
+
+            std::stringstream value;
+
+            auto randomSpaces = [&value, &engine]() { addRandomSpaces(value, engine); };
+
+            if (count > 1)
+                randomSpaces();
+
+            for (std::size_t i = 0; i < count; i++)
+            {
+                std::string_view arg = generateNewString(false, true);
+                subvalues.push_back(arg);
+
+                value << arg;
+
+                if (count > 1)
+                {
+                    value << ' ';
+                    randomSpaces();
+                }
+            }
+
+            return coil::ArgValue(addToStorage(std::move(value).str()), std::move(subvalues));
         };
 
         input.name = generateNewString(false, false);
@@ -154,7 +196,7 @@ namespace
         for (std::size_t i = 0; i < namedArgsCount; i++)
         {
             auto key = generateNewString(false, false);
-            auto value = createValue(generateNewString(false, true));
+            auto value = generateCompositeArgs(compositeArgsCount);
             input.namedArguments.emplace_back(key, value);
         }
 
@@ -164,37 +206,37 @@ namespace
     template<typename RandomEngine>
     std::string generateRandomInputString(RandomEngine& engine, coil::ExecutionInput const& input)
     {
-        auto randomSpaces = [&engine](std::ostream& os)
-        {
-            std::uniform_int_distribution<std::size_t> amountDist{ 0, 2 };
-            std::size_t amount = amountDist(engine);
-            for (std::size_t i = 0; i < amount; i++)
-                os << ' ';
-        };
-
         std::stringstream ss;
 
-        randomSpaces(ss);
+        auto randomSpaces = [&ss, &engine]() { addRandomSpaces(ss, engine); };
+
+        randomSpaces();
         ss << input.name << ' ';
-        randomSpaces(ss);
+        randomSpaces();
 
         for (auto const& arg : input.arguments)
         {
             ss << arg.value << ' ';
-            randomSpaces(ss);
+            randomSpaces();
         }
 
         for (auto const& pair : input.namedArguments)
         {
-            ss << pair.first;
-            randomSpaces(ss);
+            auto const& key = pair.first;
+            auto const& arg = pair.second;
+
+            ss << key;
+            randomSpaces();
             ss << "=";
-            randomSpaces(ss);
-            ss << pair.second.value << ' ';
-            randomSpaces(ss);
+            randomSpaces();
+            if (arg.subvalues.size() <= 1)
+                ss << arg.value << ' ';
+            else
+                ss << '(' << arg.value << ')';
+            randomSpaces();
         }
 
-        randomSpaces(ss);
+        randomSpaces();
 
         return ss.str();
     }
