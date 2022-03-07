@@ -12,17 +12,13 @@
 
 namespace coil::detail
 {
-    inline void reportInvalidArguments(std::size_t minArgs, std::size_t isUnlimited, std::size_t maxArgs, CallContext& context)
+    inline void reportInvalidArguments(std::size_t minArgs, std::size_t maxArgs, CallContext& context)
     {
         auto const& arguments = context.input.arguments;
         std::size_t const actualArgsCount = arguments.size();
 
-        bool isVariadic = isUnlimited || (minArgs != maxArgs);
-
         std::string expectedMessage;
-        if (isVariadic && isUnlimited)
-            expectedMessage = formatString("at least %d", minArgs);
-        else if (isVariadic && !isUnlimited)
+        if (minArgs != maxArgs)
             expectedMessage = formatString("from %d to %d", minArgs, maxArgs);
         else
             expectedMessage = formatString("%d", minArgs);
@@ -32,13 +28,13 @@ namespace coil::detail
         context.result.errors.push_back(std::move(errorMessage));
     }
 
-    inline bool validateArguments(std::size_t minArgs, std::size_t isUnlimited, std::size_t maxArgs, CallContext& context)
+    inline bool validateArguments(std::size_t minArgs, std::size_t maxArgs, CallContext& context)
     {
         std::size_t const actualArgsCount = context.input.arguments.size();
-        bool const argsCountOkay = actualArgsCount >= minArgs && (isUnlimited || actualArgsCount <= maxArgs);
+        bool const argsCountOkay = actualArgsCount >= minArgs && actualArgsCount <= maxArgs;
         if (!argsCountOkay)
         {
-            reportInvalidArguments(minArgs, isUnlimited, maxArgs, context);
+            reportInvalidArguments(minArgs, maxArgs, context);
             return false;
         }
 
@@ -104,7 +100,7 @@ namespace coil::detail
         using FuncTraits = detail::FuncTraits<FuncT>;
         using ArgsTraits = typename FuncTraits::ArgsTraits;
 
-        if (!validateArguments(ArgsTraits::minArgs, ArgsTraits::isUnlimited, ArgsTraits::maxArgs, context))
+        if (!validateArguments(ArgsTraits::minArgs, ArgsTraits::maxArgs, context))
             return;
 
         using UserArgTypes = typename ArgsTraits::UserArgumentTypes;

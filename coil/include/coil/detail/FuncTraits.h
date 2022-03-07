@@ -11,9 +11,8 @@ namespace coil::detail
     struct ArgsCounters
     {
         static constexpr std::size_t minArgs = (VariadicConsumer<std::decay_t<Args>>::minArgs + ... + 0);
-        static constexpr bool isUnlimited = (VariadicConsumer<std::decay_t<Args>>::isUnlimitedArgs || ... || false);
         static constexpr std::size_t maxArgs = (VariadicConsumer<std::decay_t<Args>>::maxArgs + ... + 0);
-        static_assert(maxArgs >= minArgs || isUnlimited, "For finite arguments maxArgs should not be less than minArgs");
+        static_assert(maxArgs >= minArgs, "maxArgs should not be less than minArgs");
     };
 
     template<typename... Args>

@@ -180,4 +180,27 @@ namespace coil
             return TypeSerializer<T>::toString(value.value());
         }
     };
+
+    template<typename T>
+    struct TypeSerializer<std::vector<T>>
+    {
+        static Expected<std::vector<T>, std::string> fromString(ArgValue const& input)
+        {
+            std::vector<T> result;
+            result.reserve(input.subvalues.size());
+
+            for (std::string_view subvalue : input.subvalues)
+            {
+                Expected<T, std::string> expectedArg = TypeSerializer<T>::fromString(subvalue);
+                if (!expectedArg)
+                    return makeUnexpected(std::move(expectedArg).error());
+
+                result.push_back(*std::move(expectedArg));
+            }
+
+            return result;
+        }
+
+        // TODO implement toString
+    };
 }

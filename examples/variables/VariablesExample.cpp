@@ -62,16 +62,17 @@ void VariablesExample::run()
     common::printSectionHeader("Calling variable with an argument will update and return the value:");
     common::executeCommand(bindings, "time_scale 2.0");
     common::executeCommand(bindings, "city Berlin");
-    common::executeCommand(bindings, "flags Flag1 Flag2 Flag4");
+    common::executeCommand(bindings, "flags Flag1|Flag2|Flag4");
     common::executeCommand(bindings, "obj.enabled true");
-    common::executeCommand(bindings, "obj.flags Flag2 Flag3");
+    common::executeCommand(bindings, "obj.flags Flag2|Flag3");
     common::executeCommand(bindings, "print_variables");
 
     common::printSectionHeader("Errors are handled just as for functions (variables won't change):");
     common::executeCommand(bindings, "time_scale 2.0 3.0");
     common::executeCommand(bindings, "city Porto Athens");
-    common::executeCommand(bindings, "flags Foo Flag4 Bar");
+    common::executeCommand(bindings, "flags Flag1 Flag2"); // considered to be 2 arguments, therefore error
+    common::executeCommand(bindings, "flags Foo|Flag4|Bar");
     common::executeCommand(bindings, "obj.enabled none");
-    common::executeCommand(bindings, "obj.flags Foo Flag4 Bar");
+    common::executeCommand(bindings, "obj.flags Foo|Flag4|Bar");
     common::executeCommand(bindings, "print_variables");
 }

@@ -22,7 +22,7 @@ namespace
     struct Entity
     {
         std::uint64_t id;
-        std::string_view name;
+        std::string name;
     };
 
     std::vector<Entity> entities;
@@ -65,31 +65,9 @@ namespace
             context.out() << entity.id << ": " << entity.name << std::endl;
     }
 
-    void addEntities(coil::Context context, std::vector<coil::AnyArgView> const& args)
+    void addEntities(std::size_t id, std::string name)
     {
-        using namespace std::literals::string_literals;
-
-        if (args.size() % 2 != 0)
-        {
-            context.reportError("Even amount of arguments was expected, got "s + std::to_string(args.size()));
-            return;
-        }
-
-        for (std::size_t i = 0; i < args.size(); i += 2)
-        {
-            auto optionalId = args[i].get<std::uint64_t>();
-            auto optionalName = args[i + 1].get<std::string_view>();
-
-            if (!optionalId)
-                context.reportError("Argument "s + std::to_string(i) + ": expected id, got '"s + std::string{ args[i].getRaw().value } + "'"s);
-            if (!optionalName)
-                context.reportError("Argument "s + std::to_string(i) + ": expected name, got '"s + std::string{ args[i + 1].getRaw().value } + "'"s);
-
-            if (!optionalId || !optionalName)
-                return;
-
-            entities.push_back(Entity{ *optionalId, *optionalName });
-        }
+        entities.push_back(Entity{ id, std::move(name) });
     }
 }
 
@@ -104,10 +82,11 @@ void VariadicExample::run()
     bindings["entities.list"] = &printEntities;
     bindings["entities.add"] = &addEntities;
 
-    common::printSectionHeader("std::vector consumes all remaining arguments:");
-    common::executeCommand(bindings, "sum_all");
-    common::executeCommand(bindings, "sum_all 1");
-    common::executeCommand(bindings, "sum_all 1 2 3 5 8");
+    // TODO move to another example ("CompositeExample")
+    common::printSectionHeader("std::vector accepts any amount of arguments:");
+    common::executeCommand(bindings, "sum_all ()");
+    common::executeCommand(bindings, "sum_all (1)");
+    common::executeCommand(bindings, "sum_all (1 2 3 5 8)");
 
     common::printSectionHeader("std::optional consumes 0 or 1 argument:");
     common::executeCommand(bindings, "scale 3.14");
@@ -119,7 +98,9 @@ void VariadicExample::run()
     common::executeCommand(bindings, "scale 3.14 two");
 
     common::printSectionHeader("AnyArgView can be used with any type:");
-    common::executeCommand(bindings, "entities.add 0 entity0 1 entity1 2 entity2");
+    common::executeCommand(bindings, "entities.add 0 entity0");
+    common::executeCommand(bindings, "entities.add 1 entity1");
+    common::executeCommand(bindings, "entities.add 2 entity2");
     common::executeCommand(bindings, "entities.list");
     common::executeCommand(bindings, "entities.rename 0 player0");
     common::executeCommand(bindings, "entities.rename entity1 player1");
