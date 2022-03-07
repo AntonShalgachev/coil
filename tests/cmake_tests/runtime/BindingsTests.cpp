@@ -523,7 +523,7 @@ TEST(BindingsTests, TestErrorWrongArgumentsCountVariadicAtLeast)
     auto result = bindings.execute("sum_all_init");
 
     EXPECT_EQ(result.errors.size(), 1);
-    EXPECT_PRED2(containsError, result.errors, "Wrong number of arguments to 'sum_all_init': expected at least 1, got 0");
+    EXPECT_PRED2(containsError, result.errors, "Wrong number of arguments to 'sum_all_init': expected 2, got 0");
 }
 
 TEST(BindingsTests, TestErrorWrongArgumentsCountVariadicAtLeastWithCategory)
@@ -532,7 +532,7 @@ TEST(BindingsTests, TestErrorWrongArgumentsCountVariadicAtLeastWithCategory)
     auto result = bindings.execute("ns.sum_all_init");
 
     EXPECT_EQ(result.errors.size(), 1);
-    EXPECT_PRED2(containsError, result.errors, "Wrong number of arguments to 'ns.sum_all_init': expected at least 1, got 0");
+    EXPECT_PRED2(containsError, result.errors, "Wrong number of arguments to 'ns.sum_all_init': expected 2, got 0");
 }
 
 TEST(BindingsTests, TestErrorWrongArgumentsCountVariadicBetween)
@@ -566,12 +566,10 @@ TEST(BindingsTests, TestErrorWrongArgumentTypes)
 TEST(BindingsTests, TestErrorWrongArgumentTypesVariadic)
 {
     coil::Bindings bindings = createBindings();
-    auto result = bindings.execute("sum_all foo bar baz");
+    auto result = bindings.execute("sum_all (foo bar baz)");
 
-    EXPECT_EQ(result.errors.size(), 3);
+    EXPECT_EQ(result.errors.size(), 1);
     EXPECT_PRED2(containsError, result.errors, "Unable to convert 'foo' to type 'int'");
-    EXPECT_PRED2(containsError, result.errors, "Unable to convert 'bar' to type 'int'");
-    EXPECT_PRED2(containsError, result.errors, "Unable to convert 'baz' to type 'int'");
 }
 
 TEST(BindingsTests, TestErrorWrongArgumentTypesVariable)
@@ -602,10 +600,10 @@ TEST(BindingsTests, TestOutput)
     EXPECT_EQ(result.output.str(), "Test");
 }
 
-TEST(BindingsTests, TestVariadicVector)
+TEST(BindingsTests, TestVector)
 {
     coil::Bindings bindings = createBindings();
-    auto result = bindings.execute("sum_all 1 1 2 3 5 8");
+    auto result = bindings.execute("sum_all (1 1 2 3 5 8)");
 
     EXPECT_EQ(result.errors.size(), 0);
     ASSERT_TRUE(result.returnValue.has_value());
