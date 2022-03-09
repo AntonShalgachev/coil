@@ -7,16 +7,13 @@
 #include <numeric>
 #include <iostream>
 
+// TODO probably irrelevant now, move to other examples
+
 namespace
 {
     float sumAll(std::vector<float> const& numbers)
     {
         return std::accumulate(numbers.begin(), numbers.end(), 0.0f);
-    }
-
-    float scale(float value, std::optional<float> multiplier)
-    {
-        return value * multiplier.value_or(1.0f);
     }
 
     struct Entity
@@ -76,7 +73,6 @@ void VariadicExample::run()
     coil::Bindings bindings;
 
     bindings["sum_all"] = &sumAll;
-    bindings["scale"] = &scale;
 
     bindings["entities.rename"] = &renameEntity;
     bindings["entities.list"] = &printEntities;
@@ -87,15 +83,6 @@ void VariadicExample::run()
     common::executeCommand(bindings, "sum_all ()");
     common::executeCommand(bindings, "sum_all (1)");
     common::executeCommand(bindings, "sum_all (1 2 3 5 8)");
-
-    common::printSectionHeader("std::optional consumes 0 or 1 argument:");
-    common::executeCommand(bindings, "scale 3.14");
-    common::executeCommand(bindings, "scale 3.14 2.0");
-
-    common::printSectionHeader("coil also catches invalid number or type of variadic arguments:");
-    common::executeCommand(bindings, "scale");
-    common::executeCommand(bindings, "scale 3.14 2.0 3.0");
-    common::executeCommand(bindings, "scale 3.14 two");
 
     common::printSectionHeader("AnyArgView can be used with any type:");
     common::executeCommand(bindings, "entities.add 0 entity0");

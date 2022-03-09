@@ -39,11 +39,11 @@ void VariablesExample::run()
     Flags flags = Flags::Flag1 | Flags::Flag3;
 
     bindings["obj.enabled"] = coil::variable(&object.enabled);
-    bindings["obj.flags"] = FlagsVariableWrapper{ &object.flags };
+    bindings["obj.flags"] = ::flags(&object.flags);
 
     bindings["time_scale"] = coil::variable(&timeScale);
     bindings["city"] = coil::variable(&city);
-    bindings["flags"] = FlagsVariableWrapper{ &flags };
+    bindings["flags"] = ::flags(&flags);
 
     bindings["print_variables"] = [&object, &timeScale, &city, &flags](coil::Context context)
     {
