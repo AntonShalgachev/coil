@@ -21,18 +21,20 @@ namespace coil::detail
     }
 
     template<typename T>
-    bool reportError(CallContext& context, Expected<T, std::string> const& result)
+    void reportError(CallContext& context, Expected<T, std::string> const& result)
     {
         if (!result)
             context.reportError(result.error());
-        return result;
     }
 
     template<typename Func, std::size_t... NonUserIndices, typename... Es>
     void invoke(Func& func, CallContext& context, Es&&... expectedArgs)
     {
-        if ((!reportError(context, expectedArgs) || ...))
+        if ((!expectedArgs || ...))
+        {
+            (reportError(context, expectedArgs), ...);
             return;
+        }
 
         using R = typename detail::FuncTraits<Func>::ReturnType;
 
