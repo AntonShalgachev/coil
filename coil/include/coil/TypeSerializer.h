@@ -167,9 +167,9 @@ namespace coil
         static Expected<std::optional<T>, std::string> fromString(ArgValue const& input)
         {
             if (input.value.empty())
-                return {};
+                return std::optional<T>{};
 
-            return TypeSerializer<T>::fromString(input.value);
+            return std::optional<T>{TypeSerializer<T>::fromString(input.value)};
         }
 
         static std::string toString(std::optional<T> const& value)

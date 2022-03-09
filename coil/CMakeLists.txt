@@ -14,19 +14,20 @@ set(ALL_FILES
     "include/coil/Context.h"
     "include/coil/NamedArgs.h"
     "include/coil/TypeSerializer.h"
-    "include/coil/VariadicConsumer.h"
     "include/coil/CommandCollection.h"
 
     "include/coil/detail/FunctorCaller.h"
     "include/coil/detail/CallContext.h"
     "include/coil/detail/FuncTraits.h"
     "include/coil/detail/StringWrapper.h"
+    "include/coil/detail/AnyFunctor.h"
     
     "include/coil/DefaultLexer.h"
     "include/coil/Expected.h"
     "include/coil/TypeName.h"
     "include/coil/Property.h"
     "include/coil/ArgValue.h"
+    "include/coil/Overloaded.h"
 )
 
 add_library(${PROJECT_NAME} INTERFACE ${ALL_FILES})

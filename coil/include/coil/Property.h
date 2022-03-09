@@ -1,6 +1,8 @@
 #pragma once
 #include <type_traits>
 
+// TODO use coil::overloaded
+
 namespace coil
 {
     template<typename G, typename S>
