@@ -3,7 +3,6 @@
 #include <string>
 #include <functional>
 #include <unordered_map>
-#include <any>
 
 #include "detail/FuncTraits.h"
 #include "Utils.h"
@@ -12,6 +11,7 @@
 #include "DefaultLexer.h"
 #include "Expected.h"
 #include "detail/StringWrapper.h"
+#include "detail/AnyFunctor.h"
 
 namespace coil
 {
@@ -28,12 +28,12 @@ namespace coil
         template<typename Func>
         void add(std::string_view name, Func&& func)
         {
-            using UnqualifiedFunc = std::decay_t<Func>;
+            m_commands.insert_or_assign(name, std::vector<detail::AnyFunctor>{ detail::createAnyFunctor(std::forward<Func>(func)) });
+        }
 
-            static_assert(detail::FuncTraits<UnqualifiedFunc>::isFunc, "Func should be a functor object");
-            static_assert(!std::is_member_function_pointer_v<UnqualifiedFunc>, "Func shouldn't be a member function");
-
-            m_commands.insert_or_assign(name, AnyFunctor{ UnqualifiedFunc{ std::move(func) }, &detail::functorTrampoline<UnqualifiedFunc> });
+        void add(std::string_view name, std::vector<detail::AnyFunctor> anyFunctors)
+        {
+            m_commands.insert_or_assign(name, std::move(anyFunctors));
         }
 
         void remove(std::string_view name)
@@ -77,28 +77,6 @@ namespace coil
         }
 
     private:
-        struct AnyFunctor
-        {
-        public:
-            using TrampolineT = void(*)(std::any&, detail::CallContext&);
-
-            AnyFunctor(std::any functor, TrampolineT trampoline)
-                : functor(std::move(functor))
-                , m_trampoline(trampoline)
-            {
-
-            }
-
-            void invokeTrampoline(detail::CallContext& context)
-            {
-                m_trampoline(functor, context);
-            }
-
-        private:
-            std::any functor;
-            TrampolineT m_trampoline;
-        };
-
         void execute(detail::CallContext& context)
         {
             if (context.input.name.empty())
@@ -114,12 +92,33 @@ namespace coil
                 return;
             }
 
-            it->second.invokeTrampoline(context);
+            auto& functors = it->second;
+
+            for (auto& functor : functors)
+                if (functor.arity() == context.input.arguments.size())
+                    return functor.invokeTrampoline(context);
+
+            std::stringstream argsCount;
+            
+            for (std::size_t i = 0; i < functors.size(); i++)
+            {
+                if (i > 0 && i != functors.size() - 1)
+                    argsCount << ", ";
+                if (i > 0 && i == functors.size() - 1)
+                    argsCount << " or ";
+
+                argsCount << functors[i].arity();
+            }   
+
+            std::string const expectedStr = argsCount.str();
+            std::size_t const actualArgsCount = context.input.arguments.size();
+            auto error = formatString("Wrong number of arguments to '%.*s': expected %s, got %d", context.input.name.size(), context.input.name.data(), expectedStr.c_str(), actualArgsCount);
+            context.reportError(std::move(error));
         }
 
         DefaultLexer m_defaultLexer;
 
-        std::unordered_map<StringWrapper, AnyFunctor> m_commands;
+        std::unordered_map<StringWrapper, std::vector<detail::AnyFunctor>> m_commands;
     };
 
     template<typename BindingsT>
