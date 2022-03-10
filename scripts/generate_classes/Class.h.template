@@ -29,19 +29,19 @@ public:
 
 private:
 #for $method in $methods
-    #echo $return_type($method) # ${method.name}($combine($method.args));
+    [[maybe_unused]] #echo $return_type($method) # ${method.name}($combine($method.args));
 #end for
 
 #for $member_variable in $member_variables
-    $member_variable.type $member_variable.name{};
+    [[maybe_unused]] $member_variable.type $member_variable.name{};
 #end for
 
 #for $function in $functions
-    static #echo $return_type($function) # ${function.name}($combine($function.args));
+    [[maybe_unused]] static #echo $return_type($function) # ${function.name}($combine($function.args));
 #end for
 
 #for $variable in $variables
-    inline static $variable.type $variable.name{};
+    [[maybe_unused]] inline static $variable.type $variable.name{};
 #end for
 #if $has_bindings
 
