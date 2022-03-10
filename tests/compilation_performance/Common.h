@@ -1,14 +1,22 @@
 #pragma once
 
-#if USE_COIL
-
 #include "coil/Bindings.h"
 #include "coil/Variable.h"
 #include "coil/Bind.h"
 
-#elif USE_MANUAL
-
 #include <functional>
+#include <string_view>
+#include <string>
+#include <sstream>
+#include <iostream>
+#include <random>
+#include <map>
+#include <unordered_map>
+#include <vector>
+#include <optional>
+#include <charconv>
+
+#if USE_MANUAL
 
 class DumbBindings
 {
