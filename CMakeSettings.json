@@ -128,6 +128,11 @@
           "name": "COIL_COMPILE_TIME",
           "value": "True",
           "type": "BOOL"
+        },
+        {
+          "name": "COIL_EXAMPLES",
+          "value": "False",
+          "type": "BOOL"
         }
       ]
     },
@@ -151,6 +156,11 @@
           "name": "COIL_COMPILE_TIME_WITH_COIL",
           "value": "True",
           "type": "BOOL"
+        },
+        {
+          "name": "COIL_EXAMPLES",
+          "value": "False",
+          "type": "BOOL"
         }
       ]
     },
@@ -173,6 +183,11 @@
         {
           "name": "COIL_COMPILE_TIME_WITH_MANUAL",
           "value": "True",
+          "type": "BOOL"
+        },
+        {
+          "name": "COIL_EXAMPLES",
+          "value": "False",
           "type": "BOOL"
         }
       ]
