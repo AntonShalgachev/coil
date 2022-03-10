@@ -170,13 +170,13 @@ class SourceWriter:
 
 def main():
     seed = 88005553535
-    classes_with_bindings_count = 100
-    classes_without_bindings_count = 100
-    methods_count = 15
-    functions_count = 15
-    member_variables_count = 15
-    variables_count = 15
-    includes_count = 20
+    classes_with_bindings_count = 500
+    classes_without_bindings_count = 0
+    methods_count = 3
+    functions_count = 3
+    member_variables_count = 3
+    variables_count = 3
+    includes_count = 0
     args_count = 5
     types = ['int', 'float', 'double', 'bool', 'short', 'unsigned']
     destination = '../../tests/compilation_performance/generated'
