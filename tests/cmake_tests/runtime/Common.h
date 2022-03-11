@@ -2,6 +2,8 @@
 
 #include "coil/TypeName.h"
 
+#include <optional>
+
 namespace coil
 {
     template<>
