@@ -58,11 +58,6 @@ namespace
         return sumAllInit(0, values);
     }
 
-    void funcWithOptional(int, float, std::optional<float>)
-    {
-
-    }
-
     void output(coil::Context context, std::string value)
     {
         context.out() << value;
@@ -173,9 +168,6 @@ namespace
 
         bindings["sum_all_init"] = &sumAllInit;
         bindings["ns.sum_all_init"] = &sumAllInit;
-
-        bindings["func_with_optional"] = &funcWithOptional;
-        bindings["ns.func_with_optional"] = &funcWithOptional;
 
         bindings["output"] = &output;
         bindings["ns.output"] = &output;
@@ -460,6 +452,41 @@ TEST(BindingsTests, TestOverloaded)
     EXPECT_EQ(result3.errors.size(), 0);
     ASSERT_TRUE(result3.returnValue.has_value());
     EXPECT_EQ(*result3.returnValue, "func3");
+}
+
+TEST(BindingTests, TestOptionalEmpty)
+{
+    coil::Bindings bindings;
+    bindings["func"] = [](std::optional<int> arg) { return arg; };
+
+    auto result = bindings.execute("func ()");
+
+    EXPECT_EQ(result.errors.size(), 0);
+    ASSERT_TRUE(result.returnValue.has_value());
+    EXPECT_EQ(*result.returnValue, "");
+}
+
+TEST(BindingTests, TestOptionalWithValue)
+{
+    coil::Bindings bindings;
+    bindings["func"] = [](std::optional<int> arg) { return arg; };
+
+    auto result = bindings.execute("func 42");
+
+    EXPECT_EQ(result.errors.size(), 0);
+    ASSERT_TRUE(result.returnValue.has_value());
+    EXPECT_EQ(*result.returnValue, "42");
+}
+
+TEST(BindingTests, TestOptionalWithError)
+{
+    coil::Bindings bindings;
+    bindings["func"] = [](std::optional<int> arg) { return arg; };
+
+    auto result = bindings.execute("func foo");
+
+    EXPECT_EQ(result.errors.size(), 1);
+    EXPECT_PRED2(containsError, result.errors, "Unable to convert 'foo' to type 'std::optional<int>': Unable to convert 'foo' to type 'int'");
 }
 
 TEST(BindingsTests, TestCompoundSyntax)
