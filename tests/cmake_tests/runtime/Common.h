@@ -3,6 +3,7 @@
 #include "coil/TypeName.h"
 
 #include <optional>
+#include <vector>
 
 namespace coil
 {
@@ -22,6 +23,15 @@ namespace coil
         static std::string_view name()
         {
             static std::string result = "std::optional<" + std::string{ TypeName<T>::name() } + ">";
+            return result;
+        }
+    };
+    template<typename T>
+    struct TypeName<std::vector<T>>
+    {
+        static std::string_view name()
+        {
+            static std::string result = "std::vector<" + std::string{ TypeName<T>::name() } + ">";
             return result;
         }
     };
