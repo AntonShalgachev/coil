@@ -197,7 +197,7 @@ namespace coil
             {
                 Expected<T, std::string> expectedArg = TypeSerializer<T>::fromString(subvalue);
                 if (!expectedArg)
-                    return makeUnexpected(std::move(expectedArg).error());
+                    return makeSerializationError<std::vector<T>>(input, std::move(expectedArg).error());
 
                 result.push_back(*std::move(expectedArg));
             }
