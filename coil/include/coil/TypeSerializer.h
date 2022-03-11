@@ -169,7 +169,11 @@ namespace coil
             if (input.value.empty())
                 return std::optional<T>{};
 
-            return std::optional<T>{TypeSerializer<T>::fromString(input.value)};
+            Expected<T, std::string> innerValue = TypeSerializer<T>::fromString(input.value);
+            if (innerValue)
+                return std::optional<T>{*innerValue};
+
+            return makeSerializationError<std::optional<T>>(input, std::move(innerValue).error());
         }
 
         static std::string toString(std::optional<T> const& value)

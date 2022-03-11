@@ -14,4 +14,13 @@ namespace coil
     {
         static std::string_view name() { return "int"; }
     };
+    template<typename T>
+    struct TypeName<std::optional<T>>
+    {
+        static std::string_view name()
+        {
+            static std::string result = "std::optional<" + std::string{ TypeName<T>::name() } + ">";
+            return result;
+        }
+    };
 }
