@@ -1,46 +1,15 @@
 #pragma once
 
 #include <string>
-#include <vector>
-#include <optional>
+#include <any>
 
 #include "CallContext.h"
 #include "coil/Types.h"
 #include "coil/TypeSerializer.h"
 #include "FuncTraits.h"
-#include "coil/VariadicConsumer.h"
 
 namespace coil::detail
 {
-    inline void reportInvalidArguments(std::size_t minArgs, std::size_t maxArgs, CallContext& context)
-    {
-        auto const& arguments = context.input.arguments;
-        std::size_t const actualArgsCount = arguments.size();
-
-        std::string expectedMessage;
-        if (minArgs != maxArgs)
-            expectedMessage = formatString("from %d to %d", minArgs, maxArgs);
-        else
-            expectedMessage = formatString("%d", minArgs);
-
-        auto errorMessage = formatString("Wrong number of arguments to '%.*s': expected %s, got %d", context.input.name.size(), context.input.name.data(), expectedMessage.c_str(), actualArgsCount);
-
-        context.result.errors.push_back(std::move(errorMessage));
-    }
-
-    inline bool validateArguments(std::size_t minArgs, std::size_t maxArgs, CallContext& context)
-    {
-        std::size_t const actualArgsCount = context.input.arguments.size();
-        bool const argsCountOkay = actualArgsCount >= minArgs && actualArgsCount <= maxArgs;
-        if (!argsCountOkay)
-        {
-            reportInvalidArguments(minArgs, maxArgs, context);
-            return false;
-        }
-
-        return true;
-    }
-
     template<std::size_t i>
     inline Context createContext(CallContext& context);
     template<>
@@ -49,11 +18,21 @@ namespace coil::detail
         return Context{ context };
     }
 
+    template<typename T>
+    void reportError(CallContext& context, Expected<T, std::string> const& result)
+    {
+        if (!result)
+            context.reportError(result.error());
+    }
+
     template<typename Func, std::size_t... NonUserIndices, typename... Es>
     void invoke(Func& func, CallContext& context, Es&&... expectedArgs)
     {
-        if (!(expectedArgs && ...))
+        if ((!expectedArgs || ...))
+        {
+            (reportError(context, expectedArgs), ...);
             return;
+        }
 
         using R = typename detail::FuncTraits<Func>::ReturnType;
 
@@ -83,7 +62,7 @@ namespace coil::detail
     template<typename Func, std::size_t... NonUserIndices, typename... UserArgs, std::size_t... UserIndices>
     void unpackAndInvoke(Func& func, CallContext& context, std::index_sequence<NonUserIndices...>, Types<UserArgs...>, std::index_sequence<UserIndices...>)
     {
-        invoke<Func, NonUserIndices...>(func, context, VariadicConsumer<std::decay_t<UserArgs>>::consume(Context{ context }, context.input, UserIndices)...);
+        invoke<Func, NonUserIndices...>(func, context, TypeSerializer<std::decay_t<UserArgs>>::fromString(context.input.arguments[UserIndices])...);
     }
 
     template<typename FuncT>
@@ -99,9 +78,6 @@ namespace coil::detail
 
         using FuncTraits = detail::FuncTraits<FuncT>;
         using ArgsTraits = typename FuncTraits::ArgsTraits;
-
-        if (!validateArguments(ArgsTraits::minArgs, ArgsTraits::maxArgs, context))
-            return;
 
         using UserArgTypes = typename ArgsTraits::UserArgumentTypes;
         using UserArgIndicesType = typename UserArgTypes::IndicesType;

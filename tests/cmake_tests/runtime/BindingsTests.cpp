@@ -58,11 +58,6 @@ namespace
         return sumAllInit(0, values);
     }
 
-    void funcWithOptional(int, float, std::optional<float>)
-    {
-
-    }
-
     void output(coil::Context context, std::string value)
     {
         context.out() << value;
@@ -161,6 +156,8 @@ namespace
     {
         coil::Bindings bindings;
 
+        // TODO review
+
         bindings["func"] = &function;
         bindings["ns.func"] = &function;
 
@@ -171,9 +168,6 @@ namespace
 
         bindings["sum_all_init"] = &sumAllInit;
         bindings["ns.sum_all_init"] = &sumAllInit;
-
-        bindings["func_with_optional"] = &funcWithOptional;
-        bindings["ns.func_with_optional"] = &funcWithOptional;
 
         bindings["output"] = &output;
         bindings["ns.output"] = &output;
@@ -434,6 +428,67 @@ TEST(BindingsTests, TestVariableWriteWithCategory)
     EXPECT_EQ(variable, 365);
 }
 
+TEST(BindingsTests, TestOverloaded)
+{
+    coil::Bindings bindings;
+
+    auto func1 = [](int) { return "func1"; };
+    auto func2 = [](int, int) { return "func2"; };
+    auto func3 = [](int, int, int) { return "func3"; };
+    bindings["func"] = coil::overloaded(std::move(func1), std::move(func2), std::move(func3));
+
+    auto result1 = bindings.execute("func 42");
+    auto result2 = bindings.execute("func 42 42");
+    auto result3 = bindings.execute("func 42 42 42");
+
+    EXPECT_EQ(result1.errors.size(), 0);
+    ASSERT_TRUE(result1.returnValue.has_value());
+    EXPECT_EQ(*result1.returnValue, "func1");
+
+    EXPECT_EQ(result2.errors.size(), 0);
+    ASSERT_TRUE(result2.returnValue.has_value());
+    EXPECT_EQ(*result2.returnValue, "func2");
+
+    EXPECT_EQ(result3.errors.size(), 0);
+    ASSERT_TRUE(result3.returnValue.has_value());
+    EXPECT_EQ(*result3.returnValue, "func3");
+}
+
+TEST(BindingTests, TestOptionalEmpty)
+{
+    coil::Bindings bindings;
+    bindings["func"] = [](std::optional<int> arg) { return arg; };
+
+    auto result = bindings.execute("func ()");
+
+    EXPECT_EQ(result.errors.size(), 0);
+    ASSERT_TRUE(result.returnValue.has_value());
+    EXPECT_EQ(*result.returnValue, "");
+}
+
+TEST(BindingTests, TestOptionalWithValue)
+{
+    coil::Bindings bindings;
+    bindings["func"] = [](std::optional<int> arg) { return arg; };
+
+    auto result = bindings.execute("func 42");
+
+    EXPECT_EQ(result.errors.size(), 0);
+    ASSERT_TRUE(result.returnValue.has_value());
+    EXPECT_EQ(*result.returnValue, "42");
+}
+
+TEST(BindingTests, TestOptionalWithError)
+{
+    coil::Bindings bindings;
+    bindings["func"] = [](std::optional<int> arg) { return arg; };
+
+    auto result = bindings.execute("func foo");
+
+    EXPECT_EQ(result.errors.size(), 1);
+    EXPECT_PRED2(containsError, result.errors, "Unable to convert 'foo' to type 'std::optional<int>': Unable to convert 'foo' to type 'int'");
+}
+
 TEST(BindingsTests, TestCompoundSyntax)
 {
     coil::Bindings bindings = createBindings();
@@ -517,6 +572,7 @@ TEST(BindingsTests, TestErrorWrongArgumentsCountWithCategory)
     EXPECT_PRED2(containsError, result.errors, "Wrong number of arguments to 'ns.sum': expected 2, got 3");
 }
 
+// TODO it's not variadic anymore
 TEST(BindingsTests, TestErrorWrongArgumentsCountVariadicAtLeast)
 {
     coil::Bindings bindings = createBindings();
@@ -526,6 +582,7 @@ TEST(BindingsTests, TestErrorWrongArgumentsCountVariadicAtLeast)
     EXPECT_PRED2(containsError, result.errors, "Wrong number of arguments to 'sum_all_init': expected 2, got 0");
 }
 
+// TODO it's not variadic anymore
 TEST(BindingsTests, TestErrorWrongArgumentsCountVariadicAtLeastWithCategory)
 {
     coil::Bindings bindings = createBindings();
@@ -535,22 +592,33 @@ TEST(BindingsTests, TestErrorWrongArgumentsCountVariadicAtLeastWithCategory)
     EXPECT_PRED2(containsError, result.errors, "Wrong number of arguments to 'ns.sum_all_init': expected 2, got 0");
 }
 
-TEST(BindingsTests, TestErrorWrongArgumentsCountVariadicBetween)
+TEST(BindingsTests, TestErrorWrongArgumentsCountOverload2)
 {
-    coil::Bindings bindings = createBindings();
-    auto result = bindings.execute("func_with_optional");
+    coil::Bindings bindings;
+
+    auto func1 = [](int) {};
+    auto func2 = [](int, int) {};
+    bindings["func"] = coil::overloaded(std::move(func1), std::move(func2));
+
+    auto result = bindings.execute("func");
 
     EXPECT_EQ(result.errors.size(), 1);
-    EXPECT_PRED2(containsError, result.errors, "Wrong number of arguments to 'func_with_optional': expected from 2 to 3, got 0");
+    EXPECT_PRED2(containsError, result.errors, "Wrong number of arguments to 'func': expected 1 or 2, got 0");
 }
 
-TEST(BindingsTests, TestErrorWrongArgumentsCountVariadicBetweenWithCategory)
+TEST(BindingsTests, TestErrorWrongArgumentsCountOverload3)
 {
-    coil::Bindings bindings = createBindings();
-    auto result = bindings.execute("ns.func_with_optional");
+    coil::Bindings bindings;
+
+    auto func1 = [](int) {};
+    auto func2 = [](int, int) {};
+    auto func3 = [](int, int, int) {};
+    bindings["func"] = coil::overloaded(std::move(func1), std::move(func2), std::move(func3));
+
+    auto result = bindings.execute("func");
 
     EXPECT_EQ(result.errors.size(), 1);
-    EXPECT_PRED2(containsError, result.errors, "Wrong number of arguments to 'ns.func_with_optional': expected from 2 to 3, got 0");
+    EXPECT_PRED2(containsError, result.errors, "Wrong number of arguments to 'func': expected 1, 2 or 3, got 0");
 }
 
 TEST(BindingsTests, TestErrorWrongArgumentTypes)
@@ -563,13 +631,14 @@ TEST(BindingsTests, TestErrorWrongArgumentTypes)
     EXPECT_PRED2(containsError, result.errors, "Unable to convert 'bar' to type 'int'");
 }
 
+// TODO it's not variadic anymore
 TEST(BindingsTests, TestErrorWrongArgumentTypesVariadic)
 {
     coil::Bindings bindings = createBindings();
     auto result = bindings.execute("sum_all (foo bar baz)");
 
     EXPECT_EQ(result.errors.size(), 1);
-    EXPECT_PRED2(containsError, result.errors, "Unable to convert 'foo' to type 'int'");
+    EXPECT_PRED2(containsError, result.errors, "Unable to convert 'foo bar baz' to type 'std::vector<int>': Unable to convert 'foo' to type 'int'");
 }
 
 TEST(BindingsTests, TestErrorWrongArgumentTypesVariable)

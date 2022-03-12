@@ -20,6 +20,7 @@ namespace coil
         C* m_obj = nullptr;
     };
 
+    // TODO return vector of AnyFunctors
     template<typename FuncPointer, typename C>
     auto bind(FuncPointer func, C* obj)
     {

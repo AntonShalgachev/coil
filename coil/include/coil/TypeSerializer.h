@@ -167,9 +167,13 @@ namespace coil
         static Expected<std::optional<T>, std::string> fromString(ArgValue const& input)
         {
             if (input.value.empty())
-                return {};
+                return std::optional<T>{};
 
-            return TypeSerializer<T>::fromString(input.value);
+            Expected<T, std::string> innerValue = TypeSerializer<T>::fromString(input.value);
+            if (innerValue)
+                return std::optional<T>{*innerValue};
+
+            return makeSerializationError<std::optional<T>>(input, std::move(innerValue).error());
         }
 
         static std::string toString(std::optional<T> const& value)
@@ -193,7 +197,7 @@ namespace coil
             {
                 Expected<T, std::string> expectedArg = TypeSerializer<T>::fromString(subvalue);
                 if (!expectedArg)
-                    return makeUnexpected(std::move(expectedArg).error());
+                    return makeSerializationError<std::vector<T>>(input, std::move(expectedArg).error());
 
                 result.push_back(*std::move(expectedArg));
             }

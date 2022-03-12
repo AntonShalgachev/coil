@@ -1,35 +1,22 @@
 #pragma once
 
+#include "coil/Overloaded.h"
+
 template<typename E>
-struct FlagsVariableWrapper
+auto flags(E* var)
 {
-public:
-    FlagsVariableWrapper(E* variable) : m_variable(variable)
+    auto get = [var]() { return *var; };
+    auto set = [var](std::vector<E> const& args)
     {
-        static_assert(!std::is_const_v<E>, "Variable shouldn't be const");
-    }
+        using UT = std::underlying_type_t<E>;
 
-    E const& operator()(std::optional<std::vector<E>> const& args)
-    {
-        if (args.has_value())
-        {
-            using UT = std::underlying_type_t<E>;
+        auto newValue = UT{ 0 };
+        for (auto arg : args)
+            newValue = static_cast<UT>(newValue) | static_cast<UT>(arg);
+        *var = static_cast<E>(newValue);
 
-            auto newValue = UT{ 0 };
-            for (auto arg : *args)
-                newValue = static_cast<UT>(newValue) | static_cast<UT>(arg);
+        return *var;
+    };
 
-            get() = static_cast<E>(newValue);
-        }
-
-        return get();
-    }
-
-private:
-    E& get() const
-    {
-        return *m_variable;
-    }
-
-    E* m_variable = nullptr;
-};
+    return coil::overloaded(std::move(get), std::move(set));
+}
