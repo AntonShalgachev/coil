@@ -1,29 +1,20 @@
 #pragma once
 #include "coil/Context.h"
 #include "coil/Types.h"
-#include "coil/VariadicConsumer.h"
 
 #include <type_traits>
 
 namespace coil::detail
 {
     template<typename... Args>
-    struct ArgsCounters
-    {
-        static constexpr std::size_t minArgs = (VariadicConsumer<std::decay_t<Args>>::minArgs + ... + 0);
-        static constexpr std::size_t maxArgs = (VariadicConsumer<std::decay_t<Args>>::maxArgs + ... + 0);
-        static_assert(maxArgs >= minArgs, "maxArgs should not be less than minArgs");
-    };
-
-    template<typename... Args>
-    struct ArgsTraitsImpl : ArgsCounters<Args...>
+    struct ArgsTraitsImpl
     {
         using UserArgumentTypes = Types<Args...>;
         using NonUserArgsIndices = std::index_sequence<>;
     };
 
     template<typename... Tail>
-    struct ArgsTraitsImpl<Context, Tail...> : ArgsCounters<Tail...>
+    struct ArgsTraitsImpl<Context, Tail...>
     {
         using UserArgumentTypes = Types<Tail...>;
         using NonUserArgsIndices = std::index_sequence<0>;
@@ -37,7 +28,7 @@ namespace coil::detail
 
         using ReturnType = R;
         using ArgumentTypes = Types<Args...>;
-        using ArgsTraits = ArgsTraitsImpl<Args...>;
+        using ArgsTraits = ArgsTraitsImpl<Args...>; // TODO export ArgsTraits internals directly here
         static constexpr bool isConst = IsConst;
     };
 
