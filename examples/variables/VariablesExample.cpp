@@ -21,50 +21,35 @@ namespace
         using UT = std::underlying_type_t<Flags>;
         return static_cast<Flags>(static_cast<UT>(lhs) | static_cast<UT>(rhs));
     }
-
-    struct Object
-    {
-        bool enabled = false;
-        Flags flags = Flags::Flag4;
-    };
 }
 
 void VariablesExample::run()
 {
     coil::Bindings bindings;
 
-    Object object;
     float timeScale = 1.0f;
     std::string city = "Moscow";
     Flags flags = Flags::Flag1 | Flags::Flag3;
-
-    bindings["obj.enabled"] = coil::variable(&object.enabled);
-    bindings["obj.flags"] = ::flags(&object.flags);
 
     bindings["time_scale"] = coil::variable(&timeScale);
     bindings["city"] = coil::variable(&city);
     bindings["flags"] = ::flags(&flags);
 
-    bindings["print_variables"] = [&object, &timeScale, &city, &flags](coil::Context context)
+    bindings["print_variables"] = [&timeScale, &city, &flags](coil::Context context)
     {
         context.out() << "Time scale: " << timeScale << "; city: " << city << "; flags: " << magic_enum::flags::enum_name(flags) << std::endl;
-        context.out() << "Object: enabled: " << std::boolalpha << object.enabled << std::noboolalpha << "; flags: " << magic_enum::flags::enum_name(object.flags) << std::endl;
     };
 
     common::printSectionHeader("Calling variable without arguments will return its value:");
     common::executeCommand(bindings, "time_scale");
     common::executeCommand(bindings, "city");
     common::executeCommand(bindings, "flags");
-    common::executeCommand(bindings, "obj.enabled");
-    common::executeCommand(bindings, "obj.flags");
     common::executeCommand(bindings, "print_variables");
 
     common::printSectionHeader("Calling variable with an argument will update and return the value:");
     common::executeCommand(bindings, "time_scale 2.0");
     common::executeCommand(bindings, "city Berlin");
     common::executeCommand(bindings, "flags Flag1|Flag2|Flag4");
-    common::executeCommand(bindings, "obj.enabled true");
-    common::executeCommand(bindings, "obj.flags Flag2|Flag3");
     common::executeCommand(bindings, "print_variables");
 
     common::printSectionHeader("Errors are handled just as for functions (variables won't change):");
@@ -72,7 +57,5 @@ void VariablesExample::run()
     common::executeCommand(bindings, "city Porto Athens");
     common::executeCommand(bindings, "flags Flag1 Flag2"); // considered to be 2 arguments, therefore error
     common::executeCommand(bindings, "flags Foo|Flag4|Bar");
-    common::executeCommand(bindings, "obj.enabled none");
-    common::executeCommand(bindings, "obj.flags Foo|Flag4|Bar");
     common::executeCommand(bindings, "print_variables");
 }
