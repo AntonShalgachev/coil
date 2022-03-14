@@ -4,6 +4,7 @@
 #include "coil/Variable.h"
 
 #include <stdexcept>
+#include <numeric>
 
 namespace stats
 {
@@ -35,34 +36,6 @@ namespace stats
 
 namespace
 {
-    void function()
-    {
-        stats::functionCalls++;
-    }
-
-    int sum(int a, int b)
-    {
-        return a + b;
-    }
-
-    int sumAllInit(int init, std::vector<int> const& values)
-    {
-        int result = init;
-        for (auto const& value : values)
-            result += value;
-        return result;
-    }
-
-    int sumAll(std::vector<int> const& values)
-    {
-        return sumAllInit(0, values);
-    }
-
-    void output(coil::Context context, std::string value)
-    {
-        context.out() << value;
-    }
-
     template<typename T>
     class Tracker final
     {
@@ -119,13 +92,6 @@ namespace
         T m_payload;
     };
 
-    int variable = 42;
-    Tracker<int> trackedVariable;
-
-    Tracker<int> createTracker() { return 42; }
-    void useTrackerByValue(Tracker<int>) {}
-    void useTrackerByRef(Tracker<int> const&) {}
-
     struct CompoundType
     {
         int field1{};
@@ -136,51 +102,6 @@ namespace
             return field1 == rhs.field1 && field2 == rhs.field2;
         }
     };
-
-    CompoundType getCompound(CompoundType const& val)
-    {
-        return val;
-    }
-
-    void throwStdException()
-    {
-        throw std::runtime_error("Test runtime exception");
-    }
-
-    void throwNonStdException()
-    {
-        throw 42;
-    }
-
-    coil::Bindings createBindings()
-    {
-        coil::Bindings bindings;
-
-        // TODO review
-
-        bindings["func"] = &function;
-        bindings["func2"] = &function;
-
-        bindings["namespace.func"] = &function;
-
-        bindings["sum"] = &sum;
-        bindings["sum_all"] = &sumAll;
-        bindings["sum_all_init"] = &sumAllInit;
-        bindings["output"] = &output;
-        bindings["var"] = coil::variable(&variable);
-
-        bindings["tracker_var"] = coil::variable(&trackedVariable);
-        bindings["create_tracker"] = &createTracker;
-        bindings["use_tracker_by_value"] = &useTrackerByValue;
-        bindings["use_tracker_by_ref"] = &useTrackerByRef;
-
-        bindings["get_compound"] = &getCompound;
-
-        bindings["throw_std_exception"] = &throwStdException;
-        bindings["throw_non_std_exception"] = &throwNonStdException;
-
-        return bindings;
-    }
 
     bool containsError(std::vector<std::string> const& errors, std::string const& value)
     {
@@ -257,7 +178,8 @@ TEST(BindingsTests, TestVoidFunctionCallStats)
 {
     stats::reset();
 
-    coil::Bindings bindings = createBindings();
+    coil::Bindings bindings;
+    bindings["func"] = []() { stats::functionCalls++; };
     auto result = bindings.execute("func");
 
     EXPECT_EQ(result.errors.size(), 0);
@@ -271,7 +193,8 @@ TEST(BindingsTests, TestVoidFunctionWithDotsCallStats)
 {
     stats::reset();
 
-    coil::Bindings bindings = createBindings();
+    coil::Bindings bindings;
+    bindings["namespace.func"] = []() { stats::functionCalls++; };
     auto result = bindings.execute("namespace.func");
 
     EXPECT_EQ(result.errors.size(), 0);
@@ -283,10 +206,13 @@ TEST(BindingsTests, TestVoidFunctionWithDotsCallStats)
 
 TEST(BindingsTests, TestVariableAssignmentStats)
 {
+    Tracker<int> trackedVariable;
+
     stats::reset();
 
-    coil::Bindings bindings = createBindings();
-    auto result = bindings.execute("tracker_var 42");
+    coil::Bindings bindings;
+    bindings["var"] = coil::variable(&trackedVariable);
+    auto result = bindings.execute("var 42");
 
     EXPECT_EQ(result.errors.size(), 0);
 
@@ -300,8 +226,9 @@ TEST(BindingsTests, TestPassingArgumentByValueStats)
 {
     stats::reset();
 
-    coil::Bindings bindings = createBindings();
-    auto result = bindings.execute("use_tracker_by_value 42");
+    coil::Bindings bindings;
+    bindings["func"] = [](Tracker<int>) {};
+    auto result = bindings.execute("func 42");
 
     EXPECT_EQ(result.errors.size(), 0);
 
@@ -314,8 +241,9 @@ TEST(BindingsTests, TestPassingArgumentByRefStats)
 {
     stats::reset();
 
-    coil::Bindings bindings = createBindings();
-    auto result = bindings.execute("use_tracker_by_ref 42");
+    coil::Bindings bindings;
+    bindings["func"] = [](Tracker<int> const) {};
+    auto result = bindings.execute("func 42");
 
     EXPECT_EQ(result.errors.size(), 0);
 
@@ -328,8 +256,9 @@ TEST(BindingsTests, TestReturnByValueStats)
 {
     stats::reset();
 
-    coil::Bindings bindings = createBindings();
-    auto result = bindings.execute("create_tracker");
+    coil::Bindings bindings;
+    bindings["func"] = []() { return Tracker<int>{42}; };
+    auto result = bindings.execute("func");
 
     EXPECT_EQ(result.errors.size(), 0);
 
@@ -340,21 +269,37 @@ TEST(BindingsTests, TestReturnByValueStats)
 
 TEST(BindingsTests, TestErrorStats)
 {
+    Tracker<int> variable = 0;
+
     stats::reset();
 
-    coil::Bindings bindings = createBindings();
-    bindings.execute("foo");
-    bindings.execute("baz.foo.sum");
-    bindings.execute("foo_var 42");
+    coil::Bindings bindings;
+    bindings["func_without_args"] = []() { stats::functionCalls++; };
+    bindings["func_with_arg"] = [](int) { stats::functionCalls++; };
+    bindings["var"] = coil::variable(&variable);
+
+    bindings.execute("func_without_args arg");
+    bindings.execute("func_with_arg string_arg");
+    bindings.execute("var string_arg");
+    bindings.execute("var 42 43");
 
     EXPECT_EQ(stats::functionCalls, 0);
     EXPECT_EQ(stats::trackerConstructions, 0);
     EXPECT_EQ(stats::trackerAssignments, 0);
+
+    bindings.execute("var 42");
+    bindings.execute("func_without_args");
+    bindings.execute("func_with_arg 42");
+
+    EXPECT_GT(stats::functionCalls, 0);
+    EXPECT_GT(stats::trackerConstructions, 0);
+    EXPECT_GT(stats::trackerAssignments, 0);
 }
 
 TEST(BindingsTests, TestVoidFunctionCall)
 {
-    coil::Bindings bindings = createBindings();
+    coil::Bindings bindings;
+    bindings["func"] = []() {};
     auto result = bindings.execute("func");
 
     EXPECT_EQ(result.errors.size(), 0);
@@ -363,9 +308,10 @@ TEST(BindingsTests, TestVoidFunctionCall)
 
 TEST(BindingsTests, TestVariableRead)
 {
-    variable = 42;
+    int variable = 42;
 
-    coil::Bindings bindings = createBindings();
+    coil::Bindings bindings;
+    bindings["var"] = coil::variable(&variable);
     auto result = bindings.execute("var");
 
     EXPECT_EQ(result.errors.size(), 0);
@@ -376,9 +322,10 @@ TEST(BindingsTests, TestVariableRead)
 
 TEST(BindingsTests, TestVariableWrite)
 {
-    variable = 42;
+    int variable = 42;
 
-    coil::Bindings bindings = createBindings();
+    coil::Bindings bindings;
+    bindings["var"] = coil::variable(&variable);
     auto result = bindings.execute("var 365");
 
     EXPECT_EQ(result.errors.size(), 0);
@@ -450,7 +397,8 @@ TEST(BindingTests, TestOptionalWithError)
 
 TEST(BindingsTests, TestCompoundSyntax)
 {
-    coil::Bindings bindings = createBindings();
+    coil::Bindings bindings;
+    bindings["get_compound"] = [](CompoundType const& val) { return val; };
 
     auto testCompound = [&bindings](std::string_view command, std::string_view expectedResult) {
         auto result = bindings.execute(command);
@@ -470,7 +418,7 @@ TEST(BindingsTests, TestCompoundSyntax)
 
 TEST(BindingsTests, TestErrorNoFunction)
 {
-    coil::Bindings bindings = createBindings();
+    coil::Bindings bindings;
     auto result = bindings.execute("");
 
     EXPECT_EQ(result.errors.size(), 1);
@@ -479,7 +427,7 @@ TEST(BindingsTests, TestErrorNoFunction)
 
 TEST(BindingsTests, TestErrorUndefinedFunction)
 {
-    coil::Bindings bindings = createBindings();
+    coil::Bindings bindings;
     auto result = bindings.execute("foo");
 
     EXPECT_EQ(result.errors.size(), 1);
@@ -488,30 +436,22 @@ TEST(BindingsTests, TestErrorUndefinedFunction)
 
 TEST(BindingsTests, TestErrorWrongArgumentsCountWithNonUserArgs)
 {
-    coil::Bindings bindings = createBindings();
-    auto result = bindings.execute("output foo bar");
+    coil::Bindings bindings;
+    bindings["func"] = [](coil::Context, int) {};
+    auto result = bindings.execute("func foo bar");
 
     EXPECT_EQ(result.errors.size(), 1);
-    EXPECT_PRED2(containsError, result.errors, "Wrong number of arguments to 'output': expected 1, got 2");
+    EXPECT_PRED2(containsError, result.errors, "Wrong number of arguments to 'func': expected 1, got 2");
 }
 
 TEST(BindingsTests, TestErrorWrongArgumentsCount)
 {
-    coil::Bindings bindings = createBindings();
-    auto result = bindings.execute("sum 1 2 3");
+    coil::Bindings bindings;
+    bindings["func"] = [](int, int) {};
+    auto result = bindings.execute("func 1 2 3");
 
     EXPECT_EQ(result.errors.size(), 1);
-    EXPECT_PRED2(containsError, result.errors, "Wrong number of arguments to 'sum': expected 2, got 3");
-}
-
-// TODO it's not variadic anymore
-TEST(BindingsTests, TestErrorWrongArgumentsCountVariadicAtLeast)
-{
-    coil::Bindings bindings = createBindings();
-    auto result = bindings.execute("sum_all_init");
-
-    EXPECT_EQ(result.errors.size(), 1);
-    EXPECT_PRED2(containsError, result.errors, "Wrong number of arguments to 'sum_all_init': expected 2, got 0");
+    EXPECT_PRED2(containsError, result.errors, "Wrong number of arguments to 'func': expected 2, got 3");
 }
 
 TEST(BindingsTests, TestErrorWrongArgumentsCountOverload2)
@@ -545,8 +485,9 @@ TEST(BindingsTests, TestErrorWrongArgumentsCountOverload3)
 
 TEST(BindingsTests, TestErrorWrongArgumentTypes)
 {
-    coil::Bindings bindings = createBindings();
-    auto result = bindings.execute("sum foo bar");
+    coil::Bindings bindings;
+    bindings["func"] = [](int, int) {};
+    auto result = bindings.execute("func foo bar");
 
     EXPECT_EQ(result.errors.size(), 2);
     EXPECT_PRED2(containsError, result.errors, "Unable to convert 'foo' to type 'int'");
@@ -554,10 +495,11 @@ TEST(BindingsTests, TestErrorWrongArgumentTypes)
 }
 
 // TODO it's not variadic anymore
-TEST(BindingsTests, TestErrorWrongArgumentTypesVariadic)
+TEST(BindingsTests, TestErrorWrongArgumentTypesVector)
 {
-    coil::Bindings bindings = createBindings();
-    auto result = bindings.execute("sum_all (foo bar baz)");
+    coil::Bindings bindings;
+    bindings["sum"] = [](std::vector<int> const&) {};
+    auto result = bindings.execute("sum (foo bar baz)");
 
     EXPECT_EQ(result.errors.size(), 1);
     EXPECT_PRED2(containsError, result.errors, "Unable to convert 'foo bar baz' to type 'std::vector<int>': Unable to convert 'foo' to type 'int'");
@@ -565,16 +507,21 @@ TEST(BindingsTests, TestErrorWrongArgumentTypesVariadic)
 
 TEST(BindingsTests, TestErrorWrongArgumentTypesVariable)
 {
-    coil::Bindings bindings = createBindings();
-    auto result = bindings.execute("tracker_var foo");
+    int variable = 42;
+
+    coil::Bindings bindings;
+    bindings["var"] = coil::variable(&variable);
+
+    auto result = bindings.execute("var foo");
 
     EXPECT_EQ(result.errors.size(), 1);
-    EXPECT_PRED2(containsError, result.errors, "Unable to convert 'foo' to type 'Tracker<int>': Unable to convert 'foo' to type 'int'");
+    EXPECT_PRED2(containsError, result.errors, "Unable to convert 'foo' to type 'int'");
 }
 
 TEST(BindingsTests, TestFunctionReturnValue)
 {
-    coil::Bindings bindings = createBindings();
+    coil::Bindings bindings;
+    bindings["sum"] = [](int a, int b) { return a + b; };
     auto result = bindings.execute("sum 8 800");
 
     EXPECT_EQ(result.errors.size(), 0);
@@ -584,17 +531,19 @@ TEST(BindingsTests, TestFunctionReturnValue)
 
 TEST(BindingsTests, TestOutput)
 {
-    coil::Bindings bindings = createBindings();
-    auto result = bindings.execute("output Test");
+    coil::Bindings bindings;
+    bindings["func"] = [](coil::Context context, std::string value) { context.out() << value; };
+    auto result = bindings.execute("func Test");
 
     EXPECT_EQ(result.errors.size(), 0);
     EXPECT_EQ(result.output.str(), "Test");
 }
 
-TEST(BindingsTests, TestVector)
+TEST(BindingsTests, TestVectorFunctionReturnValue)
 {
-    coil::Bindings bindings = createBindings();
-    auto result = bindings.execute("sum_all (1 1 2 3 5 8)");
+    coil::Bindings bindings;
+    bindings["sum"] = [](std::vector<int> const& values) { return std::accumulate(values.begin(), values.end(), 0); };
+    auto result = bindings.execute("sum (1 1 2 3 5 8)");
 
     EXPECT_EQ(result.errors.size(), 0);
     ASSERT_TRUE(result.returnValue.has_value());
@@ -603,26 +552,34 @@ TEST(BindingsTests, TestVector)
 
 TEST(BindingsTests, TestUnbind)
 {
-    coil::Bindings bindings = createBindings();
-    bindings["func"] = {};
-    auto result1 = bindings.execute("func");
+    coil::Bindings bindings;
+    bindings["func1"] = []() {};
+    bindings["func2"] = []() {};
+
+    bindings["func1"] = {};
+
+    auto result1 = bindings.execute("func1");
     auto result2 = bindings.execute("func2");
 
     EXPECT_EQ(result1.errors.size(), 1);
-    EXPECT_PRED2(containsError, result1.errors, "No function 'func' is registered");
+    EXPECT_PRED2(containsError, result1.errors, "No function 'func1' is registered");
 
     EXPECT_EQ(result2.errors.size(), 0);
 }
 
 TEST(BindingsTests, TestClear)
 {
-    coil::Bindings bindings = createBindings();
+    coil::Bindings bindings;
+    bindings["func1"] = []() {};
+    bindings["func2"] = []() {};
+
     bindings.clear();
-    auto result1 = bindings.execute("func");
+
+    auto result1 = bindings.execute("func1");
     auto result2 = bindings.execute("func2");
 
     EXPECT_EQ(result1.errors.size(), 1);
-    EXPECT_PRED2(containsError, result1.errors, "No function 'func' is registered");
+    EXPECT_PRED2(containsError, result1.errors, "No function 'func1' is registered");
 
     EXPECT_EQ(result2.errors.size(), 1);
     EXPECT_PRED2(containsError, result2.errors, "No function 'func2' is registered");
@@ -630,7 +587,7 @@ TEST(BindingsTests, TestClear)
 
 TEST(BindingsTests, TestSyntaxError)
 {
-    coil::Bindings bindings = createBindings();
+    coil::Bindings bindings;
 
     auto result = bindings.execute("func = arg");
 
@@ -640,12 +597,13 @@ TEST(BindingsTests, TestSyntaxError)
 
 TEST(BindingsTests, TestStdException)
 {
-    coil::Bindings bindings = createBindings();
+    coil::Bindings bindings;
+    bindings["func"] = []() { throw std::runtime_error("Test runtime exception"); };
 
     coil::ExecutionResult result;
 
     EXPECT_NO_THROW({
-        result = bindings.execute("throw_std_exception");
+        result = bindings.execute("func");
     });
 
     EXPECT_EQ(result.errors.size(), 1);
@@ -654,12 +612,13 @@ TEST(BindingsTests, TestStdException)
 
 TEST(BindingsTests, TestNonStdException)
 {
-    coil::Bindings bindings = createBindings();
+    coil::Bindings bindings;
+    bindings["func"] = []() { throw 42; };
 
     coil::ExecutionResult result;
 
     EXPECT_NO_THROW({
-        result = bindings.execute("throw_non_std_exception");
+        result = bindings.execute("func");
     });
 
     EXPECT_EQ(result.errors.size(), 1);
