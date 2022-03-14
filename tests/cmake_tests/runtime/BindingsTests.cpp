@@ -159,21 +159,15 @@ namespace
         // TODO review
 
         bindings["func"] = &function;
-        bindings["ns.func"] = &function;
+        bindings["func2"] = &function;
+
+        bindings["namespace.func"] = &function;
 
         bindings["sum"] = &sum;
-        bindings["ns.sum"] = &sum;
-
         bindings["sum_all"] = &sumAll;
-
         bindings["sum_all_init"] = &sumAllInit;
-        bindings["ns.sum_all_init"] = &sumAllInit;
-
         bindings["output"] = &output;
-        bindings["ns.output"] = &output;
-
         bindings["var"] = coil::variable(&variable);
-        bindings["ns.var"] = coil::variable(&variable);
 
         bindings["tracker_var"] = coil::variable(&trackedVariable);
         bindings["create_tracker"] = &createTracker;
@@ -273,12 +267,12 @@ TEST(BindingsTests, TestVoidFunctionCallStats)
     EXPECT_EQ(stats::trackerConstructions, 0);
 }
 
-TEST(BindingsTests, TestVoidFunctionWithCategoryCallStats)
+TEST(BindingsTests, TestVoidFunctionWithDotsCallStats)
 {
     stats::reset();
 
     coil::Bindings bindings = createBindings();
-    auto result = bindings.execute("ns.func");
+    auto result = bindings.execute("namespace.func");
 
     EXPECT_EQ(result.errors.size(), 0);
 
@@ -367,15 +361,6 @@ TEST(BindingsTests, TestVoidFunctionCall)
     EXPECT_FALSE(result.returnValue.has_value());
 }
 
-TEST(BindingsTests, TestVoidFunctionCallWithCategory)
-{
-    coil::Bindings bindings = createBindings();
-    auto result = bindings.execute("ns.func");
-
-    EXPECT_EQ(result.errors.size(), 0);
-    EXPECT_FALSE(result.returnValue.has_value());
-}
-
 TEST(BindingsTests, TestVariableRead)
 {
     variable = 42;
@@ -395,32 +380,6 @@ TEST(BindingsTests, TestVariableWrite)
 
     coil::Bindings bindings = createBindings();
     auto result = bindings.execute("var 365");
-
-    EXPECT_EQ(result.errors.size(), 0);
-    ASSERT_TRUE(result.returnValue.has_value());
-    EXPECT_EQ(*result.returnValue, "365");
-    EXPECT_EQ(variable, 365);
-}
-
-TEST(BindingsTests, TestVariableReadWithCategory)
-{
-    variable = 42;
-
-    coil::Bindings bindings = createBindings();
-    auto result = bindings.execute("ns.var");
-
-    EXPECT_EQ(result.errors.size(), 0);
-    ASSERT_TRUE(result.returnValue.has_value());
-    EXPECT_EQ(*result.returnValue, "42");
-    EXPECT_EQ(variable, 42);
-}
-
-TEST(BindingsTests, TestVariableWriteWithCategory)
-{
-    variable = 42;
-
-    coil::Bindings bindings = createBindings();
-    auto result = bindings.execute("ns.var 365");
 
     EXPECT_EQ(result.errors.size(), 0);
     ASSERT_TRUE(result.returnValue.has_value());
@@ -527,15 +486,6 @@ TEST(BindingsTests, TestErrorUndefinedFunction)
     EXPECT_PRED2(containsError, result.errors, "No function 'foo' is registered");
 }
 
-TEST(BindingsTests, TestErrorUndefinedFunctionWithCategory)
-{
-    coil::Bindings bindings = createBindings();
-    auto result = bindings.execute("ns.foo");
-
-    EXPECT_EQ(result.errors.size(), 1);
-    EXPECT_PRED2(containsError, result.errors, "No function 'ns.foo' is registered");
-}
-
 TEST(BindingsTests, TestErrorWrongArgumentsCountWithNonUserArgs)
 {
     coil::Bindings bindings = createBindings();
@@ -543,15 +493,6 @@ TEST(BindingsTests, TestErrorWrongArgumentsCountWithNonUserArgs)
 
     EXPECT_EQ(result.errors.size(), 1);
     EXPECT_PRED2(containsError, result.errors, "Wrong number of arguments to 'output': expected 1, got 2");
-}
-
-TEST(BindingsTests, TestErrorWrongArgumentsCountWithNonUserArgsWithCategory)
-{
-    coil::Bindings bindings = createBindings();
-    auto result = bindings.execute("ns.output foo bar");
-
-    EXPECT_EQ(result.errors.size(), 1);
-    EXPECT_PRED2(containsError, result.errors, "Wrong number of arguments to 'ns.output': expected 1, got 2");
 }
 
 TEST(BindingsTests, TestErrorWrongArgumentsCount)
@@ -563,15 +504,6 @@ TEST(BindingsTests, TestErrorWrongArgumentsCount)
     EXPECT_PRED2(containsError, result.errors, "Wrong number of arguments to 'sum': expected 2, got 3");
 }
 
-TEST(BindingsTests, TestErrorWrongArgumentsCountWithCategory)
-{
-    coil::Bindings bindings = createBindings();
-    auto result = bindings.execute("ns.sum 1 2 3");
-
-    EXPECT_EQ(result.errors.size(), 1);
-    EXPECT_PRED2(containsError, result.errors, "Wrong number of arguments to 'ns.sum': expected 2, got 3");
-}
-
 // TODO it's not variadic anymore
 TEST(BindingsTests, TestErrorWrongArgumentsCountVariadicAtLeast)
 {
@@ -580,16 +512,6 @@ TEST(BindingsTests, TestErrorWrongArgumentsCountVariadicAtLeast)
 
     EXPECT_EQ(result.errors.size(), 1);
     EXPECT_PRED2(containsError, result.errors, "Wrong number of arguments to 'sum_all_init': expected 2, got 0");
-}
-
-// TODO it's not variadic anymore
-TEST(BindingsTests, TestErrorWrongArgumentsCountVariadicAtLeastWithCategory)
-{
-    coil::Bindings bindings = createBindings();
-    auto result = bindings.execute("ns.sum_all_init");
-
-    EXPECT_EQ(result.errors.size(), 1);
-    EXPECT_PRED2(containsError, result.errors, "Wrong number of arguments to 'ns.sum_all_init': expected 2, got 0");
 }
 
 TEST(BindingsTests, TestErrorWrongArgumentsCountOverload2)
@@ -684,7 +606,7 @@ TEST(BindingsTests, TestUnbind)
     coil::Bindings bindings = createBindings();
     bindings["func"] = {};
     auto result1 = bindings.execute("func");
-    auto result2 = bindings.execute("ns.func");
+    auto result2 = bindings.execute("func2");
 
     EXPECT_EQ(result1.errors.size(), 1);
     EXPECT_PRED2(containsError, result1.errors, "No function 'func' is registered");
@@ -692,31 +614,18 @@ TEST(BindingsTests, TestUnbind)
     EXPECT_EQ(result2.errors.size(), 0);
 }
 
-TEST(BindingsTests, TestUnbindWithCategory)
-{
-    coil::Bindings bindings = createBindings();
-    bindings["ns.func"] = {};
-    auto result1 = bindings.execute("func");
-    auto result2 = bindings.execute("ns.func");
-
-    EXPECT_EQ(result1.errors.size(), 0);
-
-    EXPECT_EQ(result2.errors.size(), 1);
-    EXPECT_PRED2(containsError, result2.errors, "No function 'ns.func' is registered");
-}
-
 TEST(BindingsTests, TestClear)
 {
     coil::Bindings bindings = createBindings();
     bindings.clear();
     auto result1 = bindings.execute("func");
-    auto result2 = bindings.execute("ns.func");
+    auto result2 = bindings.execute("func2");
 
     EXPECT_EQ(result1.errors.size(), 1);
     EXPECT_PRED2(containsError, result1.errors, "No function 'func' is registered");
 
     EXPECT_EQ(result2.errors.size(), 1);
-    EXPECT_PRED2(containsError, result2.errors, "No function 'ns.func' is registered");
+    EXPECT_PRED2(containsError, result2.errors, "No function 'func2' is registered");
 }
 
 TEST(BindingsTests, TestSyntaxError)
