@@ -494,7 +494,6 @@ TEST(BindingsTests, TestErrorWrongArgumentTypes)
     EXPECT_PRED2(containsError, result.errors, "Unable to convert 'bar' to type 'int'");
 }
 
-// TODO it's not variadic anymore
 TEST(BindingsTests, TestErrorWrongArgumentTypesVector)
 {
     coil::Bindings bindings;
