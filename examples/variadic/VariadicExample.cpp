@@ -78,7 +78,7 @@ void VariadicExample::run()
     bindings["entities.list"] = &printEntities;
     bindings["entities.add"] = &addEntities;
 
-    // TODO move to another example ("CompositeExample")
+    // TODO move to another example ("CompoundExample")
     common::printSectionHeader("std::vector accepts any amount of arguments:");
     common::executeCommand(bindings, "sum_all ()");
     common::executeCommand(bindings, "sum_all (1)");

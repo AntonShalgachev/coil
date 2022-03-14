@@ -133,11 +133,11 @@ namespace
         std::size_t const subargsMax = 3;
 
         std::uniform_int_distribution<std::size_t> argsCountDist{ 0, argsMax };
-        std::uniform_int_distribution<std::size_t> compositeArgsCountDist{ 1, subargsMax };
+        std::uniform_int_distribution<std::size_t> compoundArgsCountDist{ 1, subargsMax };
 
         std::size_t argsCount = argsCountDist(engine);
         std::size_t namedArgsCount = argsCountDist(engine);
-        std::size_t compositeArgsCount = compositeArgsCountDist(engine);
+        std::size_t compoundArgsCount = compoundArgsCountDist(engine);
 
         storage.clear();
         std::size_t const maxStorageSize = 1 + argsMax + argsMax * (2 + subargsMax);
@@ -158,7 +158,7 @@ namespace
             return addToStorage(generateRandomString(engine, generation++, allowEmpty, allowNumber));
         };
 
-        auto generateCompositeArgs = [&addToStorage, &generateNewString, &engine](std::size_t count)
+        auto generateCompoundArgs = [&addToStorage, &generateNewString, &engine](std::size_t count)
         {
             std::vector<std::string_view> subvalues;
 
@@ -194,7 +194,7 @@ namespace
         for (std::size_t i = 0; i < namedArgsCount; i++)
         {
             auto key = generateNewString(false, false);
-            auto value = generateCompositeArgs(compositeArgsCount);
+            auto value = generateCompoundArgs(compoundArgsCount);
             input.namedArguments.emplace_back(key, value);
         }
 
@@ -288,7 +288,7 @@ TEST(LexerTest, TestSpacesNamedArgs)
     EXPECT_EQ(lexer(" func  arg1 = foo  arg2 = bar "), input);
 }
 
-TEST(LexerTests, TestCompositeArgs)
+TEST(LexerTests, TestCompoundArgs)
 {
     coil::DefaultLexer lexer;
 
@@ -301,7 +301,7 @@ TEST(LexerTests, TestCompositeArgs)
     EXPECT_EQ(lexer("func ( arg1 arg2 )"), createInput("func", { coil::ArgValue{ " arg1 arg2 ", {"arg1", "arg2"} } }, {}));
 }
 
-TEST(LexerTests, TestCompositeNamedArgs)
+TEST(LexerTests, TestCompoundNamedArgs)
 {
     coil::DefaultLexer lexer;
 
@@ -314,7 +314,7 @@ TEST(LexerTests, TestCompositeNamedArgs)
     EXPECT_EQ(lexer("func arg=( arg1 arg2 )"), createInput("func", args(), { { "arg", coil::ArgValue{ " arg1 arg2 ", {"arg1", "arg2"} } } }));
 }
 
-TEST(LexerTests, TestCompositeNamedArgsEdgeCases)
+TEST(LexerTests, TestCompoundNamedArgsEdgeCases)
 {
     coil::DefaultLexer lexer;
 
@@ -429,7 +429,7 @@ TEST(LexerTests, TestErrors)
     EXPECT_EQ(lexer("==value"), coil::makeUnexpected("Unexpected token '=' at the beginning of the expression"));
 }
 
-TEST(LexerTests, TestCompositeArgsErrors)
+TEST(LexerTests, TestCompoundArgsErrors)
 {
     coil::DefaultLexer lexer;
 
