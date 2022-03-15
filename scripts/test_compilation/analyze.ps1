@@ -24,7 +24,7 @@ Pop-Location
 
 Push-Location $entry.directory
 
-for ($i = 1 ; $i -le 2 ; $i++) {
+for ($i = 1 ; $i -le 10 ; $i++) {
     Write-Host "Compiling $($entry.file)"
     Invoke-Expression $entry.command | Out-Null
 
@@ -37,3 +37,6 @@ Pop-Location
 
 Write-Host "Merging results..."
 Invoke-Expression "python merge-trace.py --input $resFolder --output $mergedTrace"
+
+Write-Host "Analyzing results..."
+Invoke-Expression "python .\print-trace-stats.py $mergedTrace" | ConvertFrom-Json
