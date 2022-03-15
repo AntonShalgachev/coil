@@ -43,7 +43,7 @@ endif()
 
 if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     message(STATUS "Clang in use")
-    list(APPEND COMPILE_OPTIONS -ftime-trace)
+    list(APPEND COMPILE_OPTIONS -ftime-trace -ftime-trace-granularity=0)
 endif()
 
 target_compile_options(${PROJECT_NAME} PRIVATE
