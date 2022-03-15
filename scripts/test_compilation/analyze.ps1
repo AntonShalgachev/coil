@@ -1,10 +1,17 @@
-$resFolder = 'out'
-$mergedTrace = "$resFolder/merged.json"
+$outputFolder = 'out'
+$metadataFolder = 'result'
+$outputTrace = "$outputFolder/output.json"
+$outputMetadata = "$metadataFolder/output.meta.json"
 
-if (Test-Path -Path $resFolder) {
-    Remove-Item $resFolder -Recurse -Force
+if (Test-Path -Path $outputFolder) {
+    Remove-Item $outputFolder -Recurse -Force
 }
-mkdir $resFolder | Out-Null
+mkdir $outputFolder | Out-Null
+
+if (Test-Path -Path $metadataFolder) {
+    Remove-Item $metadataFolder -Recurse -Force
+}
+mkdir $metadataFolder | Out-Null
 
 $env:CC="clang-cl"
 $env:CXX="clang-cl"
@@ -29,14 +36,17 @@ for ($i = 1 ; $i -le 10 ; $i++) {
     Invoke-Expression $entry.command | Out-Null
 
     $jsonPath = $entry.output.replace('.cpp.obj', '.cpp.json')
-    Copy-Item $jsonPath -Destination "../$resFolder/result$i.json"
+    Copy-Item $jsonPath -Destination "../$outputFolder/result$i.json"
 }
 
 Pop-Location
 Pop-Location
 
 Write-Host "Merging results..."
-Invoke-Expression "python merge-trace.py --input $resFolder --output $mergedTrace"
+Invoke-Expression "python merge-trace.py --input $outputFolder --output $outputTrace"
 
 Write-Host "Analyzing results..."
-Invoke-Expression "python .\print-trace-stats.py $mergedTrace" | ConvertFrom-Json
+$metadata = (Invoke-Expression "python .\print-trace-stats.py $outputTrace" | ConvertFrom-Json)
+
+$metadata | ConvertTo-Json | Out-File $outputMetadata -Encoding Utf8
+$metadata
