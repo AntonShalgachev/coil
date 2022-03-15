@@ -1,18 +1,33 @@
+import enum
 import json
-from pathlib import Path
 import os
 import copy
 import argparse
+import statistics
 
 
-def main(root):
+class Mode(enum.Enum):
+    Mean = 'Mean'
+    Median = 'Median'
+
+    def __str__(self):
+        return self.value
+
+
+def main():
     parser = argparse.ArgumentParser(description='Merge clang time trace into one')
     parser.add_argument('--input', required=True, type=str, help='Input folder which contains json traces')
     parser.add_argument('--output', required=True, type=str, help='Filename for the resulting json trace')
+    parser.add_argument('--mode', type=Mode, choices=list(Mode), default=Mode.Mean, help='Algorithm used to compute the resulting trace')
     args = parser.parse_args()
 
     input_path = args.input
     output_file = args.output
+    algorithm_func = None
+    if args.mode == Mode.Mean:
+        algorithm_func = statistics.mean
+    elif args.mode == Mode.Median:
+        algorithm_func = statistics.median
 
     results = []
     print('Loading traces from "{}"...'.format(input_path))
@@ -38,16 +53,16 @@ def main(root):
             print('Mismatched number of trace events')
             return
 
-    average_result = []
+    output_events = []
 
     for i in range(len(reference_result)):
-        total_ts = 0
-        total_dur = 0
+        begin_ts = []
+        end_ts = []
         
         reference_event = reference_result[i]
 
-        average_event = reference_event
-
+        output_event = reference_event
+        
         if 'name' in reference_event and reference_event['name'].startswith('Total '):
             continue
 
@@ -71,20 +86,24 @@ def main(root):
                     print('ERROR! Mismatched event args')
                     return
 
-                total_ts += event['ts']
-                total_dur += event['dur']
+                ts = event['ts']
+                dur = event['dur']
 
-            average_event = copy.deepcopy(reference_event)
-            average_event['ts'] = total_ts // count
-            average_event['dur'] = total_dur // count
+                begin_ts.append(ts)
+                end_ts.append(ts + dur)
 
-        average_result.append(average_event)
+            output_event = copy.deepcopy(reference_event)
+            ts = algorithm_func(begin_ts)
+            dur = algorithm_func(end_ts) - ts
+            output_event['ts'] = int(ts)
+            output_event['dur'] = int(dur)
 
-    print('Processed {} events in {} files'.format(len(average_result), count))
+        output_events.append(output_event)
+
+    print('Processed {} events in {} files'.format(len(output_events), count))
     print('Writing results to "{}"...'.format(output_file))
     with open(output_file, 'w') as fp:
-        json.dump({'traceEvents': average_result, 'beginningOfTime': 0}, fp, separators=(',', ':'))
+        json.dump({'traceEvents': output_events, 'beginningOfTime': 0}, fp, separators=(',', ':'))
 
 if __name__ == '__main__':
-    root = Path(__file__).parent.resolve()
-    main(root)
+    main()
