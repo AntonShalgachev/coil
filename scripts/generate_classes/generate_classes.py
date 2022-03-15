@@ -170,12 +170,12 @@ class SourceWriter:
 
 def main():
     seed = 88005553535
-    classes_with_bindings_count = 500
+    classes_with_bindings_count = 200
     classes_without_bindings_count = 0
-    methods_count = 3
-    functions_count = 3
-    member_variables_count = 3
-    variables_count = 3
+    methods_count = 10
+    functions_count = 10
+    member_variables_count = 10
+    variables_count = 10
     includes_count = 0
     args_count = 5
     types = ['int', 'float', 'double', 'bool', 'short', 'unsigned']
