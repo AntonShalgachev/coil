@@ -1,0 +1,90 @@
+﻿[
+    {
+        "name":  "ExecuteCompiler",
+        "total":  1479056
+    },
+    {
+        "name":  "InstantiateFunction",
+        "total":  841705
+    },
+    {
+        "name":  "Backend",
+        "total":  764087
+    },
+    {
+        "name":  "OptModule",
+        "total":  744188
+    },
+    {
+        "name":  "Frontend",
+        "total":  683883
+    },
+    {
+        "name":  "OptFunction",
+        "total":  633220
+    },
+    {
+        "name":  "RunPass",
+        "total":  516223
+    },
+    {
+        "name":  "CodeGen Function",
+        "total":  333942
+    },
+    {
+        "name":  "DebugType",
+        "total":  240283
+    },
+    {
+        "name":  "PerformPendingInstantiations",
+        "total":  215866
+    },
+    {
+        "name":  "InstantiateClass",
+        "total":  199628
+    },
+    {
+        "name":  "ModuleToPostOrderCGSCCPassAdaptor",
+        "total":  9088
+    },
+    {
+        "name":  "ModuleToFunctionPassAdaptor",
+        "total":  2640
+    },
+    {
+        "name":  "Source",
+        "total":  2147
+    },
+    {
+        "name":  "ParseClass",
+        "total":  1829
+    },
+    {
+        "name":  "DebugConstGlobalVariable",
+        "total":  790
+    },
+    {
+        "name":  "DebugGlobalVariable",
+        "total":  601
+    },
+    {
+        "name":  "AlwaysInlinerPass",
+        "total":  178
+    },
+    {
+        "name":  "PassManager\u003cLazyCallGraph::SCC, llvm::CGSCCAnalysisManager, llvm::LazyCallGraph \u0026, llvm::CGSCCUpdateResult \u0026\u003e",
+        "total":  7
+    },
+    {
+        "name":  "CoroCleanupPass",
+        "total":  5
+    },
+    {
+        "name":  "CoroEarlyPass",
+        "total":  3
+    },
+    {
+        "name":  "CoroSplitPass",
+        "total":  2
+    }
+]
