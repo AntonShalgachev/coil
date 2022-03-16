@@ -8,6 +8,7 @@ set(COIL_COMPILATION_TESTS OFF CACHE BOOL "Run CMake compilation tests")
 
 set(COIL_RUNTIME_PERFORMANCE OFF CACHE BOOL "Configure the project for runtime performance tests")
 set(COIL_COMPILE_TIME OFF CACHE BOOL "Configure the project for compilation performance tests")
+set(COIL_COMPILE_TIME_TRACE OFF CACHE BOOL "Generate trace files for Clang")
 set(COIL_COMPILE_TIME_WITH_COIL OFF CACHE BOOL "Whether to use coil library for compilation performance test")
 set(COIL_COMPILE_TIME_WITH_MANUAL OFF CACHE BOOL "Whether to use manually-written bindings for compilation performance test")
 
