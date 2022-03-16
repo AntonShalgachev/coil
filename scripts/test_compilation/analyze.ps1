@@ -8,10 +8,9 @@ if (Test-Path -Path $outputFolder) {
 }
 mkdir $outputFolder | Out-Null
 
-if (Test-Path -Path $metadataFolder) {
-    Remove-Item $metadataFolder -Recurse -Force
+if (-Not (Test-Path -Path $metadataFolder)) {
+    mkdir $metadataFolder | Out-Null
 }
-mkdir $metadataFolder | Out-Null
 
 $env:CC="clang-cl"
 $env:CXX="clang-cl"

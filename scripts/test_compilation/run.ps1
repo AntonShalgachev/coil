@@ -6,6 +6,9 @@ param (
     [bool[]]$unityBuildOptions = @($true, $false)
 )
 
+$outputFolder = 'result'
+$outputFile = "$outputFolder/full-build-stats.json"
+
 function IIf($If, $IfTrue, $IfFalse) {
     If ($If) {If ($IfTrue -is "ScriptBlock") {&$IfTrue} Else {$IfTrue}}
     Else {If ($IfFalse -is "ScriptBlock") {&$IfFalse} Else {$IfFalse}}
@@ -114,16 +117,29 @@ function Main {
             }
         }
     }
+
+    if (-Not (Test-Path -Path $outputFolder)) {
+        mkdir $outputFolder | Out-Null
+    }
+
+    $outputStats = @()
     
     foreach ($configuration in $results) {
         $name = $configuration.Name
         $durations = $configuration.Durations
     
         Write-Host "${name}:"
-        Measure-BuildResults $durations | Out-Host
+        $stats = Measure-BuildResults $durations
+        $stats | Out-Host
+        
+        $stats | Add-Member "Name" $configuration.Name
+
+        $outputStats += $stats
     }
     
     Pop-Location
+
+    $outputStats | ConvertTo-Json | Out-File $outputFile -Encoding Utf8
 }
 
 Main
