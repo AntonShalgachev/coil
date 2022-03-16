@@ -26,9 +26,12 @@ namespace coil
         BindingProxy<Bindings> operator[](std::string_view name);
 
         template<typename Func>
-        void add(std::string_view name, Func&& func)
+        void add(std::string_view name, Func func)
         {
-            m_commands.insert_or_assign(name, std::vector<detail::AnyFunctor>{ detail::createAnyFunctor(std::forward<Func>(func)) });
+            // No move list-initialization in vector? Really, C++?
+            std::vector<detail::AnyFunctor> functors;
+            functors.push_back(detail::AnyFunctor{ std::move(func) });
+            m_commands.insert_or_assign(name, std::move(functors));
         }
 
         void add(std::string_view name, std::vector<detail::AnyFunctor> anyFunctors)
@@ -128,9 +131,9 @@ namespace coil
         BindingProxy(BindingsT& bindings, std::string_view name) : m_bindings(bindings), m_name(name) {}
 
         template<typename AnyT>
-        BindingProxy& operator=(AnyT&& anything)
+        BindingProxy& operator=(AnyT anything)
         {
-            m_bindings.add(m_name, std::forward<AnyT>(anything));
+            m_bindings.add(m_name, std::move(anything));
             return *this;
         }
         BindingProxy& operator=(std::nullptr_t)

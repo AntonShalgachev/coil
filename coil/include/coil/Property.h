@@ -56,13 +56,13 @@ namespace coil
     template<typename G, typename S>
     auto createProperty(G&& getter, S&& setter)
     {
-        return Property{ std::forward<G>(getter), std::forward<S>(setter) };
+        return Property{ std::move(getter), std::move(setter) };
     }
 
     template<typename C, typename G, typename S>
     auto createProperty(G&& getter, S&& setter, C* object)
     {
-        return MemberProperty{ std::forward<G>(getter), std::forward<S>(setter), object };
+        return MemberProperty{ std::move(getter), std::move(setter), object };
     }
 
     // TODO add readonly properties
