@@ -130,10 +130,17 @@ namespace coil
     public:
         BindingProxy(BindingsT& bindings, std::string_view name) : m_bindings(bindings), m_name(name) {}
 
-        template<typename AnyT>
-        BindingProxy& operator=(AnyT anything)
+        template<typename Func>
+        BindingProxy& operator=(Func func)
         {
-            m_bindings.add(m_name, std::move(anything));
+            // No move list-initialization in vector? Really, C++?
+            std::vector<detail::AnyFunctor> functors;
+            functors.push_back(detail::AnyFunctor{ std::move(func) });
+            return (*this = std::move(functors));
+        }
+        BindingProxy& operator=(std::vector<detail::AnyFunctor> anyFunctors)
+        {
+            m_bindings.add(m_name, std::move(anyFunctors));
             return *this;
         }
         BindingProxy& operator=(std::nullptr_t)
