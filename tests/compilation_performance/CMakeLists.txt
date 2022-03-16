@@ -41,7 +41,7 @@ if(MSVC)
     endif()
 endif()
 
-if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+if (COIL_COMPILE_TIME_TRACE AND CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     message(STATUS "Clang in use")
     list(APPEND COMPILE_OPTIONS -ftime-trace -ftime-trace-granularity=0)
 endif()

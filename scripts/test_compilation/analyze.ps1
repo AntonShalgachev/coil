@@ -16,7 +16,7 @@ mkdir $metadataFolder | Out-Null
 $env:CC="clang-cl"
 $env:CXX="clang-cl"
 Write-Host "Configuring CMake"
-cmake -B build -DCOIL_EXAMPLES=OFF -DCOIL_COMPILE_TIME=1 -DCOIL_COMPILE_TIME_WITH_COIL=1 -GNinja ../.. | Out-Null
+cmake -B build -DCOIL_EXAMPLES=OFF -DCOIL_COMPILE_TIME=1 -DCOIL_COMPILE_TIME_WITH_COIL=1 -DCOIL_COMPILE_TIME_TRACE=ON -GNinja ../.. | Out-Null
 Push-Location build
 
 $commands = (ninja -t compdb | ConvertFrom-Json)
