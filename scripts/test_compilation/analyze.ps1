@@ -1,6 +1,6 @@
 $outputFolder = 'out'
 $metadataFolder = 'result'
-$outputTrace = "$outputFolder/output.json"
+$outputTrace = "$metadataFolder/output.json"
 $outputMetadata = "$metadataFolder/output.meta.json"
 
 if (Test-Path -Path $outputFolder) {
