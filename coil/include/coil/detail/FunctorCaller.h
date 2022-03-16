@@ -1,7 +1,6 @@
 #pragma once
 
 #include <string>
-#include <any>
 
 #include "CallContext.h"
 #include "coil/Types.h"
@@ -63,26 +62,5 @@ namespace coil::detail
     void unpackAndInvoke(Func& func, CallContext& context, std::index_sequence<NonUserIndices...>, Types<UserArgs...>, std::index_sequence<UserIndices...>)
     {
         invoke<Func, NonUserIndices...>(func, context, TypeSerializer<std::decay_t<UserArgs>>::fromString(context.input.arguments[UserIndices])...);
-    }
-
-    template<typename Func>
-    void functorTrampoline(std::any& anyFunctor, detail::CallContext& context)
-    {
-        Func* functor = std::any_cast<Func>(&anyFunctor);
-
-        if (!functor)
-        {
-            context.result.errors.push_back("Internal error"); // @NOCOVERAGE
-            return; // @NOCOVERAGE
-        }
-
-        using FuncTraits = detail::FuncTraits<Func>;
-        using ArgsTraits = typename FuncTraits::ArgsTraits;
-
-        using UserArgTypes = typename ArgsTraits::UserArgumentTypes;
-        using UserArgIndicesType = typename UserArgTypes::IndicesType;
-        using NonUserArgsIndicesType = typename ArgsTraits::NonUserArgsIndices;
-
-        unpackAndInvoke(*functor, context, NonUserArgsIndicesType{}, UserArgTypes{}, UserArgIndicesType{});
     }
 }
