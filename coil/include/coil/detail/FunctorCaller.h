@@ -65,10 +65,10 @@ namespace coil::detail
         invoke<Func, NonUserIndices...>(func, context, TypeSerializer<std::decay_t<UserArgs>>::fromString(context.input.arguments[UserIndices])...);
     }
 
-    template<typename FuncT>
+    template<typename Func>
     void functorTrampoline(std::any& anyFunctor, detail::CallContext& context)
     {
-        FuncT* functor = std::any_cast<FuncT>(&anyFunctor);
+        Func* functor = std::any_cast<Func>(&anyFunctor);
 
         if (!functor)
         {
@@ -76,7 +76,7 @@ namespace coil::detail
             return; // @NOCOVERAGE
         }
 
-        using FuncTraits = detail::FuncTraits<FuncT>;
+        using FuncTraits = detail::FuncTraits<Func>;
         using ArgsTraits = typename FuncTraits::ArgsTraits;
 
         using UserArgTypes = typename ArgsTraits::UserArgumentTypes;
