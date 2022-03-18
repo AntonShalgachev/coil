@@ -66,14 +66,25 @@ function Measure-SingleBuild {
         $durations += $result
     }
 
+    $commands = (ninja -t compdb | ConvertFrom-Json)
+    $entry = ($commands | Where-Object { $_.file -like "*WithBindings0.cpp" })
+
+    Push-Location $entry.directory
+    Invoke-Expression $entry.command | Out-Null
+    $symbols = Invoke-Expression "dumpbin /headers $($entry.output) | python '$PSScriptRoot/parse-symbols.py'" | ConvertFrom-Json
+    Pop-Location
+
     Write-Host
 
     Pop-Location
     if (-not $KeepBuildResults -and (Test-Path -Path $buildFolder)) {
         Remove-Item $buildFolder -Recurse -Force
     }
-    
-    return $durations
+
+    return [PSCustomObject]@{
+        Durations = $durations
+        Symbols = $symbols
+    }
 }
 
 function Measure-Median($Values) {
@@ -112,7 +123,8 @@ function Main {
     
                 $results += [PSCustomObject]@{
                     Name = "[$configurationName]"
-                    Durations = $result
+                    Durations = $result.Durations
+                    Symbols = $result.Symbols
                 }
             }
         }
@@ -133,13 +145,14 @@ function Main {
         $stats | Out-Host
         
         $stats | Add-Member "Name" $configuration.Name
+        $stats | Add-Member "Symbols" $configuration.Symbols
 
         $outputStats += $stats
     }
     
     Pop-Location
 
-    $outputStats | ConvertTo-Json | Out-File $outputFile -Encoding Utf8
+    $outputStats | ConvertTo-Json -Depth 42 | python -c "import json; import sys; print(json.dumps(json.load(sys.stdin), indent=4))" | Out-File $outputFile -Encoding Utf8
 }
 
 Main
