@@ -13,6 +13,8 @@ def main():
         if m:
             names.append(m.group(1))
 
+    names.sort()
+
     print(json.dumps({'count': len(names), 'names': names}))
 
 
