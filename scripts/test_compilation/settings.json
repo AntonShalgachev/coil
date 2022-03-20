@@ -1,0 +1,14 @@
+{
+    "compiler_options": ["clang"],
+    "bindings_options": ["none"],
+    "unity_options": [true],
+
+    "count": 10,
+
+    "cmake_root": "../..",
+    "build_directory": "build",
+    "report_file": "results/report.json",
+    "merged_trace_file": "results/merged_trace.json",
+
+    "compilation_object": ["ClassWithBindings0.cpp.obj", "unity_1_cxx.cxx.obj"]
+}
