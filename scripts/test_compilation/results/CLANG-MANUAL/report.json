@@ -1,0 +1,39 @@
+{
+    "compilation_stats": {
+        "mean": 1.3660839557647706,
+        "median": 1.2777185440063477,
+        "min": 1.1829144954681396,
+        "max": 1.7815361022949219
+    },
+    "linking_stats": {
+        "mean": 0.8382305383682251,
+        "median": 0.835896372795105,
+        "min": 0.8236441612243652,
+        "max": 0.8621509075164795
+    },
+    "symbols_count": 920,
+    "trace_stats": {
+        "AlwaysInlinerPass": 78,
+        "Backend": 532583,
+        "CodeGen Function": 200699,
+        "CoroCleanupPass": 46,
+        "CoroEarlyPass": 106,
+        "CoroSplitPass": 33,
+        "DebugConstGlobalVariable": 463,
+        "DebugGlobalVariable": 112,
+        "DebugType": 129371,
+        "ExecuteCompiler": 1093203,
+        "Frontend": 534608,
+        "InstantiateClass": 198333,
+        "InstantiateFunction": 520446,
+        "ModuleToFunctionPassAdaptor": 1623,
+        "ModuleToPostOrderCGSCCPassAdaptor": 5092,
+        "OptFunction": 329222,
+        "OptModule": 521586,
+        "ParseClass": 2607,
+        "PassManager<LazyCallGraph::SCC, llvm::CGSCCAnalysisManager, llvm::LazyCallGraph &, llvm::CGSCCUpdateResult &>": 288,
+        "PerformPendingInstantiations": 144288,
+        "RunPass": 276013,
+        "Source": 2927
+    }
+}
