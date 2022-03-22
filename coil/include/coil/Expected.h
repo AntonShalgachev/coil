@@ -90,7 +90,7 @@ namespace coil
             constructFrom(std::move(rhs));
         }
 
-        virtual ~ExpectedBase()
+        ~ExpectedBase() // not virtual
         {
             destruct();
         }
@@ -189,7 +189,7 @@ namespace coil
     };
 
     template<typename T, typename E>
-    class Expected : public ExpectedBase<T, E>
+    class Expected final : public ExpectedBase<T, E>
     {
     public:
         using Base = ExpectedBase<T, E>;
@@ -250,7 +250,7 @@ namespace coil
     };
 
     template<typename E>
-    class Expected<void, E> : public ExpectedBase<detail::dummy, E>
+    class Expected<void, E> final : public ExpectedBase<detail::dummy, E>
     {
     public:
         using Base = ExpectedBase<detail::dummy, E>;

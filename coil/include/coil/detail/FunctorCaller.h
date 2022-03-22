@@ -25,7 +25,7 @@ namespace coil::detail
     }
 
     template<typename Func, std::size_t... NonUserIndices, typename... Es>
-    void invoke(Func& func, CallContext& context, Es&&... expectedArgs)
+    void invoke(Func& func, CallContext& context, Es... expectedArgs)
     {
         if ((!expectedArgs || ...))
         {
@@ -39,11 +39,11 @@ namespace coil::detail
         {
             if constexpr (std::is_void_v<R>)
             {
-                func(createContext<NonUserIndices>(context)..., *std::forward<Es>(expectedArgs)...);
+                func(createContext<NonUserIndices>(context)..., *std::move(expectedArgs)...);
             }
             else
             {
-                auto&& returnValue = func(createContext<NonUserIndices>(context)..., *std::forward<Es>(expectedArgs)...);
+                auto&& returnValue = func(createContext<NonUserIndices>(context)..., *std::move(expectedArgs)...);
                 if (!context.hasErrors())
                     context.result.returnValue = TypeSerializer<std::decay_t<R>>::toString(returnValue);
             }
@@ -64,3 +64,16 @@ namespace coil::detail
         invoke<Func, NonUserIndices...>(func, context, TypeSerializer<std::decay_t<UserArgs>>::fromString(context.input.arguments[UserIndices])...);
     }
 }
+
+#define EXTERN_EEXPLICIT_FUNCTOR_CALLER_TEMPLATE(T) \
+    extern template void coil::detail::reportError<T>(coil::detail::CallContext& context, coil::Expected<T, std::string> const& result)
+
+#define EEXPLICIT_FUNCTOR_CALLER_TEMPLATE(T) \
+    template void coil::detail::reportError<T>(coil::detail::CallContext& context, coil::Expected<T, std::string> const& result)
+
+EXTERN_EEXPLICIT_FUNCTOR_CALLER_TEMPLATE(int);
+EXTERN_EEXPLICIT_FUNCTOR_CALLER_TEMPLATE(short);
+EXTERN_EEXPLICIT_FUNCTOR_CALLER_TEMPLATE(bool);
+EXTERN_EEXPLICIT_FUNCTOR_CALLER_TEMPLATE(unsigned);
+EXTERN_EEXPLICIT_FUNCTOR_CALLER_TEMPLATE(float);
+EXTERN_EEXPLICIT_FUNCTOR_CALLER_TEMPLATE(double);
