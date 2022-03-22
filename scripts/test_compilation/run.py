@@ -149,7 +149,7 @@ def prepare_configuration(configuration: BuildConfiguration):
     logger.info('    Running CMake...')
     execute_command(cmake_command)
 
-    logger.info('    Running the first build...')
+    logger.info('    Building...')
     execute_command('ninja -d keeprsp', cwd=build_dir)
 
     logger.info('    Generating compilation commands...')
