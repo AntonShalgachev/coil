@@ -241,6 +241,7 @@ def find_symbols(compilation_commands):
         if m:
             symbols.append(m.group(1))
 
+    symbols.sort()
     logger.debug('Found {} symbols'.format(len(symbols)))
 
     return symbols
