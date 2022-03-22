@@ -1,13 +1,13 @@
 import argparse
-import copy
+from collections import OrderedDict
 from enum import Enum
 import json
 import logging
 import os
+import re
 import statistics
 import subprocess
 import time
-from typing import Dict
 from typing import List
 
 
@@ -41,14 +41,20 @@ class BuildConfiguration:
 
 
 class Settings:
-    def __init__(self, keep_build_results: bool, compiler_options: List[str], bindings_options: List[str], unity_options: List[bool], count: int, cmake_root: str, build_directory: str, report_file: str, merged_trace_file: str, compilation_object: str):
+    def __init__(self, keep_build_results: bool,compiler_options: List[str], bindings_options: List[str],
+                 unity_options: List[bool], count: int, cmake_root: str, build_directory: str,
+                 report_root_directory: str, report_filename: str, merged_trace_filename: str,
+                 symbols_filename: str, compilation_object: str, symbols_object: str):
         self.keep_build_results = keep_build_results
         self.count = count
         self.cmake_root = cmake_root
         self.build_directory = build_directory
-        self.report_file = report_file
-        self.merged_trace_file = merged_trace_file
+        self.report_root_directory = report_root_directory
+        self.report_filename = report_filename
+        self.merged_trace_filename = merged_trace_filename
+        self.symbols_filename = symbols_filename
         self.compilation_object = compilation_object
+        self.symbols_object = symbols_object
 
         self.configurations: List[BuildConfiguration] = []
         for unity in unity_options:
@@ -66,14 +72,12 @@ class DurationStats:
         self.min = min(durations)
         self.max = max(durations)
 
-    def __str__(self):
-        return str(self.__dict__)
-
 class ProfilingResults:
-    def __init__(self, compilation_stats: DurationStats, linking_stats: DurationStats, symbols_count: int):
+    def __init__(self, compilation_stats: DurationStats, linking_stats: DurationStats, symbols_count: int, trace_stats):
         self.compilation_stats = compilation_stats
         self.linking_stats = linking_stats
         self.symbols_count = symbols_count
+        self.trace_stats = trace_stats
 
 
 BINDINGS_CMD_ARGUMENTS = {
@@ -111,7 +115,7 @@ def execute_command(command: str, cwd: str = None):
     return stdout, duration
 
 
-def execute_db_command(compilation_commands, output_file_ending):
+def find_db_entry(compilation_commands, output_file_ending):
     if isinstance(output_file_ending, str):
         entry_filter = lambda entry: entry['output'].endswith(output_file_ending)
     else:
@@ -119,8 +123,12 @@ def execute_db_command(compilation_commands, output_file_ending):
 
     entry = next(filter(entry_filter, compilation_commands), None)
     assert entry is not None
+    return entry
+
+
+def execute_db_command(entry):
     _, duration = execute_command(entry['command'], entry['directory'])
-    return duration, entry
+    return duration
 
 
 def prepare_configuration(configuration: BuildConfiguration):
@@ -135,50 +143,47 @@ def prepare_configuration(configuration: BuildConfiguration):
 
     cmake_command = 'cmake -B "{build_dir}" -DCOIL_EXAMPLES=OFF -DCOIL_COMPILE_TIME=ON -DCOIL_COMPILE_TIME_TRACE=ON {bindings} {unity} -GNinja "{root}"'.format(**params)
 
-    if configuration.compiler == Compiler.CLANG:
-        os.environ['CC'] = 'clang-cl'
-        os.environ['CXX'] = 'clang-cl'
+    os.environ['CC'] = 'clang-cl' if configuration.compiler == Compiler.CLANG else ''
+    os.environ['CXX'] = 'clang-cl' if configuration.compiler == Compiler.CLANG else ''
     
-    logger.info('Running CMake...')
+    logger.info('    Running CMake...')
     execute_command(cmake_command)
 
-    logger.info('Running the first build...')
+    logger.info('    Running the first build...')
     execute_command('ninja -d keeprsp', cwd=build_dir)
 
-    logger.info('Generating compilation commands...')
+    logger.info('    Generating compilation commands...')
     compilation_commands_json, _ = execute_command('ninja -t compdb', cwd=build_dir)
     with open(os.path.join(build_dir, 'compilation_commands.json'), 'w') as f:
         f.write(compilation_commands_json)
     compilation_commands = json.loads(compilation_commands_json)
 
-    logger.info('Compiling PCH...')
-    execute_db_command(compilation_commands, 'cmake_pch.cxx.obj')
-
     return compilation_commands
 
 
 def merge_traces(traces):
-    reference_result = traces[0]
+    if not traces:
+        return None, None
+
+    merged_trace = traces[0] # no copy
     
     for trace in traces:
-        if len(trace) != len(reference_result):
+        if len(trace) != len(merged_trace):
             print('Mismatched number of trace events')
             return
 
-    merged_trace = []
+    stats = {}
 
-    for i in range(len(reference_result)):
+    for i in range(len(merged_trace)):
         begin_ts = []
         end_ts = []
-        
-        reference_event = reference_result[i]
 
-        merged_event = reference_event
+        merged_event = merged_trace[i]
         
-        if 'name' in reference_event and reference_event['name'].startswith('Total '):
+        if 'name' in merged_event and merged_event['name'].startswith('Total '):
             continue
 
-        if reference_event['ph'] == 'X':
+        if merged_event['ph'] == 'X':
             for trace in traces:
                 event = trace[i]
 
@@ -186,15 +191,15 @@ def merge_traces(traces):
                     print('ERROR! No name in event {}'.format(i))
                     return
 
-                if ('args' in event) != ('args' in reference_event):
+                if ('args' in event) != ('args' in merged_event):
                     print('ERROR! Args presence varies in event {}'.format(i))
                     return
 
-                if event['name'] != reference_event['name']:
+                if event['name'] != merged_event['name']:
                     print('ERROR! Mismatched event name')
                     return
                 
-                if 'args' in event and event['args'] != reference_event['args']:
+                if 'args' in event and event['args'] != merged_event['args']:
                     print('ERROR! Mismatched event args')
                     return
 
@@ -204,46 +209,75 @@ def merge_traces(traces):
                 begin_ts.append(ts)
                 end_ts.append(ts + dur)
 
-            merged_event = copy.deepcopy(reference_event)
             ts = statistics.median(begin_ts)
             dur = statistics.median(end_ts) - ts
             merged_event['ts'] = int(ts)
             merged_event['dur'] = int(dur)
+            
+            name = merged_event['name']
+            if name not in stats:
+                stats[name] = []
+            stats[name].append(merged_event['dur'])
 
-        merged_trace.append(merged_event)
+    for name, values in stats.items():
+        stats[name] = sum(values)
     
-    return merged_trace
+    stats = OrderedDict(sorted(stats.items()))
+    
+    return merged_trace, stats
+
+
+SYMBOL_NAME_REGEX = re.compile(r'.*SECT.*notype.*External.*\| (.*)')
+
+
+def find_symbols(compilation_commands):
+    entry = find_db_entry(compilation_commands, settings.symbols_object)
+    object_file = os.path.join(entry['directory'], entry['output'])
+    output, _ = execute_command('dumpbin /symbols "{}"'.format(object_file))
+
+    symbols = []
+    for line in output.splitlines():
+        m = SYMBOL_NAME_REGEX.match(line)
+        if m:
+            symbols.append(m.group(1))
+
+    logger.debug('Found {} symbols'.format(len(symbols)))
+
+    return symbols
 
 
 def profile_compilation_command(compilation_commands):
     durations = []
     traces = []
+
+    entry = find_db_entry(compilation_commands, settings.compilation_object)
+    
+    object_file = os.path.join(entry['directory'], entry['output'])
+    trace_file = object_file.replace('.obj', '.json')
+    logger.debug('Using trace file: {}'.format(trace_file))
+
     for _ in range(settings.count):
-        duration, entry = execute_db_command(compilation_commands, settings.compilation_object)
+        duration = execute_db_command(entry)
         durations.append(duration)
-        object_file = os.path.join(entry['directory'], entry['output'])
-        trace_file = object_file.replace('.obj', '.json')
+        if os.path.exists(trace_file):
+            with open(trace_file, 'r') as f:
+                trace = json.load(f)['traceEvents']
+                logger.debug('Found {} events'.format(len(trace)))
+                traces.append(trace)
 
-        logger.debug('Using trace file: {}'.format(trace_file))
-        with open(trace_file, 'r') as f:
-            trace = json.load(f)['traceEvents']
-            logger.debug('Found {} events'.format(len(trace)))
-            traces.append(trace)
+    logger.info('    Merging traces...')
+    merged_trace, trace_stats = merge_traces(traces)
 
-    logger.info('Merging traces...')
-    merge_traces(traces)
-
-    logger.info('Saving trace file...')
-    with open(settings.merged_trace_file, 'w') as f:
-        json.dump(trace, f)
-            
-    return DurationStats(durations)
+    return DurationStats(durations), merged_trace, trace_stats
 
 
 def profile_linking_command(compilation_commands, output_file_ending):
     durations = []
+
+    entry = find_db_entry(compilation_commands, output_file_ending)
+
     for _ in range(settings.count):
-        duration, _ = execute_db_command(compilation_commands, output_file_ending)
+        duration = execute_db_command(entry)
         durations.append(duration)
     return DurationStats(durations)
 
@@ -251,19 +285,34 @@ def profile_linking_command(compilation_commands, output_file_ending):
 def run_configuration(configuration: BuildConfiguration):
     logger.info('Profiling configuration {}'.format(configuration.name))
 
+    configuration_report_directory = os.path.join(settings.report_root_directory, configuration.name)
+    os.makedirs(configuration_report_directory, exist_ok=True)
+
     compilation_commands = prepare_configuration(configuration)
 
-    logger.info('Profiling compilation...')
-    compilation_stats = profile_compilation_command(compilation_commands)
-    logger.info(compilation_stats)
+    logger.info('    Finding symbols...')
+    symbols = find_symbols(compilation_commands)
+    symbols_count = len(symbols)
 
-    logger.info('Profiling linking...')
+    logger.info('    Saving symbols...')
+    with open(os.path.join(configuration_report_directory, settings.symbols_filename), 'w') as f:
+        f.write('\n'.join(symbols) + '\n')
+
+    logger.info('    Profiling compilation...')
+    compilation_stats, merged_trace, trace_stats = profile_compilation_command(compilation_commands)
+
+    logger.info('    Profiling linking...')
     linking_stats = profile_linking_command(compilation_commands, 'compilation_performance.exe')
-    logger.info(linking_stats)
 
-    symbols_count = 42 # TODO
+    logger.info('    Saving profiling results...')
+    with open(os.path.join(configuration_report_directory, settings.report_filename), 'w') as f:
+        results = ProfilingResults(compilation_stats, linking_stats, symbols_count, trace_stats)
+        json.dump(results, f, default=lambda o: o.__dict__, indent=4)
 
-    return ProfilingResults(compilation_stats, linking_stats, symbols_count)
+    if merged_trace:
+        logger.info('    Saving merged trace file...')
+        with open(os.path.join(configuration_report_directory, settings.merged_trace_filename), 'w') as f:
+            f.write(json.dumps(merged_trace))
 
 
 def main():
@@ -282,15 +331,12 @@ def main():
     with open(args.settings, 'r') as f:
         fields = json.load(f)
 
-        def update_relative_path(name, ensure_exists=False):
+        def update_relative_path(name):
             fields[name] = os.path.join(settings_dir, fields[name])
-            if ensure_exists:
-                os.makedirs(os.path.split(fields[name])[0], exist_ok=True)
 
         update_relative_path('cmake_root')
         update_relative_path('build_directory')
-        update_relative_path('report_file', ensure_exists=True)
-        update_relative_path('merged_trace_file', ensure_exists=True)
+        update_relative_path('report_root_directory')
 
         settings = Settings(**fields, keep_build_results=args.keep_build_results)
 
@@ -299,13 +345,8 @@ def main():
 
     logger.info('Configurations found: {}'.format(len(settings.configurations)))
 
-    results: Dict[ProfilingResults] = {}
-
     for configuration in settings.configurations:
-        results[configuration.name] = run_configuration(configuration)
-
-    with open(settings.report_file, 'w') as f:
-        json.dump(results, f, default=lambda o: o.__dict__, indent=4)
+        run_configuration(configuration)
 
 
 if __name__ == '__main__':
