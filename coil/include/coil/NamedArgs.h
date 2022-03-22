@@ -8,10 +8,10 @@ namespace coil
     class NamedAnyArgView
     {
     public:
-        NamedAnyArgView(std::string_view key, ArgValue value) : m_key(key), m_value(value) {}
+        NamedAnyArgView(std::string_view key, ArgValue value);
 
-        std::string_view key() const { return m_key; }
-        AnyArgView value() const { return m_value; }
+        std::string_view key() const;
+        AnyArgView value() const;
 
     private:
         std::string_view m_key;
@@ -29,12 +29,9 @@ namespace coil
         using pointer = NamedAnyArgView*;
         using reference = NamedAnyArgView&;
 
-        NamedArgsIterator(UnderlyingIteratorT iterator) : m_iterator(iterator) {}
+        NamedArgsIterator(UnderlyingIteratorT iterator);
 
-        NamedAnyArgView operator*()
-        {
-            return NamedAnyArgView(m_iterator->first, m_iterator->second);
-        }
+        NamedAnyArgView operator*();
 
         struct NamedArgContainer
         {
@@ -42,23 +39,13 @@ namespace coil
             NamedAnyArgView* operator->() { return std::addressof(arg); }
         };
 
-        NamedArgContainer operator->() { return NamedArgContainer{ **this }; }
+        NamedArgContainer operator->();
 
-        bool operator==(NamedArgsIterator const& rhs)
-        {
-            return m_iterator == rhs.m_iterator;
-        }
+        bool operator==(NamedArgsIterator const& rhs);
 
-        bool operator!=(NamedArgsIterator const& rhs)
-        {
-            return !(*this == rhs);
-        }
+        bool operator!=(NamedArgsIterator const& rhs);
 
-        NamedArgsIterator& operator++()
-        {
-            m_iterator++;
-            return *this;
-        }
+        NamedArgsIterator& operator++();
 
     private:
         UnderlyingIteratorT m_iterator;
@@ -85,16 +72,9 @@ namespace coil
             std::string message;
         };
 
-        NamedArgs(detail::CallContext& context) : m_context(context) {}
+        NamedArgs(detail::CallContext& context);
 
-        Expected<AnyArgView, Error> get(std::string_view key) const
-        {
-            auto it = find(key);
-            if (it == end())
-                return makeUnexpected(Error(Error::Type::MissingKey, formatString("Missing named argument '%.*s'", key.size(), key.data())));
-
-            return it->value();
-        }
+        Expected<AnyArgView, Error> get(std::string_view key) const;
 
         template<typename T>
         Expected<T, Error> get(std::string_view key) const
@@ -116,15 +96,7 @@ namespace coil
             Required,
         };
 
-        std::optional<AnyArgView> getOrReport(std::string_view key, ArgType argType = ArgType::Optional) const
-        {
-            if (auto anyArg = get(key))
-                return *anyArg;
-            else if (argType == ArgType::Required)
-                m_context.reportError(std::move(anyArg).error());
-
-            return {};
-        }
+        std::optional<AnyArgView> getOrReport(std::string_view key, ArgType argType = ArgType::Optional) const;
 
         template<typename T>
         std::optional<T> getOrReport(std::string_view key, ArgType argType = ArgType::Optional, std::optional<T> defaultValue = {}) const
@@ -139,30 +111,38 @@ namespace coil
             return {};
         }
 
-        std::size_t size() const
-        {
-            return m_context.input.namedArguments.size();
-        }
+        std::size_t size() const;
 
-        NamedArgsIterator begin() const
-        {
-            return m_context.input.namedArguments.cbegin();
-        }
+        NamedArgsIterator begin() const;
 
-        NamedArgsIterator end() const
-        {
-            return m_context.input.namedArguments.cend();
-        }
+        NamedArgsIterator end() const;
 
-        NamedArgsIterator find(std::string_view key) const
-        {
-            return std::find_if(begin(), end(), [key](NamedAnyArgView const& arg)
-            {
-                return arg.key() == key;
-            });
-        }
+        NamedArgsIterator find(std::string_view key) const;
 
     private:
         detail::CallContext& m_context;
     };
 }
+
+#define EXTERN_EXPLICIT_NAMED_ARGS_TEMPLATE(T) \
+    extern template class std::optional<T>; \
+    extern template class coil::ExpectedBase<T, coil::NamedArgs::Error>; \
+    extern template class coil::Expected<T, coil::NamedArgs::Error>; \
+    extern template coil::Expected<T, coil::NamedArgs::Error> coil::NamedArgs::get<T>(std::string_view key) const; \
+    extern template std::optional<T> coil::NamedArgs::getOrReport(std::string_view key, coil::NamedArgs::ArgType argType, std::optional<T> defaultValue) const
+
+#define EXPLICIT_NAMED_ARGS_TEMPLATE(T) \
+    template class std::optional<T>; \
+    template class coil::ExpectedBase<T, coil::NamedArgs::Error>; \
+    template class coil::Expected<T, coil::NamedArgs::Error>; \
+    template coil::Expected<T, coil::NamedArgs::Error> coil::NamedArgs::get<T>(std::string_view key) const; \
+    template std::optional<T> coil::NamedArgs::getOrReport(std::string_view key, coil::NamedArgs::ArgType argType, std::optional<T> defaultValue) const
+
+extern template class std::optional<coil::AnyArgView>;
+extern template class coil::Expected<coil::AnyArgView, coil::NamedArgs::Error>;
+EXTERN_EXPLICIT_NAMED_ARGS_TEMPLATE(int);
+EXTERN_EXPLICIT_NAMED_ARGS_TEMPLATE(short);
+EXTERN_EXPLICIT_NAMED_ARGS_TEMPLATE(bool);
+EXTERN_EXPLICIT_NAMED_ARGS_TEMPLATE(unsigned);
+EXTERN_EXPLICIT_NAMED_ARGS_TEMPLATE(float);
+EXTERN_EXPLICIT_NAMED_ARGS_TEMPLATE(double);

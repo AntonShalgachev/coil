@@ -101,19 +101,6 @@ namespace coil
     {
         static Expected<bool, std::string> fromString(ArgValue const& input)
         {
-            auto equalCaseInsensitive = [](std::string_view a, std::string_view b)
-            {
-                std::size_t const length = a.length();
-                if (b.length() != length)
-                    return false;
-
-                for (std::size_t i = 0; i < a.length(); i++)
-                    if (std::tolower(a[i]) != std::tolower(b[i]))
-                        return false;
-
-                return true;
-            };
-
             if (input.value == "1")
                 return true;
             if (input.value == "0")
@@ -130,6 +117,20 @@ namespace coil
         static std::string toString(bool value)
         {
             return value ? "true" : "false";
+        }
+
+    private:
+        static bool equalCaseInsensitive(std::string_view a, std::string_view b)
+        {
+            std::size_t const length = a.length();
+            if (b.length() != length)
+                return false;
+
+            for (std::size_t i = 0; i < a.length(); i++)
+                if (std::tolower(a[i]) != std::tolower(b[i]))
+                    return false;
+
+            return true;
         }
     };
 
@@ -208,3 +209,20 @@ namespace coil
         // TODO implement toString
     };
 }
+
+#define EXTERN_EXPLICIT_TYPE_SERIALIZER_TEMPLATE(T) \
+    extern template struct coil::TypeSerializer<T>; \
+    extern template class coil::ExpectedBase<T, std::string>; \
+    extern template class coil::Expected<T, std::string>
+
+#define EXPLICIT_TYPE_SERIALIZER_TEMPLATE(T) \
+    template struct coil::TypeSerializer<T>; \
+    template class coil::ExpectedBase<T, std::string>; \
+    template class coil::Expected<T, std::string>
+
+EXTERN_EXPLICIT_TYPE_SERIALIZER_TEMPLATE(int);
+EXTERN_EXPLICIT_TYPE_SERIALIZER_TEMPLATE(short);
+EXTERN_EXPLICIT_TYPE_SERIALIZER_TEMPLATE(bool);
+EXTERN_EXPLICIT_TYPE_SERIALIZER_TEMPLATE(unsigned);
+EXTERN_EXPLICIT_TYPE_SERIALIZER_TEMPLATE(float);
+EXTERN_EXPLICIT_TYPE_SERIALIZER_TEMPLATE(double);

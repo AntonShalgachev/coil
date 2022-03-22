@@ -9,15 +9,12 @@ namespace coil
     class Context
     {
     public:
-        Context(detail::CallContext& callContext) : m_callContext(callContext), m_namedArgs(callContext) {}
+        Context(detail::CallContext& callContext);
 
         // TODO rename to `log`?
-        std::ostream& out() { return m_callContext.out(); }
+        std::ostream& out();
 
-        void reportError(std::string error)
-        {
-            m_callContext.reportError(std::move(error));
-        }
+        void reportError(std::string error);
 
         template<typename... Ts>
         void reportErrors(Ts&&... errors)
@@ -25,12 +22,9 @@ namespace coil
             (reportError(std::forward<Ts>(errors)), ...);
         }
 
-        bool hasErrors() const
-        {
-            return m_callContext.hasErrors();
-        }
+        bool hasErrors() const;
 
-        NamedArgs const& namedArgs() { return m_namedArgs; }
+        NamedArgs const& namedArgs();
 
     private:
         detail::CallContext& m_callContext;

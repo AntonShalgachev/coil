@@ -10,16 +10,11 @@ namespace coil
     {
         // TODO do we need these constructors?
         // TODO if yes, make constructors explicit
-        ArgValue(std::string_view value, std::vector<std::string_view> subvalues = {}) : value(value), subvalues(std::move(subvalues)) {}
+        ArgValue();
+        ArgValue(std::string_view value, std::vector<std::string_view> subvalues = {});
 
-        bool operator==(ArgValue const& rhs) const
-        {
-            return value == rhs.value && subvalues == rhs.subvalues;
-        }
-        bool operator!=(ArgValue const& rhs) const
-        {
-            return !(*this == rhs);
-        }
+        bool operator==(ArgValue const& rhs) const;
+        bool operator!=(ArgValue const& rhs) const;
 
         // TODO rename fields?
         std::string_view value;
@@ -27,3 +22,5 @@ namespace coil
         std::vector<std::string_view> subvalues;
     };
 }
+
+extern template class std::vector<std::string_view>;
