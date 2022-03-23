@@ -623,3 +623,89 @@ TEST(BindingsTests, TestNonStdException)
     EXPECT_EQ(result.errors.size(), 1);
     EXPECT_PRED2(containsError, result.errors, "Exception caught during execution");
 }
+
+TEST(BindingsTests, TestAnyArgView)
+{
+    coil::Bindings bindings;
+    bindings["func"] = [](coil::AnyArgView const& value) {
+        return *value.get<int>();
+    };
+
+    auto result = bindings.execute("func 42");
+    EXPECT_EQ(result.returnValue, "42");
+}
+
+TEST(BindingsTests, TestNamedArgsGet)
+{
+    coil::Bindings bindings;
+    bindings["func"] = [](coil::Context context) {
+        coil::NamedArgs const& namedArgs = context.namedArgs();
+
+        auto e1 = namedArgs.get<int>("non_existent_arg");
+        ASSERT_FALSE(e1);
+        EXPECT_EQ(e1.error().type, coil::NamedArgs::Error::Type::MissingKey);
+        EXPECT_EQ(e1.error().message, "Missing named argument 'non_existent_arg'");
+
+        auto e2 = namedArgs.get<int>("arg1");
+        ASSERT_FALSE(e2);
+        EXPECT_EQ(e2.error().type, coil::NamedArgs::Error::Type::TypeMismatch);
+        EXPECT_EQ(e2.error().message, "Unable to convert 'str' to type 'int'");
+
+        auto e3 = namedArgs.get<int>("arg2");
+        ASSERT_TRUE(e3);
+        EXPECT_EQ(*e3, 42);
+    };
+
+    auto result = bindings.execute("func arg1 = str arg2 = 42");
+}
+
+TEST(BindingsTests, TestNamedArgsGetOrReport)
+{
+    coil::Bindings bindings;
+    bindings["func"] = [](coil::Context context) {
+        coil::NamedArgs const& namedArgs = context.namedArgs();
+
+        {
+            auto o = namedArgs.getOrReport<int>("arg2", coil::NamedArgs::ArgType::Optional);
+            ASSERT_TRUE(o);
+            EXPECT_EQ(*o, 42);
+            EXPECT_FALSE(context.hasErrors());
+        }
+
+        {
+            auto o = namedArgs.getOrReport<int>("arg2", coil::NamedArgs::ArgType::Required);
+            ASSERT_TRUE(o);
+            EXPECT_EQ(*o, 42);
+            EXPECT_FALSE(context.hasErrors());
+        }
+
+        {
+            auto o = namedArgs.getOrReport<int>("non_existent_arg", coil::NamedArgs::ArgType::Optional, 18);
+            ASSERT_TRUE(o.has_value());
+            EXPECT_EQ(*o, 18);
+            EXPECT_FALSE(context.hasErrors());
+        }
+    };
+
+    auto result = bindings.execute("func arg1 = str arg2 = 42");
+}
+
+TEST(BindingsTests, TestNamedArgsGetOrReportContextErrors)
+{
+    coil::Bindings bindings;
+    bindings["test"] = [](coil::Context context) {
+        return context.namedArgs().getOrReport<int>("arg", coil::NamedArgs::ArgType::Required, 18);
+    };
+
+    {
+        auto result = bindings.execute("test");
+        EXPECT_EQ(result.errors.size(), 1);
+        EXPECT_PRED2(containsError, result.errors, "Missing named argument 'arg'");
+    }
+
+    {
+        auto result = bindings.execute("test arg = str");
+        EXPECT_EQ(result.errors.size(), 1);
+        EXPECT_PRED2(containsError, result.errors, "Unable to convert 'str' to type 'int'");
+    }
+}
