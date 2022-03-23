@@ -159,10 +159,10 @@ namespace coil
 
     std::optional<AnyArgView> NamedArgs::getOrReport(std::string_view key, ArgType argType) const
     {
-        if (auto anyArg = get(key))
+        if (Expected<AnyArgView, Error> anyArg = get(key))
             return *anyArg;
         else if (argType == ArgType::Required)
-            m_context.reportError(std::move(anyArg).error());
+            m_context.reportError(std::move(anyArg).error().message);
 
         return {};
     }
