@@ -64,10 +64,6 @@ namespace coil
 
             Error(Type type, std::string message) : type(type), message(std::move(message)) {}
 
-            operator std::string() const& { return message; }
-            operator std::string()& { return message; }
-            operator std::string()&& { return std::move(message); }
-
             Type type = Type::MissingKey;
             std::string message;
         };
@@ -101,12 +97,12 @@ namespace coil
         template<typename T>
         std::optional<T> getOrReport(std::string_view key, ArgType argType = ArgType::Optional, std::optional<T> defaultValue = {}) const
         {
-            if (auto value = get<T>(key))
+            if (Expected<T, Error> value = get<T>(key))
                 return *value;
             else if (argType == ArgType::Optional && value.error().type == coil::NamedArgs::Error::Type::MissingKey)
                 return defaultValue;
             else
-                m_context.reportError(std::move(value).error());
+                m_context.reportError(std::move(value).error().message);
 
             return {};
         }
