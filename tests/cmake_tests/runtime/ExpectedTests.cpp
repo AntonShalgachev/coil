@@ -53,6 +53,8 @@ namespace
             return m_payload == rhs.m_payload;
         }
 
+        T const& payload() const { return m_payload; }
+
     private:
         T m_payload;
 
@@ -373,4 +375,13 @@ TEST(ExpectedTests, TestUnexpectedAccessRvalue)
     }, coil::BadExpectedAccess<E>);
 
     EXPECT_EQ(E::copies, 0);
+}
+
+TEST(ExpectedTests, TestExpectedArrow)
+{
+    coil::Expected<V, E> e1 = V{ 42 };
+    coil::Expected<V, E> const e2 = V{ 42 };
+
+    EXPECT_EQ(e1->payload(), 42);
+    EXPECT_EQ(e2->payload(), 42);
 }
