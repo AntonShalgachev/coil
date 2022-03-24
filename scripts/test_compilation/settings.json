@@ -3,7 +3,7 @@
     "bindings_options": ["none", "manual", "coil"],
     "unity_options": [false, true],
 
-    "count": 10,
+    "count": 1,
 
     "cmake_root": "../..",
     "build_directory": "build",
@@ -12,6 +12,5 @@
     "merged_trace_filename": "merged_trace.json",
     "symbols_filename": "symbols.txt",
 
-    "compilation_object": ["ClassWithBindings0.cpp.obj", "unity_1_cxx.cxx.obj"],
-    "symbols_object": ["ClassWithBindings0.cpp.obj", "unity_1_cxx.cxx.obj"]
+    "compilation_object": ["ClassWithBindings0.cpp.obj", "unity_1_cxx.cxx.obj"]
 }
