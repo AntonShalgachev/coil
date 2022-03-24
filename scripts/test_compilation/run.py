@@ -5,6 +5,7 @@ import json
 import logging
 import os
 import re
+import shutil
 import statistics
 import subprocess
 import time
@@ -40,12 +41,20 @@ class BuildConfiguration:
         return '{}-{}{}'.format(self.compiler.name, self.bindings.name, '-Unity' if self.unity else '')
 
 
+class Options:
+    def __init__(self, trace: bool, compilation: bool, linking: bool, clean_build: bool):
+        self.trace = trace
+        self.compilation = compilation
+        self.linking = linking
+        self.clean_build = clean_build
+
+
 class Settings:
-    def __init__(self, keep_build_results: bool,compiler_options: List[str], bindings_options: List[str],
+    def __init__(self, options: Options, compiler_options: List[str], bindings_options: List[str],
                  unity_options: List[bool], count: int, cmake_root: str, build_directory: str,
                  report_root_directory: str, report_filename: str, merged_trace_filename: str,
-                 symbols_filename: str, compilation_object: str, symbols_object: str):
-        self.keep_build_results = keep_build_results
+                 symbols_filename: str, compilation_object: str):
+        self.options = options
         self.count = count
         self.cmake_root = cmake_root
         self.build_directory = build_directory
@@ -54,7 +63,6 @@ class Settings:
         self.merged_trace_filename = merged_trace_filename
         self.symbols_filename = symbols_filename
         self.compilation_object = compilation_object
-        self.symbols_object = symbols_object
 
         self.configurations: List[BuildConfiguration] = []
         for unity in unity_options:
@@ -134,23 +142,32 @@ def execute_db_command(entry):
 def prepare_configuration(configuration: BuildConfiguration):
     build_dir = os.path.join(settings.build_directory, configuration.name)
 
+    if settings.options.clean_build and os.path.exists(build_dir):
+        shutil.rmtree(build_dir)
+
     params = {
         'root': settings.cmake_root,
         'build_dir': build_dir,
         'unity': '-DCMAKE_UNITY_BUILD=ON' if configuration.unity else '',
         'bindings': BINDINGS_CMD_ARGUMENTS[configuration.bindings],
+        'trace': '-DCOIL_COMPILE_TIME_TRACE=ON' if settings.options.trace else '-DCOIL_COMPILE_TIME_TRACE=OFF'
     }
 
-    cmake_command = 'cmake -B "{build_dir}" -DCOIL_EXAMPLES=OFF -DCOIL_COMPILE_TIME=ON -DCOIL_COMPILE_TIME_TRACE=ON {bindings} {unity} -GNinja "{root}"'.format(**params)
+    cmake_command = 'cmake -B "{build_dir}" -DCOIL_EXAMPLES=OFF -DCOIL_COMPILE_TIME=ON {trace} {bindings} {unity} -GNinja "{root}"'.format(**params)
 
-    os.environ['CC'] = 'clang-cl' if configuration.compiler == Compiler.CLANG else ''
-    os.environ['CXX'] = 'clang-cl' if configuration.compiler == Compiler.CLANG else ''
+    COMPILER_IDS = {
+        Compiler.MSVC: '',
+        Compiler.CLANG: 'clang-cl',
+    }
+
+    os.environ['CC'] = COMPILER_IDS[configuration.compiler]
+    os.environ['CXX'] = COMPILER_IDS[configuration.compiler]
     
     logger.info('    Running CMake...')
     execute_command(cmake_command)
 
-    logger.info('    Building...')
-    execute_command('ninja -d keeprsp', cwd=build_dir)
+    logger.info('    Cleaning...')
+    execute_command('ninja clean', cwd=build_dir)
 
     logger.info('    Generating compilation commands...')
     compilation_commands_json, _ = execute_command('ninja -t compdb', cwd=build_dir)
@@ -231,7 +248,7 @@ SYMBOL_NAME_REGEX = re.compile(r'.*SECT.*notype.*External.*\| (.*)')
 
 
 def find_symbols(compilation_commands):
-    entry = find_db_entry(compilation_commands, settings.symbols_object)
+    entry = find_db_entry(compilation_commands, settings.compilation_object)
     object_file = os.path.join(entry['directory'], entry['output'])
     output, _ = execute_command('dumpbin /symbols "{}"'.format(object_file))
 
@@ -251,6 +268,9 @@ def profile_compilation_command(compilation_commands):
     durations = []
     traces = []
 
+    logger.info('    Building PCH...')
+    execute_db_command(find_db_entry(compilation_commands, 'cmake_pch.cxx.obj'))
+
     entry = find_db_entry(compilation_commands, settings.compilation_object)
     
     object_file = os.path.join(entry['directory'], entry['output'])
@@ -260,7 +280,7 @@ def profile_compilation_command(compilation_commands):
     for _ in range(settings.count):
         duration = execute_db_command(entry)
         durations.append(duration)
-        if os.path.exists(trace_file):
+        if settings.options.trace and os.path.exists(trace_file):
             with open(trace_file, 'r') as f:
                 trace = json.load(f)['traceEvents']
                 logger.debug('Found {} events'.format(len(trace)))
@@ -290,24 +310,32 @@ def run_configuration(configuration: BuildConfiguration):
     os.makedirs(configuration_report_directory, exist_ok=True)
 
     compilation_commands = prepare_configuration(configuration)
+    
+    compilation_stats, merged_trace, trace_stats = (None, None, None)
+    symbols = None
+    if settings.options.compilation:
+        logger.info('    Profiling compilation...')
+        compilation_stats, merged_trace, trace_stats = profile_compilation_command(compilation_commands)
+        
+        logger.info('    Finding symbols...')
+        symbols = find_symbols(compilation_commands)
 
-    logger.info('    Finding symbols...')
-    symbols = find_symbols(compilation_commands)
-    symbols_count = len(symbols)
+        logger.info('    Saving symbols...')
+        with open(os.path.join(configuration_report_directory, settings.symbols_filename), 'w') as f:
+            f.write('\n'.join(symbols) + '\n')
 
-    logger.info('    Saving symbols...')
-    with open(os.path.join(configuration_report_directory, settings.symbols_filename), 'w') as f:
-        f.write('\n'.join(symbols) + '\n')
-
-    logger.info('    Profiling compilation...')
-    compilation_stats, merged_trace, trace_stats = profile_compilation_command(compilation_commands)
-
-    logger.info('    Profiling linking...')
-    linking_stats = profile_linking_command(compilation_commands, 'compilation_performance.exe')
+    linking_stats = None
+    if settings.options.linking:
+        logger.info('    Building...')
+        build_dir = os.path.join(settings.build_directory, configuration.name)
+        execute_command('ninja -d keeprsp', cwd=build_dir)
+        
+        logger.info('    Profiling linking...')
+        linking_stats = profile_linking_command(compilation_commands, 'compilation_performance.exe')
 
     logger.info('    Saving profiling results...')
     with open(os.path.join(configuration_report_directory, settings.report_filename), 'w') as f:
-        results = ProfilingResults(compilation_stats, linking_stats, symbols_count, trace_stats)
+        results = ProfilingResults(compilation_stats, linking_stats, len(symbols) if symbols else None, trace_stats)
         json.dump(results, f, default=lambda o: o.__dict__, indent=4)
 
     if merged_trace:
@@ -321,11 +349,16 @@ def main():
 
     parser = argparse.ArgumentParser(description='Run compilation performance tests')
     parser.add_argument('--settings', '-c', metavar='PATH', required=True, type=str, help='Path to the settings json file')
-    parser.add_argument('--keep-build-results', action='store_true', help='Keep build folder after tests')
     parser.add_argument('--verbose', '-v', action='store_true', help='Verbose logs')
+    parser.add_argument('--clean', action='store_true', help='Clean build directory before building')
+    parser.add_argument('--no-trace', dest='trace', action='store_false', help='Disable trace generation')
+    parser.add_argument('--no-compilation', dest='compilation', action='store_false', help='Disable compilation stats')
+    parser.add_argument('--no-linking', dest='linking', action='store_false', help='Disable linking stats')
     args = parser.parse_args()
 
     logger.setLevel(logging.DEBUG if args.verbose else logging.INFO)
+
+    options = Options(trace=args.trace, compilation=args.compilation, linking=args.linking, clean_build=args.clean)
 
     settings_dir = os.path.split(args.settings)[0]
 
@@ -339,7 +372,7 @@ def main():
         update_relative_path('build_directory')
         update_relative_path('report_root_directory')
 
-        settings = Settings(**fields, keep_build_results=args.keep_build_results)
+        settings = Settings(**fields, options=options)
 
     if 'vsinstalldir' not in os.environ:
         raise RuntimeError("Visual Studio environment isn't set up")
