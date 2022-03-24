@@ -268,7 +268,6 @@ def profile_compilation_command(compilation_commands):
     durations = []
     traces = []
 
-    logger.info('    Building PCH...')
     execute_db_command(find_db_entry(compilation_commands, 'cmake_pch.cxx.obj'))
 
     entry = find_db_entry(compilation_commands, settings.compilation_object)
