@@ -209,20 +209,3 @@ namespace coil
         // TODO implement toString
     };
 }
-
-#define EXTERN_EXPLICIT_TYPE_SERIALIZER_TEMPLATE(T) \
-    extern template struct coil::TypeSerializer<T>; \
-    extern template class coil::ExpectedBase<T, std::string>; \
-    extern template class coil::Expected<T, std::string>
-
-#define EXPLICIT_TYPE_SERIALIZER_TEMPLATE(T) \
-    template struct coil::TypeSerializer<T>; \
-    template class coil::ExpectedBase<T, std::string>; \
-    template class coil::Expected<T, std::string>
-
-EXTERN_EXPLICIT_TYPE_SERIALIZER_TEMPLATE(int);
-EXTERN_EXPLICIT_TYPE_SERIALIZER_TEMPLATE(short);
-EXTERN_EXPLICIT_TYPE_SERIALIZER_TEMPLATE(bool);
-EXTERN_EXPLICIT_TYPE_SERIALIZER_TEMPLATE(unsigned);
-EXTERN_EXPLICIT_TYPE_SERIALIZER_TEMPLATE(float);
-EXTERN_EXPLICIT_TYPE_SERIALIZER_TEMPLATE(double);

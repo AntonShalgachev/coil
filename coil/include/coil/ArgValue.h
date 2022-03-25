@@ -22,5 +22,3 @@ namespace coil
         std::vector<std::string_view> subvalues;
     };
 }
-
-extern template class std::vector<std::string_view>;

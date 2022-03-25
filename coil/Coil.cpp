@@ -205,13 +205,6 @@ namespace coil
     }
 }
 
-EXPLICIT_TYPE_SERIALIZER_TEMPLATE(int);
-EXPLICIT_TYPE_SERIALIZER_TEMPLATE(short);
-EXPLICIT_TYPE_SERIALIZER_TEMPLATE(bool);
-EXPLICIT_TYPE_SERIALIZER_TEMPLATE(unsigned);
-EXPLICIT_TYPE_SERIALIZER_TEMPLATE(float);
-EXPLICIT_TYPE_SERIALIZER_TEMPLATE(double);
-
 template std::string coil::formatString<unsigned int, char const*>(char const*, unsigned int, char const*);
 template std::string coil::formatString<unsigned int, char const*, unsigned int, char const*>(char const*, unsigned int, char const*, unsigned int, char const*);
 template std::string coil::formatString<unsigned int, char const*, unsigned int, char const*, unsigned int, char const*>(char const*, unsigned int, char const*, unsigned int, char const*, unsigned int, char const*);
@@ -227,29 +220,9 @@ template class std::vector<std::string_view>;
 
 template class std::optional<coil::AnyArgView>;
 template class coil::Expected<coil::AnyArgView, coil::NamedArgs::Error>;
-EXPLICIT_NAMED_ARGS_TEMPLATE(int);
-EXPLICIT_NAMED_ARGS_TEMPLATE(short);
-EXPLICIT_NAMED_ARGS_TEMPLATE(bool);
-EXPLICIT_NAMED_ARGS_TEMPLATE(unsigned);
-EXPLICIT_NAMED_ARGS_TEMPLATE(float);
-EXPLICIT_NAMED_ARGS_TEMPLATE(double);
-
-template auto coil::variable<int>(int* var);
-template auto coil::variable<short>(short* var);
-template auto coil::variable<bool>(bool* var);
-template auto coil::variable<unsigned>(unsigned* var);
-template auto coil::variable<float>(float* var);
-template auto coil::variable<double>(double* var);
 
 template class coil::BasicStringWrapper<std::string>;
 template struct std::hash<coil::BasicStringWrapper<std::string>>;
 // template class std::vector<coil::detail::AnyFunctor>;
 // template class std::unordered_map<coil::StringWrapper, std::vector<coil::detail::AnyFunctor>>;
 template class coil::BindingProxy<coil::Bindings>;
-
-EEXPLICIT_FUNCTOR_CALLER_TEMPLATE(int);
-EEXPLICIT_FUNCTOR_CALLER_TEMPLATE(short);
-EEXPLICIT_FUNCTOR_CALLER_TEMPLATE(bool);
-EEXPLICIT_FUNCTOR_CALLER_TEMPLATE(unsigned);
-EEXPLICIT_FUNCTOR_CALLER_TEMPLATE(float);
-EEXPLICIT_FUNCTOR_CALLER_TEMPLATE(double);

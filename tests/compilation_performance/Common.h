@@ -16,6 +16,40 @@
 #include <optional>
 #include <charconv>
 
+#if USE_COIL
+
+#include "coil/Extern.h"
+
+extern template auto coil::variable<int>(int* var);
+extern template auto coil::variable<short>(short* var);
+extern template auto coil::variable<bool>(bool* var);
+extern template auto coil::variable<unsigned>(unsigned* var);
+extern template auto coil::variable<float>(float* var);
+extern template auto coil::variable<double>(double* var);
+
+EXTERN_EXPLICIT_TYPE_SERIALIZER_TEMPLATE(int);
+EXTERN_EXPLICIT_TYPE_SERIALIZER_TEMPLATE(short);
+EXTERN_EXPLICIT_TYPE_SERIALIZER_TEMPLATE(bool);
+EXTERN_EXPLICIT_TYPE_SERIALIZER_TEMPLATE(unsigned);
+EXTERN_EXPLICIT_TYPE_SERIALIZER_TEMPLATE(float);
+EXTERN_EXPLICIT_TYPE_SERIALIZER_TEMPLATE(double);
+
+EXTERN_EXPLICIT_NAMED_ARGS_TEMPLATE(int);
+EXTERN_EXPLICIT_NAMED_ARGS_TEMPLATE(short);
+EXTERN_EXPLICIT_NAMED_ARGS_TEMPLATE(bool);
+EXTERN_EXPLICIT_NAMED_ARGS_TEMPLATE(unsigned);
+EXTERN_EXPLICIT_NAMED_ARGS_TEMPLATE(float);
+EXTERN_EXPLICIT_NAMED_ARGS_TEMPLATE(double);
+
+EXTERN_EXPLICIT_FUNCTOR_CALLER_TEMPLATE(int);
+EXTERN_EXPLICIT_FUNCTOR_CALLER_TEMPLATE(short);
+EXTERN_EXPLICIT_FUNCTOR_CALLER_TEMPLATE(bool);
+EXTERN_EXPLICIT_FUNCTOR_CALLER_TEMPLATE(unsigned);
+EXTERN_EXPLICIT_FUNCTOR_CALLER_TEMPLATE(float);
+EXTERN_EXPLICIT_FUNCTOR_CALLER_TEMPLATE(double);
+
+#endif
+
 #if USE_MANUAL
 
 class DumbBindings

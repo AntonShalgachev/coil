@@ -1,5 +1,37 @@
 #include "Common.h"
 
+#if USE_COIL
+
+template auto coil::variable<int>(int* var);
+template auto coil::variable<short>(short* var);
+template auto coil::variable<bool>(bool* var);
+template auto coil::variable<unsigned>(unsigned* var);
+template auto coil::variable<float>(float* var);
+template auto coil::variable<double>(double* var);
+
+EXPLICIT_TYPE_SERIALIZER_TEMPLATE(int);
+EXPLICIT_TYPE_SERIALIZER_TEMPLATE(short);
+EXPLICIT_TYPE_SERIALIZER_TEMPLATE(bool);
+EXPLICIT_TYPE_SERIALIZER_TEMPLATE(unsigned);
+EXPLICIT_TYPE_SERIALIZER_TEMPLATE(float);
+EXPLICIT_TYPE_SERIALIZER_TEMPLATE(double);
+
+EXPLICIT_NAMED_ARGS_TEMPLATE(int);
+EXPLICIT_NAMED_ARGS_TEMPLATE(short);
+EXPLICIT_NAMED_ARGS_TEMPLATE(bool);
+EXPLICIT_NAMED_ARGS_TEMPLATE(unsigned);
+EXPLICIT_NAMED_ARGS_TEMPLATE(float);
+EXPLICIT_NAMED_ARGS_TEMPLATE(double);
+
+EXPLICIT_FUNCTOR_CALLER_TEMPLATE(int);
+EXPLICIT_FUNCTOR_CALLER_TEMPLATE(short);
+EXPLICIT_FUNCTOR_CALLER_TEMPLATE(bool);
+EXPLICIT_FUNCTOR_CALLER_TEMPLATE(unsigned);
+EXPLICIT_FUNCTOR_CALLER_TEMPLATE(float);
+EXPLICIT_FUNCTOR_CALLER_TEMPLATE(double);
+
+#endif
+
 #ifdef USE_MANUAL
 
 #include <cctype>

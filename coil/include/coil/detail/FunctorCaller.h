@@ -64,16 +64,3 @@ namespace coil::detail
         invoke<Func, NonUserIndices...>(func, context, TypeSerializer<std::decay_t<UserArgs>>::fromString(context.input.arguments[UserIndices])...);
     }
 }
-
-#define EXTERN_EEXPLICIT_FUNCTOR_CALLER_TEMPLATE(T) \
-    extern template void coil::detail::reportError<T>(coil::detail::CallContext& context, coil::Expected<T, std::string> const& result)
-
-#define EEXPLICIT_FUNCTOR_CALLER_TEMPLATE(T) \
-    template void coil::detail::reportError<T>(coil::detail::CallContext& context, coil::Expected<T, std::string> const& result)
-
-EXTERN_EEXPLICIT_FUNCTOR_CALLER_TEMPLATE(int);
-EXTERN_EEXPLICIT_FUNCTOR_CALLER_TEMPLATE(short);
-EXTERN_EEXPLICIT_FUNCTOR_CALLER_TEMPLATE(bool);
-EXTERN_EEXPLICIT_FUNCTOR_CALLER_TEMPLATE(unsigned);
-EXTERN_EEXPLICIT_FUNCTOR_CALLER_TEMPLATE(float);
-EXTERN_EEXPLICIT_FUNCTOR_CALLER_TEMPLATE(double);
