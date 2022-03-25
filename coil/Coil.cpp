@@ -226,3 +226,9 @@ template struct std::hash<coil::BasicStringWrapper<std::string>>;
 // template class std::vector<coil::detail::AnyFunctor>;
 // template class std::unordered_map<coil::StringWrapper, std::vector<coil::detail::AnyFunctor>>;
 template class coil::BindingProxy<coil::Bindings>;
+
+template class std::basic_string_view<char>;
+template class std::basic_string<char>;
+
+template class coil::Unexpected<std::string>;
+template coil::Unexpected<std::string> coil::makeUnexpected(std::string value);
