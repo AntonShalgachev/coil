@@ -11,13 +11,19 @@ extern template class coil::Expected<coil::AnyArgView, coil::NamedArgs::Error>;
 extern template class std::vector<coil::ArgValue>;
 extern template class std::vector<std::pair<std::string_view, coil::ArgValue>>;
 
+extern template class std::vector<std::string_view>;
+
 extern template class coil::BasicStringWrapper<std::string>;
 extern template struct std::hash<coil::BasicStringWrapper<std::string>>;
 // extern template class std::vector<coil::detail::AnyFunctor>;
 // extern template class std::unordered_map<coil::StringWrapper, std::vector<coil::detail::AnyFunctor>>;
 extern template class coil::BindingProxy<coil::Bindings>;
 
-extern template class std::vector<std::string_view>;
+extern template class std::basic_string_view<char>;
+extern template class std::basic_string<char>;
+
+extern template class coil::Unexpected<std::string>;
+extern template coil::Unexpected<std::string> coil::makeUnexpected(std::string value);
 
 #define COIL_EXTERN_TEMPLATE(T) \
     extern template auto coil::variable<T>(T* var); \
