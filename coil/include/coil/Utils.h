@@ -19,8 +19,3 @@ namespace coil
         return std::string(buf.begin(), buf.begin() + size - 1);
     }
 }
-
-extern template std::string coil::formatString<unsigned int, char const*>(char const*, unsigned int, char const*);
-extern template std::string coil::formatString<unsigned int, char const*, unsigned int, char const*>(char const*, unsigned int, char const*, unsigned int, char const*);
-extern template std::string coil::formatString<unsigned int, char const*, unsigned int, char const*, unsigned int, char const*>(char const*, unsigned int, char const*, unsigned int, char const*, unsigned int, char const*);
-extern template std::string coil::formatString<char const*>(char const*, char const*);

@@ -27,6 +27,8 @@ set(ALL_FILES
     "include/coil/Property.h"
     "include/coil/ArgValue.h"
     "include/coil/Overloaded.h"
+    
+    "include/coil/Extern.h"
 
     "Coil.cpp"
 )

@@ -119,26 +119,3 @@ namespace coil
         detail::CallContext& m_context;
     };
 }
-
-#define EXTERN_EXPLICIT_NAMED_ARGS_TEMPLATE(T) \
-    extern template class std::optional<T>; \
-    extern template class coil::ExpectedBase<T, coil::NamedArgs::Error>; \
-    extern template class coil::Expected<T, coil::NamedArgs::Error>; \
-    extern template coil::Expected<T, coil::NamedArgs::Error> coil::NamedArgs::get<T>(std::string_view key) const; \
-    extern template std::optional<T> coil::NamedArgs::getOrReport(std::string_view key, coil::NamedArgs::ArgType argType, std::optional<T> defaultValue) const
-
-#define EXPLICIT_NAMED_ARGS_TEMPLATE(T) \
-    template class std::optional<T>; \
-    template class coil::ExpectedBase<T, coil::NamedArgs::Error>; \
-    template class coil::Expected<T, coil::NamedArgs::Error>; \
-    template coil::Expected<T, coil::NamedArgs::Error> coil::NamedArgs::get<T>(std::string_view key) const; \
-    template std::optional<T> coil::NamedArgs::getOrReport(std::string_view key, coil::NamedArgs::ArgType argType, std::optional<T> defaultValue) const
-
-extern template class std::optional<coil::AnyArgView>;
-extern template class coil::Expected<coil::AnyArgView, coil::NamedArgs::Error>;
-EXTERN_EXPLICIT_NAMED_ARGS_TEMPLATE(int);
-EXTERN_EXPLICIT_NAMED_ARGS_TEMPLATE(short);
-EXTERN_EXPLICIT_NAMED_ARGS_TEMPLATE(bool);
-EXTERN_EXPLICIT_NAMED_ARGS_TEMPLATE(unsigned);
-EXTERN_EXPLICIT_NAMED_ARGS_TEMPLATE(float);
-EXTERN_EXPLICIT_NAMED_ARGS_TEMPLATE(double);

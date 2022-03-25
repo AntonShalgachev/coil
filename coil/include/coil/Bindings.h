@@ -100,9 +100,3 @@ namespace coil
         std::string_view m_name;
     };
 }
-
-extern template class coil::BasicStringWrapper<std::string>;
-extern template struct std::hash<coil::BasicStringWrapper<std::string>>;
-// extern template class std::vector<coil::detail::AnyFunctor>;
-// extern template class std::unordered_map<coil::StringWrapper, std::vector<coil::detail::AnyFunctor>>;
-extern template class coil::BindingProxy<coil::Bindings>;

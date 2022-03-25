@@ -37,6 +37,3 @@ namespace coil
         }
     };
 }
-
-extern template class std::vector<coil::ArgValue>;
-extern template class std::vector<std::pair<std::string_view, coil::ArgValue>>;
