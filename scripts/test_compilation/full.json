@@ -3,7 +3,7 @@
     "bindings_options": ["none", "manual", "coil"],
     "unity_options": [false, true],
 
-    "count": 1,
+    "count": 10,
 
     "cmake_root": "../..",
     "build_directory": "build",
