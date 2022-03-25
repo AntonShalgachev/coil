@@ -16,7 +16,7 @@
 namespace coil
 {
     template<typename T>
-    static Unexpected<std::string> makeSerializationError(ArgValue const& input, std::string_view details = {})
+    Unexpected<std::string> makeSerializationError(ArgValue const& input, std::string_view details = {})
     {
         std::string_view typeName = TypeName<T>::name();
 
@@ -27,7 +27,7 @@ namespace coil
     }
 
     template<typename T>
-    static Unexpected<std::string> makeSerializationError(ArgValue const& input, std::size_t expectedSubvalues)
+    Unexpected<std::string> makeSerializationError(ArgValue const& input, std::size_t expectedSubvalues)
     {
         return makeSerializationError<T>(input, formatString("Expected %d subvalues, got %d", expectedSubvalues, input.subvalues.size()));
     }
