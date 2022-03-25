@@ -36,6 +36,7 @@ extern template coil::Unexpected<std::string> coil::makeUnexpected(std::string v
     \
     extern template void coil::detail::reportError<T>(coil::detail::CallContext& context, coil::Expected<T, std::string> const& result); \
     \
+    extern template coil::Unexpected<std::string> coil::makeSerializationError<T>(coil::ArgValue const& input, std::string_view details); \
     extern template struct coil::TypeSerializer<T>; \
     extern template class coil::ExpectedBase<T, std::string>; \
     extern template class coil::Expected<T, std::string>
@@ -51,6 +52,7 @@ extern template coil::Unexpected<std::string> coil::makeUnexpected(std::string v
     \
     template void coil::detail::reportError<T>(coil::detail::CallContext& context, coil::Expected<T, std::string> const& result); \
     \
+    template coil::Unexpected<std::string> coil::makeSerializationError<T>(coil::ArgValue const& input, std::string_view details); \
     template struct coil::TypeSerializer<T>; \
     template class coil::ExpectedBase<T, std::string>; \
     template class coil::Expected<T, std::string>
