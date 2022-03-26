@@ -24,6 +24,12 @@ extern template class std::basic_string<char>;
 
 extern template class coil::Unexpected<std::string>;
 extern template coil::Unexpected<std::string> coil::makeUnexpected(std::string value);
+extern template coil::Unexpected<std::string>&& std::move<coil::Unexpected<std::string>&>(coil::Unexpected<std::string>&) noexcept;
+
+extern template coil::detail::AnyStorageBase*&& std::move<coil::detail::AnyStorageBase*&>(coil::detail::AnyStorageBase*&) noexcept;
+extern template void std::swap<coil::detail::AnyStorageBase*, 0>(coil::detail::AnyStorageBase*&, coil::detail::AnyStorageBase*&) noexcept;
+
+extern template std::string&& std::forward<std::string>(std::string&) noexcept;
 
 #define COIL_EXTERN_TEMPLATE(T) \
     extern template auto coil::variable<T>(T* var); \
@@ -39,7 +45,10 @@ extern template coil::Unexpected<std::string> coil::makeUnexpected(std::string v
     extern template coil::Unexpected<std::string> coil::makeSerializationError<T>(coil::ArgValue const& input, std::string_view details); \
     extern template struct coil::TypeSerializer<T>; \
     extern template class coil::ExpectedBase<T, std::string>; \
-    extern template class coil::Expected<T, std::string>
+    extern template class coil::Expected<T, std::string>; \
+    extern template coil::ExpectedBase<bool, std::string>::ExpectedBase(coil::Unexpected<std::string>); \
+    extern template coil::Expected<T, std::string>&& std::move<coil::Expected<T, std::string>&>(coil::Expected<T, std::string>&) noexcept; \
+    extern template T&& std::move<T&>(T&) noexcept
 
 #define COIL_TEMPLATE(T) \
     template auto coil::variable<T>(T* var); \
@@ -55,4 +64,7 @@ extern template coil::Unexpected<std::string> coil::makeUnexpected(std::string v
     template coil::Unexpected<std::string> coil::makeSerializationError<T>(coil::ArgValue const& input, std::string_view details); \
     template struct coil::TypeSerializer<T>; \
     template class coil::ExpectedBase<T, std::string>; \
-    template class coil::Expected<T, std::string>
+    template class coil::Expected<T, std::string>; \
+    template coil::ExpectedBase<bool, std::string>::ExpectedBase(coil::Unexpected<std::string>); \
+    template coil::Expected<T, std::string>&& std::move<coil::Expected<T, std::string>&>(coil::Expected<T, std::string>&) noexcept; \
+    template T&& std::move<T&>(T&) noexcept
