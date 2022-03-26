@@ -10,12 +10,12 @@
 namespace coil::detail
 {
     template<std::size_t i>
-    inline Context createContext(CallContext& context);
+    Context createContext(CallContext& context);
     template<>
-    inline Context createContext<0>(CallContext& context)
-    {
-        return Context{ context };
-    }
+    Context createContext<0>(CallContext& context);
+
+    void reportExceptionError(CallContext& context);
+    void reportExceptionError(CallContext& context, std::exception const& ex);
 
     template<typename T>
     void reportError(CallContext& context, Expected<T, std::string> const& result)
@@ -50,11 +50,11 @@ namespace coil::detail
         }
         catch (std::exception const& ex)
         {
-            context.reportError(formatString("Exception caught during execution: %s", ex.what()));
+            reportExceptionError(context, ex);
         }
         catch (...)
         {
-            context.reportError("Exception caught during execution");
+            reportExceptionError(context);
         }
     }
 

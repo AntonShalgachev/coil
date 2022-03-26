@@ -10,7 +10,8 @@ namespace coil::detail
     class AnyStorageBase
     {
     public:
-        virtual ~AnyStorageBase() = default;
+        AnyStorageBase();
+        virtual ~AnyStorageBase();
         virtual void invoke(CallContext& context) = 0;
     };
 

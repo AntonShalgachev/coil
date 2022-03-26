@@ -5,6 +5,42 @@
 
 namespace coil
 {
+    namespace detail
+    {
+        AnyStorageBase::AnyStorageBase() = default;
+        AnyStorageBase::~AnyStorageBase() = default;
+
+        template<>
+        Context createContext<0>(CallContext& context)
+        {
+            return Context{ context };
+        }
+
+        CallContext::CallContext(ExecutionInput const& input) : input(input) {}
+
+        std::ostream& CallContext::out() { return result.output; }
+
+        void CallContext::reportError(std::string error)
+        {
+            result.errors.push_back(std::move(error));
+        }
+
+        bool CallContext::hasErrors() const
+        {
+            return !result.errors.empty();
+        }
+
+        void reportExceptionError(CallContext& context)
+        {
+            context.reportError("Exception caught during execution");
+        }
+
+        void reportExceptionError(CallContext& context, std::exception const& ex)
+        {
+            context.reportError(formatString("Exception caught during execution: %s", ex.what()));
+        }
+    }
+
     BindingProxy<Bindings> Bindings::operator[](std::string_view name)
     {
         return BindingProxy<Bindings>{ *this, { name } };
@@ -93,22 +129,6 @@ namespace coil
     }
 
     NamedArgs const& Context::namedArgs() { return m_namedArgs; }
-
-    //////////////////////////////////////
-
-    detail::CallContext::CallContext(ExecutionInput const& input) : input(input) {}
-
-    std::ostream& detail::CallContext::out() { return result.output; }
-
-    void detail::CallContext::reportError(std::string error)
-    {
-        result.errors.push_back(std::move(error));
-    }
-
-    bool detail::CallContext::hasErrors() const
-    {
-        return !result.errors.empty();
-    }
 
     //////////////////////////////////////
 
@@ -232,3 +252,9 @@ template class std::basic_string<char>;
 
 template class coil::Unexpected<std::string>;
 template coil::Unexpected<std::string> coil::makeUnexpected(std::string value);
+template coil::Unexpected<std::string>&& std::move<coil::Unexpected<std::string>&>(coil::Unexpected<std::string>&) noexcept;
+
+template coil::detail::AnyStorageBase*&& std::move<coil::detail::AnyStorageBase*&>(coil::detail::AnyStorageBase*&) noexcept;
+template void std::swap<coil::detail::AnyStorageBase*, 0>(coil::detail::AnyStorageBase*&, coil::detail::AnyStorageBase*&) noexcept;
+
+template std::string&& std::forward<std::string>(std::string&) noexcept;
