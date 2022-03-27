@@ -9,10 +9,8 @@ namespace coil
 {
     struct ExecutionResult
     {
-        operator bool() const
-        {
-            return errors.empty();
-        }
+        operator bool() const;
+        void setReturnValue(std::string value);
 
         std::vector<std::string> errors;
         std::optional<std::string> returnValue;

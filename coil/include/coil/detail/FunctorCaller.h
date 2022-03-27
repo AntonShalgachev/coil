@@ -45,7 +45,7 @@ namespace coil::detail
             {
                 auto&& returnValue = func(createContext<NonUserIndices>(context)..., *std::move(expectedArgs)...);
                 if (!context.hasErrors())
-                    context.result.returnValue = TypeSerializer<std::decay_t<R>>::toString(returnValue);
+                    context.result.setReturnValue(TypeSerializer<R>::toString(returnValue));
             }
         }
         catch (std::exception const& ex)
@@ -61,6 +61,6 @@ namespace coil::detail
     template<typename Func, std::size_t... NonUserIndices, typename... UserArgs, std::size_t... UserIndices>
     void unpackAndInvoke(Func& func, CallContext& context, std::index_sequence<NonUserIndices...>, Types<UserArgs...>, std::index_sequence<UserIndices...>)
     {
-        invoke<Func, NonUserIndices...>(func, context, TypeSerializer<std::decay_t<UserArgs>>::fromString(context.input.arguments[UserIndices])...);
+        invoke<Func, NonUserIndices...>(func, context, TypeSerializer<UserArgs>::fromString(context.input.arguments[UserIndices])...);
     }
 }
