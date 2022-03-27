@@ -27,7 +27,7 @@ extern template coil::Unexpected<std::string> coil::makeUnexpected(std::string v
 extern template coil::Unexpected<std::string>&& std::move<coil::Unexpected<std::string>&>(coil::Unexpected<std::string>&) noexcept;
 
 extern template coil::detail::AnyStorageBase*&& std::move<coil::detail::AnyStorageBase*&>(coil::detail::AnyStorageBase*&) noexcept;
-extern template void std::swap<coil::detail::AnyStorageBase*, 0>(coil::detail::AnyStorageBase*&, coil::detail::AnyStorageBase*&) noexcept;
+extern template void std::swap<coil::detail::AnyStorageBase*>(coil::detail::AnyStorageBase*&, coil::detail::AnyStorageBase*&) noexcept;
 
 extern template std::string&& std::forward<std::string>(std::string&) noexcept;
 

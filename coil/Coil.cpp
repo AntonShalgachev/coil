@@ -255,6 +255,6 @@ template coil::Unexpected<std::string> coil::makeUnexpected(std::string value);
 template coil::Unexpected<std::string>&& std::move<coil::Unexpected<std::string>&>(coil::Unexpected<std::string>&) noexcept;
 
 template coil::detail::AnyStorageBase*&& std::move<coil::detail::AnyStorageBase*&>(coil::detail::AnyStorageBase*&) noexcept;
-template void std::swap<coil::detail::AnyStorageBase*, 0>(coil::detail::AnyStorageBase*&, coil::detail::AnyStorageBase*&) noexcept;
+template void std::swap<coil::detail::AnyStorageBase*>(coil::detail::AnyStorageBase*&, coil::detail::AnyStorageBase*&) noexcept;
 
 template std::string&& std::forward<std::string>(std::string&) noexcept;
