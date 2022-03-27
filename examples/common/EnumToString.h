@@ -37,7 +37,7 @@ namespace coil
             return makeSerializationError<E>(input, formatString("Possible values are [%s]", names.c_str()));
         }
 
-        static auto toString(E const& value)
+        static std::string toString(E const& value)
         {
             // not optimal for non-flags enum types, since magic_enum::flags::enum_name returns std::string,
             // but other solutions are possible (e.g. using different specialization for non-flag enum types)

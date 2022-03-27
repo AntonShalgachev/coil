@@ -14,9 +14,9 @@ namespace coil
             return E{};
         }
 
-        static std::string_view toString(E value)
+        static std::string toString(E const& value)
         {
-            return "";
+            return {};
         }
     };
 }
