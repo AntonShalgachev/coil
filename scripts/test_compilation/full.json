@@ -4,7 +4,7 @@
     "unity_options": [false, true],
 
     "count": 10,
-    "full_build_count": 3,
+    "full_build_count": 4,
 
     "cmake_root": "../..",
     "build_directory": "build",
