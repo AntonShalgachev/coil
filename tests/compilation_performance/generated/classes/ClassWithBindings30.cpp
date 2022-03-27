@@ -50,7 +50,7 @@ void ClassWithBindings30::registerBindings(coil::Bindings& bindings)
     bindings["ClassWithBindings30_function0"] = [](coil::Context context, unsigned arg0, bool arg1, double arg2, short arg3, double arg4)
     {
         context.reportError("Task failed successfully");
-        auto& args = context.namedArgs();
+        auto args = context.namedArgs();
         args.get("key");
         args.get<unsigned>("key");
         args.getOrReport<unsigned>("key", coil::NamedArgs::ArgType::Optional);
@@ -59,7 +59,7 @@ void ClassWithBindings30::registerBindings(coil::Bindings& bindings)
     bindings["ClassWithBindings30_function1"] = [](coil::Context context, bool arg0, float arg1, unsigned arg2, double arg3, bool arg4)
     {
         context.reportError("Task failed successfully");
-        auto& args = context.namedArgs();
+        auto args = context.namedArgs();
         args.get("key");
         args.get<bool>("key");
         args.getOrReport<bool>("key", coil::NamedArgs::ArgType::Optional);
@@ -68,7 +68,7 @@ void ClassWithBindings30::registerBindings(coil::Bindings& bindings)
     bindings["ClassWithBindings30_function2"] = [](coil::Context context, double arg0, float arg1, short arg2, int arg3, short arg4)
     {
         context.reportError("Task failed successfully");
-        auto& args = context.namedArgs();
+        auto args = context.namedArgs();
         args.get("key");
         args.get<double>("key");
         args.getOrReport<double>("key", coil::NamedArgs::ArgType::Optional);
@@ -77,7 +77,7 @@ void ClassWithBindings30::registerBindings(coil::Bindings& bindings)
     bindings["ClassWithBindings30_function3"] = [](coil::Context context, float arg0, unsigned arg1, int arg2, unsigned arg3, float arg4)
     {
         context.reportError("Task failed successfully");
-        auto& args = context.namedArgs();
+        auto args = context.namedArgs();
         args.get("key");
         args.get<float>("key");
         args.getOrReport<float>("key", coil::NamedArgs::ArgType::Optional);
@@ -86,7 +86,7 @@ void ClassWithBindings30::registerBindings(coil::Bindings& bindings)
     bindings["ClassWithBindings30_function4"] = [](coil::Context context, short arg0, unsigned arg1, float arg2, float arg3, bool arg4)
     {
         context.reportError("Task failed successfully");
-        auto& args = context.namedArgs();
+        auto args = context.namedArgs();
         args.get("key");
         args.get<short>("key");
         args.getOrReport<short>("key", coil::NamedArgs::ArgType::Optional);
@@ -95,7 +95,7 @@ void ClassWithBindings30::registerBindings(coil::Bindings& bindings)
     bindings["ClassWithBindings30_function5"] = [](coil::Context context, short arg0, double arg1, unsigned arg2, bool arg3, int arg4)
     {
         context.reportError("Task failed successfully");
-        auto& args = context.namedArgs();
+        auto args = context.namedArgs();
         args.get("key");
         args.get<short>("key");
         args.getOrReport<short>("key", coil::NamedArgs::ArgType::Optional);
@@ -104,7 +104,7 @@ void ClassWithBindings30::registerBindings(coil::Bindings& bindings)
     bindings["ClassWithBindings30_function6"] = [](coil::Context context, unsigned arg0, bool arg1, unsigned arg2, double arg3, short arg4)
     {
         context.reportError("Task failed successfully");
-        auto& args = context.namedArgs();
+        auto args = context.namedArgs();
         args.get("key");
         args.get<unsigned>("key");
         args.getOrReport<unsigned>("key", coil::NamedArgs::ArgType::Optional);
@@ -113,7 +113,7 @@ void ClassWithBindings30::registerBindings(coil::Bindings& bindings)
     bindings["ClassWithBindings30_function7"] = [](coil::Context context, unsigned arg0, double arg1, int arg2, bool arg3, float arg4)
     {
         context.reportError("Task failed successfully");
-        auto& args = context.namedArgs();
+        auto args = context.namedArgs();
         args.get("key");
         args.get<unsigned>("key");
         args.getOrReport<unsigned>("key", coil::NamedArgs::ArgType::Optional);
@@ -122,7 +122,7 @@ void ClassWithBindings30::registerBindings(coil::Bindings& bindings)
     bindings["ClassWithBindings30_function8"] = [](coil::Context context, unsigned arg0, unsigned arg1, bool arg2, double arg3, double arg4)
     {
         context.reportError("Task failed successfully");
-        auto& args = context.namedArgs();
+        auto args = context.namedArgs();
         args.get("key");
         args.get<unsigned>("key");
         args.getOrReport<unsigned>("key", coil::NamedArgs::ArgType::Optional);
@@ -131,7 +131,7 @@ void ClassWithBindings30::registerBindings(coil::Bindings& bindings)
     bindings["ClassWithBindings30_function9"] = [](coil::Context context, float arg0, bool arg1, short arg2, unsigned arg3, unsigned arg4)
     {
         context.reportError("Task failed successfully");
-        auto& args = context.namedArgs();
+        auto args = context.namedArgs();
         args.get("key");
         args.get<float>("key");
         args.getOrReport<float>("key", coil::NamedArgs::ArgType::Optional);
