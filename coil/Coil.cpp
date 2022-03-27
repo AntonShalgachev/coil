@@ -272,11 +272,6 @@ namespace coil
     }
 }
 
-template std::string coil::formatString<unsigned int, char const*>(char const*, unsigned int, char const*);
-template std::string coil::formatString<unsigned int, char const*, unsigned int, char const*>(char const*, unsigned int, char const*, unsigned int, char const*);
-template std::string coil::formatString<unsigned int, char const*, unsigned int, char const*, unsigned int, char const*>(char const*, unsigned int, char const*, unsigned int, char const*, unsigned int, char const*);
-template std::string coil::formatString<char const*>(char const*, char const*);
-
 template class std::vector<std::string>;
 template class std::optional<std::string>;
 
@@ -290,8 +285,7 @@ template class coil::Expected<coil::AnyArgView, coil::NamedArgs::Error>;
 
 template class coil::BasicStringWrapper<std::string>;
 template struct std::hash<coil::BasicStringWrapper<std::string>>;
-// template class std::vector<coil::detail::AnyFunctor>;
-// template class std::unordered_map<coil::StringWrapper, std::vector<coil::detail::AnyFunctor>>;
+
 template class coil::BindingProxy<coil::Bindings>;
 
 template class std::basic_string_view<char>;

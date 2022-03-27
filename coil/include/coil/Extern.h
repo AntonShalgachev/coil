@@ -1,10 +1,5 @@
 #pragma once
 
-extern template std::string coil::formatString<unsigned int, char const*>(char const*, unsigned int, char const*);
-extern template std::string coil::formatString<unsigned int, char const*, unsigned int, char const*>(char const*, unsigned int, char const*, unsigned int, char const*);
-extern template std::string coil::formatString<unsigned int, char const*, unsigned int, char const*, unsigned int, char const*>(char const*, unsigned int, char const*, unsigned int, char const*, unsigned int, char const*);
-extern template std::string coil::formatString<char const*>(char const*, char const*);
-
 extern template class std::optional<coil::AnyArgView>;
 extern template class coil::Expected<coil::AnyArgView, coil::NamedArgs::Error>;
 
@@ -15,8 +10,7 @@ extern template class std::vector<std::string_view>;
 
 extern template class coil::BasicStringWrapper<std::string>;
 extern template struct std::hash<coil::BasicStringWrapper<std::string>>;
-// extern template class std::vector<coil::detail::AnyFunctor>;
-// extern template class std::unordered_map<coil::StringWrapper, std::vector<coil::detail::AnyFunctor>>;
+
 extern template class coil::BindingProxy<coil::Bindings>;
 
 extern template class std::basic_string_view<char>;
