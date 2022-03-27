@@ -73,18 +73,7 @@ namespace coil
         Expected<AnyArgView, Error> get(std::string_view key) const;
 
         template<typename T>
-        Expected<T, Error> get(std::string_view key) const
-        {
-            Expected<AnyArgView, Error> anyArg = get(key);
-            if (!anyArg)
-                return makeUnexpected(std::move(anyArg).error());
-
-            Expected<T, std::string> value = anyArg->get<T>();
-            if (!value)
-                return makeUnexpected(Error(Error::Type::TypeMismatch, std::move(value).error()));
-
-            return *std::move(value);
-        }
+        Expected<T, Error> get(std::string_view key) const;
 
         enum class ArgType
         {
@@ -95,17 +84,7 @@ namespace coil
         std::optional<AnyArgView> getOrReport(std::string_view key, ArgType argType = ArgType::Optional) const;
 
         template<typename T>
-        std::optional<T> getOrReport(std::string_view key, ArgType argType = ArgType::Optional, std::optional<T> defaultValue = {}) const
-        {
-            if (Expected<T, Error> value = get<T>(key))
-                return *value;
-            else if (argType == ArgType::Optional && value.error().type == coil::NamedArgs::Error::Type::MissingKey)
-                return defaultValue;
-            else
-                m_context.reportError(std::move(value).error().message);
-
-            return {};
-        }
+        std::optional<T> getOrReport(std::string_view key, ArgType argType = ArgType::Optional, std::optional<T> defaultValue = {}) const;
 
         std::size_t size() const;
 
@@ -118,4 +97,31 @@ namespace coil
     private:
         detail::CallContext& m_context;
     };
+
+    template<typename T>
+    Expected<T, NamedArgs::Error> NamedArgs::get(std::string_view key) const
+    {
+        Expected<AnyArgView, Error> anyArg = get(key);
+        if (!anyArg)
+            return makeUnexpected(std::move(anyArg).error());
+
+        Expected<T, std::string> value = anyArg->get<T>();
+        if (!value)
+            return makeUnexpected(Error(Error::Type::TypeMismatch, std::move(value).error()));
+
+        return *std::move(value);
+    }
+
+    template<typename T>
+    std::optional<T> NamedArgs::getOrReport(std::string_view key, ArgType argType, std::optional<T> defaultValue) const
+    {
+        if (Expected<T, Error> value = get<T>(key))
+            return *value;
+        else if (argType == ArgType::Optional && value.error().type == Error::Type::MissingKey)
+            return defaultValue;
+        else
+            m_context.reportError(std::move(value).error().message);
+
+        return {};
+    }
 }

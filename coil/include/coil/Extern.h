@@ -32,7 +32,7 @@ extern template void std::swap<coil::detail::AnyStorageBase*>(coil::detail::AnyS
 extern template std::string&& std::forward<std::string>(std::string&) noexcept;
 
 #define COIL_EXTERN_TEMPLATE(T) \
-    extern template auto coil::variable<T>(T* var); \
+    extern template std::vector<coil::detail::AnyFunctor> coil::variable<T>(T* var); \
     \
     extern template class std::optional<T>; \
     extern template class coil::ExpectedBase<T, coil::NamedArgs::Error>; \
@@ -43,15 +43,19 @@ extern template std::string&& std::forward<std::string>(std::string&) noexcept;
     extern template void coil::detail::reportError<T>(coil::detail::CallContext& context, coil::Expected<T, std::string> const& result); \
     \
     extern template coil::Unexpected<std::string> coil::makeSerializationError<T>(coil::ArgValue const& input, std::string_view details); \
-    extern template struct coil::TypeSerializer<T>; \
     extern template class coil::ExpectedBase<T, std::string>; \
     extern template class coil::Expected<T, std::string>; \
     extern template coil::ExpectedBase<bool, std::string>::ExpectedBase(coil::Unexpected<std::string>); \
     extern template coil::Expected<T, std::string>&& std::move<coil::Expected<T, std::string>&>(coil::Expected<T, std::string>&) noexcept; \
     extern template T&& std::move<T&>(T&) noexcept
 
+#define COIL_TYPE_SERIALIZER_EXTERN_TEMPLATE(T) \
+    extern template struct coil::TypeSerializer<T>; \
+    extern template coil::Expected<T, std::string> coil::TypeSerializer<T>::fromString(coil::ArgValue const& input); \
+    extern template std::string coil::TypeSerializer<T>::toString(T const& value)
+
 #define COIL_TEMPLATE(T) \
-    template auto coil::variable<T>(T* var); \
+    template std::vector<coil::detail::AnyFunctor> coil::variable<T>(T* var); \
     \
     template class std::optional<T>; \
     template class coil::ExpectedBase<T, coil::NamedArgs::Error>; \
@@ -62,9 +66,13 @@ extern template std::string&& std::forward<std::string>(std::string&) noexcept;
     template void coil::detail::reportError<T>(coil::detail::CallContext& context, coil::Expected<T, std::string> const& result); \
     \
     template coil::Unexpected<std::string> coil::makeSerializationError<T>(coil::ArgValue const& input, std::string_view details); \
-    template struct coil::TypeSerializer<T>; \
     template class coil::ExpectedBase<T, std::string>; \
     template class coil::Expected<T, std::string>; \
     template coil::ExpectedBase<bool, std::string>::ExpectedBase(coil::Unexpected<std::string>); \
     template coil::Expected<T, std::string>&& std::move<coil::Expected<T, std::string>&>(coil::Expected<T, std::string>&) noexcept; \
     template T&& std::move<T&>(T&) noexcept
+
+#define COIL_TYPE_SERIALIZER_TEMPLATE(T) \
+    template struct coil::TypeSerializer<T>; \
+    template coil::Expected<T, std::string> coil::TypeSerializer<T>::fromString(coil::ArgValue const& input); \
+    template std::string coil::TypeSerializer<T>::toString(T const& value)

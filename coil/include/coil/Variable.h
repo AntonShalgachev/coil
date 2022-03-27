@@ -7,7 +7,7 @@ namespace coil
     // TODO support const variables
 
     template<typename T>
-    auto variable(T* var)
+    std::vector<detail::AnyFunctor> variable(T* var)
     {
         auto get = [var]() -> T const& { return *var; };
         auto set = [var](T val) -> T const&

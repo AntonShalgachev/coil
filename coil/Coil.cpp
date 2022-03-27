@@ -223,6 +223,53 @@ namespace coil
     {
         return !(*this == rhs);
     }
+
+    //////////////////////////////////////
+
+    coil::Expected<bool, std::string> coil::TypeSerializer<bool>::fromString(ArgValue const& input)
+    {
+        auto equalCaseInsensitive = [](std::string_view a, std::string_view b)
+        {
+            std::size_t const length = a.length();
+            if (b.length() != length)
+                return false;
+
+            for (std::size_t i = 0; i < a.length(); i++)
+                if (std::tolower(a[i]) != std::tolower(b[i]))
+                    return false;
+
+            return true;
+        };
+
+        if (input.value == "1")
+            return true;
+        if (input.value == "0")
+            return false;
+
+        if (equalCaseInsensitive(input.value, "true"))
+            return true;
+        if (equalCaseInsensitive(input.value, "false"))
+            return false;
+
+        return makeSerializationError<bool>(input);
+    }
+
+    std::string coil::TypeSerializer<bool>::toString(bool const& value)
+    {
+        return value ? "true" : "false";
+    }
+
+    //////////////////////////////////////
+
+    ExecutionResult::operator bool() const
+    {
+        return errors.empty();
+    }
+
+    void ExecutionResult::setReturnValue(std::string value)
+    {
+        returnValue = std::move(value);
+    }
 }
 
 template std::string coil::formatString<unsigned int, char const*>(char const*, unsigned int, char const*);
