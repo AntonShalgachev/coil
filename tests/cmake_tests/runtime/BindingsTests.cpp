@@ -639,7 +639,7 @@ TEST(BindingsTests, TestNamedArgsGet)
 {
     coil::Bindings bindings;
     bindings["func"] = [](coil::Context context) {
-        coil::NamedArgs const& namedArgs = context.namedArgs();
+        coil::NamedArgs namedArgs = context.namedArgs();
 
         auto e1 = namedArgs.get<int>("non_existent_arg");
         ASSERT_FALSE(e1);
@@ -663,7 +663,7 @@ TEST(BindingsTests, TestNamedArgsGetOrReport)
 {
     coil::Bindings bindings;
     bindings["func"] = [](coil::Context context) {
-        coil::NamedArgs const& namedArgs = context.namedArgs();
+        coil::NamedArgs namedArgs = context.namedArgs();
 
         {
             auto o = namedArgs.getOrReport<int>("arg2", coil::NamedArgs::ArgType::Optional);
