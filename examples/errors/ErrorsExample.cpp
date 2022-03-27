@@ -43,7 +43,7 @@ namespace
 
     void testNamedArgs(coil::Context context)
     {
-        auto& namedArgs = context.namedArgs();
+        auto namedArgs = context.namedArgs();
 
         // This version will automatically report error if 'any_arg' isn't passed
         auto requiredAnyArg = namedArgs.getOrReport("any_arg", coil::NamedArgs::ArgType::Required);

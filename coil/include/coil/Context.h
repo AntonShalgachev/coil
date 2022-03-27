@@ -24,10 +24,9 @@ namespace coil
 
         bool hasErrors() const;
 
-        NamedArgs const& namedArgs();
+        NamedArgs namedArgs();
 
     private:
         detail::CallContext& m_callContext;
-        NamedArgs m_namedArgs;
     };
 }
