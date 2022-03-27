@@ -42,20 +42,21 @@ class BuildConfiguration:
 
 
 class Options:
-    def __init__(self, trace: bool, compilation: bool, linking: bool, clean_build: bool):
+    def __init__(self, trace: bool, compilation: bool, clean_build: bool, full_build: bool):
         self.trace = trace
         self.compilation = compilation
-        self.linking = linking
         self.clean_build = clean_build
+        self.full_build = full_build
 
 
 class Settings:
     def __init__(self, options: Options, compiler_options: List[str], bindings_options: List[str],
-                 unity_options: List[bool], count: int, cmake_root: str, build_directory: str,
+                 unity_options: List[bool], count: int, full_build_count: int, cmake_root: str, build_directory: str,
                  report_root_directory: str, report_filename: str, merged_trace_filename: str,
                  symbols_filename: str, compilation_object: str):
         self.options = options
         self.count = count
+        self.full_build_count = full_build_count
         self.cmake_root = cmake_root
         self.build_directory = build_directory
         self.report_root_directory = report_root_directory
@@ -81,9 +82,9 @@ class DurationStats:
         self.max = max(durations)
 
 class ProfilingResults:
-    def __init__(self, compilation_stats: DurationStats, linking_stats: DurationStats, symbols_count: int, trace_stats):
+    def __init__(self, compilation_stats: DurationStats, full_build_stats:DurationStats, symbols_count: int, trace_stats):
         self.compilation_stats = compilation_stats
-        self.linking_stats = linking_stats
+        self.full_build_stats = full_build_stats
         self.symbols_count = symbols_count
         self.trace_stats = trace_stats
 
@@ -139,10 +140,10 @@ def execute_db_command(entry):
     return duration
 
 
-def prepare_configuration(configuration: BuildConfiguration):
+def run_cmake(configuration: BuildConfiguration, clean: bool, trace: bool):
     build_dir = os.path.join(settings.build_directory, configuration.name)
 
-    if settings.options.clean_build and os.path.exists(build_dir):
+    if clean and os.path.exists(build_dir):
         shutil.rmtree(build_dir)
 
     params = {
@@ -150,7 +151,7 @@ def prepare_configuration(configuration: BuildConfiguration):
         'build_dir': build_dir,
         'unity': '-DCMAKE_UNITY_BUILD=ON' if configuration.unity else '',
         'bindings': BINDINGS_CMD_ARGUMENTS[configuration.bindings],
-        'trace': '-DCOIL_COMPILE_TIME_TRACE=ON' if settings.options.trace else '-DCOIL_COMPILE_TIME_TRACE=OFF'
+        'trace': '-DCOIL_COMPILE_TIME_TRACE=ON' if trace else '-DCOIL_COMPILE_TIME_TRACE=OFF'
     }
 
     cmake_command = 'cmake -B "{build_dir}" -DCOIL_EXAMPLES=OFF -DCOIL_COMPILE_TIME=ON {trace} {bindings} {unity} -GNinja "{root}"'.format(**params)
@@ -163,19 +164,7 @@ def prepare_configuration(configuration: BuildConfiguration):
     os.environ['CC'] = COMPILER_IDS[configuration.compiler]
     os.environ['CXX'] = COMPILER_IDS[configuration.compiler]
     
-    logger.info('    Running CMake...')
     execute_command(cmake_command)
-
-    logger.info('    Cleaning...')
-    execute_command('ninja clean', cwd=build_dir)
-
-    logger.info('    Generating compilation commands...')
-    compilation_commands_json, _ = execute_command('ninja -t compdb', cwd=build_dir)
-    with open(os.path.join(build_dir, 'compilation_commands.json'), 'w') as f:
-        f.write(compilation_commands_json)
-    compilation_commands = json.loads(compilation_commands_json)
-
-    return compilation_commands
 
 
 def merge_traces(traces):
@@ -291,24 +280,35 @@ def profile_compilation_command(compilation_commands):
     return DurationStats(durations), merged_trace, trace_stats
 
 
-def profile_linking_command(compilation_commands, output_file_ending):
+def profile_full_build(build_dir):
     durations = []
 
-    entry = find_db_entry(compilation_commands, output_file_ending)
-
-    for _ in range(settings.count):
-        duration = execute_db_command(entry)
+    for _ in range(settings.full_build_count):
+        execute_command('ninja clean', cwd=build_dir)
+        _, duration = execute_command('ninja', cwd=build_dir)
         durations.append(duration)
     return DurationStats(durations)
 
 
 def run_configuration(configuration: BuildConfiguration):
     logger.info('Profiling configuration {}'.format(configuration.name))
-
+    
+    build_dir = os.path.join(settings.build_directory, configuration.name)
     configuration_report_directory = os.path.join(settings.report_root_directory, configuration.name)
+    
     os.makedirs(configuration_report_directory, exist_ok=True)
 
-    compilation_commands = prepare_configuration(configuration)
+    logger.info('    Running CMake...')
+    run_cmake(configuration, settings.options.clean_build, settings.options.trace)
+
+    logger.info('    Cleaning...')
+    execute_command('ninja clean', cwd=build_dir)
+
+    logger.info('    Generating compilation commands...')
+    compilation_commands_json, _ = execute_command('ninja -t compdb', cwd=build_dir)
+    with open(os.path.join(build_dir, 'compilation_commands.json'), 'w') as f:
+        f.write(compilation_commands_json)
+    compilation_commands = json.loads(compilation_commands_json)
     
     compilation_stats, merged_trace, trace_stats = (None, None, None)
     symbols = None
@@ -323,18 +323,17 @@ def run_configuration(configuration: BuildConfiguration):
         with open(os.path.join(configuration_report_directory, settings.symbols_filename), 'w') as f:
             f.write('\n'.join(symbols) + '\n')
 
-    linking_stats = None
-    if settings.options.linking:
-        logger.info('    Building...')
-        build_dir = os.path.join(settings.build_directory, configuration.name)
-        execute_command('ninja -d keeprsp', cwd=build_dir)
-        
-        logger.info('    Profiling linking...')
-        linking_stats = profile_linking_command(compilation_commands, 'compilation_performance.exe')
+    full_build_stats = None
+    if settings.options.full_build:
+        logger.info('    Running CMake...')
+        run_cmake(configuration, clean=False, trace=False)
+
+        logger.info('    Profiling full build...')
+        full_build_stats = profile_full_build(build_dir)
 
     logger.info('    Saving profiling results...')
     with open(os.path.join(configuration_report_directory, settings.report_filename), 'w') as f:
-        results = ProfilingResults(compilation_stats, linking_stats, len(symbols) if symbols else None, trace_stats)
+        results = ProfilingResults(compilation_stats, full_build_stats, len(symbols) if symbols else None, trace_stats)
         json.dump(results, f, default=lambda o: o.__dict__, indent=4)
 
     if merged_trace:
@@ -352,12 +351,12 @@ def main():
     parser.add_argument('--clean', action='store_true', help='Clean build directory before building')
     parser.add_argument('--no-trace', dest='trace', action='store_false', help='Disable trace generation')
     parser.add_argument('--no-compilation', dest='compilation', action='store_false', help='Disable compilation stats')
-    parser.add_argument('--no-linking', dest='linking', action='store_false', help='Disable linking stats')
+    parser.add_argument('--no-full-build', dest='full_build', action='store_false', help='Disable full build stats')
     args = parser.parse_args()
 
     logger.setLevel(logging.DEBUG if args.verbose else logging.INFO)
 
-    options = Options(trace=args.trace, compilation=args.compilation, linking=args.linking, clean_build=args.clean)
+    options = Options(trace=args.trace, compilation=args.compilation, clean_build=args.clean, full_build=args.full_build)
 
     settings_dir = os.path.split(args.settings)[0]
 
