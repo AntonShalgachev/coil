@@ -114,7 +114,7 @@ namespace coil
 
     //////////////////////////////////////
 
-    Context::Context(detail::CallContext& callContext) : m_callContext(callContext), m_namedArgs(callContext) {}
+    Context::Context(detail::CallContext& callContext) : m_callContext(callContext) {}
 
     std::ostream& Context::out() { return m_callContext.out(); }
 
@@ -128,7 +128,7 @@ namespace coil
         return m_callContext.hasErrors();
     }
 
-    NamedArgs const& Context::namedArgs() { return m_namedArgs; }
+    NamedArgs Context::namedArgs() { return NamedArgs{ m_callContext }; }
 
     //////////////////////////////////////
 
