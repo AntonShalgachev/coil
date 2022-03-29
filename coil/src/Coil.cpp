@@ -330,3 +330,15 @@ template coil::detail::AnyStorageBase*&& std::move<coil::detail::AnyStorageBase*
 template void std::swap<coil::detail::AnyStorageBase*>(coil::detail::AnyStorageBase*&, coil::detail::AnyStorageBase*&) noexcept;
 
 template std::string&& std::forward<std::string>(std::string&) noexcept;
+
+COIL_TYPE_SERIALIZER_TEMPLATE(signed short);
+COIL_TYPE_SERIALIZER_TEMPLATE(unsigned short);
+COIL_TYPE_SERIALIZER_TEMPLATE(signed int);
+COIL_TYPE_SERIALIZER_TEMPLATE(unsigned int);
+COIL_TYPE_SERIALIZER_TEMPLATE(signed long);
+COIL_TYPE_SERIALIZER_TEMPLATE(unsigned long);
+COIL_TYPE_SERIALIZER_TEMPLATE(signed long long);
+COIL_TYPE_SERIALIZER_TEMPLATE(unsigned long long);
+COIL_TYPE_SERIALIZER_TEMPLATE(float);
+COIL_TYPE_SERIALIZER_TEMPLATE(double);
+COIL_TYPE_SERIALIZER_TEMPLATE(long double);
