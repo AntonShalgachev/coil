@@ -60,7 +60,7 @@ jobs:
     - name: Generate code coverage report
       if: matrix.compiler == 'cl' && matrix.config == 'Debug'
       shell: cmd
-      run: OpenCppCoverage.exe --sources ${{github.workspace}}\coil\include\coil --export_type cobertura:Codecov.xml --excluded_line_regex ".*@NOCOVERAGE.*" -- ${{github.workspace}}\build\tests\cmake_tests\runtime\${{matrix.config}}\cmake_tests.exe
+      run: OpenCppCoverage.exe --sources ${{github.workspace}}\coil --export_type cobertura:Codecov.xml --excluded_line_regex ".*@NOCOVERAGE.*" -- ${{github.workspace}}\build\tests\cmake_tests\runtime\${{matrix.config}}\cmake_tests.exe
     - name: Upload report to Codecov
       if: matrix.compiler == 'cl' && matrix.config == 'Debug'
       uses: codecov/codecov-action@v1.3.2
