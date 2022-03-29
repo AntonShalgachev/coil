@@ -1,7 +1,5 @@
 #include "gtest/gtest.h"
 #include "Common.h"
-#include "coil/Bindings.h"
-#include "coil/Variable.h"
 
 #include <stdexcept>
 #include <numeric>

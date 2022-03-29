@@ -1,7 +1,6 @@
 #include "UsertypesExample.h"
 
 #include "common/ExamplesCommon.h"
-#include "coil/Variable.h"
 
 namespace
 {

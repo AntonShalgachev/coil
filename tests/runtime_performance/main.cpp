@@ -1,4 +1,4 @@
-#include "coil/Bindings.h"
+#include "coil/Coil.h"
 
 #pragma warning(push)
 #pragma warning(disable: 4701) // potentially uninitialized local variable 'newColor' used

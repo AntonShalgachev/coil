@@ -1,8 +1,4 @@
-#include "coil/Bindings.h"
-#include "coil/AnyArgView.h"
-#include "coil/Property.h"
-#include "coil/Variable.h"
-#include "coil/Bind.h"
+#include "coil/Coil.h"
 
 namespace coil
 {
