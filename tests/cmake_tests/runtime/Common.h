@@ -7,11 +7,6 @@
 
 namespace coil
 {
-    template<>
-    struct TypeName<int>
-    {
-        static std::string_view name() { return "int"; }
-    };
     template<typename T>
     struct TypeName<std::optional<T>>
     {

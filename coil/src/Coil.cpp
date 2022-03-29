@@ -300,6 +300,22 @@ namespace coil
     {
         returnValue = std::move(value);
     }
+
+    COIL_CREATE_TYPE_NAME_DEFINITION(bool);
+    COIL_CREATE_TYPE_NAME_DEFINITION(char);
+    COIL_CREATE_TYPE_NAME_DEFINITION(signed char);
+    COIL_CREATE_TYPE_NAME_DEFINITION(unsigned char);
+    COIL_CREATE_TYPE_NAME_DEFINITION(short);
+    COIL_CREATE_TYPE_NAME_DEFINITION(unsigned short);
+    COIL_CREATE_TYPE_NAME_DEFINITION(int);
+    COIL_CREATE_TYPE_NAME_DEFINITION(unsigned int);
+    COIL_CREATE_TYPE_NAME_DEFINITION(long);
+    COIL_CREATE_TYPE_NAME_DEFINITION(unsigned long);
+    COIL_CREATE_TYPE_NAME_DEFINITION(long long);
+    COIL_CREATE_TYPE_NAME_DEFINITION(unsigned long long);
+    COIL_CREATE_TYPE_NAME_DEFINITION(float);
+    COIL_CREATE_TYPE_NAME_DEFINITION(double);
+    COIL_CREATE_TYPE_NAME_DEFINITION(long double);
 }
 
 // Explicitly instantiate used templates here in order to avoid intantiating them in each source file

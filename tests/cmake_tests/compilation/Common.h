@@ -15,6 +15,15 @@ namespace coil
             return {};
         }
     };
+
+    template<typename T>
+    struct TypeName<T>
+    {
+        static std::string_view name()
+        {
+            return "";
+        }
+    };
 }
 
 namespace
