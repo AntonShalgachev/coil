@@ -48,7 +48,7 @@ namespace
 
     void printItems(coil::Context context)
     {
-        auto& namedArgs = context.namedArgs();
+        auto namedArgs = context.namedArgs();
 
         auto name = namedArgs.getOrReport<std::string_view>("name", coil::NamedArgs::ArgType::Optional);
         auto minAmount = namedArgs.getOrReport<std::size_t>("min_amount", coil::NamedArgs::ArgType::Optional);
@@ -79,7 +79,7 @@ namespace
 
     void addItem(coil::Context context, std::uint64_t id, std::string_view name)
     {
-        auto& namedArgs = context.namedArgs();
+        auto namedArgs = context.namedArgs();
 
         auto amount = namedArgs.getOrReport<std::size_t>("amount", coil::NamedArgs::ArgType::Optional, 1);
         auto type = namedArgs.getOrReport<Type>("type", coil::NamedArgs::ArgType::Optional, Type::Weapon);
@@ -112,7 +112,7 @@ namespace
 
     void saveGame(coil::Context context)
     {
-        auto& namedArgs = context.namedArgs();
+        auto namedArgs = context.namedArgs();
 
         auto type = namedArgs.getOrReport<SaveGameType>("type", coil::NamedArgs::ArgType::Required);
         auto delay = namedArgs.getOrReport<float>("delay", coil::NamedArgs::ArgType::Optional, 0.0f);
@@ -125,7 +125,7 @@ namespace
 
     void requiredAndOptional(coil::Context context)
     {
-        auto& namedArgs = context.namedArgs();
+        auto namedArgs = context.namedArgs();
 
         auto requiredAnyArg = namedArgs.getOrReport("required", coil::NamedArgs::ArgType::Required);
         if (!requiredAnyArg)

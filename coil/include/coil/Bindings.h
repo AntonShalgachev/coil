@@ -28,31 +28,17 @@ namespace coil
         template<typename Func>
         void add(std::string_view name, Func func)
         {
-            // No move list-initialization in vector? Really, C++?
-            std::vector<detail::AnyFunctor> functors;
-            functors.push_back(detail::AnyFunctor{ std::move(func) });
-            m_commands.insert_or_assign(name, std::move(functors));
+            add(name, detail::AnyFunctor{ std::move(func) });
         }
 
-        void add(std::string_view name, std::vector<detail::AnyFunctor> anyFunctors)
-        {
-            m_commands.insert_or_assign(name, std::move(anyFunctors));
-        }
+        void add(std::string_view name, detail::AnyFunctor anyFunctor);
+        void add(std::string_view name, std::vector<detail::AnyFunctor> anyFunctors);
 
-        void remove(std::string_view name)
-        {
-            m_commands.erase(name);
-        }
+        void remove(std::string_view name);
 
-        void clear()
-        {
-            m_commands.clear();
-        }
+        void clear();
 
-        ExecutionResult execute(std::string_view command)
-        {
-            return execute(command, m_defaultLexer);
-        }
+        ExecutionResult execute(std::string_view command);
 
         template<typename InputT, typename LexerT>
         ExecutionResult execute(InputT&& command, LexerT&& lexer)
@@ -72,52 +58,10 @@ namespace coil
             return execute(*input);
         }
 
-        ExecutionResult execute(ExecutionInput const& input)
-        {
-            detail::CallContext context{ input };
-            execute(context);
-            return std::move(context).result;
-        }
+        ExecutionResult execute(ExecutionInput const& input);
 
     private:
-        void execute(detail::CallContext& context)
-        {
-            if (context.input.name.empty())
-            {
-                context.result.errors.push_back("No function name is specified");
-                return;
-            }
-
-            auto it = m_commands.find(context.input.name);
-            if (it == m_commands.end())
-            {
-                context.result.errors.push_back(formatString("No function '%.*s' is registered", context.input.name.size(), context.input.name.data()));
-                return;
-            }
-
-            auto& functors = it->second;
-
-            for (auto& functor : functors)
-                if (functor.arity() == context.input.arguments.size())
-                    return functor.invokeTrampoline(context);
-
-            std::stringstream argsCount;
-            
-            for (std::size_t i = 0; i < functors.size(); i++)
-            {
-                if (i > 0 && i != functors.size() - 1)
-                    argsCount << ", ";
-                if (i > 0 && i == functors.size() - 1)
-                    argsCount << " or ";
-
-                argsCount << functors[i].arity();
-            }   
-
-            std::string const expectedStr = argsCount.str();
-            std::size_t const actualArgsCount = context.input.arguments.size();
-            auto error = formatString("Wrong number of arguments to '%.*s': expected %s, got %d", context.input.name.size(), context.input.name.data(), expectedStr.c_str(), actualArgsCount);
-            context.reportError(std::move(error));
-        }
+        void execute(detail::CallContext& context);
 
         DefaultLexer m_defaultLexer;
 
@@ -133,10 +77,13 @@ namespace coil
         template<typename Func>
         BindingProxy& operator=(Func func)
         {
-            // No move list-initialization in vector? Really, C++?
-            std::vector<detail::AnyFunctor> functors;
-            functors.push_back(detail::AnyFunctor{ std::move(func) });
-            return (*this = std::move(functors));
+            m_bindings.add(m_name, detail::AnyFunctor{ std::move(func) });
+            return *this;
+        }
+        BindingProxy& operator=(detail::AnyFunctor anyFunctor)
+        {
+            m_bindings.add(m_name, std::move(anyFunctor));
+            return *this;
         }
         BindingProxy& operator=(std::vector<detail::AnyFunctor> anyFunctors)
         {
@@ -153,9 +100,4 @@ namespace coil
         BindingsT& m_bindings;
         std::string_view m_name;
     };
-
-    inline BindingProxy<Bindings> Bindings::operator[](std::string_view name)
-    {
-        return BindingProxy<Bindings>{ *this, { name } };
-    }
 }

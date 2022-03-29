@@ -38,7 +38,7 @@ void $name::registerBindings(coil::Bindings& bindings)
     bindings["${name}_${function.name}"] = [](coil::Context context, $combine($function.args))
     {
         context.reportError("Task failed successfully");
-        auto& args = context.namedArgs();
+        auto args = context.namedArgs();
         args.get("key");
         args.get<$function.args[0]>("key");
         args.getOrReport<$function.args[0]>("key", coil::NamedArgs::ArgType::Optional);

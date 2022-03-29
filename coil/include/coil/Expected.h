@@ -1,5 +1,7 @@
 #pragma once
 
+#include <exception>
+
 namespace coil
 {
     template <class E>
@@ -90,7 +92,7 @@ namespace coil
             constructFrom(std::move(rhs));
         }
 
-        virtual ~ExpectedBase()
+        ~ExpectedBase() // not virtual
         {
             destruct();
         }
@@ -189,7 +191,7 @@ namespace coil
     };
 
     template<typename T, typename E>
-    class Expected : public ExpectedBase<T, E>
+    class Expected final : public ExpectedBase<T, E>
     {
     public:
         using Base = ExpectedBase<T, E>;
@@ -199,6 +201,28 @@ namespace coil
         using Base::operator==;
 
         Expected(T value) : Base(std::move(value)) {}
+
+        Expected(Expected<T, E> const& rhs) : Base(rhs)
+        {
+            
+        }
+
+        Expected(Expected<T, E>&& rhs) noexcept : Base(std::move(rhs))
+        {
+            
+        }
+
+        ~Expected() {}; // not default to enable explicit instantiation
+
+        Expected<T, E>& operator=(Expected<T, E> const& rhs)
+        {
+            return static_cast<Expected<T, E>&>(Base::operator=(rhs));
+        }
+
+        Expected<T, E>& operator=(Expected<T, E>&& rhs) noexcept
+        {
+            return static_cast<Expected<T, E>&>(Base::operator=(std::move(rhs)));
+        }
 
         template<typename T2, typename E2>
         bool operator==(Expected<T2, E2> const& rhs) const
@@ -250,7 +274,7 @@ namespace coil
     };
 
     template<typename E>
-    class Expected<void, E> : public ExpectedBase<detail::dummy, E>
+    class Expected<void, E> final : public ExpectedBase<detail::dummy, E>
     {
     public:
         using Base = ExpectedBase<detail::dummy, E>;
@@ -260,6 +284,28 @@ namespace coil
         using Base::operator==;
 
         Expected() : Base(detail::dummy{}) {}
+
+        Expected(Expected<void, E> const& rhs) : Base(rhs)
+        {
+            constructFrom(rhs);
+        }
+
+        Expected(Expected<void, E>&& rhs) noexcept : Base(std::move(rhs))
+        {
+            constructFrom(std::move(rhs));
+        }
+
+        ~Expected() {}; // not default to enable explicit instantiation
+
+        Expected<void, E>& operator=(Expected<void, E> const& rhs)
+        {
+            return static_cast<Expected<void, E>&>(Base::operator=(rhs));
+        }
+
+        Expected<void, E>& operator=(Expected<void, E>&& rhs) noexcept
+        {
+            return static_cast<Expected<void, E>&>(Base::operator=(std::move(rhs)));
+        }
 
         template<typename E2>
         bool operator==(Expected<void, E2> const& rhs) const

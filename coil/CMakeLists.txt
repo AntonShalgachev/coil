@@ -5,7 +5,6 @@ set(ALL_FILES
     "include/coil/Utils.h"
     "include/coil/Bind.h"
     "include/coil/Variable.h"
-    
 
     "include/coil/Bindings.h"
     "include/coil/ExecutionResult.h"
@@ -28,13 +27,18 @@ set(ALL_FILES
     "include/coil/Property.h"
     "include/coil/ArgValue.h"
     "include/coil/Overloaded.h"
+    
+    "include/coil/Coil.h"
+    "include/coil/Extern.h"
+
+    "src/Coil.cpp"
 )
 
-add_library(${PROJECT_NAME} INTERFACE ${ALL_FILES})
+add_library(${PROJECT_NAME} ${ALL_FILES})
 
 target_include_directories(${PROJECT_NAME}
-    INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/include;"
+    PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include;"
 )
 
-target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_17)
+target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_EXTENSIONS OFF)

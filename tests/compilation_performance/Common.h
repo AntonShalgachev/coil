@@ -1,8 +1,6 @@
 #pragma once
 
-#include "coil/Bindings.h"
-#include "coil/Variable.h"
-#include "coil/Bind.h"
+#include "coil/Coil.h"
 
 #include <functional>
 #include <string_view>
@@ -15,6 +13,27 @@
 #include <vector>
 #include <optional>
 #include <charconv>
+
+#if USE_COIL
+
+#define TEST_EXTERN_TEMPLATE(T) \
+    COIL_VARIABLE_EXTERN_TEMPLATE(T); \
+    COIL_ARGUMENT_EXTERN_TEMPLATE(T); \
+    COIL_NAMED_ARGS_EXTERN_TEMPLATE(T)
+
+#define TEST_TEMPLATE(T) \
+    COIL_VARIABLE_TEMPLATE(T); \
+    COIL_ARGUMENT_TEMPLATE(T); \
+    COIL_NAMED_ARGS_TEMPLATE(T)
+
+TEST_EXTERN_TEMPLATE(int);
+TEST_EXTERN_TEMPLATE(short);
+TEST_EXTERN_TEMPLATE(bool);
+TEST_EXTERN_TEMPLATE(unsigned);
+TEST_EXTERN_TEMPLATE(float);
+TEST_EXTERN_TEMPLATE(double);
+
+#endif
 
 #if USE_MANUAL
 

@@ -1,6 +1,5 @@
 #include "gtest/gtest.h"
 #include "Common.h"
-#include "coil/TypeSerializer.h"
 
 namespace
 {
@@ -26,6 +25,16 @@ namespace
             return field1 == rhs.field1 && field2 == rhs.field2;
         }
     };
+
+    std::ostream& operator<<(std::ostream& os, WithoutDefaultConstructor const& value)
+    {
+        return os << "WithoutDefaultConstructor{" << value.value << "}";
+    }
+
+    std::ostream& operator<<(std::ostream& os, CompoundType const& value)
+    {
+        return os << "CompoundType{" << value.field1 << ',' << value.field2 << '}';
+    }
 }
 
 namespace coil
@@ -176,11 +185,4 @@ TEST(TypeSerializerTests, TestCompoundUserTypeFromStringInvalid)
 TEST(TypeSerializerTests, TestCompoundUserTypeToString)
 {
     EXPECT_EQ(coil::TypeSerializer<CompoundType>::toString(CompoundType{ 6, 28 }), "CompoundType{6,28}");
-}
-
-TEST(TypeSerializerTests, TestUnknownTypeName)
-{
-    using namespace std::literals;
-
-    EXPECT_EQ(coil::TypeSerializer<float>::fromString("not_float"sv), coil::makeUnexpected("Unable to convert 'not_float' to type 'unknown'"));
 }

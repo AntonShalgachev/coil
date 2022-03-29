@@ -1,7 +1,5 @@
 #include "gtest/gtest.h"
 #include "Common.h"
-#include "coil/Bindings.h"
-#include "coil/Variable.h"
 
 #include <stdexcept>
 #include <numeric>
@@ -538,6 +536,16 @@ TEST(BindingsTests, TestOutput)
     EXPECT_EQ(result.output.str(), "Test");
 }
 
+TEST(BindingsTests, TestContextError)
+{
+    coil::Bindings bindings;
+    bindings["func"] = [](coil::Context context, std::string value) { context.reportError("Custom error: " + std::move(value)); };
+    auto result = bindings.execute("func Test");
+
+    EXPECT_EQ(result.errors.size(), 1);
+    EXPECT_PRED2(containsError, result.errors, "Custom error: Test");
+}
+
 TEST(BindingsTests, TestVectorFunctionReturnValue)
 {
     coil::Bindings bindings;
@@ -622,4 +630,177 @@ TEST(BindingsTests, TestNonStdException)
 
     EXPECT_EQ(result.errors.size(), 1);
     EXPECT_PRED2(containsError, result.errors, "Exception caught during execution");
+}
+
+TEST(BindingsTests, TestAnyArgView)
+{
+    coil::Bindings bindings;
+    bindings["func"] = [](coil::AnyArgView const& value) {
+        return *value.get<int>();
+    };
+
+    auto result = bindings.execute("func 42");
+    EXPECT_EQ(result.returnValue, "42");
+}
+
+TEST(BindingsTests, TestNamedArgsGet)
+{
+    coil::Bindings bindings;
+    bindings["func"] = [](coil::Context context) {
+        coil::NamedArgs namedArgs = context.namedArgs();
+
+        auto e1 = namedArgs.get<int>("non_existent_arg");
+        ASSERT_FALSE(e1);
+        EXPECT_EQ(e1.error().type, coil::NamedArgs::Error::Type::MissingKey);
+        EXPECT_EQ(e1.error().message, "Missing named argument 'non_existent_arg'");
+
+        auto e2 = namedArgs.get<int>("arg1");
+        ASSERT_FALSE(e2);
+        EXPECT_EQ(e2.error().type, coil::NamedArgs::Error::Type::TypeMismatch);
+        EXPECT_EQ(e2.error().message, "Unable to convert 'str' to type 'int'");
+
+        auto e3 = namedArgs.get<int>("arg2");
+        ASSERT_TRUE(e3);
+        EXPECT_EQ(*e3, 42);
+    };
+
+    auto result = bindings.execute("func arg1 = str arg2 = 42");
+}
+
+TEST(BindingsTests, TestNamedArgsGetOrReport)
+{
+    using namespace std::literals;
+
+    coil::Bindings bindings;
+    bindings["func"] = [](coil::Context context) {
+        coil::NamedArgs namedArgs = context.namedArgs();
+
+        {
+            auto o = namedArgs.getOrReport<int>("arg2", coil::NamedArgs::ArgType::Optional);
+            ASSERT_TRUE(o);
+            EXPECT_EQ(*o, 42);
+            EXPECT_FALSE(context.hasErrors());
+        }
+
+        {
+            auto o = namedArgs.getOrReport<int>("arg2", coil::NamedArgs::ArgType::Required);
+            ASSERT_TRUE(o);
+            EXPECT_EQ(*o, 42);
+            EXPECT_FALSE(context.hasErrors());
+        }
+
+        {
+            auto o = namedArgs.getOrReport<int>("non_existent_arg", coil::NamedArgs::ArgType::Optional, 18);
+            ASSERT_TRUE(o.has_value());
+            EXPECT_EQ(*o, 18);
+            EXPECT_FALSE(context.hasErrors());
+        }
+
+        {
+            auto o = namedArgs.getOrReport("arg1", coil::NamedArgs::ArgType::Required);
+            ASSERT_TRUE(o.has_value());
+            EXPECT_EQ(o->getRaw().value, "str"sv);
+            EXPECT_FALSE(context.hasErrors());
+        }
+
+        {
+            auto o = namedArgs.getOrReport("non_existent_arg", coil::NamedArgs::ArgType::Optional);
+            ASSERT_FALSE(o.has_value());
+            EXPECT_FALSE(context.hasErrors());
+        }
+    };
+
+    auto result = bindings.execute("func arg1 = str arg2 = 42");
+}
+
+TEST(BindingsTests, TestNamedArgsTypedGetOrReportContextErrors)
+{
+    coil::Bindings bindings;
+    bindings["func"] = [](coil::Context context) {
+        context.namedArgs().getOrReport<int>("arg", coil::NamedArgs::ArgType::Required, 18);
+    };
+
+    {
+        auto result = bindings.execute("func");
+        EXPECT_EQ(result.errors.size(), 1);
+        EXPECT_PRED2(containsError, result.errors, "Missing named argument 'arg'");
+    }
+
+    {
+        auto result = bindings.execute("func arg = str");
+        EXPECT_EQ(result.errors.size(), 1);
+        EXPECT_PRED2(containsError, result.errors, "Unable to convert 'str' to type 'int'");
+    }
+}
+
+TEST(BindingsTests, TestNamedArgsAnyGetOrReportContextErrors)
+{
+    coil::Bindings bindings;
+    bindings["func"] = [](coil::Context context) {
+        context.namedArgs().getOrReport("arg", coil::NamedArgs::ArgType::Required);
+    };
+
+    {
+        auto result = bindings.execute("func");
+        EXPECT_EQ(result.errors.size(), 1);
+        EXPECT_PRED2(containsError, result.errors, "Missing named argument 'arg'");
+    }
+}
+
+TEST(BindingsTests, TestNamedArgsSize)
+{
+    coil::Bindings bindings;
+    bindings["func"] = [](coil::Context context) {
+        return context.namedArgs().size();
+    };
+
+    {
+        auto result = bindings.execute("func");
+        EXPECT_EQ(result.errors.size(), 0);
+        EXPECT_EQ(result.returnValue, "0");
+    }
+
+    {
+        auto result = bindings.execute("func arg1=foo arg2=bar");
+        EXPECT_EQ(result.errors.size(), 0);
+        EXPECT_EQ(result.returnValue, "2");
+    }
+}
+
+TEST(BindingsTests, TestBind)
+{
+    struct Object
+    {
+        int get() const { return 42; }
+    };
+
+    Object obj;
+
+    coil::Bindings bindings;
+    bindings["func"] = coil::bind(&Object::get, &obj);
+
+    auto result = bindings.execute("func");
+    EXPECT_EQ(result.errors.size(), 0);
+    EXPECT_EQ(result.returnValue, "42");
+}
+
+TEST(BindingsTests, TestTypeNames)
+{
+    using namespace std::literals;
+
+    EXPECT_EQ(coil::TypeName<bool>::name(), "bool"sv);
+    EXPECT_EQ(coil::TypeName<char>::name(), "char"sv);
+    EXPECT_EQ(coil::TypeName<signed char>::name(), "signed char"sv);
+    EXPECT_EQ(coil::TypeName<unsigned char>::name(), "unsigned char"sv);
+    EXPECT_EQ(coil::TypeName<short>::name(), "short"sv);
+    EXPECT_EQ(coil::TypeName<unsigned short>::name(), "unsigned short"sv);
+    EXPECT_EQ(coil::TypeName<int>::name(), "int"sv);
+    EXPECT_EQ(coil::TypeName<unsigned int>::name(), "unsigned int"sv);
+    EXPECT_EQ(coil::TypeName<long>::name(), "long"sv);
+    EXPECT_EQ(coil::TypeName<unsigned long>::name(), "unsigned long"sv);
+    EXPECT_EQ(coil::TypeName<long long>::name(), "long long"sv);
+    EXPECT_EQ(coil::TypeName<unsigned long long>::name(), "unsigned long long"sv);
+    EXPECT_EQ(coil::TypeName<float>::name(), "float"sv);
+    EXPECT_EQ(coil::TypeName<double>::name(), "double"sv);
+    EXPECT_EQ(coil::TypeName<long double>::name(), "long double"sv);
 }

@@ -10,12 +10,12 @@
 namespace coil::detail
 {
     template<std::size_t i>
-    inline Context createContext(CallContext& context);
+    Context createContext(CallContext& context);
     template<>
-    inline Context createContext<0>(CallContext& context)
-    {
-        return Context{ context };
-    }
+    Context createContext<0>(CallContext& context);
+
+    void reportExceptionError(CallContext& context);
+    void reportExceptionError(CallContext& context, std::exception const& ex);
 
     template<typename T>
     void reportError(CallContext& context, Expected<T, std::string> const& result)
@@ -25,7 +25,7 @@ namespace coil::detail
     }
 
     template<typename Func, std::size_t... NonUserIndices, typename... Es>
-    void invoke(Func& func, CallContext& context, Es&&... expectedArgs)
+    void invoke(Func& func, CallContext& context, Es... expectedArgs)
     {
         if ((!expectedArgs || ...))
         {
@@ -39,28 +39,28 @@ namespace coil::detail
         {
             if constexpr (std::is_void_v<R>)
             {
-                func(createContext<NonUserIndices>(context)..., *std::forward<Es>(expectedArgs)...);
+                func(createContext<NonUserIndices>(context)..., *std::move(expectedArgs)...);
             }
             else
             {
-                auto&& returnValue = func(createContext<NonUserIndices>(context)..., *std::forward<Es>(expectedArgs)...);
+                auto&& returnValue = func(createContext<NonUserIndices>(context)..., *std::move(expectedArgs)...);
                 if (!context.hasErrors())
-                    context.result.returnValue = TypeSerializer<std::decay_t<R>>::toString(returnValue);
+                    context.result.setReturnValue(TypeSerializer<R>::toString(returnValue));
             }
         }
         catch (std::exception const& ex)
         {
-            context.reportError(formatString("Exception caught during execution: %s", ex.what()));
+            reportExceptionError(context, ex);
         }
         catch (...)
         {
-            context.reportError("Exception caught during execution");
+            reportExceptionError(context);
         }
     }
 
     template<typename Func, std::size_t... NonUserIndices, typename... UserArgs, std::size_t... UserIndices>
     void unpackAndInvoke(Func& func, CallContext& context, std::index_sequence<NonUserIndices...>, Types<UserArgs...>, std::index_sequence<UserIndices...>)
     {
-        invoke<Func, NonUserIndices...>(func, context, TypeSerializer<std::decay_t<UserArgs>>::fromString(context.input.arguments[UserIndices])...);
+        invoke<Func, NonUserIndices...>(func, context, TypeSerializer<UserArgs>::fromString(context.input.arguments[UserIndices])...);
     }
 }

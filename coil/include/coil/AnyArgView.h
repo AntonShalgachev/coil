@@ -33,10 +33,5 @@ namespace coil
         {
             return AnyArgView(std::move(value));
         }
-
-        static std::string toString(AnyArgView const& value)
-        {
-            return std::string{ value.getRaw().value };
-        }
     };
 }
