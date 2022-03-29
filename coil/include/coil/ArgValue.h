@@ -14,7 +14,6 @@ namespace coil
         ArgValue(std::string_view value, std::vector<std::string_view> subvalues = {});
 
         bool operator==(ArgValue const& rhs) const;
-        bool operator!=(ArgValue const& rhs) const;
 
         // TODO rename fields?
         std::string_view value;
