@@ -57,7 +57,7 @@ namespace coil::detail
         AnyFunctor(AnyFunctor&& rhs);
 
         AnyFunctor& operator=(AnyFunctor const& rhs) = delete;
-        AnyFunctor& operator=(AnyFunctor&& rhs);
+        AnyFunctor& operator=(AnyFunctor&& rhs) = delete;
 
         ~AnyFunctor();
         void invokeTrampoline(detail::CallContext& context);

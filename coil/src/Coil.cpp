@@ -15,17 +15,6 @@ namespace coil
             swap(rhs.m_arity, m_arity);
         }
 
-        AnyFunctor& AnyFunctor::operator=(AnyFunctor&& rhs)
-        {
-            destroy();
-
-            using namespace std;
-            swap(rhs.m_storage, m_storage);
-            swap(rhs.m_arity, m_arity);
-
-            return *this;
-        }
-
         AnyFunctor::~AnyFunctor()
         {
             destroy();
