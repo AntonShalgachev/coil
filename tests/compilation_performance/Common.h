@@ -1,8 +1,6 @@
 #pragma once
 
-#include "coil/Bindings.h"
-#include "coil/Variable.h"
-#include "coil/Bind.h"
+#include "coil/Coil.h"
 
 #include <functional>
 #include <string_view>
@@ -17,8 +15,6 @@
 #include <charconv>
 
 #if USE_COIL
-
-#include "coil/Extern.h"
 
 COIL_EXTERN_TEMPLATE(int);
 COIL_EXTERN_TEMPLATE(short);

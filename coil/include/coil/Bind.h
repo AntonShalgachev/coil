@@ -1,6 +1,7 @@
 #pragma once
 
 #include "coil/detail/FuncTraits.h"
+#include "coil/detail/AnyFunctor.h"
 
 namespace coil
 {

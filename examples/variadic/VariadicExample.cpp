@@ -1,7 +1,6 @@
 #include "VariadicExample.h"
 
 #include "common/ExamplesCommon.h"
-#include "coil/AnyArgView.h"
 
 #include <vector>
 #include <numeric>

@@ -4,6 +4,7 @@
 #include <string_view>
 
 // TODO update this file and use it in the examples
+// TODO add this file to "Coil.h"
 
 namespace coil
 {

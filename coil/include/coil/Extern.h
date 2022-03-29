@@ -1,5 +1,19 @@
 #pragma once
 
+#include <optional>
+#include <vector>
+#include <string_view>
+#include <string>
+
+#include "coil/AnyArgView.h"
+#include "coil/ArgValue.h"
+#include "coil/Expected.h"
+#include "coil/NamedArgs.h"
+#include "coil/TypeSerializer.h"
+#include "coil/Variable.h"
+
+#include "coil/detail/StringWrapper.h"
+
 extern template class std::optional<coil::AnyArgView>;
 extern template class coil::Expected<coil::AnyArgView, coil::NamedArgs::Error>;
 
@@ -25,6 +39,7 @@ extern template void std::swap<coil::detail::AnyStorageBase*>(coil::detail::AnyS
 
 extern template std::string&& std::forward<std::string>(std::string&) noexcept;
 
+// TODO rename
 #define COIL_EXTERN_TEMPLATE(T) \
     extern template std::vector<coil::detail::AnyFunctor> coil::variable<T>(T* var); \
     \
@@ -43,11 +58,13 @@ extern template std::string&& std::forward<std::string>(std::string&) noexcept;
     extern template coil::Expected<T, std::string>&& std::move<coil::Expected<T, std::string>&>(coil::Expected<T, std::string>&) noexcept; \
     extern template T&& std::move<T&>(T&) noexcept
 
+// TODO rename
 #define COIL_TYPE_SERIALIZER_EXTERN_TEMPLATE(T) \
     extern template struct coil::TypeSerializer<T>; \
     extern template coil::Expected<T, std::string> coil::TypeSerializer<T>::fromString(coil::ArgValue const& input); \
     extern template std::string coil::TypeSerializer<T>::toString(T const& value)
 
+// TODO rename
 #define COIL_TEMPLATE(T) \
     template std::vector<coil::detail::AnyFunctor> coil::variable<T>(T* var); \
     \
@@ -66,6 +83,7 @@ extern template std::string&& std::forward<std::string>(std::string&) noexcept;
     template coil::Expected<T, std::string>&& std::move<coil::Expected<T, std::string>&>(coil::Expected<T, std::string>&) noexcept; \
     template T&& std::move<T&>(T&) noexcept
 
+// TODO rename
 #define COIL_TYPE_SERIALIZER_TEMPLATE(T) \
     template struct coil::TypeSerializer<T>; \
     template coil::Expected<T, std::string> coil::TypeSerializer<T>::fromString(coil::ArgValue const& input); \

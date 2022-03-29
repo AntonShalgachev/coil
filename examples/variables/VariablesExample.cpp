@@ -1,7 +1,6 @@
 #include "VariablesExample.h"
 
 #include "common/ExamplesCommon.h"
-#include "coil/Variable.h"
 
 #include <iostream>
 #include "common/FlagVariableWrapper.h"

@@ -5,8 +5,6 @@
 #include <string>
 #include <optional>
 
-#include "coil/TypeSerializer.h"
-
 #include "Utils.h"
 #include "magic_enum.hpp"
 

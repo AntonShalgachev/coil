@@ -1,21 +1,31 @@
-#include "coil/Bindings.h"
-#include "coil/Bind.h"
-#include "coil/Variable.h"
-#include "coil/NamedArgs.h"
+#include "coil/Coil.h"
 
 namespace coil
 {
     namespace detail
     {
+        /// AnyFunctor.h ///
         AnyStorageBase::AnyStorageBase() = default;
         AnyStorageBase::~AnyStorageBase() = default;
 
+        /// FunctorCaller.h ///
         template<>
         Context createContext<0>(CallContext& context)
         {
             return Context{ context };
         }
 
+        void reportExceptionError(CallContext& context)
+        {
+            context.reportError("Exception caught during execution");
+        }
+
+        void reportExceptionError(CallContext& context, std::exception const& ex)
+        {
+            context.reportError(formatString("Exception caught during execution: %s", ex.what()));
+        }
+
+        /// CallContext.h ///
         CallContext::CallContext(ExecutionInput const& input) : input(input) {}
 
         std::ostream& CallContext::out() { return result.output; }
@@ -29,18 +39,9 @@ namespace coil
         {
             return !result.errors.empty();
         }
-
-        void reportExceptionError(CallContext& context)
-        {
-            context.reportError("Exception caught during execution");
-        }
-
-        void reportExceptionError(CallContext& context, std::exception const& ex)
-        {
-            context.reportError(formatString("Exception caught during execution: %s", ex.what()));
-        }
     }
 
+    /// Bindings.h ///
     BindingProxy<Bindings> Bindings::operator[](std::string_view name)
     {
         return BindingProxy<Bindings>{ *this, { name } };
@@ -112,8 +113,7 @@ namespace coil
         context.reportError(std::move(error));
     }
 
-    //////////////////////////////////////
-
+    /// Context.h ///
     Context::Context(detail::CallContext& callContext) : m_callContext(callContext) {}
 
     std::ostream& Context::out() { return m_callContext.out(); }
@@ -130,14 +130,11 @@ namespace coil
 
     NamedArgs Context::namedArgs() { return NamedArgs{ m_callContext }; }
 
-    //////////////////////////////////////
-
+    /// NamedArgs.h ///
     NamedAnyArgView::NamedAnyArgView(std::string_view key, ArgValue value) : m_key(key), m_value(value) {}
 
     std::string_view NamedAnyArgView::key() const { return m_key; }
     AnyArgView NamedAnyArgView::value() const { return m_value; }
-
-    //////////////////////////////////////
 
     NamedArgsIterator::NamedArgsIterator(UnderlyingIteratorT iterator) : m_iterator(iterator) {}
 
@@ -163,8 +160,6 @@ namespace coil
         m_iterator++;
         return *this;
     }
-
-    //////////////////////////////////////
 
     NamedArgs::NamedArgs(detail::CallContext& context) : m_context(context) {}
 
@@ -210,8 +205,7 @@ namespace coil
         });
     }
 
-    //////////////////////////////////////
-
+    /// ArgValue.h ///
     ArgValue::ArgValue() = default;
     ArgValue::ArgValue(std::string_view value, std::vector<std::string_view> subvalues) : value(value), subvalues(std::move(subvalues)) {}
 
@@ -224,8 +218,7 @@ namespace coil
         return !(*this == rhs);
     }
 
-    //////////////////////////////////////
-
+    /// TypeSerializer.h ///
     coil::Expected<bool, std::string> coil::TypeSerializer<bool>::fromString(ArgValue const& input)
     {
         auto equalCaseInsensitive = [](std::string_view a, std::string_view b)
@@ -259,8 +252,7 @@ namespace coil
         return value ? "true" : "false";
     }
 
-    //////////////////////////////////////
-
+    /// ExecutionResult.h ///
     ExecutionResult::operator bool() const
     {
         return errors.empty();
@@ -272,6 +264,7 @@ namespace coil
     }
 }
 
+// Explicitly instantiate used templates here in order to avoid intantiating them in each source file
 template class std::vector<std::string>;
 template class std::optional<std::string>;
 

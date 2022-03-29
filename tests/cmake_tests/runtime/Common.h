@@ -1,6 +1,6 @@
 #pragma once
 
-#include "coil/TypeName.h"
+#include "coil/Coil.h"
 
 #include <optional>
 #include <vector>

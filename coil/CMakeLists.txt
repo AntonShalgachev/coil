@@ -28,9 +28,10 @@ set(ALL_FILES
     "include/coil/ArgValue.h"
     "include/coil/Overloaded.h"
     
+    "include/coil/Coil.h"
     "include/coil/Extern.h"
 
-    "Coil.cpp"
+    "src/Coil.cpp"
 )
 
 add_library(${PROJECT_NAME} ${ALL_FILES})

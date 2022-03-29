@@ -1,6 +1,5 @@
 #include "gtest/gtest.h"
 #include "Common.h"
-#include "coil/TypeSerializer.h"
 
 namespace
 {

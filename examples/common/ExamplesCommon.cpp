@@ -1,7 +1,6 @@
 #include "ExamplesCommon.h"
 
 #include <iostream>
-#include "coil/Bindings.h"
 #include "termcolor.hpp"
 
 namespace

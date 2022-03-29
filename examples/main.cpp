@@ -10,9 +10,6 @@
 #include "errors/ErrorsExample.h"
 #include "usertypes/UsertypesExample.h"
 
-#include "coil/Bindings.h"
-#include "coil/Bind.h"
-
 template<typename Example>
 void bindExample(coil::Bindings& bindings, Example& example, std::string_view name)
 {

@@ -6,7 +6,6 @@
 #include "common/EnumToString.h"
 
 #include <iostream>
-#include "coil/Bind.h"
 
 namespace
 {
