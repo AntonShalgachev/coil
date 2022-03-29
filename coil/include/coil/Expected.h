@@ -1,5 +1,7 @@
 #pragma once
 
+#include <exception>
+
 namespace coil
 {
     template <class E>
