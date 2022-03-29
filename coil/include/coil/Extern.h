@@ -40,9 +40,7 @@ extern template void std::swap<coil::detail::AnyStorageBase*>(coil::detail::AnyS
 extern template std::string&& std::forward<std::string>(std::string&) noexcept;
 
 #define COIL_TYPE_SERIALIZER_TEMPLATE_BASE(T, SPECIFIER) \
-    SPECIFIER template struct coil::TypeSerializer<T>; \
-    SPECIFIER template coil::Expected<T, std::string> coil::TypeSerializer<T>::fromString(coil::ArgValue const& input); \
-    SPECIFIER template std::string coil::TypeSerializer<T>::toString(T const& value)
+    SPECIFIER template struct coil::TypeSerializer<T>
 
 #define COIL_TYPE_SERIALIZER_EXTERN_TEMPLATE(T) COIL_TYPE_SERIALIZER_TEMPLATE_BASE(T, extern)
 #define COIL_TYPE_SERIALIZER_TEMPLATE(T) COIL_TYPE_SERIALIZER_TEMPLATE_BASE(T, )
