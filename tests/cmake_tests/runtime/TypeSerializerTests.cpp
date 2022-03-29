@@ -25,6 +25,16 @@ namespace
             return field1 == rhs.field1 && field2 == rhs.field2;
         }
     };
+
+    std::ostream& operator<<(std::ostream& os, WithoutDefaultConstructor const& value)
+    {
+        return os << "WithoutDefaultConstructor{" << value.value << "}";
+    }
+
+    std::ostream& operator<<(std::ostream& os, CompoundType const& value)
+    {
+        return os << "CompoundType{" << value.field1 << ',' << value.field2 << '}';
+    }
 }
 
 namespace coil
