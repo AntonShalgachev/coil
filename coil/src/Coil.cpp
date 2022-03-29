@@ -241,16 +241,12 @@ namespace coil
     }
 
     /// ArgValue.h ///
-    ArgValue::ArgValue() = default;
+    ArgValue::ArgValue() = default; // @NOCOVERAGE
     ArgValue::ArgValue(std::string_view value, std::vector<std::string_view> subvalues) : value(value), subvalues(std::move(subvalues)) {}
 
     bool ArgValue::operator==(ArgValue const& rhs) const
     {
         return value == rhs.value && subvalues == rhs.subvalues;
-    }
-    bool ArgValue::operator!=(ArgValue const& rhs) const
-    {
-        return !(*this == rhs);
     }
 
     /// TypeSerializer.h ///
@@ -288,11 +284,6 @@ namespace coil
     }
 
     /// ExecutionResult.h ///
-    ExecutionResult::operator bool() const
-    {
-        return errors.empty();
-    }
-
     void ExecutionResult::setReturnValue(std::string value)
     {
         returnValue = std::move(value);
