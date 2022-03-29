@@ -28,12 +28,10 @@ namespace coil
         template<typename Func>
         void add(std::string_view name, Func func)
         {
-            // No move list-initialization in vector? Really, C++?
-            std::vector<detail::AnyFunctor> functors;
-            functors.push_back(detail::AnyFunctor{ std::move(func) });
-            m_commands.insert_or_assign(name, std::move(functors));
+            add(name, detail::AnyFunctor{ std::move(func) });
         }
 
+        void add(std::string_view name, detail::AnyFunctor anyFunctor);
         void add(std::string_view name, std::vector<detail::AnyFunctor> anyFunctors);
 
         void remove(std::string_view name);
@@ -79,10 +77,13 @@ namespace coil
         template<typename Func>
         BindingProxy& operator=(Func func)
         {
-            // No move list-initialization in vector? Really, C++?
-            std::vector<detail::AnyFunctor> functors;
-            functors.push_back(detail::AnyFunctor{ std::move(func) });
-            return (*this = std::move(functors));
+            m_bindings.add(m_name, detail::AnyFunctor{ std::move(func) });
+            return *this;
+        }
+        BindingProxy& operator=(detail::AnyFunctor anyFunctor)
+        {
+            m_bindings.add(m_name, std::move(anyFunctor));
+            return *this;
         }
         BindingProxy& operator=(std::vector<detail::AnyFunctor> anyFunctors)
         {

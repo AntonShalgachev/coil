@@ -22,14 +22,11 @@ namespace coil
     };
 
     template<typename FuncPointer, typename C>
-    auto bind(FuncPointer func, C* obj)
+    detail::AnyFunctor bind(FuncPointer func, C* obj)
     {
         using Traits = detail::FuncTraits<FuncPointer>;
         static_assert(!std::is_const_v<C> || Traits::isConst, "Can't bind a const object to a non-constant member function");
 
-        // No move list-initialization in vector? Really, C++?
-        std::vector<detail::AnyFunctor> functors;
-        functors.push_back(detail::AnyFunctor{ MemberFunctionFunctor{ func, obj, typename Traits::ArgumentTypes{} } });
-        return functors;
+        return detail::AnyFunctor{ MemberFunctionFunctor{ func, obj, typename Traits::ArgumentTypes{} } };
     }
 }
