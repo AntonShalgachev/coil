@@ -355,6 +355,8 @@ template void std::swap<coil::detail::AnyStorageBase*>(coil::detail::AnyStorageB
 
 template std::string&& std::forward<std::string>(std::string&) noexcept;
 
+template std::vector<coil::detail::AnyFunctor>::~vector();
+
 COIL_TYPE_SERIALIZER_TEMPLATE(signed short);
 COIL_TYPE_SERIALIZER_TEMPLATE(unsigned short);
 COIL_TYPE_SERIALIZER_TEMPLATE(signed int);
