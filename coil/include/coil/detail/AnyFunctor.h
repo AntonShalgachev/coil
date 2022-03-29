@@ -54,44 +54,18 @@ namespace coil::detail
         }
 
         AnyFunctor(AnyFunctor const& rhs) = delete;
-        AnyFunctor(AnyFunctor&& rhs)
-        {
-            using namespace std;
-            swap(rhs.m_storage, m_storage);
-            swap(rhs.m_arity, m_arity);
-        }
+        AnyFunctor(AnyFunctor&& rhs);
 
         AnyFunctor& operator=(AnyFunctor const& rhs) = delete;
-        AnyFunctor& operator=(AnyFunctor&& rhs)
-        {
-            destroy();
+        AnyFunctor& operator=(AnyFunctor&& rhs);
 
-            using namespace std;
-            swap(rhs.m_storage, m_storage);
-            swap(rhs.m_arity, m_arity);
+        ~AnyFunctor();
+        void invokeTrampoline(detail::CallContext& context);
 
-            return *this;
-        }
+        std::size_t arity() const;
 
-        ~AnyFunctor()
-        {
-            destroy();
-        }
-
-        void destroy()
-        {
-            if (m_storage)
-                delete m_storage;
-
-            m_storage = nullptr;
-        }
-
-        void invokeTrampoline(detail::CallContext& context)
-        {
-            return m_storage->invoke(context);
-        }
-
-        std::size_t arity() const { return m_arity; }
+    private:
+        void destroy();
 
     private:
         AnyStorageBase* m_storage = nullptr;

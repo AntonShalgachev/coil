@@ -8,6 +8,44 @@ namespace coil
         AnyStorageBase::AnyStorageBase() = default;
         AnyStorageBase::~AnyStorageBase() = default;
 
+        AnyFunctor::AnyFunctor(AnyFunctor&& rhs)
+        {
+            using namespace std;
+            swap(rhs.m_storage, m_storage);
+            swap(rhs.m_arity, m_arity);
+        }
+
+        AnyFunctor& AnyFunctor::operator=(AnyFunctor&& rhs)
+        {
+            destroy();
+
+            using namespace std;
+            swap(rhs.m_storage, m_storage);
+            swap(rhs.m_arity, m_arity);
+
+            return *this;
+        }
+
+        AnyFunctor::~AnyFunctor()
+        {
+            destroy();
+        }
+
+        void AnyFunctor::destroy()
+        {
+            if (m_storage)
+                delete m_storage;
+
+            m_storage = nullptr;
+        }
+
+        void AnyFunctor::invokeTrampoline(detail::CallContext& context)
+        {
+            return m_storage->invoke(context);
+        }
+
+        std::size_t AnyFunctor::arity() const { return m_arity; }
+
         /// FunctorCaller.h ///
         template<>
         Context createContext<0>(CallContext& context)
