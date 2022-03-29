@@ -26,9 +26,9 @@ namespace coil::detail
     public:
         static constexpr bool isFunc = true;
 
-        using ReturnType = R;
+        using ReturnType = std::decay_t<R>;
         using ArgumentTypes = Types<Args...>;
-        using ArgsTraits = ArgsTraitsImpl<Args...>; // TODO export ArgsTraits internals directly here
+        using ArgsTraits = ArgsTraitsImpl<std::decay_t<Args>...>; // TODO export ArgsTraits internals directly here
         static constexpr bool isConst = IsConst;
     };
 

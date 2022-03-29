@@ -1,8 +1,4 @@
-#include "coil/Bindings.h"
-#include "coil/AnyArgView.h"
-#include "coil/Property.h"
-#include "coil/Variable.h"
-#include "coil/Bind.h"
+#include "coil/Coil.h"
 
 namespace coil
 {
@@ -14,7 +10,16 @@ namespace coil
             return E{};
         }
 
-        static std::string_view toString(E value)
+        static std::string toString(E const& value)
+        {
+            return {};
+        }
+    };
+
+    template<typename T>
+    struct TypeName<T>
+    {
+        static std::string_view name()
         {
             return "";
         }

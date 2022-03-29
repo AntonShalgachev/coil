@@ -1,5 +1,16 @@
 #include "Common.h"
 
+#if USE_COIL
+
+TEST_TEMPLATE(int);
+TEST_TEMPLATE(short);
+TEST_TEMPLATE(bool);
+TEST_TEMPLATE(unsigned);
+TEST_TEMPLATE(float);
+TEST_TEMPLATE(double);
+
+#endif
+
 #ifdef USE_MANUAL
 
 #include <cctype>

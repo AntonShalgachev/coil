@@ -8,21 +8,15 @@ namespace coil::detail
 {
     struct CallContext
     {
-        CallContext(ExecutionInput const& input) : input(input) {}
+        CallContext(ExecutionInput const& input);
 
         ExecutionInput const& input;
         ExecutionResult result;
 
-        std::ostream& out() { return result.output; }
+        std::ostream& out();
 
-        void reportError(std::string error)
-        {
-            result.errors.push_back(std::move(error));
-        }
+        void reportError(std::string error);
 
-        bool hasErrors() const
-        {
-            return !result.errors.empty();
-        }
+        bool hasErrors() const;
     };
 }

@@ -3,7 +3,6 @@
 #include "common/ExamplesCommon.h"
 
 #include <iostream>
-#include "coil/Bind.h"
 
 namespace
 {
