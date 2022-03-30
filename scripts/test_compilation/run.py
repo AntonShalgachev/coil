@@ -291,8 +291,6 @@ def profile_full_build(build_dir):
 
 
 def run_configuration(configuration: BuildConfiguration):
-    logger.info('Profiling configuration {}'.format(configuration.name))
-    
     build_dir = os.path.join(settings.build_directory, configuration.name)
     configuration_report_directory = os.path.join(settings.report_root_directory, configuration.name)
     
@@ -375,9 +373,11 @@ def main():
     if 'vsinstalldir' not in os.environ:
         raise RuntimeError("Visual Studio environment isn't set up")
 
-    logger.info('Configurations found: {}'.format(len(settings.configurations)))
+    configurations_count = len(settings.configurations)
+    logger.info('Configurations found: {}'.format(configurations_count))
 
-    for configuration in settings.configurations:
+    for i, configuration in enumerate(settings.configurations):
+        logger.info('Profiling configuration {} ({}/{})'.format(configuration.name, i+1, configurations_count))
         run_configuration(configuration)
 
 
