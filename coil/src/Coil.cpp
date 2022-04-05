@@ -242,12 +242,30 @@ namespace coil
 
     /// ArgValue.h ///
     ArgValue::ArgValue() = default; // @NOCOVERAGE
-    ArgValue::ArgValue(std::string_view value) : value(value), subvalues({ value }) {}
-    ArgValue::ArgValue(std::string_view value, std::vector<std::string_view> subvalues) : value(value), subvalues(std::move(subvalues)) {}
+    ArgValue::ArgValue(std::string_view value) : subvalues({ value }) {}
+    ArgValue::ArgValue(std::vector<std::string_view> subvalues) : subvalues(std::move(subvalues)) {}
 
     bool ArgValue::operator==(ArgValue const& rhs) const
     {
-        return value == rhs.value && subvalues == rhs.subvalues;
+        return subvalues == rhs.subvalues;
+    }
+
+    std::string ArgValue::str() const
+    {
+        std::stringstream ss;
+        std::string_view prefix = "";
+        for (std::string_view subvalue : subvalues)
+        {
+            ss << prefix << subvalue;
+            prefix = " ";
+        }
+
+        return ss.str();
+    }
+
+    std::ostream& operator<<(std::ostream& os, ArgValue const& rhs)
+    {
+        return os << rhs.str();
     }
 
     /// TypeSerializer.h ///

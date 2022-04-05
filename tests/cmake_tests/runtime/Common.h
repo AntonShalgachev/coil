@@ -26,27 +26,6 @@ namespace coil
         }
     };
 
-    inline std::ostream& operator<<(std::ostream& os, coil::ArgValue const& input)
-    {
-        os << "'" << input.value << "'";
-
-        if (input.subvalues.size() != 1 || input.subvalues[0] != input.value)
-        {
-            os << "(";
-
-            auto prefix = "";
-            for (std::string_view subvalue : input.subvalues)
-            {
-                os << prefix << "'" << subvalue << "'";
-                prefix = ", ";
-            }
-
-            os << ")";
-        }
-
-        return os;
-    }
-
     inline std::ostream& operator<<(std::ostream& os, coil::ExecutionInput const& input)
     {
         os << "'" << input.name << "'" << ", [";

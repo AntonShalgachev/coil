@@ -51,7 +51,7 @@ namespace
         if (target)
             target->name = newName;
         else
-            context.reportError("Failed to find entity '"s + std::string{ entity.getRaw().value } + "'"s);
+            context.reportError("Failed to find entity '"s + entity.getRaw().str() + "'"s);
     }
 
     void printEntities(coil::Context context)
