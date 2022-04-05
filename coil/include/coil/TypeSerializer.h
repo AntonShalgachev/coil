@@ -64,10 +64,14 @@ namespace coil
 
         T value{};
         std::from_chars_result result = std::from_chars(begin, end, value);
-        if (result.ptr == end)
-            return value;
 
-        return errors::serializationError<T>(input);
+        if (result.ec == std::errc::result_out_of_range)
+            return errors::serializationError<T>(input, "the value can't be represented in this type");
+
+        if (result.ptr != end || result.ec != std::errc{})
+            return errors::serializationError<T>(input);
+
+        return value;
     }
 
     template<typename T>
