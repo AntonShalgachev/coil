@@ -119,6 +119,13 @@ TEST(TypeSerializerTests, TestIntToString)
     EXPECT_EQ(coil::TypeSerializer<int>::toString(42), "42");
 }
 
+TEST(TypeSerializerTests, TestOutOfRangeInputFromString)
+{
+    using namespace std::literals;
+
+    EXPECT_EQ(coil::TypeSerializer<short>::fromString("99999999999"sv), coil::makeUnexpected("Unable to convert '99999999999' to type 'short': the value can't be represented in this type"));
+}
+
 TEST(TypeSerializerTests, TestBoolValidInputFromString)
 {
     using namespace std::literals;
