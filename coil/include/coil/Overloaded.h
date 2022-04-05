@@ -1,5 +1,9 @@
 #pragma once
 
+#include <vector>
+
+#include "detail/AnyFunctor.h"
+
 namespace coil
 {
     template<typename... Func>
