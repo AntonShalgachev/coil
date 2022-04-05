@@ -242,6 +242,7 @@ namespace coil
 
     /// ArgValue.h ///
     ArgValue::ArgValue() = default; // @NOCOVERAGE
+    ArgValue::ArgValue(std::string_view value) : value(value), subvalues({ value }) {}
     ArgValue::ArgValue(std::string_view value, std::vector<std::string_view> subvalues) : value(value), subvalues(std::move(subvalues)) {}
 
     bool ArgValue::operator==(ArgValue const& rhs) const
@@ -265,22 +266,32 @@ namespace coil
             return true;
         };
 
-        if (input.value == "1")
+        if (input.subvalues.size() != 1)
+            return errors::wrongSubvaluesSize<bool>(input, 1);
+
+        auto value = input.subvalues[0];
+
+        if (value == "1")
             return true;
-        if (input.value == "0")
+        if (value == "0")
             return false;
 
-        if (equalCaseInsensitive(input.value, "true"))
+        if (equalCaseInsensitive(value, "true"))
             return true;
-        if (equalCaseInsensitive(input.value, "false"))
+        if (equalCaseInsensitive(value, "false"))
             return false;
 
-        return makeSerializationError<bool>(input);
+        return errors::serializationError<bool>(input);
     }
 
     std::string coil::TypeSerializer<bool>::toString(bool const& value)
     {
         return value ? "true" : "false";
+    }
+
+    std::string coil::TypeSerializer<char const*>::toString(char const* const& value)
+    {
+        return std::string{ value };
     }
 
     /// ExecutionResult.h ///
@@ -304,6 +315,9 @@ namespace coil
     COIL_CREATE_TYPE_NAME_DEFINITION(float);
     COIL_CREATE_TYPE_NAME_DEFINITION(double);
     COIL_CREATE_TYPE_NAME_DEFINITION(long double);
+
+    COIL_CREATE_TYPE_NAME_DEFINITION(std::string);
+    COIL_CREATE_TYPE_NAME_DEFINITION(std::string_view);
 }
 
 // Explicitly instantiate used templates here in order to avoid intantiating them in each source file
