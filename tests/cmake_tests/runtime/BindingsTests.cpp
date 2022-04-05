@@ -332,6 +332,33 @@ TEST(BindingsTests, TestVariableWrite)
     EXPECT_EQ(variable, 365);
 }
 
+TEST(BindingsTests, TestReadonlyVariableRead)
+{
+    int const variable = 42;
+
+    coil::Bindings bindings;
+    bindings["var"] = coil::variable(&variable);
+    auto result = bindings.execute("var");
+
+    EXPECT_EQ(result.errors.size(), 0);
+    ASSERT_TRUE(result.returnValue.has_value());
+    EXPECT_EQ(*result.returnValue, "42");
+    EXPECT_EQ(variable, 42);
+}
+
+TEST(BindingsTests, TestReadonlyVariableWrite)
+{
+    int const variable = 42;
+
+    coil::Bindings bindings;
+    bindings["var"] = coil::variable(&variable);
+    auto result = bindings.execute("var 365");
+
+    EXPECT_EQ(result.errors.size(), 1);
+    EXPECT_PRED2(containsError, result.errors, "Cannot write to a read-only variable");
+    EXPECT_EQ(variable, 42);
+}
+
 TEST(BindingsTests, TestOverloaded)
 {
     coil::Bindings bindings;
