@@ -19,20 +19,25 @@ namespace coil
     {
         static Expected<E, std::string> fromString(ArgValue const& input)
         {
+            if (input.subvalues.size() != 1)
+                return errors::wrongSubvaluesSize<E>(input, 1);
+
+            auto value = input.subvalues[0];
+
             // Allow 0 for the flag enums which don't define a "None" flag
-            if (input.value == "0")
+            if (value == "0")
                 return static_cast<E>(0);
 
             // This makes enum names case-insensitive
             auto pred = [](unsigned char a, unsigned char b) { return std::tolower(a) == std::tolower(b); };
-            std::optional<E> optionalValue = magic_enum::enum_cast<E>(input.value, std::move(pred));
+            std::optional<E> optionalValue = magic_enum::enum_cast<E>(value, std::move(pred));
 
             if (optionalValue.has_value())
                 return optionalValue.value();
 
             std::string names = ::utils::flatten(magic_enum::enum_names<E>(), "'");
 
-            return makeSerializationError<E>(input, formatString("Possible values are [%s]", names.c_str()));
+            return errors::serializationError<E>(input, formatString("Possible values are [%s]", names.c_str()));
         }
 
         static std::string toString(E const& value)

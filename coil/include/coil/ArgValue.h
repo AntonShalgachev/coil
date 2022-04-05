@@ -11,7 +11,8 @@ namespace coil
         // TODO do we need these constructors?
         // TODO if yes, make constructors explicit
         ArgValue();
-        ArgValue(std::string_view value, std::vector<std::string_view> subvalues = {});
+        ArgValue(std::string_view value);
+        ArgValue(std::string_view value, std::vector<std::string_view> subvalues);
 
         bool operator==(ArgValue const& rhs) const;
 

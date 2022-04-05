@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string_view>
+#include <string>
 
 // TODO move basic names here
 
@@ -38,4 +39,7 @@ namespace coil
     COIL_CREATE_TYPE_NAME_DECLARATION(float);
     COIL_CREATE_TYPE_NAME_DECLARATION(double);
     COIL_CREATE_TYPE_NAME_DECLARATION(long double);
+
+    COIL_CREATE_TYPE_NAME_DECLARATION(std::string);
+    COIL_CREATE_TYPE_NAME_DECLARATION(std::string_view);
 }

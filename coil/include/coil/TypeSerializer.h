@@ -15,72 +15,40 @@
 
 namespace coil
 {
-    template<typename T>
-    Unexpected<std::string> makeSerializationError(ArgValue const& input, std::string_view details = {})
+    namespace errors
     {
-        std::string_view typeName = TypeName<T>::name();
+        template<typename T>
+        Unexpected<std::string> serializationError(ArgValue const& input, std::string_view details = {})
+        {
+            std::string_view typeName = TypeName<T>::name();
 
-        if (details.empty())
-            return makeUnexpected(formatString("Unable to convert '%.*s' to type '%.*s'", input.value.length(), input.value.data(), typeName.length(), typeName.data()));
-        else
-            return makeUnexpected(formatString("Unable to convert '%.*s' to type '%.*s': %.*s", input.value.length(), input.value.data(), typeName.length(), typeName.data(), details.length(), details.data()));
+            std::stringstream representationStream;
+            std::string_view prefix = "";
+            for (std::string_view subvalue : input.subvalues)
+            {
+                representationStream << prefix << subvalue;
+                prefix = " ";
+            }
+
+            std::string representation = representationStream.str();
+
+            if (details.empty())
+                return makeUnexpected(formatString("Unable to convert '%s' to type '%.*s'", representation.c_str(), typeName.length(), typeName.data()));
+            else
+                return makeUnexpected(formatString("Unable to convert '%s' to type '%.*s': %.*s", representation.c_str(), typeName.length(), typeName.data(), details.length(), details.data()));
+        }
+
+        template<typename T>
+        Unexpected<std::string> wrongSubvaluesSize(ArgValue const& input, std::size_t expectedSubvalues)
+        {
+            return serializationError<T>(input, formatString("Expected %d subvalues, got %d", expectedSubvalues, input.subvalues.size()));
+        }
     }
-
-    template<typename T>
-    Unexpected<std::string> makeSerializationError(ArgValue const& input, std::size_t expectedSubvalues)
-    {
-        return makeSerializationError<T>(input, formatString("Expected %d subvalues, got %d", expectedSubvalues, input.subvalues.size()));
-    }
-
-    template<typename T, typename = void>
-    struct HasCoutOperator : std::false_type {};
-    template<typename T>
-    struct HasCoutOperator<T, std::void_t<decltype(std::declval<std::ostream>() << std::declval<T>())>> : std::true_type {};
-
-    template<typename T, typename = void>
-    struct HasCinOperator : std::false_type {};
-    template<typename T>
-    struct HasCinOperator<T, std::void_t<decltype(std::declval<std::istream>() >> std::declval<T>())>> : std::true_type {};
 
     //////////////////////////////////////
 
     template<typename T, typename = void>
-    struct TypeSerializer
-    {
-        static_assert(!std::is_void_v<T>, "Void isn't a valid conversion type");
-
-        static Expected<T, std::string> fromString(ArgValue const& input);
-
-        static std::string toString(T const& value);
-    };
-
-    template<typename T, typename V>
-    coil::Expected<T, std::string> coil::TypeSerializer<T, V>::fromString(ArgValue const& input)
-    {
-        static_assert(HasCinOperator<T>::value, "T should have operator>>, or TypeSerializer has to be specialized for type T");
-
-        std::stringstream ss;
-        ss << input.value;
-
-        T value{};
-        ss >> value;
-
-        if (ss.eof() && !ss.fail())
-            return value;
-
-        return makeSerializationError<T>(input);
-    }
-
-    template<typename T, typename V>
-    std::string coil::TypeSerializer<T, V>::toString(T const& value)
-    {
-        static_assert(HasCoutOperator<T>::value, "T should have operator<<, or TypeSerializer has to be specialized for type T");
-
-        std::stringstream ss;
-        ss << value;
-
-        return ss.str();
-    }
+    struct TypeSerializer;
 
     //////////////////////////////////////
 
@@ -95,15 +63,19 @@ namespace coil
     template<typename T>
     coil::Expected<T, std::string> TypeSerializer<T, std::enable_if_t<std::is_arithmetic_v<T>>>::fromString(ArgValue const& input)
     {
-        auto begin = input.value.data();
-        auto end = input.value.data() + input.value.length();
+        if (input.subvalues.size() != 1)
+            return errors::wrongSubvaluesSize<T>(input, 1);
+
+        auto inputValue = input.subvalues[0];
+        auto begin = inputValue.data();
+        auto end = inputValue.data() + inputValue.length();
 
         T value{};
         std::from_chars_result result = std::from_chars(begin, end, value);
         if (result.ptr == end)
             return value;
 
-        return makeSerializationError<T>(input);
+        return errors::serializationError<T>(input);
     }
 
     template<typename T>
@@ -123,6 +95,14 @@ namespace coil
 
     //////////////////////////////////////
 
+    template<>
+    struct TypeSerializer<char const*>
+    {
+        static std::string toString(char const* const& value);
+    };
+
+    //////////////////////////////////////
+
     template<class Elem, class Traits, class Alloc>
     struct TypeSerializer<std::basic_string<Elem, Traits, Alloc>>
     {
@@ -134,7 +114,10 @@ namespace coil
     template<class Elem, class Traits, class Alloc>
     coil::Expected<std::basic_string<Elem, Traits, Alloc>, std::string> coil::TypeSerializer<std::basic_string<Elem, Traits, Alloc>>::fromString(ArgValue const& input)
     {
-        return std::basic_string<Elem, Traits, Alloc>{ input.value };
+        if (input.subvalues.size() != 1)
+            return errors::wrongSubvaluesSize<std::basic_string<Elem, Traits, Alloc>>(input, 1);
+
+        return std::basic_string<Elem, Traits, Alloc>{ input.subvalues[0] };
     }
 
     template<class Elem, class Traits, class Alloc>
@@ -156,7 +139,10 @@ namespace coil
     template<class Elem, class Traits>
     coil::Expected<std::basic_string_view<Elem, Traits>, std::string> coil::TypeSerializer<std::basic_string_view<Elem, Traits>>::fromString(ArgValue const& input)
     {
-        return input.value;
+        if (input.subvalues.size() != 1)
+            return errors::wrongSubvaluesSize<std::basic_string_view<Elem, Traits>>(input, 1);
+
+        return input.subvalues[0];
     }
 
     template<class Elem, class Traits>
@@ -178,14 +164,14 @@ namespace coil
     template<typename T>
     coil::Expected<std::optional<T>, std::string> coil::TypeSerializer<std::optional<T>>::fromString(ArgValue const& input)
     {
-        if (input.value.empty())
+        if (input.subvalues.empty() || input.subvalues[0].empty())
             return std::optional<T>{};
 
-        Expected<T, std::string> innerValue = TypeSerializer<T>::fromString(input.value);
+        Expected<T, std::string> innerValue = TypeSerializer<T>::fromString(input.subvalues[0]);
         if (innerValue)
             return std::optional<T>{*innerValue};
 
-        return makeSerializationError<std::optional<T>>(input, std::move(innerValue).error());
+        return errors::serializationError<std::optional<T>>(input, std::move(innerValue).error());
     }
 
     template<typename T>
@@ -217,7 +203,7 @@ namespace coil
         {
             Expected<T, std::string> expectedArg = TypeSerializer<T>::fromString(subvalue);
             if (!expectedArg)
-                return makeSerializationError<std::vector<T>>(input, std::move(expectedArg).error());
+                return errors::serializationError<std::vector<T>>(input, std::move(expectedArg).error());
 
             result.push_back(*std::move(expectedArg));
         }

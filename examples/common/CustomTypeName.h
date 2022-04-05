@@ -38,24 +38,6 @@ namespace coil
         }
     };
 
-    template<>
-    struct TypeName<std::string>
-    {
-        static std::string_view name()
-        {
-            return "std::string";
-        }
-    };
-
-    template<>
-    struct TypeName<std::string_view>
-    {
-        static std::string_view name()
-        {
-            return "std::string_view";
-        }
-    };
-
     template<typename T>
     struct TypeName<std::vector<T>>
     {

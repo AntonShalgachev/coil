@@ -83,7 +83,7 @@ namespace coil
                 // You can pass additional information to this function, which could clarify
                 // what went wrong. Here we pass `index.error()`, which is an error message
                 // from the index deserialization with the details
-                return makeSerializationError<EntityId>(input, index.error());
+                return errors::serializationError<EntityId>(input, index.error());
             }
 
             return EntityId{ *index };
@@ -103,15 +103,15 @@ namespace coil
         static Expected<Vec2, std::string> fromString(ArgValue const& input)
         {
             if (input.subvalues.size() != 2)
-                return makeSerializationError<Vec2>(input, 2);
+                return errors::wrongSubvaluesSize<Vec2>(input, 2);
 
             auto x = TypeSerializer<float>::fromString(input.subvalues[0]);
             auto y = TypeSerializer<float>::fromString(input.subvalues[1]);
 
             if (!x)
-                return makeSerializationError<Vec2>(input, x.error());
+                return errors::serializationError<Vec2>(input, x.error());
             if (!y)
-                return makeSerializationError<Vec2>(input, y.error());
+                return errors::serializationError<Vec2>(input, y.error());
 
             return Vec2{ *x, *y };
         }
