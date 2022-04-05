@@ -8,8 +8,6 @@ namespace coil
     // TODO rename class?
     struct ArgValue
     {
-        // TODO do we need these constructors?
-        // TODO if yes, make constructors explicit
         ArgValue();
         ArgValue(std::string_view value);
         ArgValue(std::vector<std::string_view> subvalues);
@@ -18,7 +16,6 @@ namespace coil
 
         std::string str() const;
 
-        // TODO don't allocate here?
         std::vector<std::string_view> subvalues;
     };
 
