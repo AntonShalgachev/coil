@@ -22,15 +22,7 @@ namespace coil
         {
             std::string_view typeName = TypeName<T>::name();
 
-            std::stringstream representationStream;
-            std::string_view prefix = "";
-            for (std::string_view subvalue : input.subvalues)
-            {
-                representationStream << prefix << subvalue;
-                prefix = " ";
-            }
-
-            std::string representation = representationStream.str();
+            std::string representation = input.str();
 
             if (details.empty())
                 return makeUnexpected(formatString("Unable to convert '%s' to type '%.*s'", representation.c_str(), typeName.length(), typeName.data()));

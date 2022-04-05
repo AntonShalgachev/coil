@@ -64,7 +64,7 @@ namespace
         if (context.hasErrors())
             return;
 
-        context.out() << requiredAnyArg->getRaw().value << ", " << *requiredFloatArg;
+        context.out() << requiredAnyArg->getRaw() << ", " << *requiredFloatArg;
         if (optionalFloatArg)
             context.out() << ", " << *optionalFloatArg;
         context.out() << std::endl;
@@ -109,4 +109,5 @@ void ErrorsExample::run()
     common::executeCommand(bindings, "test_named_args any_arg=something float_arg=3.14");
     common::executeCommand(bindings, "test_named_args any_arg=something float_arg=3.14 int_arg=non-int");
     common::executeCommand(bindings, "test_named_args any_arg=something float_arg=3.14 int_arg=42");
+    common::executeCommand(bindings, "test_named_args any_arg=(foo, bar) float_arg=3.14 int_arg=42");
 }

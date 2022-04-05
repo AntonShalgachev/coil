@@ -172,14 +172,14 @@ TEST(TypeSerializerTests, TestUserTypeToString)
 
 TEST(TypeSerializerTests, TestCompoundUserTypeFromStringValid)
 {
-    EXPECT_EQ(coil::TypeSerializer<CompoundType>::fromString({ "6, 28", {"6", "28"} }), (CompoundType{ 6, 28 }));
+    EXPECT_EQ(coil::TypeSerializer<CompoundType>::fromString({ {"6", "28"} }), (CompoundType{ 6, 28 }));
 }
 
 TEST(TypeSerializerTests, TestCompoundUserTypeFromStringInvalid)
 {
-    EXPECT_EQ(coil::TypeSerializer<CompoundType>::fromString({ "6, 28, 496", {"6", "28", "496"} }), coil::makeUnexpected("Unable to convert '6 28 496' to type 'CompoundType': Expected 2 subvalues, got 3"));
-    EXPECT_EQ(coil::TypeSerializer<CompoundType>::fromString({ "6", {"6"} }), coil::makeUnexpected("Unable to convert '6' to type 'CompoundType': Expected 2 subvalues, got 1"));
-    EXPECT_EQ(coil::TypeSerializer<CompoundType>::fromString({ "six, 28", {"six", "28"} }), coil::makeUnexpected("Unable to convert 'six 28' to type 'CompoundType': Unable to convert 'six' to type 'int'"));
+    EXPECT_EQ(coil::TypeSerializer<CompoundType>::fromString({ {"6", "28", "496"} }), coil::makeUnexpected("Unable to convert '6 28 496' to type 'CompoundType': Expected 2 subvalues, got 3"));
+    EXPECT_EQ(coil::TypeSerializer<CompoundType>::fromString({ "6" }), coil::makeUnexpected("Unable to convert '6' to type 'CompoundType': Expected 2 subvalues, got 1"));
+    EXPECT_EQ(coil::TypeSerializer<CompoundType>::fromString({ {"six", "28"} }), coil::makeUnexpected("Unable to convert 'six 28' to type 'CompoundType': Unable to convert 'six' to type 'int'"));
 }
 
 TEST(TypeSerializerTests, TestCompoundUserTypeToString)

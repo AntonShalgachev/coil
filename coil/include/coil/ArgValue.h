@@ -12,13 +12,15 @@ namespace coil
         // TODO if yes, make constructors explicit
         ArgValue();
         ArgValue(std::string_view value);
-        ArgValue(std::string_view value, std::vector<std::string_view> subvalues);
+        ArgValue(std::vector<std::string_view> subvalues);
 
         bool operator==(ArgValue const& rhs) const;
 
-        // TODO rename fields?
-        std::string_view value;
+        std::string str() const;
+
         // TODO don't allocate here?
         std::vector<std::string_view> subvalues;
     };
+
+    std::ostream& operator<<(std::ostream& os, ArgValue const& rhs);
 }

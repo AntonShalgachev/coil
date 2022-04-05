@@ -127,7 +127,7 @@ namespace coil
 
         ArgValue createArgValue(std::string_view input) const
         {
-            return ArgValue{ input, splitGroup(input) };
+            return ArgValue{ splitGroup(input) };
         }
 
         coil::Expected<void, std::string> tokenize(std::string_view str) const

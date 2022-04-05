@@ -726,7 +726,7 @@ TEST(BindingsTests, TestNamedArgsGetOrReport)
         {
             auto o = namedArgs.getOrReport("arg1", coil::NamedArgs::ArgType::Required);
             ASSERT_TRUE(o.has_value());
-            EXPECT_EQ(o->getRaw().value, "str"sv);
+            EXPECT_EQ(o->getRaw().str(), "str"sv);
             EXPECT_FALSE(context.hasErrors());
         }
 
