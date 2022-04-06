@@ -26,8 +26,8 @@ namespace coil
 
             if (details.empty())
                 return makeUnexpected(formatString("Unable to convert '%s' to type '%.*s'", representation.c_str(), typeName.length(), typeName.data()));
-            else
-                return makeUnexpected(formatString("Unable to convert '%s' to type '%.*s': %.*s", representation.c_str(), typeName.length(), typeName.data(), details.length(), details.data()));
+            
+            return makeUnexpected(formatString("Unable to convert '%s' to type '%.*s': %.*s", representation.c_str(), typeName.length(), typeName.data(), details.length(), details.data()));
         }
 
         template<typename T>
