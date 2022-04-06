@@ -109,6 +109,7 @@ TEST(TypeSerializerTests, TestIntInvalidInputFromString)
 {
     using namespace std::literals;
 
+    EXPECT_EQ(coil::TypeSerializer<int>::fromString({ {"foo", "bar"} }), coil::makeUnexpected("Unable to convert 'foo bar' to type 'int': Expected 1 subvalues, got 2"));
     EXPECT_EQ(coil::TypeSerializer<int>::fromString("42foo"sv), coil::makeUnexpected("Unable to convert '42foo' to type 'int'"));
 }
 
@@ -147,6 +148,8 @@ TEST(TypeSerializerTests, TestBoolInvalidInputFromString)
 {
     using namespace std::literals;
 
+    EXPECT_EQ(coil::TypeSerializer<bool>::fromString({ {"foo", "bar"} }), coil::makeUnexpected("Unable to convert 'foo bar' to type 'bool': Expected 1 subvalues, got 2"));
+
     EXPECT_EQ(coil::TypeSerializer<bool>::fromString("2"sv), coil::makeUnexpected("Unable to convert '2' to type 'bool'"));
     EXPECT_EQ(coil::TypeSerializer<bool>::fromString("none"sv), coil::makeUnexpected("Unable to convert 'none' to type 'bool'"));
     EXPECT_EQ(coil::TypeSerializer<bool>::fromString("-1"sv), coil::makeUnexpected("Unable to convert '-1' to type 'bool'"));
@@ -156,6 +159,28 @@ TEST(TypeSerializerTests, TestBoolToString)
 {
     EXPECT_EQ(coil::TypeSerializer<bool>::toString(true), "true");
     EXPECT_EQ(coil::TypeSerializer<bool>::toString(false), "false");
+}
+
+TEST(TypeSerializerTests, TestStringTypesValidInputFromString)
+{
+    using namespace std::literals;
+
+    EXPECT_EQ(coil::TypeSerializer<std::string_view>::fromString("foo"sv), "foo");
+    EXPECT_EQ(coil::TypeSerializer<std::string>::fromString("foo"sv), "foo");
+}
+
+TEST(TypeSerializerTests, TestStringTypesInvalidInputFromString)
+{
+    using namespace std::literals;
+
+    EXPECT_EQ(coil::TypeSerializer<std::string>::fromString({ {"foo", "bar"} }), coil::makeUnexpected("Unable to convert 'foo bar' to type 'std::string': Expected 1 subvalues, got 2"));
+    EXPECT_EQ(coil::TypeSerializer<std::string_view>::fromString({ {"foo", "bar"} }), coil::makeUnexpected("Unable to convert 'foo bar' to type 'std::string_view': Expected 1 subvalues, got 2"));
+}
+
+TEST(TypeSerializerTests, TestStringTypesToString)
+{
+    EXPECT_EQ(coil::TypeSerializer<std::string>::toString(std::string("foo")), "foo");
+    EXPECT_EQ(coil::TypeSerializer<std::string_view>::toString(std::string_view("foo")), "foo");
 }
 
 TEST(TypeSerializerTests, TestUserTypeFromStringValid)
