@@ -831,3 +831,11 @@ TEST(BindingsTests, TestTypeNames)
     EXPECT_EQ(coil::TypeName<double>::name(), "double"sv);
     EXPECT_EQ(coil::TypeName<long double>::name(), "long double"sv);
 }
+
+TEST(BindingsTests, TestArgValueToStream)
+{
+    coil::ArgValue value({ "foo", "bar" });
+    std::stringstream ss;
+    ss << value;
+    EXPECT_EQ(ss.str(), "foo bar");
+}
