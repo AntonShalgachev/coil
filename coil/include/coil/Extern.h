@@ -14,6 +14,7 @@
 
 #include "coil/detail/StringWrapper.h"
 
+#if _COIL_HAS_EXTERN_TEMPLATES
 extern template class std::optional<coil::AnyArgView>;
 extern template class coil::Expected<coil::AnyArgView, coil::NamedArgs::Error>;
 
@@ -40,6 +41,7 @@ extern template void std::swap<coil::detail::AnyStorageBase*>(coil::detail::AnyS
 extern template std::string&& std::forward<std::string>(std::string&) noexcept;
 
 extern template std::vector<coil::detail::AnyFunctor>::~vector();
+#endif
 
 #define COIL_TYPE_SERIALIZER_TEMPLATE_BASE(T, SPECIFIER) \
     SPECIFIER template struct coil::TypeSerializer<T>
@@ -47,6 +49,7 @@ extern template std::vector<coil::detail::AnyFunctor>::~vector();
 #define COIL_TYPE_SERIALIZER_EXTERN_TEMPLATE(T) COIL_TYPE_SERIALIZER_TEMPLATE_BASE(T, extern)
 #define COIL_TYPE_SERIALIZER_TEMPLATE(T) COIL_TYPE_SERIALIZER_TEMPLATE_BASE(T, )
 
+#if _COIL_HAS_EXTERN_TEMPLATES
 COIL_TYPE_SERIALIZER_EXTERN_TEMPLATE(signed short);
 COIL_TYPE_SERIALIZER_EXTERN_TEMPLATE(unsigned short);
 COIL_TYPE_SERIALIZER_EXTERN_TEMPLATE(signed int);
@@ -58,6 +61,7 @@ COIL_TYPE_SERIALIZER_EXTERN_TEMPLATE(unsigned long long);
 COIL_TYPE_SERIALIZER_EXTERN_TEMPLATE(float);
 COIL_TYPE_SERIALIZER_EXTERN_TEMPLATE(double);
 COIL_TYPE_SERIALIZER_EXTERN_TEMPLATE(long double);
+#endif
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 
