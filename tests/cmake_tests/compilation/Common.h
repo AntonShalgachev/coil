@@ -1,4 +1,3 @@
-#define COIL_NO_EXTERN_TEMPLATES
 #include "coil/Coil.h"
 
 namespace coil
