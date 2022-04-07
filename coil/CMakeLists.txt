@@ -31,6 +31,7 @@ set(ALL_FILES
     "include/coil/Coil.h"
     "include/coil/Extern.h"
 
+    "src/Extern.cpp"
     "src/Coil.cpp"
 )
 

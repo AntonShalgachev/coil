@@ -7,6 +7,7 @@
 
 #include "coil/AnyArgView.h"
 #include "coil/ArgValue.h"
+#include "coil/Bindings.h"
 #include "coil/Expected.h"
 #include "coil/NamedArgs.h"
 #include "coil/TypeSerializer.h"
