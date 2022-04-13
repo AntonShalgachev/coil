@@ -15,10 +15,14 @@ namespace coil::detail
         template<typename Func>
         FunctionWrapper(Func func)
         {
-            m_func = new Func(std::move(func));
+            using UnqualifiedFunc = std::decay_t<Func>;
 
-            m_callFunc = &FunctionWrapper<Args...>::typedCall<Func>;
-            m_destroyFunc = &FunctionWrapper<Args...>::typedDestroy<Func>;
+            static_assert(!std::is_member_function_pointer_v<UnqualifiedFunc>, "Func shouldn't be a member function");
+
+            m_func = new UnqualifiedFunc(std::move(func));
+
+            m_callFunc = &FunctionWrapper<Args...>::typedCall<UnqualifiedFunc>;
+            m_destroyFunc = &FunctionWrapper<Args...>::typedDestroy<UnqualifiedFunc>;
         }
         ~FunctionWrapper();
 
