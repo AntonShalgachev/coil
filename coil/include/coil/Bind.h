@@ -27,6 +27,8 @@ namespace coil
         using Traits = detail::FuncTraits<FuncPointer>;
         static_assert(!std::is_const_v<C> || Traits::isConst, "Can't bind a const object to a non-constant member function");
 
-        return detail::AnyFunctor{ MemberFunctionFunctor{ func, obj, typename Traits::ArgumentTypes{} } };
+        auto functor = MemberFunctionFunctor{ func, obj, typename Traits::ArgumentTypes{} };
+        using FunctionWrapper = typename detail::FuncTraits<decltype(functor)>::FunctionWrapperType;
+        return detail::AnyFunctor{ FunctionWrapper{ std::move(functor) } };
     }
 }

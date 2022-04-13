@@ -9,6 +9,28 @@ TEST_TEMPLATE(unsigned);
 TEST_TEMPLATE(float);
 TEST_TEMPLATE(double);
 
+COIL_FUNCTION_ARGS_TEMPLATE(short, bool, double, float, unsigned);
+COIL_FUNCTION_ARGS_TEMPLATE(bool, short, bool, short, unsigned);
+COIL_FUNCTION_ARGS_TEMPLATE(bool, bool, double, double, double);
+COIL_FUNCTION_ARGS_TEMPLATE(unsigned, unsigned, int, double, int);
+COIL_FUNCTION_ARGS_TEMPLATE(int, int, unsigned, int, unsigned);
+COIL_FUNCTION_ARGS_TEMPLATE(unsigned, short, int, unsigned, short);
+COIL_FUNCTION_ARGS_TEMPLATE(unsigned, double, unsigned, int, unsigned);
+COIL_FUNCTION_ARGS_TEMPLATE(int, float, bool, bool, bool);
+COIL_FUNCTION_ARGS_TEMPLATE(int, float, int, float, bool);
+COIL_FUNCTION_ARGS_TEMPLATE(bool, bool, float, unsigned, float);
+
+COIL_FUNCTION_ARGS_TEMPLATE(coil::Context, float, unsigned, int, double, float);
+COIL_FUNCTION_ARGS_TEMPLATE(coil::Context, int, short, unsigned, float, float);
+COIL_FUNCTION_ARGS_TEMPLATE(coil::Context, float, short, float, double, int);
+COIL_FUNCTION_ARGS_TEMPLATE(coil::Context, double, int, double, double, double);
+COIL_FUNCTION_ARGS_TEMPLATE(coil::Context, unsigned, int, unsigned, float, double);
+COIL_FUNCTION_ARGS_TEMPLATE(coil::Context, unsigned, int, short, float, bool);
+COIL_FUNCTION_ARGS_TEMPLATE(coil::Context, double, float, short, float, float);
+COIL_FUNCTION_ARGS_TEMPLATE(coil::Context, double, short, float, short, short);
+COIL_FUNCTION_ARGS_TEMPLATE(coil::Context, float, float, int, int, double);
+COIL_FUNCTION_ARGS_TEMPLATE(coil::Context, short, short, bool, int, float);
+
 #endif
 
 #ifdef USE_MANUAL
