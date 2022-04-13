@@ -2,6 +2,7 @@
 
 #include "CallContext.h"
 #include "FunctorCaller.h"
+#include "FunctionWrapper.h"
 
 namespace coil::detail
 {
@@ -15,43 +16,40 @@ namespace coil::detail
         virtual void invoke(CallContext& context) = 0;
     };
 
-    template<typename Func>
+    template<typename FuncWrapper>
     class AnyStorage : public AnyStorageBase
     {
     public:
-        static_assert(std::is_same_v<std::decay_t<Func>, Func>, "Internal: Func should be a decayed type");
+        AnyStorage(FuncWrapper func);
 
-        AnyStorage(Func func) : m_func(std::move(func)) {}
-
-        void invoke(CallContext& context) override
-        {
-            using ArgsTraits = typename detail::FuncTraits<Func>::ArgsTraits;
-
-            using UserArgTypes = typename ArgsTraits::UserArgumentTypes;
-            using UserArgIndicesType = typename UserArgTypes::IndicesType;
-            using NonUserArgsIndicesType = typename ArgsTraits::NonUserArgsIndices;
-
-            unpackAndInvoke(m_func, context, NonUserArgsIndicesType{}, UserArgTypes{}, UserArgIndicesType{});
-        }
+        void invoke(CallContext& context) override;
 
     private:
-        Func m_func;
+        FuncWrapper m_funcWrapper;
     };
 
+    template<typename FuncWrapper>
+    coil::detail::AnyStorage<FuncWrapper>::AnyStorage(FuncWrapper func) : m_funcWrapper(std::move(func)) {}
+
+    template<typename FuncWrapper>
+    void coil::detail::AnyStorage<FuncWrapper>::invoke(CallContext& context)
+    {
+        using ArgsTraits = typename FuncWrapper::ArgsTraits;
+
+        using UserArgTypes = typename ArgsTraits::UserArgumentTypes;
+        using UserArgIndicesType = typename UserArgTypes::IndicesType;
+        using NonUserArgsIndicesType = typename ArgsTraits::NonUserArgsIndices;
+
+        unpackAndInvoke(m_funcWrapper, context, NonUserArgsIndicesType{}, UserArgTypes{}, UserArgIndicesType{});
+    }
+
+    // TODO get rid of AnyStorage by having pointers to template functions
     // TODO rename to 'FunctorDescriptor'
     struct AnyFunctor
     {
     public:
-        template<typename Func>
-        AnyFunctor(Func func) : m_storage(new AnyStorage<std::decay_t<Func>>(std::move(func)))
-        {
-            using UnqualifiedFunc = std::decay_t<Func>;
-
-            static_assert(detail::FuncTraits<UnqualifiedFunc>::isFunc, "Func should be a functor object");
-            static_assert(!std::is_member_function_pointer_v<UnqualifiedFunc>, "Func shouldn't be a member function");
-
-            m_arity = detail::FuncTraits<UnqualifiedFunc>::ArgsTraits::UserArgumentTypes::size;
-        }
+        template<typename FunctionWrapper>
+        AnyFunctor(FunctionWrapper func);
 
         AnyFunctor(AnyFunctor const& rhs) = delete;
         AnyFunctor(AnyFunctor&& rhs);
@@ -71,4 +69,12 @@ namespace coil::detail
         AnyStorageBase* m_storage = nullptr;
         std::size_t m_arity;
     };
+
+    template<typename FunctionWrapper>
+    coil::detail::AnyFunctor::AnyFunctor(FunctionWrapper func)
+    {
+        m_storage = new AnyStorage<FunctionWrapper>(std::move(func));
+        m_arity = FunctionWrapper::ArgsTraits::UserArgumentTypes::size;
+    }
+
 }

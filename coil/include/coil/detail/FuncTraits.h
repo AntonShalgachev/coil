@@ -7,6 +7,9 @@
 namespace coil::detail
 {
     template<typename... Args>
+    class FunctionWrapper;
+
+    template<typename... Args>
     struct ArgsTraitsImpl
     {
         using UserArgumentTypes = Types<Args...>;
@@ -28,7 +31,7 @@ namespace coil::detail
 
         using ReturnType = std::decay_t<R>;
         using ArgumentTypes = Types<Args...>;
-        using ArgsTraits = ArgsTraitsImpl<std::decay_t<Args>...>; // TODO export ArgsTraits internals directly here
+        using FunctionWrapperType = FunctionWrapper<Args...>;
         static constexpr bool isConst = IsConst;
     };
 
