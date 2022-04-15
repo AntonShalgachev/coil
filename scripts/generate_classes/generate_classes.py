@@ -18,6 +18,12 @@ def combine(args):
     return ', '.join(typed_args)
 
 
+def if_non_empty(items, value):
+    if len(items) > 0:
+        return value
+    return ""
+
+
 DEFAULT_TYPES = ['int', 'float', 'double', 'bool', 'short', 'unsigned', 'std::string const&', 'std::string', 'std::string_view']
 
 
@@ -58,17 +64,19 @@ class ClassGenerator:
     def _generate_class(self, base_name, class_index, classes_count, includes_count, has_bindings):
         name  = base_name + str(class_index)
 
-        base_seed = self._seed + class_index
+        base_seed = self._seed
 
         random.seed(base_seed + self._methods_seed_offset)
         methods = []
-        for i in range(self._methods_count):
-            methods.append(self._generate_method('method', i))
+        for args_count in self._args_count:
+            for _ in range(self._methods_count):
+                methods.append(self._generate_method('method', len(methods), args_count))
             
         random.seed(base_seed + self._functions_seed_offset)
         functions = []
-        for i in range(self._functions_count):
-            functions.append(self._generate_method('function', i))
+        for args_count in self._args_count:
+            for _ in range(self._functions_count):
+                functions.append(self._generate_method('function', len(functions), args_count))
             
         random.seed(base_seed + self._member_variables_seed_offset)
         member_variables = []
@@ -97,10 +105,10 @@ class ClassGenerator:
         desc['has_bindings'] = has_bindings
         return desc
 
-    def _generate_method(self, base_name, method_index):
+    def _generate_method(self, base_name, method_index, args_count):
         name  = base_name + str(method_index)
 
-        args = random.choices(self._types, k=self._args_count)
+        args = random.choices(self._types, k=args_count)
 
         return_index = None
         if len(args) > 0 and bool(random.getrandbits(1)):
@@ -151,6 +159,7 @@ class SourceWriter:
 
         search_list = c.copy()
         search_list['combine'] = combine
+        search_list['if_non_empty'] = if_non_empty
         search_list['arg_names'] = arg_names
         search_list['return_type'] = return_type
         self._write_template(template_name, search_list, output_folder, source_name)
@@ -172,12 +181,12 @@ def main():
     seed = 88005553535
     classes_with_bindings_count = 200
     classes_without_bindings_count = 0
-    methods_count = 10
-    functions_count = 10
+    methods_count = 4
+    functions_count = 4
     member_variables_count = 10
     variables_count = 10
     includes_count = 0
-    args_count = 5
+    args_count = [0, 1, 2]
     types = ['int', 'float', 'double', 'bool', 'short', 'unsigned']
     destination = '../../tests/compilation_performance/generated'
 

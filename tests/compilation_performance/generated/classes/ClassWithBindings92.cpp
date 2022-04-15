@@ -35,6 +35,8 @@ void ClassWithBindings92::registerBindings(coil::Bindings& bindings)
     bindings["method7"] = coil::bind(&ClassWithBindings92::method7, this);
     bindings["method8"] = coil::bind(&ClassWithBindings92::method8, this);
     bindings["method9"] = coil::bind(&ClassWithBindings92::method9, this);
+    bindings["method10"] = coil::bind(&ClassWithBindings92::method10, this);
+    bindings["method11"] = coil::bind(&ClassWithBindings92::method11, this);
 
     bindings["memberVariable0"] = coil::variable(&memberVariable0);
     bindings["memberVariable1"] = coil::variable(&memberVariable1);
@@ -47,95 +49,105 @@ void ClassWithBindings92::registerBindings(coil::Bindings& bindings)
     bindings["memberVariable8"] = coil::variable(&memberVariable8);
     bindings["memberVariable9"] = coil::variable(&memberVariable9);
 
-    bindings["ClassWithBindings92_function0"] = [](coil::Context context, short arg0, bool arg1, int arg2, bool arg3, bool arg4)
+    bindings["ClassWithBindings92_function0"] = [](coil::Context context)
     {
         context.reportError("Task failed successfully");
         auto args = context.namedArgs();
         args.get("key");
-        args.get<short>("key");
-        args.getOrReport<short>("key", coil::NamedArgs::ArgType::Optional);
-        return ClassWithBindings92::function0(arg0, arg1, arg2, arg3, arg4);
+        return ClassWithBindings92::function0();
     };
-    bindings["ClassWithBindings92_function1"] = [](coil::Context context, bool arg0, short arg1, double arg2, short arg3, double arg4)
+    bindings["ClassWithBindings92_function1"] = [](coil::Context context)
     {
         context.reportError("Task failed successfully");
         auto args = context.namedArgs();
         args.get("key");
-        args.get<bool>("key");
-        args.getOrReport<bool>("key", coil::NamedArgs::ArgType::Optional);
-        return ClassWithBindings92::function1(arg0, arg1, arg2, arg3, arg4);
+        return ClassWithBindings92::function1();
     };
-    bindings["ClassWithBindings92_function2"] = [](coil::Context context, float arg0, double arg1, float arg2, unsigned arg3, float arg4)
+    bindings["ClassWithBindings92_function2"] = [](coil::Context context)
     {
         context.reportError("Task failed successfully");
         auto args = context.namedArgs();
         args.get("key");
-        args.get<float>("key");
-        args.getOrReport<float>("key", coil::NamedArgs::ArgType::Optional);
-        return ClassWithBindings92::function2(arg0, arg1, arg2, arg3, arg4);
+        return ClassWithBindings92::function2();
     };
-    bindings["ClassWithBindings92_function3"] = [](coil::Context context, float arg0, float arg1, short arg2, unsigned arg3, bool arg4)
+    bindings["ClassWithBindings92_function3"] = [](coil::Context context)
     {
         context.reportError("Task failed successfully");
         auto args = context.namedArgs();
         args.get("key");
-        args.get<float>("key");
-        args.getOrReport<float>("key", coil::NamedArgs::ArgType::Optional);
-        return ClassWithBindings92::function3(arg0, arg1, arg2, arg3, arg4);
+        return ClassWithBindings92::function3();
     };
-    bindings["ClassWithBindings92_function4"] = [](coil::Context context, float arg0, short arg1, float arg2, short arg3, int arg4)
+    bindings["ClassWithBindings92_function4"] = [](coil::Context context, float arg0)
     {
         context.reportError("Task failed successfully");
         auto args = context.namedArgs();
         args.get("key");
         args.get<float>("key");
         args.getOrReport<float>("key", coil::NamedArgs::ArgType::Optional);
-        return ClassWithBindings92::function4(arg0, arg1, arg2, arg3, arg4);
+        return ClassWithBindings92::function4(arg0);
     };
-    bindings["ClassWithBindings92_function5"] = [](coil::Context context, int arg0, short arg1, double arg2, int arg3, int arg4)
+    bindings["ClassWithBindings92_function5"] = [](coil::Context context, int arg0)
     {
         context.reportError("Task failed successfully");
         auto args = context.namedArgs();
         args.get("key");
         args.get<int>("key");
         args.getOrReport<int>("key", coil::NamedArgs::ArgType::Optional);
-        return ClassWithBindings92::function5(arg0, arg1, arg2, arg3, arg4);
+        return ClassWithBindings92::function5(arg0);
     };
-    bindings["ClassWithBindings92_function6"] = [](coil::Context context, short arg0, short arg1, bool arg2, bool arg3, bool arg4)
+    bindings["ClassWithBindings92_function6"] = [](coil::Context context, double arg0)
     {
         context.reportError("Task failed successfully");
         auto args = context.namedArgs();
         args.get("key");
-        args.get<short>("key");
-        args.getOrReport<short>("key", coil::NamedArgs::ArgType::Optional);
-        return ClassWithBindings92::function6(arg0, arg1, arg2, arg3, arg4);
+        args.get<double>("key");
+        args.getOrReport<double>("key", coil::NamedArgs::ArgType::Optional);
+        return ClassWithBindings92::function6(arg0);
     };
-    bindings["ClassWithBindings92_function7"] = [](coil::Context context, int arg0, bool arg1, bool arg2, int arg3, bool arg4)
+    bindings["ClassWithBindings92_function7"] = [](coil::Context context, int arg0)
     {
         context.reportError("Task failed successfully");
         auto args = context.namedArgs();
         args.get("key");
         args.get<int>("key");
         args.getOrReport<int>("key", coil::NamedArgs::ArgType::Optional);
-        return ClassWithBindings92::function7(arg0, arg1, arg2, arg3, arg4);
+        return ClassWithBindings92::function7(arg0);
     };
-    bindings["ClassWithBindings92_function8"] = [](coil::Context context, short arg0, short arg1, float arg2, unsigned arg3, unsigned arg4)
+    bindings["ClassWithBindings92_function8"] = [](coil::Context context, short arg0, int arg1)
     {
         context.reportError("Task failed successfully");
         auto args = context.namedArgs();
         args.get("key");
         args.get<short>("key");
         args.getOrReport<short>("key", coil::NamedArgs::ArgType::Optional);
-        return ClassWithBindings92::function8(arg0, arg1, arg2, arg3, arg4);
+        return ClassWithBindings92::function8(arg0, arg1);
     };
-    bindings["ClassWithBindings92_function9"] = [](coil::Context context, unsigned arg0, double arg1, double arg2, unsigned arg3, bool arg4)
+    bindings["ClassWithBindings92_function9"] = [](coil::Context context, int arg0, double arg1)
     {
         context.reportError("Task failed successfully");
         auto args = context.namedArgs();
         args.get("key");
-        args.get<unsigned>("key");
-        args.getOrReport<unsigned>("key", coil::NamedArgs::ArgType::Optional);
-        return ClassWithBindings92::function9(arg0, arg1, arg2, arg3, arg4);
+        args.get<int>("key");
+        args.getOrReport<int>("key", coil::NamedArgs::ArgType::Optional);
+        return ClassWithBindings92::function9(arg0, arg1);
+    };
+    bindings["ClassWithBindings92_function10"] = [](coil::Context context, double arg0, int arg1)
+    {
+        context.reportError("Task failed successfully");
+        auto args = context.namedArgs();
+        args.get("key");
+        args.get<double>("key");
+        args.getOrReport<double>("key", coil::NamedArgs::ArgType::Optional);
+        return ClassWithBindings92::function10(arg0, arg1);
+    };
+    bindings["ClassWithBindings92_function11"] = [](coil::Context context, double arg0, int arg1)
+    {
+        context.reportError("Task failed successfully");
+        auto args = context.namedArgs();
+        args.get("key");
+        args.get<double>("key");
+        args.getOrReport<double>("key", coil::NamedArgs::ArgType::Optional);
+        return ClassWithBindings92::function11(arg0, arg1);
     };
 
     bindings["ClassWithBindings92_variable0"] = coil::variable(&ClassWithBindings92::variable0);
@@ -164,6 +176,8 @@ void ClassWithBindings92::registerBindings(DumbBindings& bindings)
     bindings.registerCommand("ClassWithBindings92_method7", [this](auto const& args) { return method7Command(args); });
     bindings.registerCommand("ClassWithBindings92_method8", [this](auto const& args) { return method8Command(args); });
     bindings.registerCommand("ClassWithBindings92_method9", [this](auto const& args) { return method9Command(args); });
+    bindings.registerCommand("ClassWithBindings92_method10", [this](auto const& args) { return method10Command(args); });
+    bindings.registerCommand("ClassWithBindings92_method11", [this](auto const& args) { return method11Command(args); });
 
     bindings.registerCommand("ClassWithBindings92_memberVariable0", [this](auto const& args) { return memberVariable0Command(args); });
     bindings.registerCommand("ClassWithBindings92_memberVariable1", [this](auto const& args) { return memberVariable1Command(args); });
@@ -186,6 +200,8 @@ void ClassWithBindings92::registerBindings(DumbBindings& bindings)
     bindings.registerCommand("ClassWithBindings92_function7", ClassWithBindings92::function7Command);
     bindings.registerCommand("ClassWithBindings92_function8", ClassWithBindings92::function8Command);
     bindings.registerCommand("ClassWithBindings92_function9", ClassWithBindings92::function9Command);
+    bindings.registerCommand("ClassWithBindings92_function10", ClassWithBindings92::function10Command);
+    bindings.registerCommand("ClassWithBindings92_function11", ClassWithBindings92::function11Command);
 
     bindings.registerCommand("ClassWithBindings92_variable0", ClassWithBindings92::variable0Command);
     bindings.registerCommand("ClassWithBindings92_variable1", ClassWithBindings92::variable1Command);
@@ -223,9 +239,8 @@ std::optional<float> ClassWithBindings92::workInternally(std::vector<std::string
     return result;
 }
 
-void ClassWithBindings92::method0(int arg0, double arg1, double arg2, short arg3, int arg4)
+void ClassWithBindings92::method0()
 {
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
     std::vector<std::string> strings;
     std::random_device rd;
@@ -241,9 +256,8 @@ void ClassWithBindings92::method0(int arg0, double arg1, double arg2, short arg3
         std::cout << "null" << std::endl;
 
 }
-void ClassWithBindings92::method1(int arg0, unsigned arg1, short arg2, unsigned arg3, float arg4)
+void ClassWithBindings92::method1()
 {
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
     std::vector<std::string> strings;
     std::random_device rd;
@@ -259,28 +273,8 @@ void ClassWithBindings92::method1(int arg0, unsigned arg1, short arg2, unsigned 
         std::cout << "null" << std::endl;
 
 }
-short ClassWithBindings92::method2(unsigned arg0, float arg1, short arg2, bool arg3, short arg4)
+void ClassWithBindings92::method2()
 {
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg2;
-}
-void ClassWithBindings92::method3(int arg0, unsigned arg1, unsigned arg2, unsigned arg3, int arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
     std::vector<std::string> strings;
     std::random_device rd;
@@ -296,9 +290,8 @@ void ClassWithBindings92::method3(int arg0, unsigned arg1, unsigned arg2, unsign
         std::cout << "null" << std::endl;
 
 }
-void ClassWithBindings92::method4(short arg0, float arg1, unsigned arg2, bool arg3, short arg4)
+void ClassWithBindings92::method3()
 {
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
     
     std::vector<std::string> strings;
     std::random_device rd;
@@ -314,9 +307,9 @@ void ClassWithBindings92::method4(short arg0, float arg1, unsigned arg2, bool ar
         std::cout << "null" << std::endl;
 
 }
-short ClassWithBindings92::method5(short arg0, unsigned arg1, short arg2, int arg3, unsigned arg4)
+short ClassWithBindings92::method4(short arg0)
 {
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    std::cout << arg0;
     
     std::vector<std::string> strings;
     std::random_device rd;
@@ -333,47 +326,9 @@ short ClassWithBindings92::method5(short arg0, unsigned arg1, short arg2, int ar
 
     return arg0;
 }
-unsigned ClassWithBindings92::method6(unsigned arg0, float arg1, int arg2, unsigned arg3, unsigned arg4)
+void ClassWithBindings92::method5(double arg0)
 {
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg4;
-}
-short ClassWithBindings92::method7(float arg0, float arg1, unsigned arg2, int arg3, short arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg4;
-}
-void ClassWithBindings92::method8(int arg0, unsigned arg1, int arg2, unsigned arg3, float arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    std::cout << arg0;
     
     std::vector<std::string> strings;
     std::random_device rd;
@@ -389,29 +344,9 @@ void ClassWithBindings92::method8(int arg0, unsigned arg1, int arg2, unsigned ar
         std::cout << "null" << std::endl;
 
 }
-double ClassWithBindings92::method9(double arg0, unsigned arg1, double arg2, int arg3, bool arg4)
+void ClassWithBindings92::method6(short arg0)
 {
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg2;
-}
-
-void ClassWithBindings92::function0(short arg0, bool arg1, int arg2, bool arg3, bool arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    std::cout << arg0;
     
     std::vector<std::string> strings;
     std::random_device rd;
@@ -427,101 +362,9 @@ void ClassWithBindings92::function0(short arg0, bool arg1, int arg2, bool arg3, 
         std::cout << "null" << std::endl;
 
 }
-void ClassWithBindings92::function1(bool arg0, short arg1, double arg2, short arg3, double arg4)
+double ClassWithBindings92::method7(double arg0)
 {
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-double ClassWithBindings92::function2(float arg0, double arg1, float arg2, unsigned arg3, float arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg1;
-}
-unsigned ClassWithBindings92::function3(float arg0, float arg1, short arg2, unsigned arg3, bool arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-    return arg3;
-}
-void ClassWithBindings92::function4(float arg0, short arg1, float arg2, short arg3, int arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-void ClassWithBindings92::function5(int arg0, short arg1, double arg2, int arg3, int arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
-    
-    std::vector<std::string> strings;
-    std::random_device rd;
-    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
-
-    for (auto i = 0; i < 100; i++)
-        strings.push_back(std::to_string(dist(rd)));
-
-    auto result = workInternally(strings);
-    if (result)
-        std::cout << *result << std::endl;
-    else
-        std::cout << "null" << std::endl;
-
-}
-short ClassWithBindings92::function6(short arg0, short arg1, bool arg2, bool arg3, bool arg4)
-{
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    std::cout << arg0;
     
     std::vector<std::string> strings;
     std::random_device rd;
@@ -538,9 +381,9 @@ short ClassWithBindings92::function6(short arg0, short arg1, bool arg2, bool arg
 
     return arg0;
 }
-int ClassWithBindings92::function7(int arg0, bool arg1, bool arg2, int arg3, bool arg4)
+short ClassWithBindings92::method8(short arg0, unsigned arg1)
 {
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    std::cout << arg0 << arg1;
     
     std::vector<std::string> strings;
     std::random_device rd;
@@ -557,9 +400,132 @@ int ClassWithBindings92::function7(int arg0, bool arg1, bool arg2, int arg3, boo
 
     return arg0;
 }
-short ClassWithBindings92::function8(short arg0, short arg1, float arg2, unsigned arg3, unsigned arg4)
+void ClassWithBindings92::method9(bool arg0, bool arg1)
 {
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    std::cout << arg0 << arg1;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+void ClassWithBindings92::method10(bool arg0, unsigned arg1)
+{
+    std::cout << arg0 << arg1;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+void ClassWithBindings92::method11(int arg0, float arg1)
+{
+    std::cout << arg0 << arg1;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+
+void ClassWithBindings92::function0()
+{
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+void ClassWithBindings92::function1()
+{
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+void ClassWithBindings92::function2()
+{
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+void ClassWithBindings92::function3()
+{
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+float ClassWithBindings92::function4(float arg0)
+{
+    std::cout << arg0;
     
     std::vector<std::string> strings;
     std::random_device rd;
@@ -576,9 +542,9 @@ short ClassWithBindings92::function8(short arg0, short arg1, float arg2, unsigne
 
     return arg0;
 }
-unsigned ClassWithBindings92::function9(unsigned arg0, double arg1, double arg2, unsigned arg3, bool arg4)
+void ClassWithBindings92::function5(int arg0)
 {
-    std::cout << arg0 << arg1 << arg2 << arg3 << arg4;
+    std::cout << arg0;
     
     std::vector<std::string> strings;
     std::random_device rd;
@@ -593,7 +559,116 @@ unsigned ClassWithBindings92::function9(unsigned arg0, double arg1, double arg2,
     else
         std::cout << "null" << std::endl;
 
-    return arg3;
+}
+double ClassWithBindings92::function6(double arg0)
+{
+    std::cout << arg0;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg0;
+}
+int ClassWithBindings92::function7(int arg0)
+{
+    std::cout << arg0;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+    return arg0;
+}
+void ClassWithBindings92::function8(short arg0, int arg1)
+{
+    std::cout << arg0 << arg1;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+void ClassWithBindings92::function9(int arg0, double arg1)
+{
+    std::cout << arg0 << arg1;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+void ClassWithBindings92::function10(double arg0, int arg1)
+{
+    std::cout << arg0 << arg1;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
+}
+void ClassWithBindings92::function11(double arg0, int arg1)
+{
+    std::cout << arg0 << arg1;
+    
+    std::vector<std::string> strings;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist{-10.0f, 10.0f};
+
+    for (auto i = 0; i < 100; i++)
+        strings.push_back(std::to_string(dist(rd)));
+
+    auto result = workInternally(strings);
+    if (result)
+        std::cout << *result << std::endl;
+    else
+        std::cout << "null" << std::endl;
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -602,175 +677,55 @@ unsigned ClassWithBindings92::function9(unsigned arg0, double arg1, double arg2,
 
 std::string ClassWithBindings92::method0Command(std::vector<std::string> const& arguments)
 {
-    if (arguments.size() != 5)
+    if (arguments.size() != 0)
     {
         std::cout << "Wrong number of arguments!" << std::endl;
         return {};
     }
 
-    int arg0{};
-    if (!tryConvert(arguments[0], arg0))
-    {
-        std::cout << "Failed to convert argument 0!" << std::endl;
-        return {};
-    }
-    double arg1{};
-    if (!tryConvert(arguments[1], arg1))
-    {
-        std::cout << "Failed to convert argument 1!" << std::endl;
-        return {};
-    }
-    double arg2{};
-    if (!tryConvert(arguments[2], arg2))
-    {
-        std::cout << "Failed to convert argument 2!" << std::endl;
-        return {};
-    }
-    short arg3{};
-    if (!tryConvert(arguments[3], arg3))
-    {
-        std::cout << "Failed to convert argument 3!" << std::endl;
-        return {};
-    }
-    int arg4{};
-    if (!tryConvert(arguments[4], arg4))
-    {
-        std::cout << "Failed to convert argument 4!" << std::endl;
-        return {};
-    }
 
-    method0(arg0, arg1, arg2, arg3, arg4);
+    method0();
     return {};
 }
 std::string ClassWithBindings92::method1Command(std::vector<std::string> const& arguments)
 {
-    if (arguments.size() != 5)
+    if (arguments.size() != 0)
     {
         std::cout << "Wrong number of arguments!" << std::endl;
         return {};
     }
 
-    int arg0{};
-    if (!tryConvert(arguments[0], arg0))
-    {
-        std::cout << "Failed to convert argument 0!" << std::endl;
-        return {};
-    }
-    unsigned arg1{};
-    if (!tryConvert(arguments[1], arg1))
-    {
-        std::cout << "Failed to convert argument 1!" << std::endl;
-        return {};
-    }
-    short arg2{};
-    if (!tryConvert(arguments[2], arg2))
-    {
-        std::cout << "Failed to convert argument 2!" << std::endl;
-        return {};
-    }
-    unsigned arg3{};
-    if (!tryConvert(arguments[3], arg3))
-    {
-        std::cout << "Failed to convert argument 3!" << std::endl;
-        return {};
-    }
-    float arg4{};
-    if (!tryConvert(arguments[4], arg4))
-    {
-        std::cout << "Failed to convert argument 4!" << std::endl;
-        return {};
-    }
 
-    method1(arg0, arg1, arg2, arg3, arg4);
+    method1();
     return {};
 }
 std::string ClassWithBindings92::method2Command(std::vector<std::string> const& arguments)
 {
-    if (arguments.size() != 5)
+    if (arguments.size() != 0)
     {
         std::cout << "Wrong number of arguments!" << std::endl;
         return {};
     }
 
-    unsigned arg0{};
-    if (!tryConvert(arguments[0], arg0))
-    {
-        std::cout << "Failed to convert argument 0!" << std::endl;
-        return {};
-    }
-    float arg1{};
-    if (!tryConvert(arguments[1], arg1))
-    {
-        std::cout << "Failed to convert argument 1!" << std::endl;
-        return {};
-    }
-    short arg2{};
-    if (!tryConvert(arguments[2], arg2))
-    {
-        std::cout << "Failed to convert argument 2!" << std::endl;
-        return {};
-    }
-    bool arg3{};
-    if (!tryConvert(arguments[3], arg3))
-    {
-        std::cout << "Failed to convert argument 3!" << std::endl;
-        return {};
-    }
-    short arg4{};
-    if (!tryConvert(arguments[4], arg4))
-    {
-        std::cout << "Failed to convert argument 4!" << std::endl;
-        return {};
-    }
 
-    auto returnValue = method2(arg0, arg1, arg2, arg3, arg4);
-    return std::to_string(returnValue);
+    method2();
+    return {};
 }
 std::string ClassWithBindings92::method3Command(std::vector<std::string> const& arguments)
 {
-    if (arguments.size() != 5)
+    if (arguments.size() != 0)
     {
         std::cout << "Wrong number of arguments!" << std::endl;
         return {};
     }
 
-    int arg0{};
-    if (!tryConvert(arguments[0], arg0))
-    {
-        std::cout << "Failed to convert argument 0!" << std::endl;
-        return {};
-    }
-    unsigned arg1{};
-    if (!tryConvert(arguments[1], arg1))
-    {
-        std::cout << "Failed to convert argument 1!" << std::endl;
-        return {};
-    }
-    unsigned arg2{};
-    if (!tryConvert(arguments[2], arg2))
-    {
-        std::cout << "Failed to convert argument 2!" << std::endl;
-        return {};
-    }
-    unsigned arg3{};
-    if (!tryConvert(arguments[3], arg3))
-    {
-        std::cout << "Failed to convert argument 3!" << std::endl;
-        return {};
-    }
-    int arg4{};
-    if (!tryConvert(arguments[4], arg4))
-    {
-        std::cout << "Failed to convert argument 4!" << std::endl;
-        return {};
-    }
 
-    method3(arg0, arg1, arg2, arg3, arg4);
+    method3();
     return {};
 }
 std::string ClassWithBindings92::method4Command(std::vector<std::string> const& arguments)
 {
-    if (arguments.size() != 5)
+    if (arguments.size() != 1)
     {
         std::cout << "Wrong number of arguments!" << std::endl;
         return {};
@@ -782,205 +737,13 @@ std::string ClassWithBindings92::method4Command(std::vector<std::string> const& 
         std::cout << "Failed to convert argument 0!" << std::endl;
         return {};
     }
-    float arg1{};
-    if (!tryConvert(arguments[1], arg1))
-    {
-        std::cout << "Failed to convert argument 1!" << std::endl;
-        return {};
-    }
-    unsigned arg2{};
-    if (!tryConvert(arguments[2], arg2))
-    {
-        std::cout << "Failed to convert argument 2!" << std::endl;
-        return {};
-    }
-    bool arg3{};
-    if (!tryConvert(arguments[3], arg3))
-    {
-        std::cout << "Failed to convert argument 3!" << std::endl;
-        return {};
-    }
-    short arg4{};
-    if (!tryConvert(arguments[4], arg4))
-    {
-        std::cout << "Failed to convert argument 4!" << std::endl;
-        return {};
-    }
 
-    method4(arg0, arg1, arg2, arg3, arg4);
-    return {};
+    auto returnValue = method4(arg0);
+    return std::to_string(returnValue);
 }
 std::string ClassWithBindings92::method5Command(std::vector<std::string> const& arguments)
 {
-    if (arguments.size() != 5)
-    {
-        std::cout << "Wrong number of arguments!" << std::endl;
-        return {};
-    }
-
-    short arg0{};
-    if (!tryConvert(arguments[0], arg0))
-    {
-        std::cout << "Failed to convert argument 0!" << std::endl;
-        return {};
-    }
-    unsigned arg1{};
-    if (!tryConvert(arguments[1], arg1))
-    {
-        std::cout << "Failed to convert argument 1!" << std::endl;
-        return {};
-    }
-    short arg2{};
-    if (!tryConvert(arguments[2], arg2))
-    {
-        std::cout << "Failed to convert argument 2!" << std::endl;
-        return {};
-    }
-    int arg3{};
-    if (!tryConvert(arguments[3], arg3))
-    {
-        std::cout << "Failed to convert argument 3!" << std::endl;
-        return {};
-    }
-    unsigned arg4{};
-    if (!tryConvert(arguments[4], arg4))
-    {
-        std::cout << "Failed to convert argument 4!" << std::endl;
-        return {};
-    }
-
-    auto returnValue = method5(arg0, arg1, arg2, arg3, arg4);
-    return std::to_string(returnValue);
-}
-std::string ClassWithBindings92::method6Command(std::vector<std::string> const& arguments)
-{
-    if (arguments.size() != 5)
-    {
-        std::cout << "Wrong number of arguments!" << std::endl;
-        return {};
-    }
-
-    unsigned arg0{};
-    if (!tryConvert(arguments[0], arg0))
-    {
-        std::cout << "Failed to convert argument 0!" << std::endl;
-        return {};
-    }
-    float arg1{};
-    if (!tryConvert(arguments[1], arg1))
-    {
-        std::cout << "Failed to convert argument 1!" << std::endl;
-        return {};
-    }
-    int arg2{};
-    if (!tryConvert(arguments[2], arg2))
-    {
-        std::cout << "Failed to convert argument 2!" << std::endl;
-        return {};
-    }
-    unsigned arg3{};
-    if (!tryConvert(arguments[3], arg3))
-    {
-        std::cout << "Failed to convert argument 3!" << std::endl;
-        return {};
-    }
-    unsigned arg4{};
-    if (!tryConvert(arguments[4], arg4))
-    {
-        std::cout << "Failed to convert argument 4!" << std::endl;
-        return {};
-    }
-
-    auto returnValue = method6(arg0, arg1, arg2, arg3, arg4);
-    return std::to_string(returnValue);
-}
-std::string ClassWithBindings92::method7Command(std::vector<std::string> const& arguments)
-{
-    if (arguments.size() != 5)
-    {
-        std::cout << "Wrong number of arguments!" << std::endl;
-        return {};
-    }
-
-    float arg0{};
-    if (!tryConvert(arguments[0], arg0))
-    {
-        std::cout << "Failed to convert argument 0!" << std::endl;
-        return {};
-    }
-    float arg1{};
-    if (!tryConvert(arguments[1], arg1))
-    {
-        std::cout << "Failed to convert argument 1!" << std::endl;
-        return {};
-    }
-    unsigned arg2{};
-    if (!tryConvert(arguments[2], arg2))
-    {
-        std::cout << "Failed to convert argument 2!" << std::endl;
-        return {};
-    }
-    int arg3{};
-    if (!tryConvert(arguments[3], arg3))
-    {
-        std::cout << "Failed to convert argument 3!" << std::endl;
-        return {};
-    }
-    short arg4{};
-    if (!tryConvert(arguments[4], arg4))
-    {
-        std::cout << "Failed to convert argument 4!" << std::endl;
-        return {};
-    }
-
-    auto returnValue = method7(arg0, arg1, arg2, arg3, arg4);
-    return std::to_string(returnValue);
-}
-std::string ClassWithBindings92::method8Command(std::vector<std::string> const& arguments)
-{
-    if (arguments.size() != 5)
-    {
-        std::cout << "Wrong number of arguments!" << std::endl;
-        return {};
-    }
-
-    int arg0{};
-    if (!tryConvert(arguments[0], arg0))
-    {
-        std::cout << "Failed to convert argument 0!" << std::endl;
-        return {};
-    }
-    unsigned arg1{};
-    if (!tryConvert(arguments[1], arg1))
-    {
-        std::cout << "Failed to convert argument 1!" << std::endl;
-        return {};
-    }
-    int arg2{};
-    if (!tryConvert(arguments[2], arg2))
-    {
-        std::cout << "Failed to convert argument 2!" << std::endl;
-        return {};
-    }
-    unsigned arg3{};
-    if (!tryConvert(arguments[3], arg3))
-    {
-        std::cout << "Failed to convert argument 3!" << std::endl;
-        return {};
-    }
-    float arg4{};
-    if (!tryConvert(arguments[4], arg4))
-    {
-        std::cout << "Failed to convert argument 4!" << std::endl;
-        return {};
-    }
-
-    method8(arg0, arg1, arg2, arg3, arg4);
-    return {};
-}
-std::string ClassWithBindings92::method9Command(std::vector<std::string> const& arguments)
-{
-    if (arguments.size() != 5)
+    if (arguments.size() != 1)
     {
         std::cout << "Wrong number of arguments!" << std::endl;
         return {};
@@ -992,33 +755,141 @@ std::string ClassWithBindings92::method9Command(std::vector<std::string> const& 
         std::cout << "Failed to convert argument 0!" << std::endl;
         return {};
     }
+
+    method5(arg0);
+    return {};
+}
+std::string ClassWithBindings92::method6Command(std::vector<std::string> const& arguments)
+{
+    if (arguments.size() != 1)
+    {
+        std::cout << "Wrong number of arguments!" << std::endl;
+        return {};
+    }
+
+    short arg0{};
+    if (!tryConvert(arguments[0], arg0))
+    {
+        std::cout << "Failed to convert argument 0!" << std::endl;
+        return {};
+    }
+
+    method6(arg0);
+    return {};
+}
+std::string ClassWithBindings92::method7Command(std::vector<std::string> const& arguments)
+{
+    if (arguments.size() != 1)
+    {
+        std::cout << "Wrong number of arguments!" << std::endl;
+        return {};
+    }
+
+    double arg0{};
+    if (!tryConvert(arguments[0], arg0))
+    {
+        std::cout << "Failed to convert argument 0!" << std::endl;
+        return {};
+    }
+
+    auto returnValue = method7(arg0);
+    return std::to_string(returnValue);
+}
+std::string ClassWithBindings92::method8Command(std::vector<std::string> const& arguments)
+{
+    if (arguments.size() != 2)
+    {
+        std::cout << "Wrong number of arguments!" << std::endl;
+        return {};
+    }
+
+    short arg0{};
+    if (!tryConvert(arguments[0], arg0))
+    {
+        std::cout << "Failed to convert argument 0!" << std::endl;
+        return {};
+    }
     unsigned arg1{};
     if (!tryConvert(arguments[1], arg1))
     {
         std::cout << "Failed to convert argument 1!" << std::endl;
         return {};
     }
-    double arg2{};
-    if (!tryConvert(arguments[2], arg2))
+
+    auto returnValue = method8(arg0, arg1);
+    return std::to_string(returnValue);
+}
+std::string ClassWithBindings92::method9Command(std::vector<std::string> const& arguments)
+{
+    if (arguments.size() != 2)
     {
-        std::cout << "Failed to convert argument 2!" << std::endl;
-        return {};
-    }
-    int arg3{};
-    if (!tryConvert(arguments[3], arg3))
-    {
-        std::cout << "Failed to convert argument 3!" << std::endl;
-        return {};
-    }
-    bool arg4{};
-    if (!tryConvert(arguments[4], arg4))
-    {
-        std::cout << "Failed to convert argument 4!" << std::endl;
+        std::cout << "Wrong number of arguments!" << std::endl;
         return {};
     }
 
-    auto returnValue = method9(arg0, arg1, arg2, arg3, arg4);
-    return std::to_string(returnValue);
+    bool arg0{};
+    if (!tryConvert(arguments[0], arg0))
+    {
+        std::cout << "Failed to convert argument 0!" << std::endl;
+        return {};
+    }
+    bool arg1{};
+    if (!tryConvert(arguments[1], arg1))
+    {
+        std::cout << "Failed to convert argument 1!" << std::endl;
+        return {};
+    }
+
+    method9(arg0, arg1);
+    return {};
+}
+std::string ClassWithBindings92::method10Command(std::vector<std::string> const& arguments)
+{
+    if (arguments.size() != 2)
+    {
+        std::cout << "Wrong number of arguments!" << std::endl;
+        return {};
+    }
+
+    bool arg0{};
+    if (!tryConvert(arguments[0], arg0))
+    {
+        std::cout << "Failed to convert argument 0!" << std::endl;
+        return {};
+    }
+    unsigned arg1{};
+    if (!tryConvert(arguments[1], arg1))
+    {
+        std::cout << "Failed to convert argument 1!" << std::endl;
+        return {};
+    }
+
+    method10(arg0, arg1);
+    return {};
+}
+std::string ClassWithBindings92::method11Command(std::vector<std::string> const& arguments)
+{
+    if (arguments.size() != 2)
+    {
+        std::cout << "Wrong number of arguments!" << std::endl;
+        return {};
+    }
+
+    int arg0{};
+    if (!tryConvert(arguments[0], arg0))
+    {
+        std::cout << "Failed to convert argument 0!" << std::endl;
+        return {};
+    }
+    float arg1{};
+    if (!tryConvert(arguments[1], arg1))
+    {
+        std::cout << "Failed to convert argument 1!" << std::endl;
+        return {};
+    }
+
+    method11(arg0, arg1);
+    return {};
 }
 
 std::string ClassWithBindings92::memberVariable0Command(std::vector<std::string> const& arguments)
@@ -1031,7 +902,7 @@ std::string ClassWithBindings92::memberVariable0Command(std::vector<std::string>
 
     if (arguments.size() == 1)
     {
-        bool newValue;
+        short newValue;
         if (!tryConvert(arguments[0], newValue))
         {
             std::cout << "Failed to convert argument!" << std::endl;
@@ -1053,7 +924,7 @@ std::string ClassWithBindings92::memberVariable1Command(std::vector<std::string>
 
     if (arguments.size() == 1)
     {
-        int newValue;
+        bool newValue;
         if (!tryConvert(arguments[0], newValue))
         {
             std::cout << "Failed to convert argument!" << std::endl;
@@ -1075,7 +946,7 @@ std::string ClassWithBindings92::memberVariable2Command(std::vector<std::string>
 
     if (arguments.size() == 1)
     {
-        double newValue;
+        bool newValue;
         if (!tryConvert(arguments[0], newValue))
         {
             std::cout << "Failed to convert argument!" << std::endl;
@@ -1097,7 +968,7 @@ std::string ClassWithBindings92::memberVariable3Command(std::vector<std::string>
 
     if (arguments.size() == 1)
     {
-        bool newValue;
+        short newValue;
         if (!tryConvert(arguments[0], newValue))
         {
             std::cout << "Failed to convert argument!" << std::endl;
@@ -1119,7 +990,7 @@ std::string ClassWithBindings92::memberVariable4Command(std::vector<std::string>
 
     if (arguments.size() == 1)
     {
-        int newValue;
+        bool newValue;
         if (!tryConvert(arguments[0], newValue))
         {
             std::cout << "Failed to convert argument!" << std::endl;
@@ -1163,7 +1034,7 @@ std::string ClassWithBindings92::memberVariable6Command(std::vector<std::string>
 
     if (arguments.size() == 1)
     {
-        short newValue;
+        unsigned newValue;
         if (!tryConvert(arguments[0], newValue))
         {
             std::cout << "Failed to convert argument!" << std::endl;
@@ -1207,7 +1078,7 @@ std::string ClassWithBindings92::memberVariable8Command(std::vector<std::string>
 
     if (arguments.size() == 1)
     {
-        unsigned newValue;
+        short newValue;
         if (!tryConvert(arguments[0], newValue))
         {
             std::cout << "Failed to convert argument!" << std::endl;
@@ -1229,7 +1100,7 @@ std::string ClassWithBindings92::memberVariable9Command(std::vector<std::string>
 
     if (arguments.size() == 1)
     {
-        bool newValue;
+        int newValue;
         if (!tryConvert(arguments[0], newValue))
         {
             std::cout << "Failed to convert argument!" << std::endl;
@@ -1244,175 +1115,55 @@ std::string ClassWithBindings92::memberVariable9Command(std::vector<std::string>
 
 std::string ClassWithBindings92::function0Command(std::vector<std::string> const& arguments)
 {
-    if (arguments.size() != 5)
+    if (arguments.size() != 0)
     {
         std::cout << "Wrong number of arguments!" << std::endl;
         return {};
     }
 
-    short arg0{};
-    if (!tryConvert(arguments[0], arg0))
-    {
-        std::cout << "Failed to convert argument 0!" << std::endl;
-        return {};
-    }
-    bool arg1{};
-    if (!tryConvert(arguments[1], arg1))
-    {
-        std::cout << "Failed to convert argument 1!" << std::endl;
-        return {};
-    }
-    int arg2{};
-    if (!tryConvert(arguments[2], arg2))
-    {
-        std::cout << "Failed to convert argument 2!" << std::endl;
-        return {};
-    }
-    bool arg3{};
-    if (!tryConvert(arguments[3], arg3))
-    {
-        std::cout << "Failed to convert argument 3!" << std::endl;
-        return {};
-    }
-    bool arg4{};
-    if (!tryConvert(arguments[4], arg4))
-    {
-        std::cout << "Failed to convert argument 4!" << std::endl;
-        return {};
-    }
 
-    function0(arg0, arg1, arg2, arg3, arg4);
+    function0();
     return {};
 }
 std::string ClassWithBindings92::function1Command(std::vector<std::string> const& arguments)
 {
-    if (arguments.size() != 5)
+    if (arguments.size() != 0)
     {
         std::cout << "Wrong number of arguments!" << std::endl;
         return {};
     }
 
-    bool arg0{};
-    if (!tryConvert(arguments[0], arg0))
-    {
-        std::cout << "Failed to convert argument 0!" << std::endl;
-        return {};
-    }
-    short arg1{};
-    if (!tryConvert(arguments[1], arg1))
-    {
-        std::cout << "Failed to convert argument 1!" << std::endl;
-        return {};
-    }
-    double arg2{};
-    if (!tryConvert(arguments[2], arg2))
-    {
-        std::cout << "Failed to convert argument 2!" << std::endl;
-        return {};
-    }
-    short arg3{};
-    if (!tryConvert(arguments[3], arg3))
-    {
-        std::cout << "Failed to convert argument 3!" << std::endl;
-        return {};
-    }
-    double arg4{};
-    if (!tryConvert(arguments[4], arg4))
-    {
-        std::cout << "Failed to convert argument 4!" << std::endl;
-        return {};
-    }
 
-    function1(arg0, arg1, arg2, arg3, arg4);
+    function1();
     return {};
 }
 std::string ClassWithBindings92::function2Command(std::vector<std::string> const& arguments)
 {
-    if (arguments.size() != 5)
+    if (arguments.size() != 0)
     {
         std::cout << "Wrong number of arguments!" << std::endl;
         return {};
     }
 
-    float arg0{};
-    if (!tryConvert(arguments[0], arg0))
-    {
-        std::cout << "Failed to convert argument 0!" << std::endl;
-        return {};
-    }
-    double arg1{};
-    if (!tryConvert(arguments[1], arg1))
-    {
-        std::cout << "Failed to convert argument 1!" << std::endl;
-        return {};
-    }
-    float arg2{};
-    if (!tryConvert(arguments[2], arg2))
-    {
-        std::cout << "Failed to convert argument 2!" << std::endl;
-        return {};
-    }
-    unsigned arg3{};
-    if (!tryConvert(arguments[3], arg3))
-    {
-        std::cout << "Failed to convert argument 3!" << std::endl;
-        return {};
-    }
-    float arg4{};
-    if (!tryConvert(arguments[4], arg4))
-    {
-        std::cout << "Failed to convert argument 4!" << std::endl;
-        return {};
-    }
 
-    auto returnValue = function2(arg0, arg1, arg2, arg3, arg4);
-    return std::to_string(returnValue);
+    function2();
+    return {};
 }
 std::string ClassWithBindings92::function3Command(std::vector<std::string> const& arguments)
 {
-    if (arguments.size() != 5)
+    if (arguments.size() != 0)
     {
         std::cout << "Wrong number of arguments!" << std::endl;
         return {};
     }
 
-    float arg0{};
-    if (!tryConvert(arguments[0], arg0))
-    {
-        std::cout << "Failed to convert argument 0!" << std::endl;
-        return {};
-    }
-    float arg1{};
-    if (!tryConvert(arguments[1], arg1))
-    {
-        std::cout << "Failed to convert argument 1!" << std::endl;
-        return {};
-    }
-    short arg2{};
-    if (!tryConvert(arguments[2], arg2))
-    {
-        std::cout << "Failed to convert argument 2!" << std::endl;
-        return {};
-    }
-    unsigned arg3{};
-    if (!tryConvert(arguments[3], arg3))
-    {
-        std::cout << "Failed to convert argument 3!" << std::endl;
-        return {};
-    }
-    bool arg4{};
-    if (!tryConvert(arguments[4], arg4))
-    {
-        std::cout << "Failed to convert argument 4!" << std::endl;
-        return {};
-    }
 
-    auto returnValue = function3(arg0, arg1, arg2, arg3, arg4);
-    return std::to_string(returnValue);
+    function3();
+    return {};
 }
 std::string ClassWithBindings92::function4Command(std::vector<std::string> const& arguments)
 {
-    if (arguments.size() != 5)
+    if (arguments.size() != 1)
     {
         std::cout << "Wrong number of arguments!" << std::endl;
         return {};
@@ -1424,37 +1175,13 @@ std::string ClassWithBindings92::function4Command(std::vector<std::string> const
         std::cout << "Failed to convert argument 0!" << std::endl;
         return {};
     }
-    short arg1{};
-    if (!tryConvert(arguments[1], arg1))
-    {
-        std::cout << "Failed to convert argument 1!" << std::endl;
-        return {};
-    }
-    float arg2{};
-    if (!tryConvert(arguments[2], arg2))
-    {
-        std::cout << "Failed to convert argument 2!" << std::endl;
-        return {};
-    }
-    short arg3{};
-    if (!tryConvert(arguments[3], arg3))
-    {
-        std::cout << "Failed to convert argument 3!" << std::endl;
-        return {};
-    }
-    int arg4{};
-    if (!tryConvert(arguments[4], arg4))
-    {
-        std::cout << "Failed to convert argument 4!" << std::endl;
-        return {};
-    }
 
-    function4(arg0, arg1, arg2, arg3, arg4);
-    return {};
+    auto returnValue = function4(arg0);
+    return std::to_string(returnValue);
 }
 std::string ClassWithBindings92::function5Command(std::vector<std::string> const& arguments)
 {
-    if (arguments.size() != 5)
+    if (arguments.size() != 1)
     {
         std::cout << "Wrong number of arguments!" << std::endl;
         return {};
@@ -1466,79 +1193,31 @@ std::string ClassWithBindings92::function5Command(std::vector<std::string> const
         std::cout << "Failed to convert argument 0!" << std::endl;
         return {};
     }
-    short arg1{};
-    if (!tryConvert(arguments[1], arg1))
-    {
-        std::cout << "Failed to convert argument 1!" << std::endl;
-        return {};
-    }
-    double arg2{};
-    if (!tryConvert(arguments[2], arg2))
-    {
-        std::cout << "Failed to convert argument 2!" << std::endl;
-        return {};
-    }
-    int arg3{};
-    if (!tryConvert(arguments[3], arg3))
-    {
-        std::cout << "Failed to convert argument 3!" << std::endl;
-        return {};
-    }
-    int arg4{};
-    if (!tryConvert(arguments[4], arg4))
-    {
-        std::cout << "Failed to convert argument 4!" << std::endl;
-        return {};
-    }
 
-    function5(arg0, arg1, arg2, arg3, arg4);
+    function5(arg0);
     return {};
 }
 std::string ClassWithBindings92::function6Command(std::vector<std::string> const& arguments)
 {
-    if (arguments.size() != 5)
+    if (arguments.size() != 1)
     {
         std::cout << "Wrong number of arguments!" << std::endl;
         return {};
     }
 
-    short arg0{};
+    double arg0{};
     if (!tryConvert(arguments[0], arg0))
     {
         std::cout << "Failed to convert argument 0!" << std::endl;
         return {};
     }
-    short arg1{};
-    if (!tryConvert(arguments[1], arg1))
-    {
-        std::cout << "Failed to convert argument 1!" << std::endl;
-        return {};
-    }
-    bool arg2{};
-    if (!tryConvert(arguments[2], arg2))
-    {
-        std::cout << "Failed to convert argument 2!" << std::endl;
-        return {};
-    }
-    bool arg3{};
-    if (!tryConvert(arguments[3], arg3))
-    {
-        std::cout << "Failed to convert argument 3!" << std::endl;
-        return {};
-    }
-    bool arg4{};
-    if (!tryConvert(arguments[4], arg4))
-    {
-        std::cout << "Failed to convert argument 4!" << std::endl;
-        return {};
-    }
 
-    auto returnValue = function6(arg0, arg1, arg2, arg3, arg4);
+    auto returnValue = function6(arg0);
     return std::to_string(returnValue);
 }
 std::string ClassWithBindings92::function7Command(std::vector<std::string> const& arguments)
 {
-    if (arguments.size() != 5)
+    if (arguments.size() != 1)
     {
         std::cout << "Wrong number of arguments!" << std::endl;
         return {};
@@ -1550,37 +1229,13 @@ std::string ClassWithBindings92::function7Command(std::vector<std::string> const
         std::cout << "Failed to convert argument 0!" << std::endl;
         return {};
     }
-    bool arg1{};
-    if (!tryConvert(arguments[1], arg1))
-    {
-        std::cout << "Failed to convert argument 1!" << std::endl;
-        return {};
-    }
-    bool arg2{};
-    if (!tryConvert(arguments[2], arg2))
-    {
-        std::cout << "Failed to convert argument 2!" << std::endl;
-        return {};
-    }
-    int arg3{};
-    if (!tryConvert(arguments[3], arg3))
-    {
-        std::cout << "Failed to convert argument 3!" << std::endl;
-        return {};
-    }
-    bool arg4{};
-    if (!tryConvert(arguments[4], arg4))
-    {
-        std::cout << "Failed to convert argument 4!" << std::endl;
-        return {};
-    }
 
-    auto returnValue = function7(arg0, arg1, arg2, arg3, arg4);
+    auto returnValue = function7(arg0);
     return std::to_string(returnValue);
 }
 std::string ClassWithBindings92::function8Command(std::vector<std::string> const& arguments)
 {
-    if (arguments.size() != 5)
+    if (arguments.size() != 2)
     {
         std::cout << "Wrong number of arguments!" << std::endl;
         return {};
@@ -1592,43 +1247,25 @@ std::string ClassWithBindings92::function8Command(std::vector<std::string> const
         std::cout << "Failed to convert argument 0!" << std::endl;
         return {};
     }
-    short arg1{};
+    int arg1{};
     if (!tryConvert(arguments[1], arg1))
     {
         std::cout << "Failed to convert argument 1!" << std::endl;
         return {};
     }
-    float arg2{};
-    if (!tryConvert(arguments[2], arg2))
-    {
-        std::cout << "Failed to convert argument 2!" << std::endl;
-        return {};
-    }
-    unsigned arg3{};
-    if (!tryConvert(arguments[3], arg3))
-    {
-        std::cout << "Failed to convert argument 3!" << std::endl;
-        return {};
-    }
-    unsigned arg4{};
-    if (!tryConvert(arguments[4], arg4))
-    {
-        std::cout << "Failed to convert argument 4!" << std::endl;
-        return {};
-    }
 
-    auto returnValue = function8(arg0, arg1, arg2, arg3, arg4);
-    return std::to_string(returnValue);
+    function8(arg0, arg1);
+    return {};
 }
 std::string ClassWithBindings92::function9Command(std::vector<std::string> const& arguments)
 {
-    if (arguments.size() != 5)
+    if (arguments.size() != 2)
     {
         std::cout << "Wrong number of arguments!" << std::endl;
         return {};
     }
 
-    unsigned arg0{};
+    int arg0{};
     if (!tryConvert(arguments[0], arg0))
     {
         std::cout << "Failed to convert argument 0!" << std::endl;
@@ -1640,27 +1277,57 @@ std::string ClassWithBindings92::function9Command(std::vector<std::string> const
         std::cout << "Failed to convert argument 1!" << std::endl;
         return {};
     }
-    double arg2{};
-    if (!tryConvert(arguments[2], arg2))
+
+    function9(arg0, arg1);
+    return {};
+}
+std::string ClassWithBindings92::function10Command(std::vector<std::string> const& arguments)
+{
+    if (arguments.size() != 2)
     {
-        std::cout << "Failed to convert argument 2!" << std::endl;
-        return {};
-    }
-    unsigned arg3{};
-    if (!tryConvert(arguments[3], arg3))
-    {
-        std::cout << "Failed to convert argument 3!" << std::endl;
-        return {};
-    }
-    bool arg4{};
-    if (!tryConvert(arguments[4], arg4))
-    {
-        std::cout << "Failed to convert argument 4!" << std::endl;
+        std::cout << "Wrong number of arguments!" << std::endl;
         return {};
     }
 
-    auto returnValue = function9(arg0, arg1, arg2, arg3, arg4);
-    return std::to_string(returnValue);
+    double arg0{};
+    if (!tryConvert(arguments[0], arg0))
+    {
+        std::cout << "Failed to convert argument 0!" << std::endl;
+        return {};
+    }
+    int arg1{};
+    if (!tryConvert(arguments[1], arg1))
+    {
+        std::cout << "Failed to convert argument 1!" << std::endl;
+        return {};
+    }
+
+    function10(arg0, arg1);
+    return {};
+}
+std::string ClassWithBindings92::function11Command(std::vector<std::string> const& arguments)
+{
+    if (arguments.size() != 2)
+    {
+        std::cout << "Wrong number of arguments!" << std::endl;
+        return {};
+    }
+
+    double arg0{};
+    if (!tryConvert(arguments[0], arg0))
+    {
+        std::cout << "Failed to convert argument 0!" << std::endl;
+        return {};
+    }
+    int arg1{};
+    if (!tryConvert(arguments[1], arg1))
+    {
+        std::cout << "Failed to convert argument 1!" << std::endl;
+        return {};
+    }
+
+    function11(arg0, arg1);
+    return {};
 }
 
 std::string ClassWithBindings92::variable0Command(std::vector<std::string> const& arguments)
@@ -1695,7 +1362,7 @@ std::string ClassWithBindings92::variable1Command(std::vector<std::string> const
 
     if (arguments.size() == 1)
     {
-        int newValue;
+        bool newValue;
         if (!tryConvert(arguments[0], newValue))
         {
             std::cout << "Failed to convert argument!" << std::endl;
@@ -1717,7 +1384,7 @@ std::string ClassWithBindings92::variable2Command(std::vector<std::string> const
 
     if (arguments.size() == 1)
     {
-        short newValue;
+        double newValue;
         if (!tryConvert(arguments[0], newValue))
         {
             std::cout << "Failed to convert argument!" << std::endl;
@@ -1739,7 +1406,7 @@ std::string ClassWithBindings92::variable3Command(std::vector<std::string> const
 
     if (arguments.size() == 1)
     {
-        unsigned newValue;
+        short newValue;
         if (!tryConvert(arguments[0], newValue))
         {
             std::cout << "Failed to convert argument!" << std::endl;
@@ -1761,7 +1428,7 @@ std::string ClassWithBindings92::variable4Command(std::vector<std::string> const
 
     if (arguments.size() == 1)
     {
-        short newValue;
+        double newValue;
         if (!tryConvert(arguments[0], newValue))
         {
             std::cout << "Failed to convert argument!" << std::endl;
@@ -1783,7 +1450,7 @@ std::string ClassWithBindings92::variable5Command(std::vector<std::string> const
 
     if (arguments.size() == 1)
     {
-        bool newValue;
+        unsigned newValue;
         if (!tryConvert(arguments[0], newValue))
         {
             std::cout << "Failed to convert argument!" << std::endl;
@@ -1805,7 +1472,7 @@ std::string ClassWithBindings92::variable6Command(std::vector<std::string> const
 
     if (arguments.size() == 1)
     {
-        float newValue;
+        unsigned newValue;
         if (!tryConvert(arguments[0], newValue))
         {
             std::cout << "Failed to convert argument!" << std::endl;
@@ -1827,7 +1494,7 @@ std::string ClassWithBindings92::variable7Command(std::vector<std::string> const
 
     if (arguments.size() == 1)
     {
-        float newValue;
+        int newValue;
         if (!tryConvert(arguments[0], newValue))
         {
             std::cout << "Failed to convert argument!" << std::endl;
@@ -1849,7 +1516,7 @@ std::string ClassWithBindings92::variable8Command(std::vector<std::string> const
 
     if (arguments.size() == 1)
     {
-        double newValue;
+        short newValue;
         if (!tryConvert(arguments[0], newValue))
         {
             std::cout << "Failed to convert argument!" << std::endl;
@@ -1871,7 +1538,7 @@ std::string ClassWithBindings92::variable9Command(std::vector<std::string> const
 
     if (arguments.size() == 1)
     {
-        float newValue;
+        unsigned newValue;
         if (!tryConvert(arguments[0], newValue))
         {
             std::cout << "Failed to convert argument!" << std::endl;
