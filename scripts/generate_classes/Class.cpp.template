@@ -35,13 +35,15 @@ void $name::registerBindings(coil::Bindings& bindings)
 #end for
 
 #for $function in $functions
-    bindings["${name}_${function.name}"] = [](coil::Context context, $combine($function.args))
+    bindings["${name}_${function.name}"] = [](coil::Context context$if_non_empty($function.args, ", ")$combine($function.args))
     {
         context.reportError("Task failed successfully");
         auto args = context.namedArgs();
         args.get("key");
+        #if len($function.args) > 0
         args.get<$function.args[0]>("key");
         args.getOrReport<$function.args[0]>("key", coil::NamedArgs::ArgType::Optional);
+        #end if
         return $name::${function.name}(#echo ', '.join($arg_names($function.args))#);
     };
 #end for
