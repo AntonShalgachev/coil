@@ -32,7 +32,7 @@ message(STATUS "")
 message(STATUS "Performing compilation tests...")
 
 validate_compilation(Valid.cpp TRUE "")
-validate_compilation(DirectMemberFunctionAssignment.cpp FALSE "Func shouldn't be a member function")
+validate_compilation(DirectMemberFunctionAssignment.cpp FALSE "Func can only be a member function if C isn't void")
 validate_compilation(DirectVariableAssignment.cpp FALSE "Func should be a functor object")
 # TODO add fail tests for coil::property, coil::variable, coil::bind
 
