@@ -10,20 +10,20 @@ namespace coil::detail
     class FunctionWrapper final
     {
     public:
-        using ArgsTraits = ArgsTraitsImpl<std::decay_t<Args>...>; // TODO simplier decay
+        template<typename T>
+        using SimpleDecay = std::remove_cv_t<std::remove_reference_t<T>>;
+        using ArgsTraits = ArgsTraitsImpl<SimpleDecay<Args>...>;
 
         template<typename Func, typename C = void>
         FunctionWrapper(Func func, C* obj = nullptr)
         {
-            using UnqualifiedFunc = std::decay_t<Func>;
+            static_assert(!std::is_member_function_pointer_v<Func> || !std::is_void_v<C>, "Func can only be a member function if C isn't void");
 
-            static_assert(!std::is_member_function_pointer_v<UnqualifiedFunc> || !std::is_void_v<C>, "Func can only be a member function if C isn't void");
-
-            m_func = new UnqualifiedFunc(std::move(func));
+            m_func = new Func(std::move(func));
             m_obj = const_cast<std::remove_const_t<C>*>(obj); // this pointer would be casted back to C* in typedCall
 
-            m_callFunc = &FunctionWrapper<Args...>::typedCall<UnqualifiedFunc, C>;
-            m_destroyFunc = &FunctionWrapper<Args...>::typedDestroy<UnqualifiedFunc>;
+            m_callFunc = &FunctionWrapper<Args...>::typedCall<Func, C>;
+            m_destroyFunc = &FunctionWrapper<Args...>::typedDestroy<Func>;
         }
         ~FunctionWrapper();
 
