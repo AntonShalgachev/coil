@@ -30,7 +30,6 @@ namespace coil::detail
         static constexpr bool isFunc = true;
 
         using ReturnType = std::decay_t<R>;
-        using ArgumentTypes = Types<Args...>;
         using FunctionWrapperType = FunctionWrapper<Args...>;
         static constexpr bool isConst = IsConst;
     };

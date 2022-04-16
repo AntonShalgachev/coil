@@ -170,4 +170,7 @@ namespace
 
     [[maybe_unused]] Functor functor;
     [[maybe_unused]] FunctorWithContext functorWithContext;
+
+    [[maybe_unused]] Functor const functorConst;
+    [[maybe_unused]] FunctorWithContext const functorWithContextConst;
 }
