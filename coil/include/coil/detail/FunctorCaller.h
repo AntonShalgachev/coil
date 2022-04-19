@@ -24,8 +24,8 @@ namespace coil::detail
             context.reportError(result.error());
     }
 
-    template<typename Func, std::size_t... NonUserIndices, typename... Es>
-    void invoke(Func& func, CallContext& context, Es... expectedArgs)
+    template<typename FuncWrapper, std::size_t... NonUserIndices, typename... Es>
+    void invoke(FuncWrapper& func, CallContext& context, Es... expectedArgs)
     {
         if ((!expectedArgs || ...))
         {
@@ -33,20 +33,11 @@ namespace coil::detail
             return;
         }
 
-        using R = typename detail::FuncTraits<Func>::ReturnType;
-
         try
         {
-            if constexpr (std::is_void_v<R>)
-            {
-                func(createContext<NonUserIndices>(context)..., *std::move(expectedArgs)...);
-            }
-            else
-            {
-                auto&& returnValue = func(createContext<NonUserIndices>(context)..., *std::move(expectedArgs)...);
-                if (!context.hasErrors())
-                    context.result.setReturnValue(TypeSerializer<R>::toString(returnValue));
-            }
+            std::optional<std::string> returnValue = func.invoke(createContext<NonUserIndices>(context)..., *std::move(expectedArgs)...);
+            if (!context.hasErrors())
+                context.result.returnValue = returnValue;
         }
         catch (std::exception const& ex)
         {
@@ -58,9 +49,9 @@ namespace coil::detail
         }
     }
 
-    template<typename Func, std::size_t... NonUserIndices, typename... UserArgs, std::size_t... UserIndices>
-    void unpackAndInvoke(Func& func, CallContext& context, std::index_sequence<NonUserIndices...>, Types<UserArgs...>, std::index_sequence<UserIndices...>)
+    template<typename FuncWrapper, std::size_t... NonUserIndices, typename... UserArgs, std::size_t... UserIndices>
+    void unpackAndInvoke(FuncWrapper& func, CallContext& context, std::index_sequence<NonUserIndices...>, Types<UserArgs...>, std::index_sequence<UserIndices...>)
     {
-        invoke<Func, NonUserIndices...>(func, context, TypeSerializer<UserArgs>::fromString(context.input.arguments[UserIndices])...);
+        invoke<FuncWrapper, NonUserIndices...>(func, context, TypeSerializer<UserArgs>::fromString(context.input.arguments[UserIndices])...);
     }
 }

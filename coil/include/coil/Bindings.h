@@ -28,7 +28,9 @@ namespace coil
         template<typename Func>
         void add(std::string_view name, Func func)
         {
-            add(name, detail::AnyFunctor{ std::move(func) });
+            static_assert(detail::FuncTraits<Func>::isFunc, "Func should be a functor object");
+            using FunctionWrapper = typename detail::FuncTraits<Func>::FunctionWrapperType;
+            add(name, detail::AnyFunctor{ FunctionWrapper{ std::move(func) } });
         }
 
         void add(std::string_view name, detail::AnyFunctor anyFunctor);
@@ -77,7 +79,9 @@ namespace coil
         template<typename Func>
         BindingProxy& operator=(Func func)
         {
-            m_bindings.add(m_name, detail::AnyFunctor{ std::move(func) });
+            static_assert(detail::FuncTraits<Func>::isFunc, "Func should be a functor object");
+            using FunctionWrapper = typename detail::FuncTraits<Func>::FunctionWrapperType;
+            m_bindings.add(m_name, detail::AnyFunctor{ FunctionWrapper{ std::move(func) } });
             return *this;
         }
         BindingProxy& operator=(detail::AnyFunctor anyFunctor)

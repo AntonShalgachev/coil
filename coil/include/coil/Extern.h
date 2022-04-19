@@ -14,13 +14,17 @@
 
 #include "coil/detail/StringWrapper.h"
 
-extern template class std::optional<coil::AnyArgView>;
-extern template class coil::Expected<coil::AnyArgView, coil::NamedArgs::Error>;
+extern template class std::vector<std::string>;
+extern template class std::optional<std::string>;
+extern template std::optional<std::string>::optional(std::string&&);
 
 extern template class std::vector<coil::ArgValue>;
 extern template class std::vector<std::pair<std::string_view, coil::ArgValue>>;
 
 extern template class std::vector<std::string_view>;
+
+extern template class std::optional<coil::AnyArgView>;
+extern template class coil::Expected<coil::AnyArgView, coil::NamedArgs::Error>;
 
 extern template class coil::BasicStringWrapper<std::string>;
 extern template struct std::hash<coil::BasicStringWrapper<std::string>>;
@@ -61,28 +65,36 @@ COIL_TYPE_SERIALIZER_EXTERN_TEMPLATE(long double);
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 
-#define COIL_VARIABLE_TEMPLATE_BASE(T, SPECIFIER) \
+#define COIL_VARIABLE_TEMPLATE_BASE(SPECIFIER, T) \
     SPECIFIER template std::vector<coil::detail::AnyFunctor> coil::variable<T>(T* var)
 
-#define COIL_ARGUMENT_TEMPLATE_BASE(T, SPECIFIER) \
+#define COIL_ARGUMENT_TEMPLATE_BASE(SPECIFIER, T) \
     SPECIFIER template class coil::ExpectedBase<T, std::string>; \
     SPECIFIER template class coil::Expected<T, std::string>; \
     SPECIFIER template coil::ExpectedBase<bool, std::string>::ExpectedBase(coil::Unexpected<std::string>); \
     SPECIFIER template void coil::detail::reportError<T>(coil::detail::CallContext& context, coil::Expected<T, std::string> const& result); \
     SPECIFIER template coil::Expected<T, std::string>&& std::move<coil::Expected<T, std::string>&>(coil::Expected<T, std::string>&) noexcept; \
+    SPECIFIER template T&& std::forward<T>(T&) noexcept; \
     SPECIFIER template T&& std::move<T&>(T&) noexcept
 
-#define COIL_NAMED_ARGS_TEMPLATE_BASE(T, SPECIFIER) \
+#define COIL_NAMED_ARGS_TEMPLATE_BASE(SPECIFIER, T) \
     SPECIFIER template class std::optional<T>; \
     SPECIFIER template class coil::ExpectedBase<T, coil::NamedArgs::Error>; \
     SPECIFIER template class coil::Expected<T, coil::NamedArgs::Error>; \
     SPECIFIER template coil::Expected<T, coil::NamedArgs::Error> coil::NamedArgs::get<T>(std::string_view key) const; \
     SPECIFIER template std::optional<T> coil::NamedArgs::getOrReport<T>(std::string_view key, coil::NamedArgs::ArgType argType, std::optional<T> defaultValue) const
 
-#define COIL_VARIABLE_EXTERN_TEMPLATE(T) COIL_VARIABLE_TEMPLATE_BASE(T, extern)
-#define COIL_ARGUMENT_EXTERN_TEMPLATE(T) COIL_ARGUMENT_TEMPLATE_BASE(T, extern)
-#define COIL_NAMED_ARGS_EXTERN_TEMPLATE(T) COIL_NAMED_ARGS_TEMPLATE_BASE(T, extern)
+#define COIL_FUNCTION_ARGS_TEMPLATE_BASE(SPECIFIER, ...) \
+    SPECIFIER template coil::detail::AnyFunctor::AnyFunctor(coil::detail::FunctionWrapper<__VA_ARGS__>); \
+    SPECIFIER template class coil::detail::FunctionWrapper<__VA_ARGS__>; \
+    SPECIFIER template class coil::detail::AnyStorage<coil::detail::FunctionWrapper<__VA_ARGS__>>
 
-#define COIL_VARIABLE_TEMPLATE(T) COIL_VARIABLE_TEMPLATE_BASE(T, )
-#define COIL_ARGUMENT_TEMPLATE(T) COIL_ARGUMENT_TEMPLATE_BASE(T, )
-#define COIL_NAMED_ARGS_TEMPLATE(T) COIL_NAMED_ARGS_TEMPLATE_BASE(T, )
+#define COIL_VARIABLE_EXTERN_TEMPLATE(T) COIL_VARIABLE_TEMPLATE_BASE(extern, T)
+#define COIL_ARGUMENT_EXTERN_TEMPLATE(T) COIL_ARGUMENT_TEMPLATE_BASE(extern, T)
+#define COIL_NAMED_ARGS_EXTERN_TEMPLATE(T) COIL_NAMED_ARGS_TEMPLATE_BASE(extern, T)
+#define COIL_FUNCTION_ARGS_EXTERN_TEMPLATE(...) COIL_FUNCTION_ARGS_TEMPLATE_BASE(extern, __VA_ARGS__)
+
+#define COIL_VARIABLE_TEMPLATE(T) COIL_VARIABLE_TEMPLATE_BASE(, T)
+#define COIL_ARGUMENT_TEMPLATE(T) COIL_ARGUMENT_TEMPLATE_BASE(, T)
+#define COIL_NAMED_ARGS_TEMPLATE(T) COIL_NAMED_ARGS_TEMPLATE_BASE(, T)
+#define COIL_FUNCTION_ARGS_TEMPLATE(...) COIL_FUNCTION_ARGS_TEMPLATE_BASE(, __VA_ARGS__)
