@@ -1,4 +1,4 @@
-set(PROJECT_NAME libcoil)
+set(PROJECT_NAME coil)
 
 set(ALL_FILES
     "include/coil/Types.h"
