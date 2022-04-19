@@ -7,12 +7,26 @@
 namespace coil::detail
 {
     template<typename... Args>
+    struct ArgsTraits
+    {
+        using UserArgumentTypes = Types<Args...>;
+        using NonUserArgsIndices = std::index_sequence<>;
+    };
+
+    template<typename... Tail>
+    struct ArgsTraits<Context, Tail...>
+    {
+        using UserArgumentTypes = Types<Tail...>;
+        using NonUserArgsIndices = std::index_sequence<0>;
+    };
+
+    template<typename... Args>
     class FunctionWrapper final
     {
     public:
         template<typename T>
         using SimpleDecay = std::remove_cv_t<std::remove_reference_t<T>>;
-        using ArgsTraits = ArgsTraitsImpl<SimpleDecay<Args>...>;
+        using ArgsTraits = ArgsTraits<SimpleDecay<Args>...>;
 
         template<typename Func, typename C = void>
         FunctionWrapper(Func func, C* obj = nullptr)
