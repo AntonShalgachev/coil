@@ -43,8 +43,6 @@ namespace coil::detail
         unpackAndInvoke(m_funcWrapper, context, NonUserArgsIndicesType{}, UserArgTypes{}, UserArgIndicesType{});
     }
 
-    // TODO get rid of AnyStorage by having pointers to template functions
-    // TODO rename to 'FunctorDescriptor'
     struct AnyFunctor
     {
     public:

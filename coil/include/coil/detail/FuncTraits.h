@@ -9,20 +9,6 @@ namespace coil::detail
     template<typename... Args>
     class FunctionWrapper;
 
-    template<typename... Args>
-    struct ArgsTraitsImpl
-    {
-        using UserArgumentTypes = Types<Args...>;
-        using NonUserArgsIndices = std::index_sequence<>;
-    };
-
-    template<typename... Tail>
-    struct ArgsTraitsImpl<Context, Tail...>
-    {
-        using UserArgumentTypes = Types<Tail...>;
-        using NonUserArgsIndices = std::index_sequence<0>;
-    };
-
     template<bool IsConst, typename R, typename... Args>
     struct BaseFuncTraits
     {
