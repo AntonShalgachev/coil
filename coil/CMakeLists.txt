@@ -20,6 +20,7 @@ set(ALL_FILES
     "include/coil/detail/FuncTraits.h"
     "include/coil/detail/StringWrapper.h"
     "include/coil/detail/AnyFunctor.h"
+    "include/coil/detail/FunctionWrapper.h"
     
     "include/coil/DefaultLexer.h"
     "include/coil/Expected.h"

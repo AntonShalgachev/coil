@@ -9,6 +9,8 @@ int main()
     cmd["foo.bar"] = &freeFuncWithContext;
     cmd["foo.bar"] = functor;
     cmd["foo.bar"] = functorWithContext;
+    cmd["foo.bar"] = functorConst;
+    cmd["foo.bar"] = functorWithContextConst;
     cmd["foo.bar"] = lambda;
     cmd["foo.bar"] = lambdaWithContext;
     cmd["foo.bar"] = &Object::staticFunc;

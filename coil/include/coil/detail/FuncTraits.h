@@ -7,18 +7,7 @@
 namespace coil::detail
 {
     template<typename... Args>
-    struct ArgsTraitsImpl
-    {
-        using UserArgumentTypes = Types<Args...>;
-        using NonUserArgsIndices = std::index_sequence<>;
-    };
-
-    template<typename... Tail>
-    struct ArgsTraitsImpl<Context, Tail...>
-    {
-        using UserArgumentTypes = Types<Tail...>;
-        using NonUserArgsIndices = std::index_sequence<0>;
-    };
+    class FunctionWrapper;
 
     template<bool IsConst, typename R, typename... Args>
     struct BaseFuncTraits
@@ -27,8 +16,7 @@ namespace coil::detail
         static constexpr bool isFunc = true;
 
         using ReturnType = std::decay_t<R>;
-        using ArgumentTypes = Types<Args...>;
-        using ArgsTraits = ArgsTraitsImpl<std::decay_t<Args>...>; // TODO export ArgsTraits internals directly here
+        using FunctionWrapperType = FunctionWrapper<Args...>;
         static constexpr bool isConst = IsConst;
     };
 

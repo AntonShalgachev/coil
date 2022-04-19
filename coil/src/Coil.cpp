@@ -3,6 +3,7 @@
 // Explicitly instantiate used templates here in order to avoid intantiating them in each source file
 template class std::vector<std::string>;
 template class std::optional<std::string>;
+template std::optional<std::string>::optional(std::string&&);
 
 template class std::vector<coil::ArgValue>;
 template class std::vector<std::pair<std::string_view, coil::ArgValue>>;
@@ -356,11 +357,6 @@ namespace coil
     }
 
     /// ExecutionResult.h ///
-    void ExecutionResult::setReturnValue(std::string value)
-    {
-        returnValue = std::move(value);
-    }
-
     COIL_CREATE_TYPE_NAME_DEFINITION(bool);
     COIL_CREATE_TYPE_NAME_DEFINITION(char);
     COIL_CREATE_TYPE_NAME_DEFINITION(signed char);
