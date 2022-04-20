@@ -40,6 +40,8 @@ namespace coil
 
         void clear();
 
+        std::vector<std::string_view> const& commands() const;
+
         ExecutionResult execute(std::string_view command);
 
         template<typename InputT, typename LexerT>
@@ -68,6 +70,7 @@ namespace coil
         DefaultLexer m_defaultLexer;
 
         std::unordered_map<StringWrapper, std::vector<detail::AnyFunctor>> m_commands;
+        std::vector<std::string_view> m_commandNames;
     };
 
     template<typename BindingsT>
