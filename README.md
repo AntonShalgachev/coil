@@ -1,10 +1,14 @@
 # coil (COmmand Interpreter Library)
 
+## Invoke C++ functions at runtime with cmd-like interface!
+
+---
+
 [![codecov](https://codecov.io/gh/AntonShalgachev/coil/branch/master/graph/badge.svg?token=VFJT3W6568)](https://codecov.io/gh/AntonShalgachev/coil)
 [![Windows](https://github.com/AntonShalgachev/coil/actions/workflows/windows.yml/badge.svg)](https://github.com/AntonShalgachev/coil/actions/workflows/windows.yml)
 [![Ubuntu](https://github.com/AntonShalgachev/coil/actions/workflows/ubuntu.yml/badge.svg)](https://github.com/AntonShalgachev/coil/actions/workflows/ubuntu.yml)
 
-This is a modern C++17 library that allows you to call functions using a simple yet powerful command-like scripting language. It has no dependencies and doesn't use any macros. Since `coil` relies heavily on the templates, it's header-only (optimized to reduce compile time).
+This is a C++17 library that allows you to call functions at runtime using a simple yet powerful command-like scripting language. It has no dependencies. `coil` relies on the templates, however it's optimized for compilation speed (see [Compilation time impact](#compilation-time-impact))
 
 > ⚠️ **The library is currently under development.** Major changes are to be expected, although the main branch is kept more or less stable
 
@@ -12,12 +16,17 @@ This is a modern C++17 library that allows you to call functions using a simple 
 
 Table of contents:
 - [Quick peek](#quick-peek)
+- [Features overview](#features-overview)
+    - [Functions](#functions)
+    - [Variables](#variables)
+    - [Enums](#enums)
+    - [Named arguments](#named-arguments)
 - [Introduction](#introduction)
     - [Motivation](#motivation)
 - [Features](#features)
 - [Installation](#installation)
 - [Quick examples](#quick-examples)
-    - [Enums](#enums)
+    - [Enums](#enums-1)
     - [Commands with a variable arguments size](#commands-with-a-variable-arguments-size)
     - [Any-like arguments](#any-like-arguments)
 - [Extensibility](#extensibility)
@@ -525,11 +534,11 @@ To implement an interactive CLI, you can execute `coil::Bindings::execute` in a 
 Compilation time is a number one priority of `coil`, so it's been optimized to have as little compilation overhead as possible. While the full compilation time analysis is still to be conducted, here are some preliminary metrics which have been used to improve the compilation performance.
 
 ### Test project structure
-The test project contains 200 generated classes. Each class contains 15 member functions (each with 5 arguments), 15 member variables, 15 static member functions (each with 5 arguments) and 15 static member variables. Each member function contains some dummy logic to make the compiler do some measurable work. Class header files include some other classes.
+The test project contains 200 generated classes. Each class contains 12 member functions (4 with 0 arguments, 4 with 1 argument and 4 with 2 arguments), 12 member variables, 12 static member functions (4 with 0 arguments, 4 with 1 argument and 4 with 2 arguments) and 12 static member variables. Each member function contains some dummy logic to make the compiler do some measurable work.
 
-Out of those 200 classes, 100 of those classes additionally have optional debug bindings for each member function, member variable, static member function and static member variable. Based on the `#define` value, these debug bindings could be either disabled or could be implemented in 2 ways:
+All of these classes have optional debug bindings for each member function, member variable, static member function and static member variable. Based on the `#define` value, these debug bindings could be either disabled or could be implemented in 2 ways:
 - Using `coil`: each function/variabls is bound directly to a string via `coil::Bindings`
-- Using naive implementation. In this implementation only specific functions can be bound, specifically with this signature: `std::string(std::vector<std::string> const&)`. The function should parse all arguments from strings by itself and should return the result as a string. If the debug bindings are implemented this way, these 100 classes add an additional wrapper function per functions/variable (the wrapper function would manually check number of arguments, convert them to the target type, invoke original function and then convert its return value to string). This implementation is added to the test because it's frequently seen in the game engines I worked on.
+- Using naive implementation. In this implementation only specific functions can be bound, specifically with this signature: `std::string(std::vector<std::string> const&)`. The function should parse all arguments from strings by itself and should return the result as a string. If the debug bindings are implemented this way, these 200 classes add an additional wrapper function per functions/variable (the wrapper function would manually check number of arguments, convert them to the target type, invoke original function and then convert its return value to string). This implementation is added to the test because it's frequently seen in the game engines I worked on.
 
 ### Test procedure
 
@@ -546,11 +555,11 @@ You can see the test script here: [scripts/test_compilation/run.ps1](scripts/tes
 
 These are the numbers I've got on my machine:
 
-| Configuration | Median (sec) | Average (sec) | Minimum (sec) | Maximum (sec) |
-| ------------- | ------------ | ------------- | ------------- | ------------- |
-| Base          | 40.864584    | 40.962194     | 40.5952767    | 41.4267213    |
-| Coil          | 43.99639     | 43.9689904    | 43.8307179    | 44.0798634    |
-| Naive         | 48.6936657   | 48.6077337    | 48.0307872    | 49.0987481    |
+| Configuration | Clang (seconds)    | MSVC (seconds)     |
+| ------------- | ------------------ | ------------------ |
+| Base          | 13.738365411758423 | 7.671312928199768  |
+| Coil          | 16.172605514526367 | 12.114667296409607 |
+| Naive         | 20.63681662082672  | 17.464430809020996 |
 
 ## Runtime performance
 
