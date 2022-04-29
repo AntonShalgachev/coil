@@ -19,7 +19,6 @@ set(ALL_FILES
     "include/coil/detail/CallContext.h"
     "include/coil/detail/FuncTraits.h"
     "include/coil/detail/StringWrapper.h"
-    "include/coil/detail/AnyFunctor.h"
     "include/coil/detail/FunctionWrapper.h"
     
     "include/coil/DefaultLexer.h"
@@ -28,6 +27,7 @@ set(ALL_FILES
     "include/coil/Property.h"
     "include/coil/ArgValue.h"
     "include/coil/Overloaded.h"
+    "include/coil/AnyFunctor.h"
     
     "include/coil/Coil.h"
     "include/coil/Extern.h"
