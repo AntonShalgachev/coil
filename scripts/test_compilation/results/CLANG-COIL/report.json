@@ -1,39 +1,39 @@
 {
     "compilation_stats": {
-        "mean": 0.783980417251587,
-        "median": 0.7817407846450806,
-        "min": 0.7789149284362793,
-        "max": 0.802924394607544
+        "mean": 0.7831010103225708,
+        "median": 0.7821370363235474,
+        "min": 0.7761743068695068,
+        "max": 0.7901773452758789
     },
     "full_build_stats": {
-        "mean": 16.172861099243164,
-        "median": 16.172605514526367,
-        "min": 15.95328426361084,
-        "max": 16.392949104309082
+        "mean": 16.16628336906433,
+        "median": 16.180217385292053,
+        "min": 15.901833772659302,
+        "max": 16.402864933013916
     },
     "symbols_count": 711,
     "trace_stats": {
-        "AlwaysInlinerPass": 43,
-        "Backend": 263929,
-        "CodeGen Function": 128894,
-        "CoroCleanupPass": 33,
+        "AlwaysInlinerPass": 51,
+        "Backend": 265312,
+        "CodeGen Function": 128382,
+        "CoroCleanupPass": 25,
         "CoroEarlyPass": 42,
-        "CoroSplitPass": 24,
-        "DebugConstGlobalVariable": 264,
-        "DebugGlobalVariable": 109,
-        "DebugType": 103750,
-        "ExecuteCompiler": 663473,
-        "Frontend": 373713,
-        "InstantiateClass": 128827,
-        "InstantiateFunction": 454862,
-        "ModuleToFunctionPassAdaptor": 3385,
-        "ModuleToPostOrderCGSCCPassAdaptor": 2732,
-        "OptFunction": 216484,
-        "OptModule": 255434,
-        "ParseClass": 1798,
-        "PassManager<LazyCallGraph::SCC, llvm::CGSCCAnalysisManager, llvm::LazyCallGraph &, llvm::CGSCCUpdateResult &>": 159,
-        "PerformPendingInstantiations": 138504,
-        "RunPass": 190452,
-        "Source": 2116
+        "CoroSplitPass": 22,
+        "DebugConstGlobalVariable": 285,
+        "DebugGlobalVariable": 112,
+        "DebugType": 103294,
+        "ExecuteCompiler": 664500,
+        "Frontend": 373700,
+        "InstantiateClass": 127757,
+        "InstantiateFunction": 457996,
+        "ModuleToFunctionPassAdaptor": 3359,
+        "ModuleToPostOrderCGSCCPassAdaptor": 2848,
+        "OptFunction": 217371,
+        "OptModule": 256821,
+        "ParseClass": 1803,
+        "PassManager<LazyCallGraph::SCC, llvm::CGSCCAnalysisManager, llvm::LazyCallGraph &, llvm::CGSCCUpdateResult &>": 182,
+        "PerformPendingInstantiations": 139689,
+        "RunPass": 191368,
+        "Source": 2119
     }
 }

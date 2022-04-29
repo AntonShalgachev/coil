@@ -125,22 +125,31 @@ namespace coil
         // No move list-initialization in vector? Really, C++?
         std::vector<AnyFunctor> functors;
         functors.push_back(std::move(anyFunctor));
-        m_commands.insert_or_assign(name, std::move(functors));
+        auto it = m_commands.insert_or_assign(name, std::move(functors)).first;
+        m_commandNames.push_back(it->first);
     }
 
     void Bindings::add(std::string_view name, std::vector<AnyFunctor> anyFunctors)
     {
-        m_commands.insert_or_assign(name, std::move(anyFunctors));
+        auto it = m_commands.insert_or_assign(name, std::move(anyFunctors)).first;
+        m_commandNames.push_back(it->first);
     }
 
     void Bindings::remove(std::string_view name)
     {
+        m_commandNames.erase(std::remove(m_commandNames.begin(), m_commandNames.end(), name), m_commandNames.end());
         m_commands.erase(name);
     }
 
     void Bindings::clear()
     {
+        m_commandNames.clear();
         m_commands.clear();
+    }
+
+    std::vector<std::string_view> const& Bindings::commands() const
+    {
+        return m_commandNames;
     }
 
     ExecutionResult Bindings::execute(ExecutionInput const& input)
