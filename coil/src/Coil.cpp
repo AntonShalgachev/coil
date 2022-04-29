@@ -30,7 +30,7 @@ template void std::swap<coil::detail::AnyStorageBase*>(coil::detail::AnyStorageB
 
 template std::string&& std::forward<std::string>(std::string&) noexcept;
 
-template std::vector<coil::detail::AnyFunctor>::~vector();
+template std::vector<coil::AnyFunctor>::~vector();
 
 COIL_TYPE_SERIALIZER_TEMPLATE(signed short);
 COIL_TYPE_SERIALIZER_TEMPLATE(unsigned short);
@@ -51,33 +51,6 @@ namespace coil
         /// AnyFunctor.h ///
         AnyStorageBase::AnyStorageBase() = default;
         AnyStorageBase::~AnyStorageBase() = default;
-
-        AnyFunctor::AnyFunctor(AnyFunctor&& rhs)
-        {
-            using namespace std;
-            swap(rhs.m_storage, m_storage);
-            swap(rhs.m_arity, m_arity);
-        }
-
-        AnyFunctor::~AnyFunctor()
-        {
-            destroy();
-        }
-
-        void AnyFunctor::destroy()
-        {
-            if (m_storage)
-                delete m_storage;
-
-            m_storage = nullptr;
-        }
-
-        void AnyFunctor::invokeTrampoline(detail::CallContext& context)
-        {
-            return m_storage->invoke(context);
-        }
-
-        std::size_t AnyFunctor::arity() const { return m_arity; }
 
         /// FunctorCaller.h ///
         template<>
@@ -112,21 +85,50 @@ namespace coil
         }
     }
 
+    /// AnyFcuntor.h ///
+
+    AnyFunctor::AnyFunctor(AnyFunctor&& rhs)
+    {
+        using namespace std;
+        swap(rhs.m_storage, m_storage);
+        swap(rhs.m_arity, m_arity);
+    }
+
+    AnyFunctor::~AnyFunctor()
+    {
+        destroy();
+    }
+
+    void AnyFunctor::destroy()
+    {
+        if (m_storage)
+            delete m_storage;
+
+        m_storage = nullptr;
+    }
+
+    void AnyFunctor::invokeTrampoline(detail::CallContext& context)
+    {
+        return m_storage->invoke(context);
+    }
+
+    std::size_t AnyFunctor::arity() const { return m_arity; }
+
     /// Bindings.h ///
     BindingProxy<Bindings> Bindings::operator[](std::string_view name)
     {
         return BindingProxy<Bindings>{ *this, { name } };
     }
 
-    void Bindings::add(std::string_view name, detail::AnyFunctor anyFunctor)
+    void Bindings::add(std::string_view name, AnyFunctor anyFunctor)
     {
         // No move list-initialization in vector? Really, C++?
-        std::vector<detail::AnyFunctor> functors;
+        std::vector<AnyFunctor> functors;
         functors.push_back(std::move(anyFunctor));
         m_commands.insert_or_assign(name, std::move(functors));
     }
 
-    void Bindings::add(std::string_view name, std::vector<detail::AnyFunctor> anyFunctors)
+    void Bindings::add(std::string_view name, std::vector<AnyFunctor> anyFunctors)
     {
         m_commands.insert_or_assign(name, std::move(anyFunctors));
     }

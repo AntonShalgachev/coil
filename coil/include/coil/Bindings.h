@@ -11,7 +11,7 @@
 #include "DefaultLexer.h"
 #include "Expected.h"
 #include "detail/StringWrapper.h"
-#include "detail/AnyFunctor.h"
+#include "AnyFunctor.h"
 
 namespace coil
 {
@@ -30,11 +30,11 @@ namespace coil
         {
             static_assert(detail::FuncTraits<Func>::isFunc, "Func should be a functor object");
             using FunctionWrapper = typename detail::FuncTraits<Func>::FunctionWrapperType;
-            add(name, detail::AnyFunctor{ FunctionWrapper{ std::move(func) } });
+            add(name, AnyFunctor{ FunctionWrapper{ std::move(func) } });
         }
 
-        void add(std::string_view name, detail::AnyFunctor anyFunctor);
-        void add(std::string_view name, std::vector<detail::AnyFunctor> anyFunctors);
+        void add(std::string_view name, AnyFunctor anyFunctor);
+        void add(std::string_view name, std::vector<AnyFunctor> anyFunctors);
 
         void remove(std::string_view name);
 
@@ -67,7 +67,7 @@ namespace coil
 
         DefaultLexer m_defaultLexer;
 
-        std::unordered_map<StringWrapper, std::vector<detail::AnyFunctor>> m_commands;
+        std::unordered_map<StringWrapper, std::vector<AnyFunctor>> m_commands;
     };
 
     template<typename BindingsT>
@@ -81,15 +81,15 @@ namespace coil
         {
             static_assert(detail::FuncTraits<Func>::isFunc, "Func should be a functor object");
             using FunctionWrapper = typename detail::FuncTraits<Func>::FunctionWrapperType;
-            m_bindings.add(m_name, detail::AnyFunctor{ FunctionWrapper{ std::move(func) } });
+            m_bindings.add(m_name, AnyFunctor{ FunctionWrapper{ std::move(func) } });
             return *this;
         }
-        BindingProxy& operator=(detail::AnyFunctor anyFunctor)
+        BindingProxy& operator=(AnyFunctor anyFunctor)
         {
             m_bindings.add(m_name, std::move(anyFunctor));
             return *this;
         }
-        BindingProxy& operator=(std::vector<detail::AnyFunctor> anyFunctors)
+        BindingProxy& operator=(std::vector<AnyFunctor> anyFunctors)
         {
             m_bindings.add(m_name, std::move(anyFunctors));
             return *this;
