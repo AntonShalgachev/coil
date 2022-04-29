@@ -43,7 +43,7 @@ extern template void std::swap<coil::detail::AnyStorageBase*>(coil::detail::AnyS
 
 extern template std::string&& std::forward<std::string>(std::string&) noexcept;
 
-extern template std::vector<coil::detail::AnyFunctor>::~vector();
+extern template std::vector<coil::AnyFunctor>::~vector();
 
 #define COIL_TYPE_SERIALIZER_TEMPLATE_BASE(T, SPECIFIER) \
     SPECIFIER template struct coil::TypeSerializer<T>
@@ -66,7 +66,7 @@ COIL_TYPE_SERIALIZER_EXTERN_TEMPLATE(long double);
 ///////////////////////////////////////////////////////////////////////////////////////////
 
 #define COIL_VARIABLE_TEMPLATE_BASE(SPECIFIER, T) \
-    SPECIFIER template std::vector<coil::detail::AnyFunctor> coil::variable<T>(T* var)
+    SPECIFIER template std::vector<coil::AnyFunctor> coil::variable<T>(T* var)
 
 #define COIL_ARGUMENT_TEMPLATE_BASE(SPECIFIER, T) \
     SPECIFIER template class coil::ExpectedBase<T, std::string>; \
@@ -85,7 +85,7 @@ COIL_TYPE_SERIALIZER_EXTERN_TEMPLATE(long double);
     SPECIFIER template std::optional<T> coil::NamedArgs::getOrReport<T>(std::string_view key, coil::NamedArgs::ArgType argType, std::optional<T> defaultValue) const
 
 #define COIL_FUNCTION_ARGS_TEMPLATE_BASE(SPECIFIER, ...) \
-    SPECIFIER template coil::detail::AnyFunctor::AnyFunctor(coil::detail::FunctionWrapper<__VA_ARGS__>); \
+    SPECIFIER template coil::AnyFunctor::AnyFunctor(coil::detail::FunctionWrapper<__VA_ARGS__>); \
     SPECIFIER template class coil::detail::FunctionWrapper<__VA_ARGS__>; \
     SPECIFIER template class coil::detail::AnyStorage<coil::detail::FunctionWrapper<__VA_ARGS__>>
 
