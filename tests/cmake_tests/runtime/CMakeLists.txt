@@ -7,6 +7,7 @@ set(ALL_FILES
     "ExpectedTests.cpp"
     "BindingsTests.cpp"
     "TypeSerializerTests.cpp"
+    "PropertyTests.cpp"
 )
 
 add_executable(${PROJECT_NAME} ${ALL_FILES})
@@ -45,6 +46,7 @@ set(TEST_NAMES
     "ExpectedTests"
     "BindingsTests"
     "TypeSerializerTests"
+    "PropertyTests"
 )
 
 foreach(TEST_NAME ${TEST_NAMES})
