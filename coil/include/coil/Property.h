@@ -1,68 +1,43 @@
 #pragma once
-#include <type_traits>
 
-// TODO use coil::overloaded
+#include "Overloaded.h"
 
 namespace coil
 {
     template<typename G, typename S>
-    class Property
+    auto property(G getter, S setter)
     {
-    public:
-        using T = std::decay_t<decltype(std::declval<G>()())>;
-
-        Property(G getter, S setter) : m_getter(std::move(getter)), m_setter(std::move(setter)) {}
-
-        T operator()(std::optional<T> const& arg)
+        auto get = [getter]() -> decltype(auto)
         {
-            // TODO add user-friendly static_asserts
+            return getter();
+        };
 
-            if (arg.has_value())
-                m_setter(arg.value());
-
-            return m_getter();
-        }
-
-    private:
-        G m_getter;
-        S m_setter;
-    };
-
-    template<typename C, typename G, typename S>
-    class MemberProperty
-    {
-    public:
-        using T = std::decay_t<decltype(std::invoke(std::declval<G>(), std::declval<C*>()))>;
-
-        MemberProperty(G getter, S setter, C* object) : m_getter(std::move(getter)), m_setter(std::move(setter)), m_object(object) {}
-
-        T operator()(std::optional<T> const& arg)
+        using T = decltype(getter());
+        auto set = [getter, setter = std::move(setter)](T value) -> decltype(auto)
         {
-            // TODO add user-friendly static_asserts
+            setter(std::move(value));
+            return getter();
+        };
 
-            if (arg.has_value())
-                std::invoke(m_setter, m_object, arg.value());
-
-            return std::invoke(m_getter, m_object);
-        }
-
-    private:
-        G m_getter;
-        S m_setter;
-        C* m_object = nullptr;
-    };
-
-    // TODO rename to `property`
-    template<typename G, typename S>
-    auto property(G&& getter, S&& setter)
-    {
-        return Property{ std::move(getter), std::move(setter) };
+        return coil::overloaded(std::move(get), std::move(set));
     }
 
     template<typename C, typename G, typename S>
     auto property(G&& getter, S&& setter, C* object)
     {
-        return MemberProperty{ std::move(getter), std::move(setter), object };
+        auto get = [getter, object]() -> decltype(auto)
+        {
+            return std::invoke(getter, object);
+        };
+
+        using T = decltype(std::invoke(getter, object));
+        auto set = [getter, setter = std::move(setter), object](T value) -> decltype(auto)
+        {
+            std::invoke(setter, object, std::move(value));
+            return std::invoke(getter, object);
+        };
+
+        return coil::overloaded(std::move(get), std::move(set));
     }
 
     // TODO add readonly properties
