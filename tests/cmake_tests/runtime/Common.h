@@ -66,3 +66,8 @@ namespace coil
         return os << "'" << unexpected.value() << "'";
     }
 }
+
+inline bool containsError(std::vector<std::string> const& errors, std::string const& value)
+{
+    return std::find(errors.begin(), errors.end(), value) != errors.end();
+}

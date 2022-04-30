@@ -100,11 +100,6 @@ namespace
             return field1 == rhs.field1 && field2 == rhs.field2;
         }
     };
-
-    bool containsError(std::vector<std::string> const& errors, std::string const& value)
-    {
-        return std::find(errors.begin(), errors.end(), value) != errors.end();
-    }
 }
 
 namespace coil
