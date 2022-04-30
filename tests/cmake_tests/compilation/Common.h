@@ -79,6 +79,11 @@ namespace
             return memberVariable;
         }
 
+        float& getReference()
+        {
+            return memberVariable;
+        }
+
         float memberVariable = 2.0f;
     };
 

@@ -12,10 +12,10 @@ namespace coil
             return getter();
         };
 
-        using T = decltype(getter());
-        auto set = [getter, setter = std::move(setter)](T value) -> decltype(auto)
+        using T = std::decay_t<decltype(getter())>;
+        auto set = [getter, setter = std::move(setter)](T const& value) -> decltype(auto)
         {
-            setter(std::move(value));
+            setter(value);
             return getter();
         };
 
@@ -30,10 +30,10 @@ namespace coil
             return std::invoke(getter, object);
         };
 
-        using T = decltype(std::invoke(getter, object));
-        auto set = [getter, setter = std::move(setter), object](T value) -> decltype(auto)
+        using T = std::decay_t<decltype(std::invoke(getter, object))>;
+        auto set = [getter, setter = std::move(setter), object](T const& value) -> decltype(auto)
         {
-            std::invoke(setter, object, std::move(value));
+            std::invoke(setter, object, value);
             return std::invoke(getter, object);
         };
 
