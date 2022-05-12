@@ -3,11 +3,6 @@
 
 #include <random>
 
-bool operator==(std::reference_wrapper<coil::ExecutionInput> const& lhs, coil::ExecutionInput const& rhs)
-{
-    return lhs.get() == rhs;
-}
-
 namespace
 {
     coil::ArgValue createValue(std::string_view input)
