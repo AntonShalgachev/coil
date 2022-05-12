@@ -1,16 +1,15 @@
 set(PROJECT_NAME compilation_performance)
 
-set(ALL_FILES
-    "main.cpp"
-    "Common.h"
-    "Common.cpp"
-    "pch.h"
-)
-
 set(GENERATED_FILES)
 add_subdirectory(generated)
 
-add_executable(${PROJECT_NAME} ${ALL_FILES} ${GENERATED_FILES})
+add_executable(${PROJECT_NAME}
+    "Common.cpp"
+    "Common.h"
+    "main.cpp"
+    "pch.h"
+    ${GENERATED_FILES}
+)
 
 target_include_directories(${PROJECT_NAME} PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR};"

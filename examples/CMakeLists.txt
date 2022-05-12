@@ -1,32 +1,30 @@
 set(PROJECT_NAME examples)
 
-set(ALL_FILES
+add_executable(${PROJECT_NAME}
     "main.cpp"
     
-    "common/ExamplesCommon.h"
-    "common/ExamplesCommon.cpp"
     "common/CustomTypeName.h"
     "common/EnumToString.h"
+    "common/ExamplesCommon.cpp"
+    "common/ExamplesCommon.h"
     "common/FlagVariableWrapper.h"
     
-    "basic/BasicExample.h"
-    "basic/BasicExample.cpp"
-    "variadic/VariadicExample.h"
-    "variadic/VariadicExample.cpp"
-    "variables/VariablesExample.h"
-    "variables/VariablesExample.cpp"
-    "named/NamedExample.h"
-    "named/NamedExample.cpp"
-    "enums/EnumsExample.h"
-    "enums/EnumsExample.cpp"
-	"errors/ErrorsExample.h"
 	"errors/ErrorsExample.cpp"
-    "usertypes/UsertypesExample.h"
-    "usertypes/UsertypesExample.cpp"
+	"errors/ErrorsExample.h"
+    "basic/BasicExample.cpp"
+    "basic/BasicExample.h"
     "common/Utils.h"
+    "enums/EnumsExample.cpp"
+    "enums/EnumsExample.h"
+    "named/NamedExample.cpp"
+    "named/NamedExample.h"
+    "usertypes/UsertypesExample.cpp"
+    "usertypes/UsertypesExample.h"
+    "variables/VariablesExample.cpp"
+    "variables/VariablesExample.h"
+    "variadic/VariadicExample.cpp"
+    "variadic/VariadicExample.h"
 )
-
-add_executable(${PROJECT_NAME} ${ALL_FILES})
 
 target_include_directories(${PROJECT_NAME} PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}"

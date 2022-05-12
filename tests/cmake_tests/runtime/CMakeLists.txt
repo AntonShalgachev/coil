@@ -3,11 +3,11 @@ set(PROJECT_NAME cmake_tests)
 add_executable(${PROJECT_NAME}
     "Common.h"
 
-    "LexerTests.cpp"
-    "ExpectedTests.cpp"
     "BindingsTests.cpp"
-    "TypeSerializerTests.cpp"
+    "ExpectedTests.cpp"
+    "LexerTests.cpp"
     "PropertyTests.cpp"
+    "TypeSerializerTests.cpp"
 )
 
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
