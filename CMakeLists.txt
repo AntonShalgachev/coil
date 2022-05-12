@@ -43,6 +43,7 @@ add_library(coil
 
     "src/Coil.cpp"
 )
+add_library(coil::coil ALIAS coil)
 
 target_include_directories(coil
     PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include"
