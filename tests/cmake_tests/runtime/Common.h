@@ -1,9 +1,16 @@
 #pragma once
 
-#include "coil/Coil.h"
-
 #include <optional>
 #include <vector>
+#include <functional>
+
+template<typename T>
+bool operator==(std::reference_wrapper<T> const& lhs, T const& rhs)
+{
+    return lhs.get() == rhs;
+}
+
+#include "coil/Coil.h"
 
 namespace coil
 {
