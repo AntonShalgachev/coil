@@ -52,25 +52,6 @@ target_include_directories(coil
 target_compile_features(coil PUBLIC cxx_std_17)
 set_target_properties(coil PROPERTIES CXX_EXTENSIONS OFF)
 
-# TODO move to examples/tests/etc.
-set(CMAKE_CONFIGURATION_TYPES
-    "Debug"
-    "Release"
-    "RelWithDebInfo"
-    "MinSizeRel"
-    CACHE STRING "" FORCE
-)
-
-# TODO find a cleaner way to do it
-if(CMAKE_CXX_FLAGS MATCHES "/W[0-4]")
-    set(OLD_FLAGS ${CMAKE_CXX_FLAGS})
-    string(REGEX REPLACE "/W[0-4]" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
-    message(STATUS "CMAKE_CXX_FLAGS changed from '${OLD_FLAGS}' to '${CMAKE_CXX_FLAGS}'")
-endif()
-
-# TODO move to examples/tests/etc.
-set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-
 if (${COIL_EXAMPLES})
     add_subdirectory(examples)
 endif()
