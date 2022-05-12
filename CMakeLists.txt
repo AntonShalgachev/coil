@@ -12,6 +12,45 @@ set(COIL_COMPILE_TIME_TRACE OFF CACHE BOOL "Generate trace files for Clang")
 set(COIL_COMPILE_TIME_WITH_COIL OFF CACHE BOOL "Whether to use coil library for compilation performance test")
 set(COIL_COMPILE_TIME_WITH_MANUAL OFF CACHE BOOL "Whether to use manually-written bindings for compilation performance test")
 
+add_library(coil
+    "include/coil/detail/CallContext.h"
+    "include/coil/detail/FunctionWrapper.h"
+    "include/coil/detail/FunctorCaller.h"
+    "include/coil/detail/FuncTraits.h"
+    "include/coil/detail/StringWrapper.h"
+
+    "include/coil/AnyArgView.h"
+    "include/coil/AnyFunctor.h"
+    "include/coil/ArgValue.h"
+    "include/coil/Bind.h"
+    "include/coil/Bindings.h"
+    "include/coil/Coil.h"
+    "include/coil/CommandCollection.h"
+    "include/coil/Context.h"
+    "include/coil/DefaultLexer.h"
+    "include/coil/ExecutionInput.h"
+    "include/coil/ExecutionResult.h"
+    "include/coil/Expected.h"
+    "include/coil/Extern.h"
+    "include/coil/NamedArgs.h"
+    "include/coil/Overloaded.h"
+    "include/coil/Property.h"
+    "include/coil/TypeName.h"
+    "include/coil/Types.h"
+    "include/coil/TypeSerializer.h"
+    "include/coil/Utils.h"
+    "include/coil/Variable.h"
+
+    "src/Coil.cpp"
+)
+
+target_include_directories(coil
+    PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include"
+)
+
+target_compile_features(coil PUBLIC cxx_std_17)
+set_target_properties(coil PROPERTIES CXX_EXTENSIONS OFF)
+
 # TODO move to examples/tests/etc.
 set(CMAKE_CONFIGURATION_TYPES
     "Debug"
@@ -30,8 +69,6 @@ endif()
 
 # TODO move to examples/tests/etc.
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-
-add_subdirectory(coil)
 
 if (${COIL_EXAMPLES})
     add_subdirectory(examples)
