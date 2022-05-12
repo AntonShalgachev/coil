@@ -10,12 +10,6 @@ set(ALL_FILES
 set(GENERATED_FILES)
 add_subdirectory(generated)
 
-set (VS2017 OFF)
-if (CMAKE_CXX_COMPILER MATCHES ".*Visual Studio.*2017.*")
-    message(STATUS "Visual Studio 2017 in use: '${CMAKE_CXX_COMPILER}'")
-    set (VS2017 ON)
-endif()
-
 add_executable(${PROJECT_NAME} ${ALL_FILES} ${GENERATED_FILES})
 
 target_include_directories(${PROJECT_NAME} PRIVATE
@@ -31,14 +25,7 @@ target_precompile_headers(${PROJECT_NAME} PRIVATE "pch.h")
 
 set(COMPILE_OPTIONS)
 if(MSVC)
-    set(COMPILE_OPTIONS /W4 /FC)
-
-    if (NOT ${VS2017})
-        message(STATUS "Adding /permissive-")
-        list(APPEND COMPILE_OPTIONS
-            /permissive-
-        )
-    endif()
+    set(COMPILE_OPTIONS /W4 /FC /permissive-)
 endif()
 
 if (COIL_COMPILE_TIME_TRACE AND CMAKE_CXX_COMPILER_ID MATCHES "Clang")
@@ -56,11 +43,6 @@ endif()
 
 if(${COIL_COMPILE_TIME_WITH_COIL})
     target_compile_definitions(${PROJECT_NAME} PRIVATE USE_COIL=1)
-endif()
-
-if (${VS2017})
-    message(STATUS "Adding _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS")
-    target_compile_definitions(${PROJECT_NAME} PUBLIC _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS)
 endif()
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
