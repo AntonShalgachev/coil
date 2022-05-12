@@ -1,6 +1,6 @@
 set(PROJECT_NAME cmake_tests)
 
-set(ALL_FILES
+add_executable(${PROJECT_NAME}
     "Common.h"
 
     "LexerTests.cpp"
@@ -10,19 +10,12 @@ set(ALL_FILES
     "PropertyTests.cpp"
 )
 
-add_executable(${PROJECT_NAME} ${ALL_FILES})
-
-target_link_libraries(${PROJECT_NAME}
-    coil::coil
-    gtest_main
-)
-
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_EXTENSIONS OFF)
 
 set(COMPILE_OPTIONS)
 if(MSVC)
-    set(COMPILE_OPTIONS /W4 /FC)
+    set(COMPILE_OPTIONS /W4 /FC /permissive-)
 endif()
 target_compile_options(${PROJECT_NAME} PRIVATE
     ${COMPILE_OPTIONS}
@@ -47,6 +40,11 @@ set(TEST_NAMES
     "BindingsTests"
     "TypeSerializerTests"
     "PropertyTests"
+)
+
+target_link_libraries(${PROJECT_NAME}
+    coil::coil
+    gtest_main
 )
 
 foreach(TEST_NAME ${TEST_NAMES})
