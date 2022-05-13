@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.12.0 FATAL_ERROR)
 
 project(coil LANGUAGES C CXX VERSION 1.0)
 
-set(COIL_EXAMPLES ON CACHE BOOL "Add examples")
+set(COIL_EXAMPLES OFF CACHE BOOL "Add examples")
 set(COIL_RUNTIME_TESTS OFF CACHE BOOL "Add CMake runtime tests")
 set(COIL_COMPILATION_TESTS OFF CACHE BOOL "Run CMake compilation tests")
 
