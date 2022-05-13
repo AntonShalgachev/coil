@@ -77,7 +77,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Cmake
-      run: cmake -B ${{github.workspace}}/build -G "Visual Studio 16 2019" -DCOIL_EXAMPLES=OFF -DCOIL_COMPILE_TIME=ON -DCOIL_COMPILE_TIME_WITH_${{ matrix.bindings }}=ON
+      run: cmake -B ${{github.workspace}}/build -G "Visual Studio 16 2019" -DCOIL_COMPILE_TIME=ON -DCOIL_COMPILE_TIME_WITH_${{ matrix.bindings }}=ON
     - name: Build
       run: cmake --build ${{github.workspace}}/build --config Debug --parallel 10
 
@@ -89,6 +89,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Cmake
-      run: cmake -B ${{github.workspace}}/build -G "Visual Studio 17 2022" -DCOIL_EXAMPLES=OFF -DCOIL_COMPILE_TIME=ON -DCOIL_COMPILE_TIME_WITH_${{ matrix.bindings }}=ON
+      run: cmake -B ${{github.workspace}}/build -G "Visual Studio 17 2022" -DCOIL_COMPILE_TIME=ON -DCOIL_COMPILE_TIME_WITH_${{ matrix.bindings }}=ON
     - name: Build
       run: cmake --build ${{github.workspace}}/build --config Debug --parallel 10
