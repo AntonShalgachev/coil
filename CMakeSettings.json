@@ -18,11 +18,6 @@
           "type": "BOOL"
         },
         {
-          "name": "COIL_RUNTIME_PERFORMANCE",
-          "value": "True",
-          "type": "BOOL"
-        },
-        {
           "name": "COIL_RUNTIME_TESTS",
           "value": "True",
           "type": "BOOL"
@@ -43,11 +38,6 @@
         {
           "name": "COIL_EXAMPLES",
           "value": "true",
-          "type": "BOOL"
-        },
-        {
-          "name": "COIL_RUNTIME_PERFORMANCE",
-          "value": "True",
           "type": "BOOL"
         },
         {
@@ -74,11 +64,6 @@
           "type": "BOOL"
         },
         {
-          "name": "COIL_RUNTIME_PERFORMANCE",
-          "value": "True",
-          "type": "BOOL"
-        },
-        {
           "name": "COIL_RUNTIME_TESTS",
           "value": "True",
           "type": "BOOL"
@@ -99,11 +84,6 @@
         {
           "name": "COIL_EXAMPLES",
           "value": "true",
-          "type": "BOOL"
-        },
-        {
-          "name": "COIL_RUNTIME_PERFORMANCE",
-          "value": "True",
           "type": "BOOL"
         },
         {
