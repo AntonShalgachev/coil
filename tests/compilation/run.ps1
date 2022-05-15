@@ -1,4 +1,4 @@
-Push-Location ..
+Push-Location ../..
 
 $buildFolder = "build_compilation_test"
 
