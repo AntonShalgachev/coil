@@ -1,12 +1,12 @@
 {
     "compiler_options": ["clang"],
-    "bindings_options": ["coil"],
+    "bindings_options": ["none"],
     "unity_options": [false],
 
     "count": 1,
     "full_build_count": 1,
 
-    "cmake_root": "../..",
+    "cmake_root": "../../../..",
     "build_directory": "build",
     "report_root_directory": "results",
     "report_filename": "report.json",
