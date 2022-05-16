@@ -188,7 +188,7 @@ def main():
     includes_count = 0
     args_count = [0, 1, 2]
     types = ['int', 'float', 'double', 'bool', 'short', 'unsigned']
-    destination = '../../tests/compilation_performance/generated'
+    destination = '../../generated'
 
     class_generator = ClassGenerator(classes_with_bindings_count, classes_without_bindings_count, methods_count, functions_count, member_variables_count, variables_count, args_count, includes_count, types, seed)
     

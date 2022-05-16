@@ -1,20 +1,13 @@
 set(PROJECT_NAME cmake_tests)
 
-set(ALL_FILES
+add_executable(${PROJECT_NAME}
     "Common.h"
 
-    "LexerTests.cpp"
-    "ExpectedTests.cpp"
     "BindingsTests.cpp"
-    "TypeSerializerTests.cpp"
+    "ExpectedTests.cpp"
+    "LexerTests.cpp"
     "PropertyTests.cpp"
-)
-
-add_executable(${PROJECT_NAME} ${ALL_FILES})
-
-target_link_libraries(${PROJECT_NAME}
-    coil
-    gtest_main
+    "TypeSerializerTests.cpp"
 )
 
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
@@ -22,7 +15,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES CXX_EXTENSIONS OFF)
 
 set(COMPILE_OPTIONS)
 if(MSVC)
-    set(COMPILE_OPTIONS /W4 /FC)
+    set(COMPILE_OPTIONS /W4 /FC /permissive-)
 endif()
 target_compile_options(${PROJECT_NAME} PRIVATE
     ${COMPILE_OPTIONS}
@@ -34,8 +27,8 @@ enable_testing()
 include(FetchContent)
 FetchContent_Declare(
     googletest
-    GIT_REPOSITORY https://github.com/google/googletest.git
-    GIT_TAG        release-1.11.0
+    GIT_REPOSITORY https://github.com/google/googletest
+    GIT_TAG        e2239ee6043f73722e7aa812a459f54a28552929 # 1.11.0
 )
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 message(STATUS "Fetching googletest from GitHub...")
@@ -47,6 +40,11 @@ set(TEST_NAMES
     "BindingsTests"
     "TypeSerializerTests"
     "PropertyTests"
+)
+
+target_link_libraries(${PROJECT_NAME}
+    coil::coil
+    gtest_main
 )
 
 foreach(TEST_NAME ${TEST_NAMES})
