@@ -6,7 +6,7 @@
     "count": 10,
     "full_build_count": 4,
 
-    "cmake_root": "../..",
+    "cmake_root": "../../../..",
     "build_directory": "build",
     "report_root_directory": "results",
     "report_filename": "report.json",

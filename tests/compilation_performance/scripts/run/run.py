@@ -154,7 +154,7 @@ def run_cmake(configuration: BuildConfiguration, clean: bool, trace: bool):
         'trace': '-DCOIL_COMPILE_TIME_TRACE=ON' if trace else '-DCOIL_COMPILE_TIME_TRACE=OFF'
     }
 
-    cmake_command = 'cmake -B "{build_dir}" -DCOIL_EXAMPLES=OFF -DCOIL_COMPILE_TIME=ON {trace} {bindings} {unity} -GNinja "{root}"'.format(**params)
+    cmake_command = 'cmake -B "{build_dir}" -DCOIL_COMPILE_TIME=ON {trace} {bindings} {unity} -GNinja "{root}"'.format(**params)
 
     COMPILER_IDS = {
         Compiler.MSVC: '',

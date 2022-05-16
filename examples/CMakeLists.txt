@@ -1,42 +1,34 @@
 set(PROJECT_NAME examples)
 
-set(ALL_FILES
+add_executable(${PROJECT_NAME}
     "main.cpp"
     
-    "common/ExamplesCommon.h"
-    "common/ExamplesCommon.cpp"
     "common/CustomTypeName.h"
     "common/EnumToString.h"
+    "common/ExamplesCommon.cpp"
+    "common/ExamplesCommon.h"
     "common/FlagVariableWrapper.h"
     
-    "basic/BasicExample.h"
-    "basic/BasicExample.cpp"
-    "variadic/VariadicExample.h"
-    "variadic/VariadicExample.cpp"
-    "variables/VariablesExample.h"
-    "variables/VariablesExample.cpp"
-    "named/NamedExample.h"
-    "named/NamedExample.cpp"
-    "enums/EnumsExample.h"
-    "enums/EnumsExample.cpp"
-	"errors/ErrorsExample.h"
 	"errors/ErrorsExample.cpp"
-    "usertypes/UsertypesExample.h"
-    "usertypes/UsertypesExample.cpp"
+	"errors/ErrorsExample.h"
+    "basic/BasicExample.cpp"
+    "basic/BasicExample.h"
     "common/Utils.h"
+    "enums/EnumsExample.cpp"
+    "enums/EnumsExample.h"
+    "named/NamedExample.cpp"
+    "named/NamedExample.h"
+    "usertypes/UsertypesExample.cpp"
+    "usertypes/UsertypesExample.h"
+    "variables/VariablesExample.cpp"
+    "variables/VariablesExample.h"
+    "variadic/VariadicExample.cpp"
+    "variadic/VariadicExample.h"
 )
 
-set (VS2017 OFF)
-if (CMAKE_CXX_COMPILER MATCHES ".*Visual Studio.*2017.*")
-    message(STATUS "Visual Studio 2017 in use: '${CMAKE_CXX_COMPILER}'")
-    set (VS2017 ON)
-endif()
-
-add_executable(${PROJECT_NAME} ${ALL_FILES})
-
 target_include_directories(${PROJECT_NAME} PRIVATE
-    "${CMAKE_CURRENT_SOURCE_DIR};"
-    "${CMAKE_CURRENT_SOURCE_DIR}/include;"
+    "${CMAKE_CURRENT_SOURCE_DIR}"
+    "${CMAKE_CURRENT_SOURCE_DIR}/include"
 )
 
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
@@ -44,29 +36,17 @@ set_target_properties(${PROJECT_NAME} PROPERTIES CXX_EXTENSIONS OFF)
 
 set(COMPILE_OPTIONS)
 if(MSVC)
-    set(COMPILE_OPTIONS /W4 /FC)
-
-    if (NOT ${VS2017})
-        message(STATUS "Adding /permissive-")
-        list(APPEND COMPILE_OPTIONS
-            /permissive-
-        )
-    endif()
+    set(COMPILE_OPTIONS /W4 /FC /permissive-)
 endif()
 
 target_compile_options(${PROJECT_NAME} PRIVATE
     ${COMPILE_OPTIONS}
 )
 
-if (${VS2017})
-    message(STATUS "Adding _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS")
-    target_compile_definitions(${PROJECT_NAME} PUBLIC _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS)
-endif()
-
 set_target_properties(${PROJECT_NAME} PROPERTIES
     VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
 )
 
 target_link_libraries(${PROJECT_NAME}
-    coil
+    coil::coil
 )

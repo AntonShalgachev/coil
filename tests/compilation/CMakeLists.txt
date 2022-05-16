@@ -3,10 +3,10 @@ function(validate_compilation SOURCE_FILE EXPECTED_RESULT EXPECTED_OUTPUT)
         ${CMAKE_CURRENT_SOURCE_DIR}/build
         SOURCES
             ${CMAKE_CURRENT_SOURCE_DIR}/${SOURCE_FILE}
-            ${CMAKE_SOURCE_DIR}/coil/src/Coil.cpp # TODO make prettier
+            ${CMAKE_SOURCE_DIR}/src/Coil.cpp # TODO make prettier
         CMAKE_FLAGS
             "-DCMAKE_CXX_STANDARD=17"
-            "-DINCLUDE_DIRECTORIES=${PROJECT_SOURCE_DIR}/coil/include"
+            "-DINCLUDE_DIRECTORIES=${PROJECT_SOURCE_DIR}/include"
         OUTPUT_VARIABLE COMPILATION_OUTPUT
     )
 

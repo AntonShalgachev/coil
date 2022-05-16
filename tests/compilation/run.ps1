@@ -1,4 +1,4 @@
-Push-Location ..
+Push-Location ../..
 
 $buildFolder = "build_compilation_test"
 
@@ -8,7 +8,7 @@ if (Test-Path -Path $buildFolder) {
 mkdir $buildFolder | Out-Null
 Push-Location $buildFolder
 
-Invoke-Expression "cmake -DCOIL_EXAMPLES=OFF -DCOIL_COMPILATION_TESTS=ON .."
+Invoke-Expression "cmake -DCOIL_COMPILATION_TESTS=ON .."
 
 Pop-Location
 
