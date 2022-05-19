@@ -24,7 +24,6 @@ add_library(coil
     "include/coil/Bind.h"
     "include/coil/Bindings.h"
     "include/coil/Coil.h"
-    "include/coil/CommandCollection.h"
     "include/coil/Context.h"
     "include/coil/DefaultLexer.h"
     "include/coil/ExecutionInput.h"
