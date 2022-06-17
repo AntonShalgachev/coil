@@ -1,0 +1,30 @@
+---
+Language: Cpp
+Standard: Cpp11
+BasedOnStyle: Microsoft
+AlignEscapedNewlines: Left
+AlwaysBreakTemplateDeclarations: Yes
+AccessModifierOffset: -4
+TabWidth: 4
+# UseTab: ForIndentation
+NamespaceIndentation: All
+PointerAlignment: Left
+FixNamespaceComments: false
+KeepEmptyLinesAtTheStartOfBlocks: false
+SpaceAfterTemplateKeyword: false
+Cpp11BracedListStyle: true
+BinPackArguments: 'false'
+BinPackParameters: 'false'
+
+AllowShortLambdasOnASingleLine: All
+AllowShortFunctionsOnASingleLine: Empty
+ConstructorInitializerAllOnOneLineOrOnePerLine: true
+ColumnLimit: 200
+
+BraceWrapping:
+  AfterCaseLabel:  true
+  AfterUnion:      true
+  BeforeLambdaBody: false
+  BeforeWhile:     true
+
+...
