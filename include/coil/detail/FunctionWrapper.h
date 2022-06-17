@@ -61,7 +61,7 @@ namespace coil::detail
         std::optional<std::string> typedCall(Args... args)
         {
             Func& func = *static_cast<Func*>(m_func);
-            C* obj = static_cast<C*>(m_obj);
+            [[maybe_unused]] C* obj = static_cast<C*>(m_obj);
             using R = typename FuncTraits<Func>::ReturnType;
             if constexpr (std::is_void_v<R>)
             {
