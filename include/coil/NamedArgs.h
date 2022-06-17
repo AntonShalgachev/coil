@@ -1,7 +1,7 @@
 #pragma once
 
-#include "detail/CallContext.h"
 #include "AnyArgView.h"
+#include "detail/CallContext.h"
 
 namespace coil
 {
@@ -36,7 +36,10 @@ namespace coil
         struct NamedArgContainer
         {
             NamedAnyArgView arg;
-            NamedAnyArgView* operator->() { return std::addressof(arg); }
+            NamedAnyArgView* operator->()
+            {
+                return std::addressof(arg);
+            }
         };
 
         NamedArgContainer operator->();

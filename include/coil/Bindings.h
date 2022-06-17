@@ -1,17 +1,17 @@
 #pragma once
 
-#include <string>
-#include <functional>
-#include <unordered_map>
-
-#include "detail/FuncTraits.h"
-#include "Utils.h"
-#include "detail/FunctorCaller.h"
-#include "ExecutionResult.h"
-#include "DefaultLexer.h"
-#include "Expected.h"
-#include "detail/StringWrapper.h"
 #include "AnyFunctor.h"
+#include "DefaultLexer.h"
+#include "ExecutionResult.h"
+#include "Expected.h"
+#include "Utils.h"
+#include "detail/FuncTraits.h"
+#include "detail/FunctorCaller.h"
+#include "detail/StringWrapper.h"
+
+#include <functional>
+#include <string>
+#include <unordered_map>
 
 namespace coil
 {
@@ -30,7 +30,7 @@ namespace coil
         {
             static_assert(detail::FuncTraits<Func>::isFunc, "Func should be a functor object");
             using FunctionWrapper = typename detail::FuncTraits<Func>::FunctionWrapperType;
-            add(name, AnyFunctor{ FunctionWrapper{ std::move(func) } });
+            add(name, AnyFunctor{FunctionWrapper{std::move(func)}});
         }
 
         void add(std::string_view name, AnyFunctor anyFunctor);
@@ -84,7 +84,7 @@ namespace coil
         {
             static_assert(detail::FuncTraits<Func>::isFunc, "Func should be a functor object");
             using FunctionWrapper = typename detail::FuncTraits<Func>::FunctionWrapperType;
-            m_bindings.add(m_name, AnyFunctor{ FunctionWrapper{ std::move(func) } });
+            m_bindings.add(m_name, AnyFunctor{FunctionWrapper{std::move(func)}});
             return *this;
         }
         BindingProxy& operator=(AnyFunctor anyFunctor)

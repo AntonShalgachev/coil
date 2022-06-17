@@ -56,7 +56,7 @@ namespace coil
         template<>
         Context createContext<0>(CallContext& context)
         {
-            return Context{ context };
+            return Context{context};
         }
 
         void reportExceptionError(CallContext& context)
@@ -72,7 +72,10 @@ namespace coil
         /// CallContext.h ///
         CallContext::CallContext(ExecutionInput const& input) : input(input) {}
 
-        std::ostream& CallContext::out() { return result.output; }
+        std::ostream& CallContext::out()
+        {
+            return result.output;
+        }
 
         void CallContext::reportError(std::string error)
         {
@@ -112,12 +115,15 @@ namespace coil
         return m_storage->invoke(context);
     }
 
-    std::size_t AnyFunctor::arity() const { return m_arity; }
+    std::size_t AnyFunctor::arity() const
+    {
+        return m_arity;
+    }
 
     /// Bindings.h ///
     BindingProxy<Bindings> Bindings::operator[](std::string_view name)
     {
-        return BindingProxy<Bindings>{ *this, { name } };
+        return BindingProxy<Bindings>{*this, {name}};
     }
 
     void Bindings::add(std::string_view name, AnyFunctor anyFunctor)
@@ -154,7 +160,7 @@ namespace coil
 
     ExecutionResult Bindings::execute(ExecutionInput const& input)
     {
-        detail::CallContext context{ input };
+        detail::CallContext context{input};
         execute(context);
         return std::move(context).result;
     }
@@ -206,7 +212,10 @@ namespace coil
     /// Context.h ///
     Context::Context(detail::CallContext& callContext) : m_callContext(callContext) {}
 
-    std::ostream& Context::out() { return m_callContext.out(); }
+    std::ostream& Context::out()
+    {
+        return m_callContext.out();
+    }
 
     void Context::reportError(std::string error)
     {
@@ -218,13 +227,22 @@ namespace coil
         return m_callContext.hasErrors();
     }
 
-    NamedArgs Context::namedArgs() { return NamedArgs{ m_callContext }; }
+    NamedArgs Context::namedArgs()
+    {
+        return NamedArgs{m_callContext};
+    }
 
     /// NamedArgs.h ///
     NamedAnyArgView::NamedAnyArgView(std::string_view key, ArgValue value) : m_key(key), m_value(value) {}
 
-    std::string_view NamedAnyArgView::key() const { return m_key; }
-    AnyArgView NamedAnyArgView::value() const { return m_value; }
+    std::string_view NamedAnyArgView::key() const
+    {
+        return m_key;
+    }
+    AnyArgView NamedAnyArgView::value() const
+    {
+        return m_value;
+    }
 
     NamedArgsIterator::NamedArgsIterator(UnderlyingIteratorT iterator) : m_iterator(iterator) {}
 
@@ -233,7 +251,10 @@ namespace coil
         return NamedAnyArgView(m_iterator->first, m_iterator->second);
     }
 
-    NamedArgsIterator::NamedArgContainer NamedArgsIterator::operator->() { return NamedArgContainer{ **this }; }
+    NamedArgsIterator::NamedArgContainer NamedArgsIterator::operator->()
+    {
+        return NamedArgContainer{**this};
+    }
 
     bool NamedArgsIterator::operator==(NamedArgsIterator const& rhs)
     {
@@ -289,15 +310,12 @@ namespace coil
 
     NamedArgsIterator NamedArgs::find(std::string_view key) const
     {
-        return std::find_if(begin(), end(), [key](NamedAnyArgView const& arg)
-        {
-            return arg.key() == key;
-        });
+        return std::find_if(begin(), end(), [key](NamedAnyArgView const& arg) { return arg.key() == key; });
     }
 
     /// ArgValue.h ///
     ArgValue::ArgValue() = default; // @NOCOVERAGE
-    ArgValue::ArgValue(std::string_view value) : subvalues({ value }) {}
+    ArgValue::ArgValue(std::string_view value) : subvalues({value}) {}
     ArgValue::ArgValue(std::vector<std::string_view> subvalues) : subvalues(std::move(subvalues)) {}
 
     bool ArgValue::operator==(ArgValue const& rhs) const
@@ -326,8 +344,7 @@ namespace coil
     /// TypeSerializer.h ///
     coil::Expected<bool, std::string> coil::TypeSerializer<bool>::fromString(ArgValue const& input)
     {
-        auto equalCaseInsensitive = [](std::string_view a, std::string_view b)
-        {
+        auto equalCaseInsensitive = [](std::string_view a, std::string_view b) {
             std::size_t const length = a.length();
             if (b.length() != length)
                 return false;
@@ -364,7 +381,7 @@ namespace coil
 
     std::string coil::TypeSerializer<char const*>::toString(char const* const& value)
     {
-        return std::string{ value };
+        return std::string{value};
     }
 
     /// ExecutionResult.h ///

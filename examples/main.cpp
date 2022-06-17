@@ -3,12 +3,12 @@
 #include "common/ExamplesCommon.h"
 
 #include "basic/BasicExample.h"
-#include "variadic/VariadicExample.h"
-#include "variables/VariablesExample.h"
-#include "named/NamedExample.h"
 #include "enums/EnumsExample.h"
 #include "errors/ErrorsExample.h"
+#include "named/NamedExample.h"
 #include "usertypes/UsertypesExample.h"
+#include "variables/VariablesExample.h"
+#include "variadic/VariadicExample.h"
 
 template<typename Example>
 void bindExample(coil::Bindings& bindings, Example& example, std::string_view name)
@@ -30,14 +30,17 @@ void bindExamples(coil::Bindings& bindings, std::tuple<Examples...>& examples, s
 
 int main()
 {
-    using Examples = std::tuple<BasicExample
+    // clang-format off
+    using Examples = std::tuple<
+          BasicExample
         , VariadicExample
         , VariablesExample
         , NamedExample
         , EnumsExample
         , ErrorsExample
         , UsertypesExample
-    >;
+	>;
+    // clang-format on
 
     std::array<std::string_view, std::tuple_size_v<Examples>> names = {
         "basic",
@@ -60,8 +63,7 @@ int main()
 
     coil::Bindings bindings;
 
-    bindings["help"] = [&commands, &names](coil::Context context)
-    {
+    bindings["help"] = [&commands, &names](coil::Context context) {
         context.out() << "Available commands:" << std::endl;
         for (std::string_view name : names)
             context.out() << '\t' << name << std::endl;
@@ -69,18 +71,13 @@ int main()
         for (std::string_view name : commands)
             context.out() << '\t' << name << std::endl;
     };
-    bindings["exit"] = [&shouldExit]()
-    {
-        shouldExit = true;
-    };
-    bindings["list"] = [&names](coil::Context context)
-    {
+    bindings["exit"] = [&shouldExit]() { shouldExit = true; };
+    bindings["list"] = [&names](coil::Context context) {
         context.out() << "Available examples:" << std::endl;
         for (std::string_view name : names)
             context.out() << '\t' << name << std::endl;
     };
-    bindings["run_all"] = [&names, &bindings]()
-    {
+    bindings["run_all"] = [&names, &bindings]() {
         for (std::string_view name : names)
             bindings.execute(name);
     };
@@ -88,8 +85,7 @@ int main()
     Examples examples;
     bindExamples(bindings, examples, names);
 
-    auto execute = [&bindings](std::string_view str)
-    {
+    auto execute = [&bindings](std::string_view str) {
         auto result = bindings.execute(str);
 
         for (const auto& error : result.errors)

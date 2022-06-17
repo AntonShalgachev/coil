@@ -11,12 +11,12 @@ namespace
 
         Vec2 operator*(float t)
         {
-            return { x * t, y * t };
+            return {x * t, y * t};
         }
 
         Vec2 operator+(Vec2 const& rhs)
         {
-            return { x + rhs.x, y + rhs.y };
+            return {x + rhs.x, y + rhs.y};
         }
     };
 
@@ -34,19 +34,19 @@ namespace entities
     {
         std::size_t newId = entityNames.size();
         entityNames.push_back(std::move(name));
-        return EntityId{ newId };
+        return EntityId{newId};
     }
 
     std::optional<EntityId> find(std::string const& name)
     {
         auto it = std::find(entityNames.begin(), entityNames.end(), name);
         if (it != entityNames.end())
-            return EntityId{ static_cast<std::size_t>(std::distance(entityNames.begin(), it)) };
+            return EntityId{static_cast<std::size_t>(std::distance(entityNames.begin(), it))};
 
         return {};
     }
 
-    EntityId focusedEntity = EntityId{ 0 };
+    EntityId focusedEntity = EntityId{0};
 }
 
 namespace particles
@@ -61,7 +61,7 @@ namespace particles
 
     void spawn(Vec2 pos, Vec2 vel)
     {
-        spawnedParticle = Particle{ pos, vel };
+        spawnedParticle = Particle{pos, vel};
     }
 
     Vec2 getPosAt(float t)
@@ -86,7 +86,7 @@ namespace coil
                 return errors::serializationError<EntityId>(input, index.error());
             }
 
-            return EntityId{ *index };
+            return EntityId{*index};
         }
 
         static auto toString(EntityId value)
@@ -113,7 +113,7 @@ namespace coil
             if (!y)
                 return errors::serializationError<Vec2>(input, y.error());
 
-            return Vec2{ *x, *y };
+            return Vec2{*x, *y};
         }
 
         static auto toString(Vec2 const& value)

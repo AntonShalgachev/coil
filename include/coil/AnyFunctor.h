@@ -1,8 +1,8 @@
 #pragma once
 
 #include "detail/CallContext.h"
-#include "detail/FunctorCaller.h"
 #include "detail/FunctionWrapper.h"
+#include "detail/FunctorCaller.h"
 
 namespace coil
 {
@@ -31,7 +31,9 @@ namespace coil
         };
 
         template<typename FuncWrapper>
-        coil::detail::AnyStorage<FuncWrapper>::AnyStorage(FuncWrapper func) : m_funcWrapper(std::move(func)) {}
+        coil::detail::AnyStorage<FuncWrapper>::AnyStorage(FuncWrapper func) : m_funcWrapper(std::move(func))
+        {
+        }
 
         template<typename FuncWrapper>
         void coil::detail::AnyStorage<FuncWrapper>::invoke(CallContext& context)

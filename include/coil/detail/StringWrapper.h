@@ -1,7 +1,7 @@
 #pragma once
 
-#include <string_view>
 #include <optional>
+#include <string_view>
 
 namespace coil
 {
@@ -19,7 +19,10 @@ namespace coil
             return m_str;
         }
 
-        operator std::string_view() const { return view(); }
+        operator std::string_view() const
+        {
+            return view();
+        }
 
         bool operator==(BasicStringWrapper<UnderlyingType> const& rhs) const
         {

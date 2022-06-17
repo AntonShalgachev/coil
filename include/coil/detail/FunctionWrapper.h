@@ -1,8 +1,12 @@
 #pragma once
 
+#include "FuncTraits.h"
+#include "coil/Context.h"
+#include "coil/Types.h"
+
+#include <memory>
 #include <optional>
 #include <string>
-#include <memory>
 
 namespace coil::detail
 {
@@ -49,10 +53,9 @@ namespace coil::detail
 
         std::optional<std::string> invoke(Args... args);
 
-
     private:
-        using CallFuncPtr = std::optional<std::string>(FunctionWrapper::*)(Args... args);
-        using DestroyFuncPtr = void(FunctionWrapper::*)();
+        using CallFuncPtr = std::optional<std::string> (FunctionWrapper::*)(Args... args);
+        using DestroyFuncPtr = void (FunctionWrapper::*)();
 
         template<typename Func, typename C>
         std::optional<std::string> typedCall(Args... args)

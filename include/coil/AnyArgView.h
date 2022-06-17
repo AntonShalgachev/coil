@@ -1,9 +1,10 @@
 #pragma once
 
+#include "Expected.h"
 #include "TypeSerializer.h"
+
 #include <string_view>
 #include <vector>
-#include "Expected.h"
 
 namespace coil
 {
@@ -20,7 +21,10 @@ namespace coil
         }
 
         // TODO rename?
-        ArgValue const& getRaw() const { return m_value; }
+        ArgValue const& getRaw() const
+        {
+            return m_value;
+        }
 
     private:
         ArgValue m_value;

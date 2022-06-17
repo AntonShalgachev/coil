@@ -1,8 +1,8 @@
 #pragma once
 
-#include "coil/Coil.h"
 #include "CustomTypeName.h"
 #include "EnumToString.h"
+#include "coil/Coil.h"
 
 #include <string_view>
 

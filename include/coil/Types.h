@@ -1,8 +1,8 @@
 #pragma once
 
-#include <array>
-
 #include "coil/TypeName.h"
+
+#include <array>
 
 namespace coil
 {

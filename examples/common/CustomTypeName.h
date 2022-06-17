@@ -2,10 +2,10 @@
 
 #include "coil/TypeName.h"
 
-#include <string_view>
-#include <vector>
 #include <optional>
 #include <string>
+#include <string_view>
+#include <vector>
 
 namespace coil
 {
@@ -23,7 +23,7 @@ namespace coil
     {
         static std::string_view name()
         {
-            static std::string name = std::string{ TypeName<T>::name() } + "&";
+            static std::string name = std::string{TypeName<T>::name()} + "&";
             return name;
         }
     };
@@ -33,7 +33,7 @@ namespace coil
     {
         static std::string_view name()
         {
-            static std::string name = std::string{ TypeName<T>::name() } + " const";
+            static std::string name = std::string{TypeName<T>::name()} + " const";
             return name;
         }
     };
@@ -44,7 +44,7 @@ namespace coil
         static std::string_view name()
         {
             using namespace std::literals::string_literals;
-            static std::string typeName = "std::vector<"s + std::string{ TypeName<T>::name() } + ">"s;
+            static std::string typeName = "std::vector<"s + std::string{TypeName<T>::name()} + ">"s;
             return typeName;
         }
     };
@@ -55,7 +55,7 @@ namespace coil
         static std::string_view name()
         {
             using namespace std::literals::string_literals;
-            static std::string typeName = "std::optional<"s + std::string{ TypeName<T>::name() } + ">"s;
+            static std::string typeName = "std::optional<"s + std::string{TypeName<T>::name()} + ">"s;
             return typeName;
         }
     };

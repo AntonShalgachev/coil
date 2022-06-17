@@ -116,7 +116,7 @@ void DumbBindings::execute(std::string)
 {
     // we don't care about correctness for the compilation test
     std::string name = "func";
-    std::vector<std::string> arguments = { "arg1", "arg2", "arg3" };
+    std::vector<std::string> arguments = {"arg1", "arg2", "arg3"};
 
     if (auto it = m_commands.find(name); it != m_commands.end())
         std::cout << it->second(arguments) << std::endl;

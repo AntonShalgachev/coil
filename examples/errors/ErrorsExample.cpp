@@ -1,8 +1,9 @@
 #include "ErrorsExample.h"
 
 #include "common/ExamplesCommon.h"
-#include <iostream>
+
 #include <cmath>
+#include <iostream>
 
 namespace
 {
@@ -22,7 +23,7 @@ namespace
         auto asFloat = arg.get<float>();
         if (asFloat)
             return *asFloat;
-        
+
         context.reportError(std::move(asFloat).error());
         return 0.0f;
     }

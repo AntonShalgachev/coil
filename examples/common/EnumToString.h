@@ -1,12 +1,14 @@
 #pragma once
 
-#include <ostream>
-#include <istream>
-#include <string>
-#include <optional>
-
 #include "Utils.h"
+#include "coil/TypeSerializer.h"
+
 #include "magic_enum.hpp"
+
+#include <istream>
+#include <optional>
+#include <ostream>
+#include <string>
 
 namespace coil
 {

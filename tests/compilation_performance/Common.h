@@ -2,26 +2,26 @@
 
 #include "coil/Coil.h"
 
+#include <charconv>
 #include <functional>
-#include <string_view>
-#include <string>
-#include <sstream>
 #include <iostream>
-#include <random>
 #include <map>
+#include <optional>
+#include <random>
+#include <sstream>
+#include <string>
+#include <string_view>
 #include <unordered_map>
 #include <vector>
-#include <optional>
-#include <charconv>
 
 #if USE_COIL
 
-#define TEST_EXTERN_TEMPLATE(T) \
+#define TEST_EXTERN_TEMPLATE(T)       \
     COIL_VARIABLE_EXTERN_TEMPLATE(T); \
     COIL_ARGUMENT_EXTERN_TEMPLATE(T); \
     COIL_NAMED_ARGS_EXTERN_TEMPLATE(T)
 
-#define TEST_TEMPLATE(T) \
+#define TEST_TEMPLATE(T)       \
     COIL_VARIABLE_TEMPLATE(T); \
     COIL_ARGUMENT_TEMPLATE(T); \
     COIL_NAMED_ARGS_TEMPLATE(T)

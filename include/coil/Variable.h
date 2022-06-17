@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Overloaded.h"
 #include "Context.h"
+#include "Overloaded.h"
 
 namespace coil
 {
@@ -9,8 +9,7 @@ namespace coil
     std::vector<AnyFunctor> variable(T* var)
     {
         auto get = [var]() -> T const& { return *var; };
-        auto set = [var](T val) -> T const&
-        {
+        auto set = [var](T val) -> T const& {
             *var = std::move(val);
             return *var;
         };
@@ -22,8 +21,7 @@ namespace coil
     std::vector<AnyFunctor> variable(T const* var)
     {
         auto get = [var]() -> T const& { return *var; };
-        auto set = [var](Context context, T) -> T const&
-        {
+        auto set = [var](Context context, T) -> T const& {
             context.reportError("Cannot write to a read-only variable");
             return *var;
         };

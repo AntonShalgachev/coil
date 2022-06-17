@@ -1,8 +1,8 @@
 #pragma once
 
+#include <functional>
 #include <optional>
 #include <vector>
-#include <functional>
 
 template<typename T>
 bool operator==(std::reference_wrapper<T> const& lhs, T const& rhs)
@@ -19,7 +19,7 @@ namespace coil
     {
         static std::string_view name()
         {
-            static std::string result = "std::optional<" + std::string{ TypeName<T>::name() } + ">";
+            static std::string result = "std::optional<" + std::string{TypeName<T>::name()} + ">";
             return result;
         }
     };
@@ -28,14 +28,15 @@ namespace coil
     {
         static std::string_view name()
         {
-            static std::string result = "std::vector<" + std::string{ TypeName<T>::name() } + ">";
+            static std::string result = "std::vector<" + std::string{TypeName<T>::name()} + ">";
             return result;
         }
     };
 
     inline std::ostream& operator<<(std::ostream& os, coil::ExecutionInput const& input)
     {
-        os << "'" << input.name << "'" << ", [";
+        os << "'" << input.name << "'"
+           << ", [";
 
         auto delim = "";
         for (auto const& arg : input.arguments)

@@ -1,5 +1,6 @@
-#include "gtest/gtest.h"
 #include "Common.h"
+
+#include "gtest/gtest.h"
 
 namespace
 {
@@ -15,8 +16,14 @@ namespace
     {
         Object(int value) : m_field(value) {}
 
-        int get() const { return m_field; }
-        void set(int value) { m_field = value; }
+        int get() const
+        {
+            return m_field;
+        }
+        void set(int value)
+        {
+            m_field = value;
+        }
 
     private:
         int m_field;
