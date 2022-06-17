@@ -181,9 +181,9 @@ TEST(BindingsTests, TestVoidFunctionCallStats)
 
     EXPECT_EQ(result.errors.size(), 0u);
 
-    EXPECT_EQ(stats::functionCalls, 1);
-    EXPECT_EQ(stats::trackerAssignments, 0);
-    EXPECT_EQ(stats::trackerConstructions, 0);
+    EXPECT_EQ(stats::functionCalls, 1u);
+    EXPECT_EQ(stats::trackerAssignments, 0u);
+    EXPECT_EQ(stats::trackerConstructions, 0u);
 }
 
 TEST(BindingsTests, TestVoidFunctionWithDotsCallStats)
@@ -196,9 +196,9 @@ TEST(BindingsTests, TestVoidFunctionWithDotsCallStats)
 
     EXPECT_EQ(result.errors.size(), 0u);
 
-    EXPECT_EQ(stats::functionCalls, 1);
-    EXPECT_EQ(stats::trackerAssignments, 0);
-    EXPECT_EQ(stats::trackerConstructions, 0);
+    EXPECT_EQ(stats::functionCalls, 1u);
+    EXPECT_EQ(stats::trackerAssignments, 0u);
+    EXPECT_EQ(stats::trackerConstructions, 0u);
 }
 
 TEST(BindingsTests, TestVariableAssignmentStats)
@@ -213,10 +213,10 @@ TEST(BindingsTests, TestVariableAssignmentStats)
 
     EXPECT_EQ(result.errors.size(), 0u);
 
-    EXPECT_EQ(stats::functionCalls, 0);
-    EXPECT_EQ(stats::trackerValueConstructions, 1);
-    EXPECT_EQ(stats::trackerCopyConstructions, 0);
-    EXPECT_EQ(stats::trackerCopyAssignments, 0);
+    EXPECT_EQ(stats::functionCalls, 0u);
+    EXPECT_EQ(stats::trackerValueConstructions, 1u);
+    EXPECT_EQ(stats::trackerCopyConstructions, 0u);
+    EXPECT_EQ(stats::trackerCopyAssignments, 0u);
 }
 
 TEST(BindingsTests, TestPassingArgumentByValueStats)
@@ -229,9 +229,9 @@ TEST(BindingsTests, TestPassingArgumentByValueStats)
 
     EXPECT_EQ(result.errors.size(), 0u);
 
-    EXPECT_EQ(stats::trackerValueConstructions, 1);
-    EXPECT_EQ(stats::trackerCopyConstructions, 0);
-    EXPECT_EQ(stats::trackerCopyAssignments, 0);
+    EXPECT_EQ(stats::trackerValueConstructions, 1u);
+    EXPECT_EQ(stats::trackerCopyConstructions, 0u);
+    EXPECT_EQ(stats::trackerCopyAssignments, 0u);
 }
 
 TEST(BindingsTests, TestPassingArgumentByRefStats)
@@ -244,9 +244,9 @@ TEST(BindingsTests, TestPassingArgumentByRefStats)
 
     EXPECT_EQ(result.errors.size(), 0u);
 
-    EXPECT_EQ(stats::trackerValueConstructions, 1);
-    EXPECT_EQ(stats::trackerCopyConstructions, 0);
-    EXPECT_EQ(stats::trackerCopyAssignments, 0);
+    EXPECT_EQ(stats::trackerValueConstructions, 1u);
+    EXPECT_EQ(stats::trackerCopyConstructions, 0u);
+    EXPECT_EQ(stats::trackerCopyAssignments, 0u);
 }
 
 TEST(BindingsTests, TestReturnByValueStats)
@@ -259,9 +259,9 @@ TEST(BindingsTests, TestReturnByValueStats)
 
     EXPECT_EQ(result.errors.size(), 0u);
 
-    EXPECT_EQ(stats::trackerValueConstructions, 1);
-    EXPECT_EQ(stats::trackerCopyConstructions, 0);
-    EXPECT_EQ(stats::trackerCopyAssignments, 0);
+    EXPECT_EQ(stats::trackerValueConstructions, 1u);
+    EXPECT_EQ(stats::trackerCopyConstructions, 0u);
+    EXPECT_EQ(stats::trackerCopyAssignments, 0u);
 }
 
 TEST(BindingsTests, TestErrorStats)
@@ -280,17 +280,17 @@ TEST(BindingsTests, TestErrorStats)
     bindings.execute("var string_arg");
     bindings.execute("var 42 43");
 
-    EXPECT_EQ(stats::functionCalls, 0);
-    EXPECT_EQ(stats::trackerConstructions, 0);
-    EXPECT_EQ(stats::trackerAssignments, 0);
+    EXPECT_EQ(stats::functionCalls, 0u);
+    EXPECT_EQ(stats::trackerConstructions, 0u);
+    EXPECT_EQ(stats::trackerAssignments, 0u);
 
     bindings.execute("var 42");
     bindings.execute("func_without_args");
     bindings.execute("func_with_arg 42");
 
-    EXPECT_GT(stats::functionCalls, 0);
-    EXPECT_GT(stats::trackerConstructions, 0);
-    EXPECT_GT(stats::trackerAssignments, 0);
+    EXPECT_GT(stats::functionCalls, 0u);
+    EXPECT_GT(stats::trackerConstructions, 0u);
+    EXPECT_GT(stats::trackerAssignments, 0u);
 }
 
 TEST(BindingsTests, TestVoidFunctionCall)
