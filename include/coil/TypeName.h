@@ -1,13 +1,22 @@
 #pragma once
 
-#include <string_view>
 #include <string>
+#include <string_view>
 
 // TODO move basic names here
 
-#define COIL_CREATE_TYPE_NAME_DECLARATION(T) template<> struct TypeName<T> { static std::string_view name(); }
+#define COIL_CREATE_TYPE_NAME_DECLARATION(T) \
+    template<>                               \
+    struct TypeName<T>                       \
+    {                                        \
+        static std::string_view name();      \
+    }
 
-#define COIL_CREATE_TYPE_NAME_DEFINITION(T) std::string_view TypeName<T>::name() { return #T; }
+#define COIL_CREATE_TYPE_NAME_DEFINITION(T) \
+    std::string_view TypeName<T>::name()    \
+    {                                       \
+        return #T;                          \
+    }
 
 namespace coil
 {

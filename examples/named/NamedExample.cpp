@@ -1,6 +1,7 @@
 #include "NamedExample.h"
 
 #include "common/ExamplesCommon.h"
+
 #include <iostream>
 
 namespace
@@ -60,8 +61,7 @@ namespace
         if (context.hasErrors())
             return;
 
-        auto doesItemMatch = [&](Item const& item)
-        {
+        auto doesItemMatch = [&](Item const& item) {
             bool const nameOk = !name || (item.name.find(*name) != std::string_view::npos);
             bool const minAmountOk = !minAmount || item.amount >= *minAmount;
             bool const sourceOk = !source || item.source == *source;
@@ -197,4 +197,3 @@ void NamedExample::run()
     common::executeCommand(bindings, "required_and_optional required=10");
     common::executeCommand(bindings, "required_and_optional required=true optional=false");
 }
-

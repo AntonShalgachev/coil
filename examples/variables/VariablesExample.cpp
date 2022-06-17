@@ -1,9 +1,9 @@
 #include "VariablesExample.h"
 
 #include "common/ExamplesCommon.h"
+#include "common/FlagVariableWrapper.h"
 
 #include <iostream>
-#include "common/FlagVariableWrapper.h"
 
 namespace
 {
@@ -34,8 +34,7 @@ void VariablesExample::run()
     bindings["city"] = coil::variable(&city);
     bindings["flags"] = ::flags(&flags);
 
-    bindings["print_variables"] = [&timeScale, &city, &flags](coil::Context context)
-    {
+    bindings["print_variables"] = [&timeScale, &city, &flags](coil::Context context) {
         context.out() << "Time scale: " << timeScale << "; city: " << city << "; flags: " << magic_enum::flags::enum_name(flags) << std::endl;
     };
 

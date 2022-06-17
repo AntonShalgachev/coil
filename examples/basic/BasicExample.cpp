@@ -48,7 +48,10 @@ namespace
     public:
         Object(int multiplier) : m_multiplier(multiplier) {}
 
-        int getData() const { return m_multiplier; }
+        int getData() const
+        {
+            return m_multiplier;
+        }
 
         int scale(int input) const
         {
@@ -63,7 +66,7 @@ namespace
 void BasicExample::run()
 {
     coil::Bindings bindings;
-    
+
     bindings["hello"] = &hello;
     bindings["hello_with_context"] = &helloWithContext;
     bindings["print_repeated"] = &printRepeated;
@@ -72,12 +75,9 @@ void BasicExample::run()
     bindings["add"] = &add;
     bindings["concat"] = &concat;
 
-    Object scaler{ 2 };
+    Object scaler{2};
 
-    bindings["scaler"] = [&scaler](coil::Context context)
-    {
-        context.out() << "This object scales by " << scaler.getData();
-    };
+    bindings["scaler"] = [&scaler](coil::Context context) { context.out() << "This object scales by " << scaler.getData(); };
     bindings["scaler.scale"] = coil::bind(&Object::scale, &scaler);
     bindings["foo.bar.baz.qux"] = []() { return 42; };
 

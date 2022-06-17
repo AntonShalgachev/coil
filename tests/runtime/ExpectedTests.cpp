@@ -1,5 +1,6 @@
-#include "gtest/gtest.h"
 #include "Common.h"
+
+#include "gtest/gtest.h"
 
 namespace
 {
@@ -52,7 +53,10 @@ namespace
             return m_payload == rhs.m_payload;
         }
 
-        T const& payload() const { return m_payload; }
+        T const& payload() const
+        {
+            return m_payload;
+        }
 
     private:
         T m_payload;
@@ -94,7 +98,7 @@ TEST(ExpectedTests, TestValueInitialization)
 {
     resetStats();
 
-    coil::Expected<V, E> e = V{ 42 };
+    coil::Expected<V, E> e = V{42};
 
     EXPECT_EQ(V::constructions, 1);
     EXPECT_EQ(V::copies, 0);
@@ -106,14 +110,14 @@ TEST(ExpectedTests, TestValueInitialization)
     EXPECT_EQ(E::destructions, 0);
 
     ASSERT_TRUE(e);
-    EXPECT_EQ(*e, V{ 42 });
+    EXPECT_EQ(*e, V{42});
 }
 
 TEST(ExpectedTests, TestErrorInitialization)
 {
     resetStats();
 
-    coil::Expected<V, E> e = coil::makeUnexpected(E{ 3.14f });
+    coil::Expected<V, E> e = coil::makeUnexpected(E{3.14f});
 
     EXPECT_EQ(E::constructions, 1);
     EXPECT_EQ(E::copies, 0);
@@ -125,12 +129,12 @@ TEST(ExpectedTests, TestErrorInitialization)
     EXPECT_EQ(V::destructions, 0);
 
     ASSERT_FALSE(e);
-    EXPECT_EQ(e.error(), E{ 3.14f });
+    EXPECT_EQ(e.error(), E{3.14f});
 }
 
 TEST(ExpectedTests, TestValueCopyInitialization)
 {
-    coil::Expected<V, E> e1 = V{ 42 };
+    coil::Expected<V, E> e1 = V{42};
 
     resetStats();
 
@@ -141,14 +145,14 @@ TEST(ExpectedTests, TestValueCopyInitialization)
     EXPECT_EQ(V::copies, 1);
 
     ASSERT_TRUE(e1);
-    EXPECT_EQ(*e1, V{ 42 });
+    EXPECT_EQ(*e1, V{42});
     ASSERT_TRUE(e2);
-    EXPECT_EQ(*e2, V{ 42 });
+    EXPECT_EQ(*e2, V{42});
 }
 
 TEST(ExpectedTests, TestErrorCopyInitialization)
 {
-    coil::Expected<V, E> e1 = coil::makeUnexpected(E{ 3.14f });
+    coil::Expected<V, E> e1 = coil::makeUnexpected(E{3.14f});
 
     resetStats();
 
@@ -159,14 +163,14 @@ TEST(ExpectedTests, TestErrorCopyInitialization)
     EXPECT_EQ(E::copies, 1);
 
     ASSERT_FALSE(e1);
-    EXPECT_EQ(e1.error(), E{ 3.14f });
+    EXPECT_EQ(e1.error(), E{3.14f});
     ASSERT_FALSE(e2);
-    EXPECT_EQ(e2.error(), E{ 3.14f });
+    EXPECT_EQ(e2.error(), E{3.14f});
 }
 
 TEST(ExpectedTests, TestValueMoveInitialization)
 {
-    coil::Expected<V, E> e1 = V{ 42 };
+    coil::Expected<V, E> e1 = V{42};
 
     resetStats();
 
@@ -176,14 +180,14 @@ TEST(ExpectedTests, TestValueMoveInitialization)
     EXPECT_GE(V::moveConstructions, 1);
 
     ASSERT_TRUE(e1);
-    EXPECT_EQ(*e1, V{ 0 });
+    EXPECT_EQ(*e1, V{0});
     ASSERT_TRUE(e2);
-    EXPECT_EQ(*e2, V{ 42 });
+    EXPECT_EQ(*e2, V{42});
 }
 
 TEST(ExpectedTests, TestErrorMoveInitialization)
 {
-    coil::Expected<V, E> e1 = coil::makeUnexpected(E{ 3.14f });
+    coil::Expected<V, E> e1 = coil::makeUnexpected(E{3.14f});
 
     resetStats();
 
@@ -193,15 +197,15 @@ TEST(ExpectedTests, TestErrorMoveInitialization)
     EXPECT_GE(E::moveConstructions, 1);
 
     ASSERT_FALSE(e1);
-    EXPECT_EQ(e1.error(), E{ 0.0f });
+    EXPECT_EQ(e1.error(), E{0.0f});
     ASSERT_FALSE(e2);
-    EXPECT_EQ(e2.error(), E{ 3.14f });
+    EXPECT_EQ(e2.error(), E{3.14f});
 }
 
 TEST(ExpectedTests, TestValueCopyAssignment)
 {
-    coil::Expected<V, E> e1 = V{ 42 };
-    coil::Expected<V, E> e2 = V{ 0 };
+    coil::Expected<V, E> e1 = V{42};
+    coil::Expected<V, E> e2 = V{0};
 
     resetStats();
 
@@ -212,15 +216,15 @@ TEST(ExpectedTests, TestValueCopyAssignment)
     EXPECT_EQ(V::copies, 1);
 
     ASSERT_TRUE(e1);
-    EXPECT_EQ(*e1, V{ 42 });
+    EXPECT_EQ(*e1, V{42});
     ASSERT_TRUE(e2);
-    EXPECT_EQ(*e2, V{ 42 });
+    EXPECT_EQ(*e2, V{42});
 }
 
 TEST(ExpectedTests, TestErrorCopyAssignment)
 {
-    coil::Expected<V, E> e1 = coil::makeUnexpected(E{ 3.14f });
-    coil::Expected<V, E> e2 = coil::makeUnexpected(E{ 0.0f });
+    coil::Expected<V, E> e1 = coil::makeUnexpected(E{3.14f});
+    coil::Expected<V, E> e2 = coil::makeUnexpected(E{0.0f});
 
     resetStats();
 
@@ -231,15 +235,15 @@ TEST(ExpectedTests, TestErrorCopyAssignment)
     EXPECT_EQ(E::copies, 1);
 
     ASSERT_FALSE(e1);
-    EXPECT_EQ(e1.error(), E{ 3.14f });
+    EXPECT_EQ(e1.error(), E{3.14f});
     ASSERT_FALSE(e2);
-    EXPECT_EQ(e2.error(), E{ 3.14f });
+    EXPECT_EQ(e2.error(), E{3.14f});
 }
 
 TEST(ExpectedTests, TestValueErrorCopyAssignment)
 {
-    coil::Expected<V, E> e1 = V{ 42 };
-    coil::Expected<V, E> e2 = coil::makeUnexpected(E{ 0.0f });
+    coil::Expected<V, E> e1 = V{42};
+    coil::Expected<V, E> e2 = coil::makeUnexpected(E{0.0f});
 
     resetStats();
 
@@ -253,15 +257,15 @@ TEST(ExpectedTests, TestValueErrorCopyAssignment)
     EXPECT_GE(V::copyConstructions, 1);
 
     ASSERT_TRUE(e1);
-    EXPECT_EQ(*e1, V{ 42 });
+    EXPECT_EQ(*e1, V{42});
     ASSERT_TRUE(e2);
-    EXPECT_EQ(*e2, V{ 42 });
+    EXPECT_EQ(*e2, V{42});
 }
 
 TEST(ExpectedTests, TestValueMoveAssignment)
 {
-    coil::Expected<V, E> e1 = V{ 42 };
-    coil::Expected<V, E> e2 = V{ 0 };
+    coil::Expected<V, E> e1 = V{42};
+    coil::Expected<V, E> e2 = V{0};
 
     resetStats();
 
@@ -271,13 +275,13 @@ TEST(ExpectedTests, TestValueMoveAssignment)
     EXPECT_GE(V::moveAssignments, 1);
 
     ASSERT_TRUE(e2);
-    EXPECT_EQ(*e2, V{ 42 });
+    EXPECT_EQ(*e2, V{42});
 }
 
 TEST(ExpectedTests, TestErrorMoveAssignment)
 {
-    coil::Expected<V, E> e1 = coil::makeUnexpected(E{ 3.14f });
-    coil::Expected<V, E> e2 = coil::makeUnexpected(E{ 0.0f });
+    coil::Expected<V, E> e1 = coil::makeUnexpected(E{3.14f});
+    coil::Expected<V, E> e2 = coil::makeUnexpected(E{0.0f});
 
     resetStats();
 
@@ -287,13 +291,13 @@ TEST(ExpectedTests, TestErrorMoveAssignment)
     EXPECT_GE(E::moveAssignments, 1);
 
     ASSERT_FALSE(e2);
-    EXPECT_EQ(e2.error(), E{ 3.14f });
+    EXPECT_EQ(e2.error(), E{3.14f});
 }
 
 TEST(ExpectedTests, TestValueErrorMoveAssignment)
 {
-    coil::Expected<V, E> e1 = V{ 42 };
-    coil::Expected<V, E> e2 = coil::makeUnexpected(E{ 0.0f });
+    coil::Expected<V, E> e1 = V{42};
+    coil::Expected<V, E> e2 = coil::makeUnexpected(E{0.0f});
 
     resetStats();
 
@@ -307,79 +311,82 @@ TEST(ExpectedTests, TestValueErrorMoveAssignment)
     EXPECT_GE(V::moveConstructions, 1);
 
     ASSERT_TRUE(e2);
-    EXPECT_EQ(*e2, V{ 42 });
+    EXPECT_EQ(*e2, V{42});
 }
 
 TEST(ExpectedTests, TestUnexpectedAccess)
 {
-    coil::Expected<V, E> e = coil::makeUnexpected(E{ 0.0f });
+    coil::Expected<V, E> e = coil::makeUnexpected(E{0.0f});
 
     resetStats();
 
-    EXPECT_THROW({
-        try
+    EXPECT_THROW(
         {
-            *e;
-        }
-        catch (coil::BadExpectedAccess<E> const& e)
-        {
-            EXPECT_STREQ("Bad expected access", e.what());
-            throw;
-        }
-    }, coil::BadExpectedAccess<E>);
-    
+            try
+            {
+                *e;
+            }
+            catch (coil::BadExpectedAccess<E> const& e)
+            {
+                EXPECT_STREQ("Bad expected access", e.what());
+                throw;
+            }
+        },
+        coil::BadExpectedAccess<E>);
+
     EXPECT_EQ(E::copies, 1);
 }
 
 TEST(ExpectedTests, TestUnexpectedAccessConst)
 {
-    coil::Expected<V, E> const e = coil::makeUnexpected(E{ 0.0f });
+    coil::Expected<V, E> const e = coil::makeUnexpected(E{0.0f});
 
     resetStats();
 
-    EXPECT_THROW({
-        try
+    EXPECT_THROW(
         {
-            *e;
-        }
-        catch (coil::BadExpectedAccess<E> const& e)
-        {
-            EXPECT_STREQ("Bad expected access", e.what());
-            throw;
-        }
-    }, coil::BadExpectedAccess<E>);
+            try
+            {
+                *e;
+            }
+            catch (coil::BadExpectedAccess<E> const& e)
+            {
+                EXPECT_STREQ("Bad expected access", e.what());
+                throw;
+            }
+        },
+        coil::BadExpectedAccess<E>);
 
     EXPECT_EQ(E::copies, 1);
 }
 
 TEST(ExpectedTests, TestUnexpectedAccessRvalue)
 {
-    auto createError = []() -> coil::Expected<V, E>
-    {
-        return coil::makeUnexpected(E{ 0.0f });
-    };
+    auto createError = []() -> coil::Expected<V, E> { return coil::makeUnexpected(E{0.0f}); };
 
     resetStats();
 
-    EXPECT_THROW({
-        try
+    EXPECT_THROW(
         {
-            *createError();
-        }
-        catch (coil::BadExpectedAccess<E> const& e)
-        {
-            EXPECT_STREQ("Bad expected access", e.what());
-            throw;
-        }
-    }, coil::BadExpectedAccess<E>);
+            try
+            {
+                *createError();
+            }
+            catch (coil::BadExpectedAccess<E> const& e)
+            {
+                EXPECT_STREQ("Bad expected access", e.what());
+                throw;
+            }
+        },
+        coil::BadExpectedAccess<E>);
 
     EXPECT_EQ(E::copies, 0);
 }
 
 TEST(ExpectedTests, TestExpectedArrow)
 {
-    coil::Expected<V, E> e1 = V{ 42 };
-    coil::Expected<V, E> const e2 = V{ 42 };
+    coil::Expected<V, E> e1 = V{42};
+    coil::Expected<V, E> const e2 = V{42};
 
     EXPECT_EQ(e1->payload(), 42);
     EXPECT_EQ(e2->payload(), 42);

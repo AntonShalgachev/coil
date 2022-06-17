@@ -4,17 +4,29 @@
 
 namespace coil
 {
-    template <class E>
+    template<class E>
     class BadExpectedAccess : public std::exception
     {
     public:
         explicit BadExpectedAccess(E e) : m_value(std::move(e)) {}
 
-        char const* what() const noexcept override { return "Bad expected access"; }
+        char const* what() const noexcept override
+        {
+            return "Bad expected access";
+        }
 
-        E const& error() const& { return m_value; }
-        E& error()& { return m_value; }
-        E&& error()&& { return std::move(m_value); }
+        E const& error() const&
+        {
+            return m_value;
+        }
+        E& error() &
+        {
+            return m_value;
+        }
+        E&& error() &&
+        {
+            return std::move(m_value);
+        }
 
     private:
         E m_value;
@@ -28,9 +40,18 @@ namespace coil
     public:
         Unexpected(T value) : m_value(std::move(value)) {}
 
-        T const& value() const& { return m_value; }
-        T& value()& { return m_value; }
-        T&& value()&& { return std::move(m_value); }
+        T const& value() const&
+        {
+            return m_value;
+        }
+        T& value() &
+        {
+            return m_value;
+        }
+        T&& value() &&
+        {
+            return std::move(m_value);
+        }
 
         template<typename U>
         operator Unexpected<U>() const&
@@ -40,14 +61,14 @@ namespace coil
         }
 
         template<typename U>
-        operator Unexpected<U>()&
+        operator Unexpected<U>() &
         {
             static_assert(std::is_convertible_v<T&, U>, "U should be convertible to T");
             return Unexpected<U>{m_value};
         }
 
         template<typename U>
-        operator Unexpected<U>()&&
+        operator Unexpected<U>() &&
         {
             static_assert(std::is_convertible_v<T&&, U>, "U should be convertible to T");
             return Unexpected<U>{std::move(m_value)};
@@ -59,7 +80,10 @@ namespace coil
 
     namespace detail
     {
-        struct dummy {}; // aka std::monostate
+        // aka std::monostate
+        struct dummy
+        {
+        };
     }
 
     template<typename T>
@@ -145,9 +169,18 @@ namespace coil
             return hasValue();
         }
 
-        E const& error() const& { return m_unexpected.value(); }
-        E& error()& { return m_unexpected.value(); }
-        E&& error()&& { return std::move(m_unexpected).value(); }
+        E const& error() const&
+        {
+            return m_unexpected.value();
+        }
+        E& error() &
+        {
+            return m_unexpected.value();
+        }
+        E&& error() &&
+        {
+            return std::move(m_unexpected).value();
+        }
 
         template<typename E2>
         bool operator==(Unexpected<E2> const& rhs) const
@@ -202,17 +235,11 @@ namespace coil
 
         Expected(T value) : Base(std::move(value)) {}
 
-        Expected(Expected<T, E> const& rhs) : Base(rhs)
-        {
-            
-        }
+        Expected(Expected<T, E> const& rhs) : Base(rhs) {}
 
-        Expected(Expected<T, E>&& rhs) noexcept : Base(std::move(rhs))
-        {
-            
-        }
+        Expected(Expected<T, E>&& rhs) noexcept : Base(std::move(rhs)) {}
 
-        ~Expected() {}; // not default to enable explicit instantiation
+        ~Expected(){}; // not default to enable explicit instantiation
 
         Expected<T, E>& operator=(Expected<T, E> const& rhs)
         {
@@ -251,26 +278,41 @@ namespace coil
             return this->m_expected;
         }
 
-        T& value()&
+        T& value() &
         {
             if (!this->hasValue())
                 throw BadExpectedAccess<E>(this->error());
             return this->m_expected;
         }
 
-        T&& value()&&
+        T&& value() &&
         {
             if (!this->hasValue())
                 throw BadExpectedAccess<E>(std::move(*this).error());
             return std::move(*this).m_expected;
         }
 
-        T const& operator*() const& { return value(); }
-        T& operator*()& { return value(); }
-        T&& operator*()&& { return std::move(*this).value(); }
+        T const& operator*() const&
+        {
+            return value();
+        }
+        T& operator*() &
+        {
+            return value();
+        }
+        T&& operator*() &&
+        {
+            return std::move(*this).value();
+        }
 
-        T const* operator->() const { return &value(); }
-        T* operator->() { return &value(); }
+        T const* operator->() const
+        {
+            return &value();
+        }
+        T* operator->()
+        {
+            return &value();
+        }
     };
 
     template<typename E>
@@ -295,7 +337,7 @@ namespace coil
             constructFrom(std::move(rhs));
         }
 
-        ~Expected() {}; // not default to enable explicit instantiation
+        ~Expected(){}; // not default to enable explicit instantiation
 
         Expected<void, E>& operator=(Expected<void, E> const& rhs)
         {

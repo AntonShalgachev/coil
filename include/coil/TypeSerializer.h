@@ -1,17 +1,16 @@
 #pragma once
 
-#include "TypeName.h"
-#include "Expected.h"
-#include "Utils.h"
 #include "ArgValue.h"
-
-#include <string>
-#include <sstream>
-#include <cctype>
+#include "Expected.h"
+#include "TypeName.h"
+#include "Utils.h"
 
 #include <algorithm>
-#include <optional>
+#include <cctype>
 #include <charconv>
+#include <optional>
+#include <sstream>
+#include <string>
 
 namespace coil
 {
@@ -26,7 +25,7 @@ namespace coil
 
             if (details.empty())
                 return makeUnexpected(formatString("Unable to convert '%s' to type '%.*s'", representation.c_str(), typeName.length(), typeName.data()));
-            
+
             return makeUnexpected(formatString("Unable to convert '%s' to type '%.*s': %.*s", representation.c_str(), typeName.length(), typeName.data(), details.length(), details.data()));
         }
 
@@ -113,7 +112,7 @@ namespace coil
         if (input.subvalues.size() != 1)
             return errors::wrongSubvaluesSize<std::basic_string<Elem, Traits, Alloc>>(input, 1);
 
-        return std::basic_string<Elem, Traits, Alloc>{ input.subvalues[0] };
+        return std::basic_string<Elem, Traits, Alloc>{input.subvalues[0]};
     }
 
     template<class Elem, class Traits, class Alloc>
@@ -144,7 +143,7 @@ namespace coil
     template<class Elem, class Traits>
     std::string coil::TypeSerializer<std::basic_string_view<Elem, Traits>>::toString(std::basic_string_view<Elem, Traits> const& value)
     {
-        return std::string{ value };
+        return std::string{value};
     }
 
     //////////////////////////////////////

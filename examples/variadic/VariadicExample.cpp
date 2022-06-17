@@ -2,9 +2,9 @@
 
 #include "common/ExamplesCommon.h"
 
-#include <vector>
-#include <numeric>
 #include <iostream>
+#include <numeric>
+#include <vector>
 
 // TODO probably irrelevant now, move to other examples
 
@@ -63,7 +63,7 @@ namespace
 
     void addEntities(std::size_t id, std::string name)
     {
-        entities.push_back(Entity{ id, std::move(name) });
+        entities.push_back(Entity{id, std::move(name)});
     }
 }
 

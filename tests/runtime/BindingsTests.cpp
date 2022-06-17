@@ -1,8 +1,9 @@
-#include "gtest/gtest.h"
 #include "Common.h"
 
-#include <stdexcept>
+#include "gtest/gtest.h"
+
 #include <numeric>
+#include <stdexcept>
 
 namespace stats
 {
@@ -138,7 +139,7 @@ namespace coil
             if (!field2)
                 return errors::serializationError<CompoundType>(input, field2.error());
 
-            return CompoundType{ *field1, *field2 };
+            return CompoundType{*field1, *field2};
         }
 
         static std::string toString(CompoundType const& value)
@@ -163,7 +164,10 @@ namespace coil
     template<>
     struct TypeName<CompoundType>
     {
-        static std::string_view name() { return "CompoundType"; }
+        static std::string_view name()
+        {
+            return "CompoundType";
+        }
     };
 }
 
@@ -631,9 +635,7 @@ TEST(BindingsTests, TestStdException)
 
     coil::ExecutionResult result;
 
-    EXPECT_NO_THROW({
-        result = bindings.execute("func");
-    });
+    EXPECT_NO_THROW({ result = bindings.execute("func"); });
 
     EXPECT_EQ(result.errors.size(), 1);
     EXPECT_PRED2(containsError, result.errors, "Exception caught during execution: Test runtime exception");
@@ -646,9 +648,7 @@ TEST(BindingsTests, TestNonStdException)
 
     coil::ExecutionResult result;
 
-    EXPECT_NO_THROW({
-        result = bindings.execute("func");
-    });
+    EXPECT_NO_THROW({ result = bindings.execute("func"); });
 
     EXPECT_EQ(result.errors.size(), 1);
     EXPECT_PRED2(containsError, result.errors, "Exception caught during execution");
@@ -657,9 +657,7 @@ TEST(BindingsTests, TestNonStdException)
 TEST(BindingsTests, TestAnyArgView)
 {
     coil::Bindings bindings;
-    bindings["func"] = [](coil::AnyArgView const& value) {
-        return *value.get<int>();
-    };
+    bindings["func"] = [](coil::AnyArgView const& value) { return *value.get<int>(); };
 
     auto result = bindings.execute("func 42");
     EXPECT_EQ(result.returnValue, "42");
@@ -738,9 +736,7 @@ TEST(BindingsTests, TestNamedArgsGetOrReport)
 TEST(BindingsTests, TestNamedArgsTypedGetOrReportContextErrors)
 {
     coil::Bindings bindings;
-    bindings["func"] = [](coil::Context context) {
-        context.namedArgs().getOrReport<int>("arg", coil::NamedArgs::ArgType::Required, 18);
-    };
+    bindings["func"] = [](coil::Context context) { context.namedArgs().getOrReport<int>("arg", coil::NamedArgs::ArgType::Required, 18); };
 
     {
         auto result = bindings.execute("func");
@@ -758,9 +754,7 @@ TEST(BindingsTests, TestNamedArgsTypedGetOrReportContextErrors)
 TEST(BindingsTests, TestNamedArgsAnyGetOrReportContextErrors)
 {
     coil::Bindings bindings;
-    bindings["func"] = [](coil::Context context) {
-        context.namedArgs().getOrReport("arg", coil::NamedArgs::ArgType::Required);
-    };
+    bindings["func"] = [](coil::Context context) { context.namedArgs().getOrReport("arg", coil::NamedArgs::ArgType::Required); };
 
     {
         auto result = bindings.execute("func");
@@ -772,9 +766,7 @@ TEST(BindingsTests, TestNamedArgsAnyGetOrReportContextErrors)
 TEST(BindingsTests, TestNamedArgsSize)
 {
     coil::Bindings bindings;
-    bindings["func"] = [](coil::Context context) {
-        return context.namedArgs().size();
-    };
+    bindings["func"] = [](coil::Context context) { return context.namedArgs().size(); };
 
     {
         auto result = bindings.execute("func");
@@ -793,7 +785,10 @@ TEST(BindingsTests, TestBind)
 {
     struct Object
     {
-        int get() const { return 42; }
+        int get() const
+        {
+            return 42;
+        }
     };
 
     Object obj;
@@ -829,7 +824,7 @@ TEST(BindingsTests, TestTypeNames)
 
 TEST(BindingsTests, TestArgValueToStream)
 {
-    coil::ArgValue value({ "foo", "bar" });
+    coil::ArgValue value({"foo", "bar"});
     std::stringstream ss;
     ss << value;
     EXPECT_EQ(ss.str(), "foo bar");
@@ -842,11 +837,11 @@ TEST(BindingsTests, TestGetCommandNames)
     bindings["func2"] = []() {};
     bindings["func3"] = []() {};
 
-    EXPECT_EQ(bindings.commands(), (std::vector<std::string_view>{ "func1", "func2", "func3" }));
+    EXPECT_EQ(bindings.commands(), (std::vector<std::string_view>{"func1", "func2", "func3"}));
 
     bindings.remove("func2");
 
-    EXPECT_EQ(bindings.commands(), (std::vector<std::string_view>{ "func1", "func3" }));
+    EXPECT_EQ(bindings.commands(), (std::vector<std::string_view>{"func1", "func3"}));
 
     bindings.clear();
 

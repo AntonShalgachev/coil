@@ -29,14 +29,20 @@ namespace coil::detail
 
     // Free functions
     template<typename R, typename... Args>
-    struct FuncTraitsImpl<R(*)(Args...)> : public BaseFuncTraits<false, R, Args...> {};
+    struct FuncTraitsImpl<R (*)(Args...)> : public BaseFuncTraits<false, R, Args...>
+    {
+    };
     template<typename R, typename... Args>
-    struct FuncTraitsImpl<R(*)(Args...) noexcept> : public BaseFuncTraits<false, R, Args...> {};
+    struct FuncTraitsImpl<R (*)(Args...) noexcept> : public BaseFuncTraits<false, R, Args...>
+    {
+    };
 
     // Pointer to member function
-#define COIL_MEMBER_FUNCTION_SPECIALIZATION(QUALIFIERS, IS_CONST) \
-    template<typename R, typename T, typename... Args> \
-    struct FuncTraitsImpl<R(T::*)(Args...) QUALIFIERS> : public BaseFuncTraits<IS_CONST, R, Args...> {}
+#define COIL_MEMBER_FUNCTION_SPECIALIZATION(QUALIFIERS, IS_CONST)                                     \
+    template<typename R, typename T, typename... Args>                                                \
+    struct FuncTraitsImpl<R (T::*)(Args...) QUALIFIERS> : public BaseFuncTraits<IS_CONST, R, Args...> \
+    {                                                                                                 \
+    }
 
     COIL_MEMBER_FUNCTION_SPECIALIZATION(, false);
     COIL_MEMBER_FUNCTION_SPECIALIZATION(volatile, false);
@@ -48,7 +54,7 @@ namespace coil::detail
     COIL_MEMBER_FUNCTION_SPECIALIZATION(volatile noexcept, false);
     COIL_MEMBER_FUNCTION_SPECIALIZATION(&noexcept, false);
     COIL_MEMBER_FUNCTION_SPECIALIZATION(volatile& noexcept, false);
-    COIL_MEMBER_FUNCTION_SPECIALIZATION(&& noexcept, false);
+    COIL_MEMBER_FUNCTION_SPECIALIZATION(&&noexcept, false);
     COIL_MEMBER_FUNCTION_SPECIALIZATION(volatile&& noexcept, false);
 
     COIL_MEMBER_FUNCTION_SPECIALIZATION(const, true);
@@ -67,9 +73,13 @@ namespace coil::detail
 #undef COIL_MEMBER_FUNCTION_SPECIALIZATION
 
     template<typename Func, typename = void>
-    struct FuncTraits : FuncTraitsImpl<Func> {};
+    struct FuncTraits : FuncTraitsImpl<Func>
+    {
+    };
 
     // TODO use C++20 concepts
     template<typename Func>
-    struct FuncTraits<Func, std::void_t<decltype(&Func::operator())>> : public FuncTraitsImpl<decltype(&Func::operator())> {};
+    struct FuncTraits<Func, std::void_t<decltype(&Func::operator())>> : public FuncTraitsImpl<decltype(&Func::operator())>
+    {
+    };
 }

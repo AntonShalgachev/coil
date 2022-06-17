@@ -19,7 +19,7 @@ int main()
     cmd["foo.bar"] = coil::bind(&Object::memberFuncWithContext, &object);
     cmd["foo.bar"] = coil::bind(&Object::memberFuncConst, &object);
     cmd["foo.bar"] = coil::bind(&Object::memberFuncConst, &objectConst);
-    
+
     // Functors without arguments
     cmd["foo.bar"] = &freeFuncWithoutArgs;
     cmd["foo.bar"] = &freeFuncWithoutArgsWithContext;
@@ -72,14 +72,33 @@ int main()
     cmd["foo.bar"] = coil::property([]() { return 1.0f; }, &setVariable);
     cmd["foo.bar"] = coil::property(&Object::get, &Object::set, &object);
     cmd["foo.bar"] = coil::property([](Object*) { return 1.0f; }, [](Object*, float) {}, &object);
-    cmd["foo.bar"] = coil::property(&Object::get, [](Object*, float) {}, &object);
+    cmd["foo.bar"] = coil::property(
+        &Object::get, [](Object*, float) {}, &object);
     cmd["foo.bar"] = coil::property([](Object*) { return 1.0f; }, &Object::set, &object);
 
-    cmd["foo.bar"] = coil::property([]() -> float& { static float v = 1.0f; return v; }, [](float) {});
-    cmd["foo.bar"] = coil::property([]() -> float& { static float v = 1.0f; return v; }, [](float const&) {});
-    cmd["foo.bar"] = coil::property([]() -> float { static float v = 1.0f; return v; }, [](float const&) {});
+    cmd["foo.bar"] = coil::property(
+        []() -> float& {
+            static float v = 1.0f;
+            return v;
+        },
+        [](float) {});
+    cmd["foo.bar"] = coil::property(
+        []() -> float& {
+            static float v = 1.0f;
+            return v;
+        },
+        [](float const&) {});
+    cmd["foo.bar"] = coil::property(
+        []() -> float {
+            static float v = 1.0f;
+            return v;
+        },
+        [](float const&) {});
 
-    cmd["foo.bar"] = coil::property(&Object::getReference, [](Object*, float) {}, &object);
-    cmd["foo.bar"] = coil::property(&Object::getReference, [](Object*, float const&) {}, &object);
-    cmd["foo.bar"] = coil::property(&Object::get, [](Object*, float const&) {}, &object);
+    cmd["foo.bar"] = coil::property(
+        &Object::getReference, [](Object*, float) {}, &object);
+    cmd["foo.bar"] = coil::property(
+        &Object::getReference, [](Object*, float const&) {}, &object);
+    cmd["foo.bar"] = coil::property(
+        &Object::get, [](Object*, float const&) {}, &object);
 }

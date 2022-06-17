@@ -113,15 +113,9 @@ namespace
         return val * 2.0f;
     }
 
-    [[maybe_unused]] void freeFuncWithoutArgs()
-    {
+    [[maybe_unused]] void freeFuncWithoutArgs() {}
 
-    }
-
-    [[maybe_unused]] void freeFuncWithoutArgsWithContext(coil::Context)
-    {
-
-    }
+    [[maybe_unused]] void freeFuncWithoutArgsWithContext(coil::Context) {}
 
     [[maybe_unused]] std::size_t funcVariadicVector(float, std::string const&, std::vector<coil::AnyArgView> const& args)
     {
@@ -149,11 +143,12 @@ namespace
     }
 
     template<typename T>
-    [[maybe_unused]] T funcWithType(T v) { return v; }
-
-    [[maybe_unused]] void setVariable(float value)
+    [[maybe_unused]] T funcWithType(T v)
     {
+        return v;
     }
+
+    [[maybe_unused]] void setVariable(float value) {}
 
     [[maybe_unused]] float getVariable()
     {
@@ -164,14 +159,8 @@ namespace
     [[maybe_unused]] Object const objectConst;
     [[maybe_unused]] float variable = 2.0f;
 
-    [[maybe_unused]] auto lambda = [](float val)
-    {
-        return val * 2.0f;
-    };
-    [[maybe_unused]] auto lambdaWithContext = [](coil::Context, float val)
-    {
-        return val * 2.0f;
-    };
+    [[maybe_unused]] auto lambda = [](float val) { return val * 2.0f; };
+    [[maybe_unused]] auto lambdaWithContext = [](coil::Context, float val) { return val * 2.0f; };
 
     [[maybe_unused]] Functor functor;
     [[maybe_unused]] FunctorWithContext functorWithContext;

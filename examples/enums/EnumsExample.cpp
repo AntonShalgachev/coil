@@ -1,9 +1,7 @@
 #include "EnumsExample.h"
 
+#include "common/EnumToString.h" // user-provided TypeSerializer for enums
 #include "common/ExamplesCommon.h"
-
-// user-provided TypeSerializer for enums
-#include "common/EnumToString.h"
 
 #include <iostream>
 
@@ -29,9 +27,19 @@ namespace
             AfterDeath,
         };
 
-        void setAbility(Ability ability, ResetMode resetMode) { m_ability = ability; m_resetMode = resetMode; }
-        Ability getAbility() const { return m_ability; }
-        ResetMode getResetMode() const { return m_resetMode; }
+        void setAbility(Ability ability, ResetMode resetMode)
+        {
+            m_ability = ability;
+            m_resetMode = resetMode;
+        }
+        Ability getAbility() const
+        {
+            return m_ability;
+        }
+        ResetMode getResetMode() const
+        {
+            return m_resetMode;
+        }
 
     private:
         Ability m_ability = Ability::None;

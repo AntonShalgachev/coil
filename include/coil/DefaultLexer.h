@@ -1,13 +1,13 @@
 #pragma once
 
-#include <string_view>
-#include <optional>
-#include <cctype>
-
 #include "DefaultLexer.h"
 #include "ExecutionInput.h"
 #include "Expected.h"
 #include "Utils.h"
+
+#include <cctype>
+#include <optional>
+#include <string_view>
 
 namespace coil
 {
@@ -61,14 +61,14 @@ namespace coil
         static bool isGroupChar(unsigned char c)
         {
             // TODO make configurable?
-            static std::vector<unsigned char> chars = { '(', ')', '"' };
+            static std::vector<unsigned char> chars = {'(', ')', '"'};
             return std::find(chars.begin(), chars.end(), c) != chars.end();
         }
 
         static bool isGroupSeparator(unsigned char c)
         {
             // TODO make configurable?
-            static std::vector<unsigned char> chars = { ',', ';', '|' };
+            static std::vector<unsigned char> chars = {',', ';', '|'};
 
             if (isSpace(c))
                 return true;
@@ -127,7 +127,7 @@ namespace coil
 
         ArgValue createArgValue(std::string_view input) const
         {
-            return ArgValue{ splitGroup(input) };
+            return ArgValue{splitGroup(input)};
         }
 
         coil::Expected<void, std::string> tokenize(std::string_view str) const
@@ -168,7 +168,6 @@ namespace coil
                 default:
                     return makeUnexpected("Internal error"); // @NOCOVERAGE
                 }
-
             }
 
             return {};
@@ -211,8 +210,7 @@ namespace coil
             ArgTokens tokens;
             StringTokenType nextTokenType = StringTokenType::PrimaryToken;
 
-            auto addCurrentTokens = [this, &tokens]()
-            {
+            auto addCurrentTokens = [this, &tokens]() {
                 if (!tokens.primaryTokenIndex)
                     return;
 

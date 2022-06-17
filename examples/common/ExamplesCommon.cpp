@@ -1,7 +1,8 @@
 #include "ExamplesCommon.h"
 
-#include <iostream>
 #include "termcolor.hpp"
+
+#include <iostream>
 
 namespace
 {
@@ -27,12 +28,12 @@ void common::executeCommand(coil::Bindings& bindings, std::string_view command)
     auto result = bindings.execute(command);
 
     for (const auto& error : result.errors)
-        std::cout << errorColor << "\t" << "Error: " << error << termcolor::reset << std::endl;
+        std::cout << errorColor << "\tError:" << error << termcolor::reset << std::endl;
 
     std::cout << outputColor << result.output.str() << termcolor::reset;
 
     if (result.returnValue)
-        std::cout << "\t" << "Returned '" << returnColor << *result.returnValue << termcolor::reset << "'" << std::endl;
+        std::cout << "\tReturned '" << returnColor << *result.returnValue << termcolor::reset << "'" << std::endl;
 
     std::cout << std::endl;
 }
