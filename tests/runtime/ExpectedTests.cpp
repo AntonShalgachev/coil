@@ -100,14 +100,14 @@ TEST(ExpectedTests, TestValueInitialization)
 
     coil::Expected<V, E> e = V{42};
 
-    EXPECT_EQ(V::constructions, 1);
-    EXPECT_EQ(V::copies, 0);
-    EXPECT_GE(V::moveConstructions, 1);
+    EXPECT_EQ(V::constructions, 1u);
+    EXPECT_EQ(V::copies, 0u);
+    EXPECT_GE(V::moveConstructions, 1u);
 
-    EXPECT_EQ(E::constructions, 0);
-    EXPECT_EQ(E::copyConstructions, 0);
-    EXPECT_EQ(E::moveConstructions, 0);
-    EXPECT_EQ(E::destructions, 0);
+    EXPECT_EQ(E::constructions, 0u);
+    EXPECT_EQ(E::copyConstructions, 0u);
+    EXPECT_EQ(E::moveConstructions, 0u);
+    EXPECT_EQ(E::destructions, 0u);
 
     ASSERT_TRUE(e);
     EXPECT_EQ(*e, V{42});
@@ -119,14 +119,14 @@ TEST(ExpectedTests, TestErrorInitialization)
 
     coil::Expected<V, E> e = coil::makeUnexpected(E{3.14f});
 
-    EXPECT_EQ(E::constructions, 1);
-    EXPECT_EQ(E::copies, 0);
-    EXPECT_GE(E::moveConstructions, 1);
+    EXPECT_EQ(E::constructions, 1u);
+    EXPECT_EQ(E::copies, 0u);
+    EXPECT_GE(E::moveConstructions, 1u);
 
-    EXPECT_EQ(V::constructions, 0);
-    EXPECT_EQ(V::copyConstructions, 0);
-    EXPECT_EQ(V::moveConstructions, 0);
-    EXPECT_EQ(V::destructions, 0);
+    EXPECT_EQ(V::constructions, 0u);
+    EXPECT_EQ(V::copyConstructions, 0u);
+    EXPECT_EQ(V::moveConstructions, 0u);
+    EXPECT_EQ(V::destructions, 0u);
 
     ASSERT_FALSE(e);
     EXPECT_EQ(e.error(), E{3.14f});
@@ -140,9 +140,9 @@ TEST(ExpectedTests, TestValueCopyInitialization)
 
     coil::Expected<V, E> e2 = e1;
 
-    EXPECT_EQ(V::copyConstructions, 1);
-    EXPECT_EQ(V::copyAssignments, 0);
-    EXPECT_EQ(V::copies, 1);
+    EXPECT_EQ(V::copyConstructions, 1u);
+    EXPECT_EQ(V::copyAssignments, 0u);
+    EXPECT_EQ(V::copies, 1u);
 
     ASSERT_TRUE(e1);
     EXPECT_EQ(*e1, V{42});
@@ -158,9 +158,9 @@ TEST(ExpectedTests, TestErrorCopyInitialization)
 
     coil::Expected<V, E> e2 = e1;
 
-    EXPECT_EQ(E::copyConstructions, 1);
-    EXPECT_EQ(E::copyAssignments, 0);
-    EXPECT_EQ(E::copies, 1);
+    EXPECT_EQ(E::copyConstructions, 1u);
+    EXPECT_EQ(E::copyAssignments, 0u);
+    EXPECT_EQ(E::copies, 1u);
 
     ASSERT_FALSE(e1);
     EXPECT_EQ(e1.error(), E{3.14f});
@@ -176,8 +176,8 @@ TEST(ExpectedTests, TestValueMoveInitialization)
 
     coil::Expected<V, E> e2 = std::move(e1);
 
-    EXPECT_EQ(V::copies, 0);
-    EXPECT_GE(V::moveConstructions, 1);
+    EXPECT_EQ(V::copies, 0u);
+    EXPECT_GE(V::moveConstructions, 1u);
 
     ASSERT_TRUE(e1);
     EXPECT_EQ(*e1, V{0});
@@ -193,8 +193,8 @@ TEST(ExpectedTests, TestErrorMoveInitialization)
 
     coil::Expected<V, E> e2 = std::move(e1);
 
-    EXPECT_EQ(E::copies, 0);
-    EXPECT_GE(E::moveConstructions, 1);
+    EXPECT_EQ(E::copies, 0u);
+    EXPECT_GE(E::moveConstructions, 1u);
 
     ASSERT_FALSE(e1);
     EXPECT_EQ(e1.error(), E{0.0f});
@@ -211,9 +211,9 @@ TEST(ExpectedTests, TestValueCopyAssignment)
 
     e2 = e1;
 
-    EXPECT_EQ(V::copyConstructions, 0);
-    EXPECT_EQ(V::copyAssignments, 1);
-    EXPECT_EQ(V::copies, 1);
+    EXPECT_EQ(V::copyConstructions, 0u);
+    EXPECT_EQ(V::copyAssignments, 1u);
+    EXPECT_EQ(V::copies, 1u);
 
     ASSERT_TRUE(e1);
     EXPECT_EQ(*e1, V{42});
@@ -230,9 +230,9 @@ TEST(ExpectedTests, TestErrorCopyAssignment)
 
     e2 = e1;
 
-    EXPECT_EQ(E::copyConstructions, 0);
-    EXPECT_EQ(E::copyAssignments, 1);
-    EXPECT_EQ(E::copies, 1);
+    EXPECT_EQ(E::copyConstructions, 0u);
+    EXPECT_EQ(E::copyAssignments, 1u);
+    EXPECT_EQ(E::copies, 1u);
 
     ASSERT_FALSE(e1);
     EXPECT_EQ(e1.error(), E{3.14f});
@@ -249,12 +249,12 @@ TEST(ExpectedTests, TestValueErrorCopyAssignment)
 
     e2 = e1;
 
-    EXPECT_EQ(E::moves, 0);
-    EXPECT_EQ(V::moves, 0);
-    EXPECT_GE(E::copyAssignments, 0);
-    EXPECT_GE(V::copyAssignments, 0);
-    EXPECT_GE(E::copyConstructions, 0);
-    EXPECT_GE(V::copyConstructions, 1);
+    EXPECT_EQ(E::moves, 0u);
+    EXPECT_EQ(V::moves, 0u);
+    EXPECT_GE(E::copyAssignments, 0u);
+    EXPECT_GE(V::copyAssignments, 0u);
+    EXPECT_GE(E::copyConstructions, 0u);
+    EXPECT_GE(V::copyConstructions, 1u);
 
     ASSERT_TRUE(e1);
     EXPECT_EQ(*e1, V{42});
@@ -271,8 +271,8 @@ TEST(ExpectedTests, TestValueMoveAssignment)
 
     e2 = std::move(e1);
 
-    EXPECT_EQ(V::copies, 0);
-    EXPECT_GE(V::moveAssignments, 1);
+    EXPECT_EQ(V::copies, 0u);
+    EXPECT_GE(V::moveAssignments, 1u);
 
     ASSERT_TRUE(e2);
     EXPECT_EQ(*e2, V{42});
@@ -287,8 +287,8 @@ TEST(ExpectedTests, TestErrorMoveAssignment)
 
     e2 = std::move(e1);
 
-    EXPECT_EQ(E::copies, 0);
-    EXPECT_GE(E::moveAssignments, 1);
+    EXPECT_EQ(E::copies, 0u);
+    EXPECT_GE(E::moveAssignments, 1u);
 
     ASSERT_FALSE(e2);
     EXPECT_EQ(e2.error(), E{3.14f});
@@ -303,12 +303,12 @@ TEST(ExpectedTests, TestValueErrorMoveAssignment)
 
     e2 = std::move(e1);
 
-    EXPECT_EQ(E::copies, 0);
-    EXPECT_EQ(V::copies, 0);
-    EXPECT_GE(E::moveAssignments, 0);
-    EXPECT_GE(V::moveAssignments, 0);
-    EXPECT_GE(E::moveConstructions, 0);
-    EXPECT_GE(V::moveConstructions, 1);
+    EXPECT_EQ(E::copies, 0u);
+    EXPECT_EQ(V::copies, 0u);
+    EXPECT_GE(E::moveAssignments, 0u);
+    EXPECT_GE(V::moveAssignments, 0u);
+    EXPECT_GE(E::moveConstructions, 0u);
+    EXPECT_GE(V::moveConstructions, 1u);
 
     ASSERT_TRUE(e2);
     EXPECT_EQ(*e2, V{42});
@@ -334,7 +334,7 @@ TEST(ExpectedTests, TestUnexpectedAccess)
         },
         coil::BadExpectedAccess<E>);
 
-    EXPECT_EQ(E::copies, 1);
+    EXPECT_EQ(E::copies, 1u);
 }
 
 TEST(ExpectedTests, TestUnexpectedAccessConst)
@@ -357,7 +357,7 @@ TEST(ExpectedTests, TestUnexpectedAccessConst)
         },
         coil::BadExpectedAccess<E>);
 
-    EXPECT_EQ(E::copies, 1);
+    EXPECT_EQ(E::copies, 1u);
 }
 
 TEST(ExpectedTests, TestUnexpectedAccessRvalue)
@@ -380,7 +380,7 @@ TEST(ExpectedTests, TestUnexpectedAccessRvalue)
         },
         coil::BadExpectedAccess<E>);
 
-    EXPECT_EQ(E::copies, 0);
+    EXPECT_EQ(E::copies, 0u);
 }
 
 TEST(ExpectedTests, TestExpectedArrow)

@@ -49,6 +49,11 @@ target_include_directories(coil
 
 target_compile_features(coil PUBLIC cxx_std_17)
 set_target_properties(coil PROPERTIES CXX_EXTENSIONS OFF)
+if(MSVC)
+  target_compile_options(coil PRIVATE /W4 /WX)
+else()
+  target_compile_options(coil PRIVATE -Wall -Wextra -Wpedantic -Werror)
+endif()
 
 if (${COIL_EXAMPLES})
     add_subdirectory(examples)
