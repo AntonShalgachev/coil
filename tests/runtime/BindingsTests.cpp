@@ -179,11 +179,11 @@ TEST(BindingsTests, TestVoidFunctionCallStats)
     bindings["func"] = []() { stats::functionCalls++; };
     auto result = bindings.execute("func");
 
-    EXPECT_EQ(result.errors.size(), 0);
+    EXPECT_EQ(result.errors.size(), 0u);
 
-    EXPECT_EQ(stats::functionCalls, 1);
-    EXPECT_EQ(stats::trackerAssignments, 0);
-    EXPECT_EQ(stats::trackerConstructions, 0);
+    EXPECT_EQ(stats::functionCalls, 1u);
+    EXPECT_EQ(stats::trackerAssignments, 0u);
+    EXPECT_EQ(stats::trackerConstructions, 0u);
 }
 
 TEST(BindingsTests, TestVoidFunctionWithDotsCallStats)
@@ -194,11 +194,11 @@ TEST(BindingsTests, TestVoidFunctionWithDotsCallStats)
     bindings["namespace.func"] = []() { stats::functionCalls++; };
     auto result = bindings.execute("namespace.func");
 
-    EXPECT_EQ(result.errors.size(), 0);
+    EXPECT_EQ(result.errors.size(), 0u);
 
-    EXPECT_EQ(stats::functionCalls, 1);
-    EXPECT_EQ(stats::trackerAssignments, 0);
-    EXPECT_EQ(stats::trackerConstructions, 0);
+    EXPECT_EQ(stats::functionCalls, 1u);
+    EXPECT_EQ(stats::trackerAssignments, 0u);
+    EXPECT_EQ(stats::trackerConstructions, 0u);
 }
 
 TEST(BindingsTests, TestVariableAssignmentStats)
@@ -211,12 +211,12 @@ TEST(BindingsTests, TestVariableAssignmentStats)
     bindings["var"] = coil::variable(&trackedVariable);
     auto result = bindings.execute("var 42");
 
-    EXPECT_EQ(result.errors.size(), 0);
+    EXPECT_EQ(result.errors.size(), 0u);
 
-    EXPECT_EQ(stats::functionCalls, 0);
-    EXPECT_EQ(stats::trackerValueConstructions, 1);
-    EXPECT_EQ(stats::trackerCopyConstructions, 0);
-    EXPECT_EQ(stats::trackerCopyAssignments, 0);
+    EXPECT_EQ(stats::functionCalls, 0u);
+    EXPECT_EQ(stats::trackerValueConstructions, 1u);
+    EXPECT_EQ(stats::trackerCopyConstructions, 0u);
+    EXPECT_EQ(stats::trackerCopyAssignments, 0u);
 }
 
 TEST(BindingsTests, TestPassingArgumentByValueStats)
@@ -227,11 +227,11 @@ TEST(BindingsTests, TestPassingArgumentByValueStats)
     bindings["func"] = [](Tracker<int>) {};
     auto result = bindings.execute("func 42");
 
-    EXPECT_EQ(result.errors.size(), 0);
+    EXPECT_EQ(result.errors.size(), 0u);
 
-    EXPECT_EQ(stats::trackerValueConstructions, 1);
-    EXPECT_EQ(stats::trackerCopyConstructions, 0);
-    EXPECT_EQ(stats::trackerCopyAssignments, 0);
+    EXPECT_EQ(stats::trackerValueConstructions, 1u);
+    EXPECT_EQ(stats::trackerCopyConstructions, 0u);
+    EXPECT_EQ(stats::trackerCopyAssignments, 0u);
 }
 
 TEST(BindingsTests, TestPassingArgumentByRefStats)
@@ -242,11 +242,11 @@ TEST(BindingsTests, TestPassingArgumentByRefStats)
     bindings["func"] = [](Tracker<int> const) {};
     auto result = bindings.execute("func 42");
 
-    EXPECT_EQ(result.errors.size(), 0);
+    EXPECT_EQ(result.errors.size(), 0u);
 
-    EXPECT_EQ(stats::trackerValueConstructions, 1);
-    EXPECT_EQ(stats::trackerCopyConstructions, 0);
-    EXPECT_EQ(stats::trackerCopyAssignments, 0);
+    EXPECT_EQ(stats::trackerValueConstructions, 1u);
+    EXPECT_EQ(stats::trackerCopyConstructions, 0u);
+    EXPECT_EQ(stats::trackerCopyAssignments, 0u);
 }
 
 TEST(BindingsTests, TestReturnByValueStats)
@@ -257,11 +257,11 @@ TEST(BindingsTests, TestReturnByValueStats)
     bindings["func"] = []() { return Tracker<int>{42}; };
     auto result = bindings.execute("func");
 
-    EXPECT_EQ(result.errors.size(), 0);
+    EXPECT_EQ(result.errors.size(), 0u);
 
-    EXPECT_EQ(stats::trackerValueConstructions, 1);
-    EXPECT_EQ(stats::trackerCopyConstructions, 0);
-    EXPECT_EQ(stats::trackerCopyAssignments, 0);
+    EXPECT_EQ(stats::trackerValueConstructions, 1u);
+    EXPECT_EQ(stats::trackerCopyConstructions, 0u);
+    EXPECT_EQ(stats::trackerCopyAssignments, 0u);
 }
 
 TEST(BindingsTests, TestErrorStats)
@@ -280,17 +280,17 @@ TEST(BindingsTests, TestErrorStats)
     bindings.execute("var string_arg");
     bindings.execute("var 42 43");
 
-    EXPECT_EQ(stats::functionCalls, 0);
-    EXPECT_EQ(stats::trackerConstructions, 0);
-    EXPECT_EQ(stats::trackerAssignments, 0);
+    EXPECT_EQ(stats::functionCalls, 0u);
+    EXPECT_EQ(stats::trackerConstructions, 0u);
+    EXPECT_EQ(stats::trackerAssignments, 0u);
 
     bindings.execute("var 42");
     bindings.execute("func_without_args");
     bindings.execute("func_with_arg 42");
 
-    EXPECT_GT(stats::functionCalls, 0);
-    EXPECT_GT(stats::trackerConstructions, 0);
-    EXPECT_GT(stats::trackerAssignments, 0);
+    EXPECT_GT(stats::functionCalls, 0u);
+    EXPECT_GT(stats::trackerConstructions, 0u);
+    EXPECT_GT(stats::trackerAssignments, 0u);
 }
 
 TEST(BindingsTests, TestVoidFunctionCall)
@@ -299,7 +299,7 @@ TEST(BindingsTests, TestVoidFunctionCall)
     bindings["func"] = []() {};
     auto result = bindings.execute("func");
 
-    EXPECT_EQ(result.errors.size(), 0);
+    EXPECT_EQ(result.errors.size(), 0u);
     EXPECT_FALSE(result.returnValue.has_value());
 }
 
@@ -311,7 +311,7 @@ TEST(BindingsTests, TestVariableRead)
     bindings["var"] = coil::variable(&variable);
     auto result = bindings.execute("var");
 
-    EXPECT_EQ(result.errors.size(), 0);
+    EXPECT_EQ(result.errors.size(), 0u);
     ASSERT_TRUE(result.returnValue.has_value());
     EXPECT_EQ(*result.returnValue, "42");
     EXPECT_EQ(variable, 42);
@@ -325,7 +325,7 @@ TEST(BindingsTests, TestVariableWrite)
     bindings["var"] = coil::variable(&variable);
     auto result = bindings.execute("var 365");
 
-    EXPECT_EQ(result.errors.size(), 0);
+    EXPECT_EQ(result.errors.size(), 0u);
     ASSERT_TRUE(result.returnValue.has_value());
     EXPECT_EQ(*result.returnValue, "365");
     EXPECT_EQ(variable, 365);
@@ -339,7 +339,7 @@ TEST(BindingsTests, TestReadonlyVariableRead)
     bindings["var"] = coil::variable(&variable);
     auto result = bindings.execute("var");
 
-    EXPECT_EQ(result.errors.size(), 0);
+    EXPECT_EQ(result.errors.size(), 0u);
     ASSERT_TRUE(result.returnValue.has_value());
     EXPECT_EQ(*result.returnValue, "42");
     EXPECT_EQ(variable, 42);
@@ -353,7 +353,7 @@ TEST(BindingsTests, TestReadonlyVariableWrite)
     bindings["var"] = coil::variable(&variable);
     auto result = bindings.execute("var 365");
 
-    EXPECT_EQ(result.errors.size(), 1);
+    EXPECT_EQ(result.errors.size(), 1u);
     EXPECT_PRED2(containsError, result.errors, "Cannot write to a read-only variable");
     EXPECT_EQ(variable, 42);
 }
@@ -371,15 +371,15 @@ TEST(BindingsTests, TestOverloaded)
     auto result2 = bindings.execute("func 42 42");
     auto result3 = bindings.execute("func 42 42 42");
 
-    EXPECT_EQ(result1.errors.size(), 0);
+    EXPECT_EQ(result1.errors.size(), 0u);
     ASSERT_TRUE(result1.returnValue.has_value());
     EXPECT_EQ(*result1.returnValue, "func1");
 
-    EXPECT_EQ(result2.errors.size(), 0);
+    EXPECT_EQ(result2.errors.size(), 0u);
     ASSERT_TRUE(result2.returnValue.has_value());
     EXPECT_EQ(*result2.returnValue, "func2");
 
-    EXPECT_EQ(result3.errors.size(), 0);
+    EXPECT_EQ(result3.errors.size(), 0u);
     ASSERT_TRUE(result3.returnValue.has_value());
     EXPECT_EQ(*result3.returnValue, "func3");
 }
@@ -391,7 +391,7 @@ TEST(BindingTests, TestOptionalEmpty)
 
     auto result = bindings.execute("func ()");
 
-    EXPECT_EQ(result.errors.size(), 0);
+    EXPECT_EQ(result.errors.size(), 0u);
     ASSERT_TRUE(result.returnValue.has_value());
     EXPECT_EQ(*result.returnValue, "");
 }
@@ -403,7 +403,7 @@ TEST(BindingTests, TestOptionalWithValue)
 
     auto result = bindings.execute("func 42");
 
-    EXPECT_EQ(result.errors.size(), 0);
+    EXPECT_EQ(result.errors.size(), 0u);
     ASSERT_TRUE(result.returnValue.has_value());
     EXPECT_EQ(*result.returnValue, "42");
 }
@@ -415,7 +415,7 @@ TEST(BindingTests, TestOptionalWithError)
 
     auto result = bindings.execute("func foo");
 
-    EXPECT_EQ(result.errors.size(), 1);
+    EXPECT_EQ(result.errors.size(), 1u);
     EXPECT_PRED2(containsError, result.errors, "Unable to convert 'foo' to type 'std::optional<int>': Unable to convert 'foo' to type 'int'");
 }
 
@@ -427,7 +427,7 @@ TEST(BindingsTests, TestCompoundSyntax)
     auto testCompound = [&bindings](std::string_view command, std::string_view expectedResult) {
         auto result = bindings.execute(command);
 
-        EXPECT_EQ(result.errors.size(), 0);
+        EXPECT_EQ(result.errors.size(), 0u);
         ASSERT_TRUE(result.returnValue.has_value());
         EXPECT_EQ(*result.returnValue, expectedResult);
     };
@@ -445,7 +445,7 @@ TEST(BindingsTests, TestErrorNoFunction)
     coil::Bindings bindings;
     auto result = bindings.execute("");
 
-    EXPECT_EQ(result.errors.size(), 1);
+    EXPECT_EQ(result.errors.size(), 1u);
     EXPECT_PRED2(containsError, result.errors, "No function name is specified");
 }
 
@@ -454,7 +454,7 @@ TEST(BindingsTests, TestErrorUndefinedFunction)
     coil::Bindings bindings;
     auto result = bindings.execute("foo");
 
-    EXPECT_EQ(result.errors.size(), 1);
+    EXPECT_EQ(result.errors.size(), 1u);
     EXPECT_PRED2(containsError, result.errors, "No function 'foo' is registered");
 }
 
@@ -464,7 +464,7 @@ TEST(BindingsTests, TestErrorWrongArgumentsCountWithNonUserArgs)
     bindings["func"] = [](coil::Context, int) {};
     auto result = bindings.execute("func foo bar");
 
-    EXPECT_EQ(result.errors.size(), 1);
+    EXPECT_EQ(result.errors.size(), 1u);
     EXPECT_PRED2(containsError, result.errors, "Wrong number of arguments to 'func': expected 1, got 2");
 }
 
@@ -474,7 +474,7 @@ TEST(BindingsTests, TestErrorWrongArgumentsCount)
     bindings["func"] = [](int, int) {};
     auto result = bindings.execute("func 1 2 3");
 
-    EXPECT_EQ(result.errors.size(), 1);
+    EXPECT_EQ(result.errors.size(), 1u);
     EXPECT_PRED2(containsError, result.errors, "Wrong number of arguments to 'func': expected 2, got 3");
 }
 
@@ -488,7 +488,7 @@ TEST(BindingsTests, TestErrorWrongArgumentsCountOverload2)
 
     auto result = bindings.execute("func");
 
-    EXPECT_EQ(result.errors.size(), 1);
+    EXPECT_EQ(result.errors.size(), 1u);
     EXPECT_PRED2(containsError, result.errors, "Wrong number of arguments to 'func': expected 1 or 2, got 0");
 }
 
@@ -503,7 +503,7 @@ TEST(BindingsTests, TestErrorWrongArgumentsCountOverload3)
 
     auto result = bindings.execute("func");
 
-    EXPECT_EQ(result.errors.size(), 1);
+    EXPECT_EQ(result.errors.size(), 1u);
     EXPECT_PRED2(containsError, result.errors, "Wrong number of arguments to 'func': expected 1, 2 or 3, got 0");
 }
 
@@ -513,7 +513,7 @@ TEST(BindingsTests, TestErrorWrongArgumentTypes)
     bindings["func"] = [](int, int) {};
     auto result = bindings.execute("func foo bar");
 
-    EXPECT_EQ(result.errors.size(), 2);
+    EXPECT_EQ(result.errors.size(), 2u);
     EXPECT_PRED2(containsError, result.errors, "Unable to convert 'foo' to type 'int'");
     EXPECT_PRED2(containsError, result.errors, "Unable to convert 'bar' to type 'int'");
 }
@@ -524,7 +524,7 @@ TEST(BindingsTests, TestErrorWrongArgumentTypesVector)
     bindings["sum"] = [](std::vector<int> const&) {};
     auto result = bindings.execute("sum (foo bar baz)");
 
-    EXPECT_EQ(result.errors.size(), 1);
+    EXPECT_EQ(result.errors.size(), 1u);
     EXPECT_PRED2(containsError, result.errors, "Unable to convert 'foo bar baz' to type 'std::vector<int>': Unable to convert 'foo' to type 'int'");
 }
 
@@ -537,7 +537,7 @@ TEST(BindingsTests, TestErrorWrongArgumentTypesVariable)
 
     auto result = bindings.execute("var foo");
 
-    EXPECT_EQ(result.errors.size(), 1);
+    EXPECT_EQ(result.errors.size(), 1u);
     EXPECT_PRED2(containsError, result.errors, "Unable to convert 'foo' to type 'int'");
 }
 
@@ -547,7 +547,7 @@ TEST(BindingsTests, TestFunctionReturnValue)
     bindings["sum"] = [](int a, int b) { return a + b; };
     auto result = bindings.execute("sum 8 800");
 
-    EXPECT_EQ(result.errors.size(), 0);
+    EXPECT_EQ(result.errors.size(), 0u);
     ASSERT_TRUE(result.returnValue.has_value());
     EXPECT_EQ(*result.returnValue, "808");
 }
@@ -558,7 +558,7 @@ TEST(BindingsTests, TestOutput)
     bindings["func"] = [](coil::Context context, std::string value) { context.out() << value; };
     auto result = bindings.execute("func Test");
 
-    EXPECT_EQ(result.errors.size(), 0);
+    EXPECT_EQ(result.errors.size(), 0u);
     EXPECT_EQ(result.output.str(), "Test");
 }
 
@@ -568,7 +568,7 @@ TEST(BindingsTests, TestContextError)
     bindings["func"] = [](coil::Context context, std::string value) { context.reportError("Custom error: " + std::move(value)); };
     auto result = bindings.execute("func Test");
 
-    EXPECT_EQ(result.errors.size(), 1);
+    EXPECT_EQ(result.errors.size(), 1u);
     EXPECT_PRED2(containsError, result.errors, "Custom error: Test");
 }
 
@@ -578,7 +578,7 @@ TEST(BindingsTests, TestVectorFunctionReturnValue)
     bindings["sum"] = [](std::vector<int> const& values) { return std::accumulate(values.begin(), values.end(), 0); };
     auto result = bindings.execute("sum (1 1 2 3 5 8)");
 
-    EXPECT_EQ(result.errors.size(), 0);
+    EXPECT_EQ(result.errors.size(), 0u);
     ASSERT_TRUE(result.returnValue.has_value());
     EXPECT_EQ(*result.returnValue, "20");
 }
@@ -594,10 +594,10 @@ TEST(BindingsTests, TestUnbind)
     auto result1 = bindings.execute("func1");
     auto result2 = bindings.execute("func2");
 
-    EXPECT_EQ(result1.errors.size(), 1);
+    EXPECT_EQ(result1.errors.size(), 1u);
     EXPECT_PRED2(containsError, result1.errors, "No function 'func1' is registered");
 
-    EXPECT_EQ(result2.errors.size(), 0);
+    EXPECT_EQ(result2.errors.size(), 0u);
 }
 
 TEST(BindingsTests, TestClear)
@@ -611,10 +611,10 @@ TEST(BindingsTests, TestClear)
     auto result1 = bindings.execute("func1");
     auto result2 = bindings.execute("func2");
 
-    EXPECT_EQ(result1.errors.size(), 1);
+    EXPECT_EQ(result1.errors.size(), 1u);
     EXPECT_PRED2(containsError, result1.errors, "No function 'func1' is registered");
 
-    EXPECT_EQ(result2.errors.size(), 1);
+    EXPECT_EQ(result2.errors.size(), 1u);
     EXPECT_PRED2(containsError, result2.errors, "No function 'func2' is registered");
 }
 
@@ -624,7 +624,7 @@ TEST(BindingsTests, TestSyntaxError)
 
     auto result = bindings.execute("func = arg");
 
-    EXPECT_EQ(result.errors.size(), 1);
+    EXPECT_EQ(result.errors.size(), 1u);
     EXPECT_PRED2(containsError, result.errors, "Syntax error: Unexpected token '=': no named for the named argument is provided");
 }
 
@@ -637,7 +637,7 @@ TEST(BindingsTests, TestStdException)
 
     EXPECT_NO_THROW({ result = bindings.execute("func"); });
 
-    EXPECT_EQ(result.errors.size(), 1);
+    EXPECT_EQ(result.errors.size(), 1u);
     EXPECT_PRED2(containsError, result.errors, "Exception caught during execution: Test runtime exception");
 }
 
@@ -650,7 +650,7 @@ TEST(BindingsTests, TestNonStdException)
 
     EXPECT_NO_THROW({ result = bindings.execute("func"); });
 
-    EXPECT_EQ(result.errors.size(), 1);
+    EXPECT_EQ(result.errors.size(), 1u);
     EXPECT_PRED2(containsError, result.errors, "Exception caught during execution");
 }
 
@@ -740,13 +740,13 @@ TEST(BindingsTests, TestNamedArgsTypedGetOrReportContextErrors)
 
     {
         auto result = bindings.execute("func");
-        EXPECT_EQ(result.errors.size(), 1);
+        EXPECT_EQ(result.errors.size(), 1u);
         EXPECT_PRED2(containsError, result.errors, "Missing named argument 'arg'");
     }
 
     {
         auto result = bindings.execute("func arg = str");
-        EXPECT_EQ(result.errors.size(), 1);
+        EXPECT_EQ(result.errors.size(), 1u);
         EXPECT_PRED2(containsError, result.errors, "Unable to convert 'str' to type 'int'");
     }
 }
@@ -758,7 +758,7 @@ TEST(BindingsTests, TestNamedArgsAnyGetOrReportContextErrors)
 
     {
         auto result = bindings.execute("func");
-        EXPECT_EQ(result.errors.size(), 1);
+        EXPECT_EQ(result.errors.size(), 1u);
         EXPECT_PRED2(containsError, result.errors, "Missing named argument 'arg'");
     }
 }
@@ -770,13 +770,13 @@ TEST(BindingsTests, TestNamedArgsSize)
 
     {
         auto result = bindings.execute("func");
-        EXPECT_EQ(result.errors.size(), 0);
+        EXPECT_EQ(result.errors.size(), 0u);
         EXPECT_EQ(result.returnValue, "0");
     }
 
     {
         auto result = bindings.execute("func arg1=foo arg2=bar");
-        EXPECT_EQ(result.errors.size(), 0);
+        EXPECT_EQ(result.errors.size(), 0u);
         EXPECT_EQ(result.returnValue, "2");
     }
 }
@@ -797,7 +797,7 @@ TEST(BindingsTests, TestBind)
     bindings["func"] = coil::bind(&Object::get, &obj);
 
     auto result = bindings.execute("func");
-    EXPECT_EQ(result.errors.size(), 0);
+    EXPECT_EQ(result.errors.size(), 0u);
     EXPECT_EQ(result.returnValue, "42");
 }
 
