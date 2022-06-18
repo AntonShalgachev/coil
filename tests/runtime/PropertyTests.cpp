@@ -38,7 +38,7 @@ TEST(PropertyTests, TestValidGet)
     bindings["func"] = createProperty(variable);
 
     auto result = bindings.execute("func");
-    EXPECT_EQ(result.errors.size(), 0);
+    EXPECT_EQ(result.errors.size(), 0u);
 
     ASSERT_TRUE(result.returnValue);
     EXPECT_EQ(*result.returnValue, "17");
@@ -53,7 +53,7 @@ TEST(PropertyTests, TestValidSet)
     bindings["func"] = createProperty(variable);
 
     auto result = bindings.execute("func 42");
-    EXPECT_EQ(result.errors.size(), 0);
+    EXPECT_EQ(result.errors.size(), 0u);
 
     ASSERT_TRUE(result.returnValue);
     EXPECT_EQ(*result.returnValue, "42");
@@ -68,7 +68,7 @@ TEST(PropertyTests, TestWrongArguments)
     bindings["func"] = createProperty(variable);
 
     auto result = bindings.execute("func 1 2");
-    EXPECT_EQ(result.errors.size(), 1);
+    EXPECT_EQ(result.errors.size(), 1u);
     EXPECT_PRED2(containsError, result.errors, "Wrong number of arguments to 'func': expected 0 or 1, got 2");
     EXPECT_EQ(variable, 17);
 }
@@ -81,7 +81,7 @@ TEST(PropertyTests, TestValidGetOnObject)
     bindings["func"] = coil::property(&Object::get, &Object::set, &object);
 
     auto result = bindings.execute("func");
-    EXPECT_EQ(result.errors.size(), 0);
+    EXPECT_EQ(result.errors.size(), 0u);
 
     ASSERT_TRUE(result.returnValue);
     EXPECT_EQ(*result.returnValue, "17");
@@ -96,7 +96,7 @@ TEST(PropertyTests, TestValidSetOnObject)
     bindings["func"] = coil::property(&Object::get, &Object::set, &object);
 
     auto result = bindings.execute("func 42");
-    EXPECT_EQ(result.errors.size(), 0);
+    EXPECT_EQ(result.errors.size(), 0u);
 
     ASSERT_TRUE(result.returnValue);
     EXPECT_EQ(*result.returnValue, "42");
@@ -111,7 +111,7 @@ TEST(PropertyTests, TestWrongArgumentsOnObject)
     bindings["func"] = coil::property(&Object::get, &Object::set, &object);
 
     auto result = bindings.execute("func 1 2");
-    EXPECT_EQ(result.errors.size(), 1);
+    EXPECT_EQ(result.errors.size(), 1u);
     EXPECT_PRED2(containsError, result.errors, "Wrong number of arguments to 'func': expected 0 or 1, got 2");
     EXPECT_EQ(object.get(), 17);
 }
