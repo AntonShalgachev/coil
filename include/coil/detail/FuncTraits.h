@@ -1,6 +1,6 @@
 #pragma once
-#include "coil/Context.h"
-#include "coil/Types.h"
+#include "../Context.h"
+#include "../Types.h"
 
 #include <type_traits>
 
