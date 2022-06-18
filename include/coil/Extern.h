@@ -1,12 +1,12 @@
 #pragma once
 
-#include "coil/AnyArgView.h"
-#include "coil/ArgValue.h"
-#include "coil/Expected.h"
-#include "coil/NamedArgs.h"
-#include "coil/TypeSerializer.h"
-#include "coil/Variable.h"
-#include "coil/detail/StringWrapper.h"
+#include "AnyArgView.h"
+#include "ArgValue.h"
+#include "Expected.h"
+#include "NamedArgs.h"
+#include "TypeSerializer.h"
+#include "Variable.h"
+#include "detail/StringWrapper.h"
 
 #include <optional>
 #include <string>
