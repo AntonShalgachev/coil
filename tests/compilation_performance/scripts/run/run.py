@@ -91,8 +91,8 @@ class ProfilingResults:
 
 BINDINGS_CMD_ARGUMENTS = {
     Bindings.NONE: '',
-    Bindings.MANUAL: '-DCOIL_COMPILE_TIME_WITH_MANUAL=ON',
-    Bindings.COIL: '-DCOIL_COMPILE_TIME_WITH_COIL=ON',
+    Bindings.MANUAL: '-DCOIL_COMPILATION_TIME_BENCHMARK_WITH_MANUAL=ON',
+    Bindings.COIL: '-DCOIL_COMPILATION_TIME_BENCHMARK_WITH_COIL=ON',
 }
 
 
@@ -151,10 +151,10 @@ def run_cmake(configuration: BuildConfiguration, clean: bool, trace: bool):
         'build_dir': build_dir,
         'unity': '-DCMAKE_UNITY_BUILD=ON' if configuration.unity else '',
         'bindings': BINDINGS_CMD_ARGUMENTS[configuration.bindings],
-        'trace': '-DCOIL_COMPILE_TIME_TRACE=ON' if trace else '-DCOIL_COMPILE_TIME_TRACE=OFF'
+        'trace': '-DCOIL_COMPILATION_TIME_BENCHMARK_TRACE=ON' if trace else '-DCOIL_COMPILATION_TIME_BENCHMARK_TRACE=OFF'
     }
 
-    cmake_command = 'cmake -B "{build_dir}" -DCOIL_COMPILE_TIME=ON {trace} {bindings} {unity} -GNinja "{root}"'.format(**params)
+    cmake_command = 'cmake -B "{build_dir}" -DCOIL_COMPILATION_TIME_BENCHMARK=ON {trace} {bindings} {unity} -GNinja "{root}"'.format(**params)
 
     COMPILER_IDS = {
         Compiler.MSVC: '',

@@ -27,7 +27,7 @@ if(MSVC)
     set(COMPILE_OPTIONS /W4 /FC /permissive-)
 endif()
 
-if (COIL_COMPILE_TIME_TRACE AND CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+if (COIL_COMPILATION_TIME_BENCHMARK_TRACE AND CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     message(STATUS "Clang in use")
     list(APPEND COMPILE_OPTIONS -ftime-trace -ftime-trace-granularity=0)
 endif()
@@ -36,11 +36,11 @@ target_compile_options(${PROJECT_NAME} PRIVATE
     ${COMPILE_OPTIONS}
 )
 
-if(${COIL_COMPILE_TIME_WITH_MANUAL})
+if(${COIL_COMPILATION_TIME_BENCHMARK_WITH_MANUAL})
     target_compile_definitions(${PROJECT_NAME} PRIVATE USE_MANUAL=1)
 endif()
 
-if(${COIL_COMPILE_TIME_WITH_COIL})
+if(${COIL_COMPILATION_TIME_BENCHMARK_WITH_COIL})
     target_compile_definitions(${PROJECT_NAME} PRIVATE USE_COIL=1)
 endif()
 
