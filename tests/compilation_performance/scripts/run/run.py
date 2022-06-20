@@ -10,6 +10,10 @@ import statistics
 import subprocess
 import time
 from typing import List
+from distutils.version import StrictVersion
+
+
+MIN_NINJA_VERSION = StrictVersion('1.10.0')
 
 
 logger = logging.getLogger(__name__)
@@ -372,6 +376,10 @@ def main():
 
     if 'vsinstalldir' not in os.environ:
         raise RuntimeError("Visual Studio environment isn't set up")
+
+    ninja_version = StrictVersion(execute_command('ninja --version')[0])
+    if (ninja_version <= MIN_NINJA_VERSION):
+        raise RuntimeError("Unsupported ninja: required min version '{}', found version '{}'".format(MIN_NINJA_VERSION, ninja_version))
 
     configurations_count = len(settings.configurations)
     logger.info('Configurations found: {}'.format(configurations_count))
