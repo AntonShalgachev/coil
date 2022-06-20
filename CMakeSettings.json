@@ -105,7 +105,7 @@
       "inheritEnvironments": [ "msvc_x64_x64" ],
       "variables": [
         {
-          "name": "COIL_COMPILE_TIME",
+          "name": "COIL_COMPILATION_TIME_BENCHMARK",
           "value": "True",
           "type": "BOOL"
         }
@@ -123,12 +123,12 @@
       "inheritEnvironments": [ "msvc_x64_x64" ],
       "variables": [
         {
-          "name": "COIL_COMPILE_TIME",
+          "name": "COIL_COMPILATION_TIME_BENCHMARK",
           "value": "True",
           "type": "BOOL"
         },
         {
-          "name": "COIL_COMPILE_TIME_WITH_COIL",
+          "name": "COIL_COMPILATION_TIME_BENCHMARK_WITH_COIL",
           "value": "True",
           "type": "BOOL"
         }
@@ -146,12 +146,12 @@
       "inheritEnvironments": [ "msvc_x64_x64" ],
       "variables": [
         {
-          "name": "COIL_COMPILE_TIME",
+          "name": "COIL_COMPILATION_TIME_BENCHMARK",
           "value": "True",
           "type": "BOOL"
         },
         {
-          "name": "COIL_COMPILE_TIME_WITH_MANUAL",
+          "name": "COIL_COMPILATION_TIME_BENCHMARK_WITH_MANUAL",
           "value": "True",
           "type": "BOOL"
         }

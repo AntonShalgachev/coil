@@ -2,14 +2,14 @@ cmake_minimum_required(VERSION 3.15.0 FATAL_ERROR)
 
 project(coil LANGUAGES C CXX VERSION 1.0)
 
-set(COIL_EXAMPLES OFF CACHE BOOL "Add examples")
-set(COIL_RUNTIME_TESTS OFF CACHE BOOL "Add CMake runtime tests")
-set(COIL_COMPILATION_TESTS OFF CACHE BOOL "Run CMake compilation tests")
+set(COIL_EXAMPLES OFF CACHE BOOL "Coil examples")
+set(COIL_RUNTIME_TESTS OFF CACHE BOOL "Coil runtime tests")
+set(COIL_COMPILATION_TESTS OFF CACHE BOOL "Run Coil compilation tests within CMake")
 
-set(COIL_COMPILE_TIME OFF CACHE BOOL "Configure the project for compilation performance tests")
-set(COIL_COMPILE_TIME_TRACE OFF CACHE BOOL "Generate trace files for Clang")
-set(COIL_COMPILE_TIME_WITH_COIL OFF CACHE BOOL "Whether to use coil library for compilation performance test")
-set(COIL_COMPILE_TIME_WITH_MANUAL OFF CACHE BOOL "Whether to use manually-written bindings for compilation performance test")
+set(COIL_COMPILATION_TIME_BENCHMARK OFF CACHE BOOL "Coil compilation time benchmark")
+set(COIL_COMPILATION_TIME_BENCHMARK_TRACE OFF CACHE BOOL "Generate Clang trace files for Coil compilation time benchmark")
+set(COIL_COMPILATION_TIME_BENCHMARK_WITH_COIL OFF CACHE BOOL "Use Coil library for compilation time benchmark")
+set(COIL_COMPILATION_TIME_BENCHMARK_WITH_MANUAL OFF CACHE BOOL "Use manually-written bindings for compilation time benchmark")
 
 add_library(coil
     "include/coil/detail/CallContext.h"
@@ -65,6 +65,6 @@ endif()
 if (${COIL_COMPILATION_TESTS})
     add_subdirectory(tests/compilation)
 endif()
-if(${COIL_COMPILE_TIME})
+if(${COIL_COMPILATION_TIME_BENCHMARK})
     add_subdirectory(tests/compilation_performance)
 endif()
