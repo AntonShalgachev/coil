@@ -28,7 +28,7 @@ namespace
     }
 
     template<typename RandomEngine>
-    std::string generateRandomString(RandomEngine& engine, std::size_t generation, bool allowEmpty, bool allowNumber)
+    std::string generateRandomString(RandomEngine& engine, std::size_t generation, bool allowEmpty, bool allowNumber, bool allowSpaces)
     {
         std::bernoulli_distribution isEmptyDist{allowEmpty ? 0.5f : 0.0f};
 
@@ -36,11 +36,14 @@ namespace
             return "";
 
         std::bernoulli_distribution isNumberDist{allowNumber ? 0.5f : 0.0f};
+        std::bernoulli_distribution containsSpacesDist{allowSpaces ? 0.5f : 0.0f};
 
         if (isNumberDist(engine))
             return "3.14";
 
-        return std::string("str") + std::to_string(generation);
+        std::string base = containsSpacesDist(engine) ? "str with spaces" : "str";
+
+        return std::move(base) + std::to_string(generation);
     }
 
     template<typename RandomEngine>
@@ -55,7 +58,7 @@ namespace
     template<typename RandomEngine>
     coil::ExecutionInput generateRandomInput(RandomEngine& engine)
     {
-        static std::vector<std::string> storage;
+        static std::list<std::string> storage;
         std::size_t generation = 0;
 
         coil::ExecutionInput input;
@@ -71,37 +74,34 @@ namespace
         std::size_t compoundArgsCount = compoundArgsCountDist(engine);
 
         storage.clear();
-        std::size_t const maxStorageSize = 1 + argsMax + argsMax * (2 + subargsMax);
-        storage.reserve(maxStorageSize);
 
         auto addToStorage = [](std::string str) {
-            // to prevent storage reallocation
-            if (storage.size() >= storage.capacity())
-                throw std::runtime_error("generateRandomInput: Maximum allocations reached");
-
             storage.push_back(std::move(str));
             return std::string_view{storage.back()};
         };
 
-        auto generateNewString = [&addToStorage, &engine, &generation](bool allowEmpty, bool allowNumber) { return addToStorage(generateRandomString(engine, generation++, allowEmpty, allowNumber)); };
+        auto generateNewString = [&addToStorage, &engine, &generation](bool allowEmpty, bool allowNumber, bool allowSpaces) { return addToStorage(generateRandomString(engine, generation++, allowEmpty, allowNumber, allowSpaces)); };
 
-        auto generateCompoundArgs = [&generateNewString](std::size_t count) {
+        auto generateIdentifierString = [&generateNewString]() { return generateNewString(false, false, false); };
+        auto generateValueString = [&generateNewString]() { return generateNewString(true, true, true); };
+
+        auto generateCompoundArgs = [&generateValueString](std::size_t count) {
             std::vector<std::string_view> subvalues;
 
             for (std::size_t i = 0; i < count; i++)
-                subvalues.push_back(generateNewString(false, true));
+                subvalues.push_back(generateValueString());
 
             return coil::ArgValue(std::move(subvalues));
         };
 
-        input.name = generateNewString(false, false);
+        input.name = generateIdentifierString();
 
         for (std::size_t i = 0; i < argsCount; i++)
-            input.arguments.push_back(createValue(generateNewString(false, true)));
+            input.arguments.push_back(generateCompoundArgs(compoundArgsCount));
 
         for (std::size_t i = 0; i < namedArgsCount; i++)
         {
-            auto key = generateNewString(false, false);
+            auto key = generateIdentifierString();
             auto value = generateCompoundArgs(compoundArgsCount);
             input.namedArguments.emplace_back(key, value);
         }
@@ -116,15 +116,22 @@ namespace
 
         auto randomSpaces = [&ss, &engine]() { addRandomSpaces(ss, engine); };
 
-        auto valueToStream = [&ss, &randomSpaces](coil::ArgValue const& value) {
-            std::size_t count = value.subvalues.size();
+        auto subvalueToStream = [&ss](std::string_view subvalue) {
+            bool hasSpaces = subvalue.find(' ') != std::string_view::npos;
+            bool isEmpty = subvalue.empty();
+            if (hasSpaces || isEmpty)
+                ss << '"' << subvalue << '"';
+            else
+                ss << subvalue;
+        };
 
-            if (count == 0)
+        auto valueToStream = [&ss, &randomSpaces, &subvalueToStream](coil::ArgValue const& value) {
+            if (value.subvalues.empty())
                 return;
 
-            if (count == 1)
+            if (value.subvalues.size() == 1)
             {
-                ss << value.subvalues[0];
+                subvalueToStream(value.subvalues[0]);
                 return;
             }
 
@@ -133,7 +140,8 @@ namespace
 
             for (std::string_view subvalue : value.subvalues)
             {
-                ss << subvalue << ' ';
+                subvalueToStream(subvalue);
+                ss << ' ';
                 randomSpaces();
             }
 
@@ -347,6 +355,28 @@ TEST(LexerTests, TestShortFloatNamedArgs)
     EXPECT_EQ(lexer("foo.bar.func arg1=.14 arg2=arg arg3=.0"), createInput("foo.bar.func", args(), {{"arg1", createValue(".14")}, {"arg2", createValue("arg")}, {"arg3", createValue(".0")}}));
 }
 
+TEST(LexerTests, TestStrings)
+{
+    coil::DefaultLexer lexer;
+    EXPECT_EQ(lexer("foo.bar.func foo 'bar' baz"), createInput("foo.bar.func", args("foo", "bar", "baz"), {}));
+    EXPECT_EQ(lexer("foo.bar.func foo ' bar ' baz"), createInput("foo.bar.func", args("foo", " bar ", "baz"), {}));
+    EXPECT_EQ(lexer("foo.bar.func 'foo bar baz'"), createInput("foo.bar.func", args("foo bar baz"), {}));
+    EXPECT_EQ(lexer("foo.bar.func 'foo,bar,baz'"), createInput("foo.bar.func", args("foo,bar,baz"), {}));
+    EXPECT_EQ(lexer("foo.bar.func 'foo;bar;baz'"), createInput("foo.bar.func", args("foo;bar;baz"), {}));
+    EXPECT_EQ(lexer("foo.bar.func 'foo|bar|baz'"), createInput("foo.bar.func", args("foo|bar|baz"), {}));
+    EXPECT_EQ(lexer("foo.bar.func 'foo=bar=baz'"), createInput("foo.bar.func", args("foo=bar=baz"), {}));
+    EXPECT_EQ(lexer("foo.bar.func '(foo bar baz)'"), createInput("foo.bar.func", args("(foo bar baz)"), {}));
+
+    EXPECT_EQ(lexer("foo.bar.func foo \"bar\" baz"), createInput("foo.bar.func", args("foo", "bar", "baz"), {}));
+    EXPECT_EQ(lexer("foo.bar.func foo \" bar \" baz"), createInput("foo.bar.func", args("foo", " bar ", "baz"), {}));
+    EXPECT_EQ(lexer("foo.bar.func \"foo bar baz\""), createInput("foo.bar.func", args("foo bar baz"), {}));
+    EXPECT_EQ(lexer("foo.bar.func \"foo,bar,baz\""), createInput("foo.bar.func", args("foo,bar,baz"), {}));
+    EXPECT_EQ(lexer("foo.bar.func \"foo;bar;baz\""), createInput("foo.bar.func", args("foo;bar;baz"), {}));
+    EXPECT_EQ(lexer("foo.bar.func \"foo|bar|baz\""), createInput("foo.bar.func", args("foo|bar|baz"), {}));
+    EXPECT_EQ(lexer("foo.bar.func \"foo=bar=baz\""), createInput("foo.bar.func", args("foo=bar=baz"), {}));
+    EXPECT_EQ(lexer("foo.bar.func \"(foo bar baz)\""), createInput("foo.bar.func", args("(foo bar baz)"), {}));
+}
+
 TEST(LexerTests, TestErrors)
 {
     coil::DefaultLexer lexer;
@@ -366,16 +396,26 @@ TEST(LexerTests, TestCompoundArgsErrors)
 
     EXPECT_EQ(lexer("func (arg,arg"), coil::makeUnexpected("Token '(' doesn't have an opening/closing token"));
     EXPECT_EQ(lexer("func arg,arg)"), coil::makeUnexpected("Token ')' doesn't have an opening/closing token"));
-    EXPECT_EQ(lexer("func arg,arg\""), coil::makeUnexpected("Token '\"' doesn't have an opening/closing token"));
-    EXPECT_EQ(lexer("func \"arg,arg"), coil::makeUnexpected("Token '\"' doesn't have an opening/closing token"));
 
     EXPECT_EQ(lexer("func arg(ument"), coil::makeUnexpected("Token '(' doesn't have an opening/closing token"));
     EXPECT_EQ(lexer("func argum)ent"), coil::makeUnexpected("Token ')' doesn't have an opening/closing token"));
-    EXPECT_EQ(lexer("func argum\"ent"), coil::makeUnexpected("Token '\"' doesn't have an opening/closing token"));
 
     EXPECT_EQ(lexer("func ("), coil::makeUnexpected("Token '(' doesn't have an opening/closing token"));
     EXPECT_EQ(lexer("func )"), coil::makeUnexpected("Token ')' doesn't have an opening/closing token"));
-    EXPECT_EQ(lexer("func \""), coil::makeUnexpected("Token '\"' doesn't have an opening/closing token"));
+}
+
+TEST(LexerTests, TestStringsErrors)
+{
+    coil::DefaultLexer lexer;
+
+    EXPECT_EQ(lexer("func arg,arg\""), coil::makeUnexpected("Token '\"' doesn't have a corresponding opening/closing quote"));
+    EXPECT_EQ(lexer("func arg arg\""), coil::makeUnexpected("Token '\"' doesn't have a corresponding opening/closing quote"));
+    EXPECT_EQ(lexer("func \"arg,arg"), coil::makeUnexpected("Token '\"' doesn't have a corresponding opening/closing quote"));
+    EXPECT_EQ(lexer("func \"arg arg"), coil::makeUnexpected("Token '\"' doesn't have a corresponding opening/closing quote"));
+
+    EXPECT_EQ(lexer("func argum\"ent"), coil::makeUnexpected("Token '\"' doesn't have a corresponding opening/closing quote"));
+
+    EXPECT_EQ(lexer("func \""), coil::makeUnexpected("Token '\"' doesn't have a corresponding opening/closing quote"));
 }
 
 TEST(LexerTests, TestGenerated)
@@ -384,11 +424,16 @@ TEST(LexerTests, TestGenerated)
     std::size_t const generationsCount = 10000;
     coil::DefaultLexer lexer;
 
+    auto test = [](std::string const&, auto actualInput, coil::ExecutionInput const& expectedInput)
+    {
+        return actualInput == expectedInput;
+    };
+
     for (std::size_t i = 0; i < generationsCount; i++)
     {
         auto input = generateRandomInput(engine);
         auto str = generateRandomInputString(engine, input);
 
-        EXPECT_EQ(lexer(str), input);
+        EXPECT_PRED3(test, str, lexer(str), input);
     }
 }

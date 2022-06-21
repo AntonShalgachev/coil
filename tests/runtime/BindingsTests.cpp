@@ -303,6 +303,25 @@ TEST(BindingsTests, TestVoidFunctionCall)
     EXPECT_FALSE(result.returnValue.has_value());
 }
 
+TEST(BindingsTests, TestFunctionWithStringArgument)
+{
+    coil::Bindings bindings;
+    bindings["func"] = [](std::string arg) { return arg; };
+
+    {
+        auto result = bindings.execute("func foo");
+        EXPECT_EQ(result.errors.size(), 0u);
+        ASSERT_TRUE(result.returnValue.has_value());
+        EXPECT_EQ(*result.returnValue, "foo");
+    }
+    {
+        auto result = bindings.execute("func \"foo bar baz\"");
+        EXPECT_EQ(result.errors.size(), 0u);
+        ASSERT_TRUE(result.returnValue.has_value());
+        EXPECT_EQ(*result.returnValue, "foo bar baz");
+    }
+}
+
 TEST(BindingsTests, TestVariableRead)
 {
     int variable = 42;
