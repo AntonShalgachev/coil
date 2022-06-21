@@ -352,8 +352,8 @@ TEST(LexerTests, TestErrors)
     coil::DefaultLexer lexer;
 
     EXPECT_EQ(lexer("=val"), coil::makeUnexpected("Unexpected token '=' at the beginning of the expression"));
-    EXPECT_EQ(lexer("command=arg"), coil::makeUnexpected("Unexpected token '=': no named for the named argument is provided"));
-    EXPECT_EQ(lexer("command arg=val=foo"), coil::makeUnexpected("Unexpected token '=': no named for the named argument is provided"));
+    EXPECT_EQ(lexer("command=arg"), coil::makeUnexpected("Unexpected token '=': no name for the named argument is provided"));
+    EXPECT_EQ(lexer("command arg=val=foo"), coil::makeUnexpected("Unexpected token '=': no name for the named argument is provided"));
     EXPECT_EQ(lexer("command arg="), coil::makeUnexpected("Expected an argument value, found end of string"));
     EXPECT_EQ(lexer("command arg=="), coil::makeUnexpected("Expected an argument value, found '='"));
     EXPECT_EQ(lexer("command arg==value"), coil::makeUnexpected("Expected an argument value, found '='"));

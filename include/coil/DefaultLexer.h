@@ -236,7 +236,7 @@ namespace coil
                 {
                 case TokenType::Assignment:
                     if (!tokens.primaryTokenIndex)
-                        return makeUnexpected("Unexpected token '=': no named for the named argument is provided");
+                        return makeUnexpected("Unexpected token '=': no name for the named argument is provided");
                     if (nextTokenType == StringTokenType::SecondaryToken)
                         return makeUnexpected("Expected an argument value, found '='");
                     nextTokenType = StringTokenType::SecondaryToken;

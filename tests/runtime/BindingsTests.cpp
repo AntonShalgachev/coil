@@ -625,7 +625,7 @@ TEST(BindingsTests, TestSyntaxError)
     auto result = bindings.execute("func = arg");
 
     EXPECT_EQ(result.errors.size(), 1u);
-    EXPECT_PRED2(containsError, result.errors, "Syntax error: Unexpected token '=': no named for the named argument is provided");
+    EXPECT_PRED2(containsError, result.errors, "Syntax error: Unexpected token '=': no name for the named argument is provided");
 }
 
 TEST(BindingsTests, TestStdException)
