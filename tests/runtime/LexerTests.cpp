@@ -80,7 +80,9 @@ namespace
             return std::string_view{storage.back()};
         };
 
-        auto generateNewString = [&addToStorage, &engine, &generation](bool allowEmpty, bool allowNumber, bool allowSpaces) { return addToStorage(generateRandomString(engine, generation++, allowEmpty, allowNumber, allowSpaces)); };
+        auto generateNewString = [&addToStorage, &engine, &generation](bool allowEmpty, bool allowNumber, bool allowSpaces) {
+            return addToStorage(generateRandomString(engine, generation++, allowEmpty, allowNumber, allowSpaces));
+        };
 
         auto generateIdentifierString = [&generateNewString]() { return generateNewString(false, false, false); };
         auto generateValueString = [&generateNewString]() { return generateNewString(true, true, true); };
@@ -424,10 +426,7 @@ TEST(LexerTests, TestGenerated)
     std::size_t const generationsCount = 10000;
     coil::DefaultLexer lexer;
 
-    auto test = [](std::string const&, auto actualInput, coil::ExecutionInput const& expectedInput)
-    {
-        return actualInput == expectedInput;
-    };
+    auto test = [](std::string const&, auto actualInput, coil::ExecutionInput const& expectedInput) { return actualInput == expectedInput; };
 
     for (std::size_t i = 0; i < generationsCount; i++)
     {
