@@ -34,6 +34,7 @@ namespace coil
         enum class CharType
         {
             Group,
+            Quote,
             Space,
             String,
             Assignment,
@@ -42,6 +43,7 @@ namespace coil
         enum class TokenType
         {
             String,
+            GroupString,
             Assignment,
         };
 
@@ -61,8 +63,15 @@ namespace coil
         static bool isGroupChar(unsigned char c)
         {
             // TODO make configurable?
-            static std::vector<unsigned char> chars = {'(', ')', '"'};
+            static std::vector<unsigned char> chars = {'(', ')'};
             return std::find(chars.begin(), chars.end(), c) != chars.end();
+        }
+
+        static bool isQuote(unsigned char c)
+        {
+            // TODO make configurable?
+            static std::vector<unsigned char> quotes = {'\'', '"'};
+            return std::find(quotes.begin(), quotes.end(), c) != quotes.end();
         }
 
         static bool isGroupSeparator(unsigned char c)
@@ -84,6 +93,8 @@ namespace coil
                 return CharType::Space;
             if (isGroupChar(c))
                 return CharType::Group;
+            if (isQuote(c))
+                return CharType::Quote;
 
             return CharType::String;
         }
@@ -116,18 +127,34 @@ namespace coil
                     break;
 
                 std::size_t stringBegin = i;
-                while ((i < str.size()) && !isGroupSeparator(str[i]))
+                bool inQuotes = false;
+                auto shouldSkipChar = [](unsigned char c, bool inQuotes) { return inQuotes || !isGroupSeparator(c); };
+                while ((i < str.size()) && shouldSkipChar(str[i], inQuotes))
+                {
+                    if (isQuote(str[i]))
+                        inQuotes = !inQuotes;
                     i++;
+                }
 
-                result.push_back(str.substr(stringBegin, i - stringBegin));
+                std::size_t stringEnd = i;
+                if (isQuote(str[stringBegin]) && isQuote(str[stringEnd - 1]))
+                {
+                    stringBegin++;
+                    stringEnd--;
+                }
+
+                result.push_back(str.substr(stringBegin, stringEnd - stringBegin));
             }
 
             return result;
         }
 
-        ArgValue createArgValue(std::string_view input) const
+        ArgValue createArgValue(Token const& token) const
         {
-            return ArgValue{splitGroup(input)};
+            if (token.type == TokenType::GroupString)
+                return ArgValue{splitGroup(token.value)};
+
+            return ArgValue{{token.value}};
         }
 
         coil::Expected<void, std::string> tokenize(std::string_view str) const
@@ -141,19 +168,35 @@ namespace coil
                     break;
 
                 std::size_t tokenBegin = i;
-                CharType charType = getCharType(str[i]);
-                switch (charType)
+                switch (getCharType(str[i]))
                 {
                 case CharType::String:
+                {
                     i++;
+                    TokenType type = TokenType::String;
                     while ((i < str.size()) && getCharType(str[i]) == CharType::String)
+                    {
+                        if (isGroupSeparator(str[i]))
+                            type = TokenType::GroupString;
                         i++;
+                    }
 
-                    m_tokens.emplace_back(TokenType::String, str.substr(tokenBegin, i - tokenBegin));
+                    m_tokens.emplace_back(type, str.substr(tokenBegin, i - tokenBegin));
                     i--; // return to the last 'String' char
                     break;
+                }
                 case CharType::Assignment:
                     m_tokens.emplace_back(TokenType::Assignment, str.substr(i, 1));
+                    break;
+                case CharType::Quote:
+                    i++;
+                    while ((i < str.size()) && getCharType(str[i]) != CharType::Quote)
+                        i++;
+
+                    if (i >= str.size())
+                        return makeUnexpected(formatString("Token '%c' doesn't have a corresponding opening/closing quote", str[tokenBegin]));
+
+                    m_tokens.emplace_back(TokenType::String, str.substr(tokenBegin + 1, i - tokenBegin - 1));
                     break;
                 case CharType::Group:
                     i++;
@@ -161,9 +204,9 @@ namespace coil
                         i++;
 
                     if (i >= str.size())
-                        return makeUnexpected(formatString("Token '%c' doesn't have an opening/closing token", str[tokenBegin]));
+                        return makeUnexpected(formatString("Token '%c' doesn't have an opening/closing token", str[tokenBegin])); // TODO "a corresponding opening/closing token"
 
-                    m_tokens.emplace_back(TokenType::String, str.substr(tokenBegin + 1, i - tokenBegin - 1));
+                    m_tokens.emplace_back(TokenType::GroupString, str.substr(tokenBegin + 1, i - tokenBegin - 1));
                     break;
                 default:
                     return makeUnexpected("Internal error"); // @NOCOVERAGE
@@ -214,15 +257,15 @@ namespace coil
                 if (!tokens.primaryTokenIndex)
                     return;
 
-                std::string_view primaryValue = m_tokens[*tokens.primaryTokenIndex].value;
+                Token const& primaryToken = m_tokens[*tokens.primaryTokenIndex];
                 if (tokens.secondaryTokenIndex)
                 {
-                    std::string_view secondaryValue = m_tokens[*tokens.secondaryTokenIndex].value;
-                    m_input.namedArguments.emplace_back(primaryValue, createArgValue(secondaryValue));
+                    Token const& secondaryToken = m_tokens[*tokens.secondaryTokenIndex];
+                    m_input.namedArguments.emplace_back(primaryToken.value, createArgValue(secondaryToken));
                 }
                 else
                 {
-                    m_input.arguments.push_back(createArgValue(primaryValue));
+                    m_input.arguments.push_back(createArgValue(primaryToken));
                 }
 
                 tokens.reset();
@@ -242,6 +285,7 @@ namespace coil
                     nextTokenType = StringTokenType::SecondaryToken;
                     break;
                 case TokenType::String:
+                case TokenType::GroupString:
                     switch (nextTokenType)
                     {
                     case StringTokenType::PrimaryToken:
