@@ -368,6 +368,7 @@ TEST(LexerTests, TestStrings)
     EXPECT_EQ(lexer("foo.bar.func 'foo|bar|baz'"), createInput("foo.bar.func", args("foo|bar|baz"), {}));
     EXPECT_EQ(lexer("foo.bar.func 'foo=bar=baz'"), createInput("foo.bar.func", args("foo=bar=baz"), {}));
     EXPECT_EQ(lexer("foo.bar.func '(foo bar baz)'"), createInput("foo.bar.func", args("(foo bar baz)"), {}));
+    EXPECT_EQ(lexer("foo.bar.func ('foo   bar' baz)"), createInput("foo.bar.func", {coil::ArgValue{{"foo   bar", "baz"}}}, {}));
 
     EXPECT_EQ(lexer("foo.bar.func foo \"bar\" baz"), createInput("foo.bar.func", args("foo", "bar", "baz"), {}));
     EXPECT_EQ(lexer("foo.bar.func foo \" bar \" baz"), createInput("foo.bar.func", args("foo", " bar ", "baz"), {}));
@@ -377,6 +378,7 @@ TEST(LexerTests, TestStrings)
     EXPECT_EQ(lexer("foo.bar.func \"foo|bar|baz\""), createInput("foo.bar.func", args("foo|bar|baz"), {}));
     EXPECT_EQ(lexer("foo.bar.func \"foo=bar=baz\""), createInput("foo.bar.func", args("foo=bar=baz"), {}));
     EXPECT_EQ(lexer("foo.bar.func \"(foo bar baz)\""), createInput("foo.bar.func", args("(foo bar baz)"), {}));
+    EXPECT_EQ(lexer("foo.bar.func (\"foo   bar\" baz)"), createInput("foo.bar.func", {coil::ArgValue{{"foo   bar", "baz"}}}, {}));
 }
 
 TEST(LexerTests, TestErrors)
