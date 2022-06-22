@@ -91,6 +91,10 @@ void BasicExample::run()
     common::executeCommand(bindings, "print_quoted coil");
     common::executeCommand(bindings, "print_repeated hi 10");
 
+    common::printSectionHeader("Strings with spaces can be wrapped in single or double quotes:");
+    common::executeCommand(bindings, "print_quoted 'I have spaces'");
+    common::executeCommand(bindings, "print_repeated \"I also have spaces \" 5");
+
     common::printSectionHeader("Boolean arguments can be passed in any format:");
     common::executeCommand(bindings, "invert true");
     common::executeCommand(bindings, "invert True");
