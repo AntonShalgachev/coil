@@ -2,6 +2,7 @@
 
 #include "gtest/gtest.h"
 
+#include <list>
 #include <random>
 
 namespace
