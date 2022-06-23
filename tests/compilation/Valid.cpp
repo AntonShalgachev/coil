@@ -61,6 +61,10 @@ int main()
     cmd["foo.bar"] = &funcWithType<std::string_view>;
     cmd["foo.bar"] = &funcWithType<std::optional<float>>;
 
+    // Pointers
+    cmd["foo.bar"] = []() -> Object* { return nullptr; };
+    cmd["foo.bar"] = []() -> Object const* { return nullptr; };
+
     // Variables
     cmd["foo.bar"] = coil::variable(&variable);
     cmd["foo.bar"] = coil::variable(&object.memberVariable);
