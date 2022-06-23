@@ -866,3 +866,34 @@ TEST(BindingsTests, TestGetCommandNames)
 
     EXPECT_EQ(bindings.commands(), (std::vector<std::string_view>{}));
 }
+
+TEST(BindingsTests, TestPointers)
+{
+    coil::Bindings bindings;
+
+    CompoundType value{6, 28};
+
+    bindings["func_non_const"] = [&value](bool null) -> CompoundType* { return null ? nullptr : &value; };
+    bindings["func_const"] = [&value](bool null) -> CompoundType const* { return null ? nullptr : &value; };
+
+    {
+        auto result = bindings.execute("func_non_const false");
+        EXPECT_EQ(result.errors.size(), 0u);
+        EXPECT_EQ(result.returnValue, "CompoundType{6,28}");
+    }
+    {
+        auto result = bindings.execute("func_non_const true");
+        EXPECT_EQ(result.errors.size(), 0u);
+        EXPECT_EQ(result.returnValue, "null");
+    }
+    {
+        auto result = bindings.execute("func_const false");
+        EXPECT_EQ(result.errors.size(), 0u);
+        EXPECT_EQ(result.returnValue, "CompoundType{6,28}");
+    }
+    {
+        auto result = bindings.execute("func_const true");
+        EXPECT_EQ(result.errors.size(), 0u);
+        EXPECT_EQ(result.returnValue, "null");
+    }
+}
