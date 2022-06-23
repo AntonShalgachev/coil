@@ -205,4 +205,21 @@ namespace coil
 
         return result;
     }
+
+    //////////////////////////////////////
+
+    template<typename T>
+    struct TypeSerializer<T*>
+    {
+        static std::string toString(T* const& value);
+    };
+
+    template<typename T>
+    std::string coil::TypeSerializer<T*>::toString(T* const& value)
+    {
+        if (!value)
+            return "null";
+
+        return TypeSerializer<std::decay_t<T>>::toString(*value);
+    }
 }
