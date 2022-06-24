@@ -10,6 +10,8 @@
 #include <ostream>
 #include <string>
 
+// TODO rename this file to "EnumTypeSerializer"
+
 namespace coil
 {
     // It's up to a user to implement TypeSerializer for enums
@@ -26,9 +28,9 @@ namespace coil
 
             auto value = input.subvalues[0];
 
-            // Allow 0 for the flag enums which don't define a "None" flag
-            if (value == "0")
-                return static_cast<E>(0);
+            // You can also remove this block so that enums can only be deserialized using their names
+            if (auto integerValue = TypeSerializer<std::underlying_type_t<E>>::fromString(input))
+                return static_cast<E>(*integerValue);
 
             // This makes enum names case-insensitive
             auto pred = [](unsigned char a, unsigned char b) { return std::tolower(a) == std::tolower(b); };
