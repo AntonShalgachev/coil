@@ -60,6 +60,15 @@ int main()
     cmd["foo.bar"] = &funcWithType<std::string>;
     cmd["foo.bar"] = &funcWithType<std::string_view>;
     cmd["foo.bar"] = &funcWithType<std::optional<float>>;
+    cmd["foo.bar"] = &funcWithType<Object>;
+
+    // Pointers
+    cmd["foo.bar"] = []() -> int* { return nullptr; };
+    cmd["foo.bar"] = []() -> int const* { return nullptr; };
+    cmd["foo.bar"] = []() -> ScopedEnum* { return nullptr; };
+    cmd["foo.bar"] = []() -> ScopedEnum const* { return nullptr; };
+    cmd["foo.bar"] = []() -> Object* { return nullptr; };
+    cmd["foo.bar"] = []() -> Object const* { return nullptr; };
 
     // Variables
     cmd["foo.bar"] = coil::variable(&variable);
