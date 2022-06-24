@@ -46,7 +46,7 @@ namespace coil
 
         static std::string toString(E const& value)
         {
-            return std::string{ magic_enum::enum_name(value) };
+            return std::string{magic_enum::enum_name(value)};
         }
     };
 }
