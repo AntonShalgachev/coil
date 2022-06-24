@@ -16,4 +16,11 @@ namespace coil
         (functors.push_back(AnyFunctor{typename detail::FuncTraits<Funcs>::FunctionWrapperType{std::move(funcs)}}), ...);
         return functors;
     }
+
+    // TODO add a similar function for the member functions
+    template<typename Signature>
+    auto resolve(Signature* func)
+    {
+        return func;
+    }
 }
