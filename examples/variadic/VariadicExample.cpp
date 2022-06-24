@@ -2,19 +2,8 @@
 
 #include "common/ExamplesCommon.h"
 
-#include <iostream>
-#include <numeric>
-#include <vector>
-
-// TODO probably irrelevant now, move to other examples
-
 namespace
 {
-    float sumAll(std::vector<float> const& numbers)
-    {
-        return std::accumulate(numbers.begin(), numbers.end(), 0.0f);
-    }
-
     struct Entity
     {
         std::uint64_t id;
@@ -71,17 +60,9 @@ void VariadicExample::run()
 {
     coil::Bindings bindings;
 
-    bindings["sum_all"] = &sumAll;
-
     bindings["entities.rename"] = &renameEntity;
     bindings["entities.list"] = &printEntities;
     bindings["entities.add"] = &addEntities;
-
-    // TODO move to another example ("CompoundExample")
-    common::printSectionHeader("std::vector accepts any amount of arguments:");
-    common::executeCommand(bindings, "sum_all ()");
-    common::executeCommand(bindings, "sum_all (1)");
-    common::executeCommand(bindings, "sum_all (1 2 3 5 8)");
 
     common::printSectionHeader("AnyArgView can be used with any type:");
     common::executeCommand(bindings, "entities.add 0 entity0");
