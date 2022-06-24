@@ -21,17 +21,23 @@ namespace
         return "func3";
     }
 
-    //     struct Object
-    //     {
-    //         std::string func1(std::string const&, float, bool)
-    //         {
-    //             return "Object::func1";
-    // 		}
-    // 		std::string func2(std::string const&, float)
-    // 		{
-    // 			return "Object::func2";
-    // 		}
-    //     };
+    class Object
+    {
+    public:
+        Object(std::string name) : m_name(std::move(name)) {}
+
+        std::string func1(std::string const&, float)
+        {
+            return "Object::func1 from " + m_name;
+        }
+        std::string func2(std::string const&, float, bool)
+        {
+            return "Object::func2 from " + m_name;
+        }
+
+    private:
+        std::string m_name;
+    };
 
     void createExplosion(coil::Context context, std::string_view id)
     {
@@ -48,12 +54,11 @@ void OverloadingExample::run()
 {
     coil::Bindings bindings;
 
-    //     Object object;
-
-    auto lambda1 = []() { return "lambda1"; };
+    Object object1{"object_one"};
+    Object object2{"object_two"};
 
     bindings["func"] = coil::overloaded(&func1, &func2, &func3);
-    bindings["mixed_func"] = coil::overloaded(std::move(lambda1), &func2 /*, coil::bind(&Object::func, &object)*/); // TODO fix
+    bindings["mixed_func"] = coil::overloaded([]() { return "lambda1"; }, &func2, coil::bind(&Object::func1, &object1), coil::bind(&Object::func2, &object2));
     bindings["explosions.create"] = coil::overloaded(
         // use coil::resolve to get a pointer to the specific overloaded function
         coil::resolve<void(coil::Context, std::string_view)>(createExplosion),
@@ -65,10 +70,14 @@ void OverloadingExample::run()
     common::executeCommand(bindings, "func 42 3.14");
     common::executeCommand(bindings, "mixed_func");
     common::executeCommand(bindings, "mixed_func 42");
+    common::executeCommand(bindings, "mixed_func foo 3.14");
+    common::executeCommand(bindings, "mixed_func foo 3.14 true");
+
+    common::printSectionHeader("An overloaded C++ function can also be bound by listing all overloads with coil::resolve");
     common::executeCommand(bindings, "explosions.create small");
     common::executeCommand(bindings, "explosions.create small 1.5");
 
     common::printSectionHeader("If there is no overload for given arguments, an error would be returned:");
     common::executeCommand(bindings, "func 1 2 3 4");
-    common::executeCommand(bindings, "mixed_func 42 3.14");
+    common::executeCommand(bindings, "mixed_func 1 2 3 4");
 }
