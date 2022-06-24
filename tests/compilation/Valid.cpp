@@ -75,7 +75,18 @@ int main()
     cmd["foo.bar"] = coil::variable(&object.memberVariable);
 
     // Overloads
-    // TODO add
+    cmd["foo.bar"] = coil::overloaded([](int) {});
+    cmd["foo.bar"] = coil::overloaded(&freeFunc);
+    cmd["foo.bar"] = coil::overloaded(&Object::staticFunc);
+    cmd["foo.bar"] = coil::overloaded(coil::bind(&Object::memberFunc, &object));
+    cmd["foo.bar"] = coil::overloaded([]() {}, [](int) {});
+    cmd["foo.bar"] = coil::overloaded([]() {}, &freeFunc);
+    cmd["foo.bar"] = coil::overloaded([]() {}, &Object::staticFunc);
+    cmd["foo.bar"] = coil::overloaded([]() {}, coil::bind(&Object::memberFunc, &object));
+    cmd["foo.bar"] = coil::overloaded(coil::bind(&Object::get, &object), [](int) {});
+    cmd["foo.bar"] = coil::overloaded(coil::bind(&Object::get, &object), &freeFunc);
+    cmd["foo.bar"] = coil::overloaded(coil::bind(&Object::get, &object), &Object::staticFunc);
+    cmd["foo.bar"] = coil::overloaded(coil::bind(&Object::get, &object), coil::bind(&Object::memberFunc, &object));
 
     // Properties
     cmd["foo.bar"] = coil::property(&getVariable, &setVariable);
