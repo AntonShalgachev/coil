@@ -157,17 +157,19 @@ void CompoundExample::run()
     common::executeCommand(bindings, "pivot");
     common::executeCommand(bindings, "pivot (1 1)");
 
-    common::printSectionHeader("You can pass compound arguments in several ways:");
+    common::printSectionHeader("You can pass compound arguments in several ways (the last one is useful for flags):");
     common::executeCommand(bindings, "pivot (1.5, 1.5)");
     common::executeCommand(bindings, "pivot (1.5 , 1.5)");
     common::executeCommand(bindings, "pivot (1.5 ; 1.5)");
     common::executeCommand(bindings, "pivot (1.5 1.5)");
     common::executeCommand(bindings, "pivot (1.5,1.5)");
     common::executeCommand(bindings, "pivot (1.5;1.5)");
+    common::executeCommand(bindings, "pivot (1.5 | 1.5)");
 
     common::printSectionHeader("You can omit the parenthesis as long as you don't have spaces between the subvalues:");
     common::executeCommand(bindings, "pivot 1.5,1.5");
-    common::executeCommand(bindings, "pivot 1.5;1.5");
+	common::executeCommand(bindings, "pivot 1.5;1.5");
+	common::executeCommand(bindings, "pivot 1.5|1.5");
 
     common::printSectionHeader("You will get an error if the number of subvalues are mismatched");
     common::executeCommand(bindings, "pivot 1 1");
