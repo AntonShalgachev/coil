@@ -145,40 +145,40 @@ namespace
 
 namespace coil
 {
-	template<typename E>
-	struct TypeSerializer<E, std::enable_if_t<std::is_enum_v<E>>>
-	{
-		static Expected<E, std::string> fromString(ArgValue const& input)
-		{
-			return E{};
-		}
+    template<typename E>
+    struct TypeSerializer<E, std::enable_if_t<std::is_enum_v<E>>>
+    {
+        static Expected<E, std::string> fromString(ArgValue const& input)
+        {
+            return E{};
+        }
 
-		static std::string toString(E const& value)
-		{
-			return {};
-		}
-	};
+        static std::string toString(E const& value)
+        {
+            return {};
+        }
+    };
 
-	template<>
-	struct TypeSerializer<Object>
-	{
-		static Expected<Object, std::string> fromString(ArgValue const& input)
-		{
-			return Object{};
-		}
+    template<>
+    struct TypeSerializer<Object>
+    {
+        static Expected<Object, std::string> fromString(ArgValue const& input)
+        {
+            return Object{};
+        }
 
-		static std::string toString(Object const& value)
-		{
-			return {};
-		}
-	};
+        static std::string toString(Object const& value)
+        {
+            return {};
+        }
+    };
 
-	template<typename T>
-	struct TypeName<T>
-	{
-		static std::string_view name()
-		{
-			return "";
-		}
-	};
+    template<typename T>
+    struct TypeName<T>
+    {
+        static std::string_view name()
+        {
+            return "";
+        }
+    };
 }
