@@ -43,6 +43,11 @@ namespace
         return a + b;
     }
 
+    std::string plainFunction(int arg)
+    {
+        return "I am a function: " + std::to_string(arg);
+    }
+
     class Object
     {
     public:
@@ -61,6 +66,14 @@ namespace
     private:
         int m_multiplier = 0;
     };
+
+    struct CustomFunctor
+    {
+        std::string operator()(int arg)
+        {
+            return "I am a custom functor: " + std::to_string(arg);
+        }
+    };
 }
 
 void BasicExample::run()
@@ -75,11 +88,16 @@ void BasicExample::run()
     bindings["add"] = &add;
     bindings["concat"] = &concat;
 
-    Object scaler{2};
+    bindings["plain_function"] = &plainFunction;
+    bindings["lambda"] = [](int arg) { return "I am a lambda: " + std::to_string(arg); };
+    bindings["custom_functor"] = CustomFunctor{};
+    std::function<std::string(int)> stdFunction = [](int arg) { return "I am a std::function:" + std::to_string(arg); };
+    bindings["std_function"] = std::move(stdFunction);
 
-    bindings["scaler"] = [&scaler](coil::Context context) { context.out() << "This object scales by " << scaler.getData(); };
-    bindings["scaler.scale"] = coil::bind(&Object::scale, &scaler);
-    bindings["foo.bar.baz.qux"] = []() { return 42; };
+    Object scaler1{2};
+    Object scaler2{10};
+    bindings["scaler1.scale"] = coil::bind(&Object::scale, &scaler1);
+    bindings["scaler2.scale"] = coil::bind(&Object::scale, &scaler2);
 
     common::printSectionHeader("Basic function without any arguments:");
     common::executeCommand(bindings, "hello");
@@ -101,19 +119,24 @@ void BasicExample::run()
     common::executeCommand(bindings, "invert 0");
     common::executeCommand(bindings, "invert FALSE");
 
-    common::printSectionHeader("Functions with return values:");
+    common::printSectionHeader("Return values of functions are returned as strings:");
     common::executeCommand(bindings, "add 3.14 2.72");
     common::executeCommand(bindings, "concat abc 123");
 
+    common::printSectionHeader("Any callable object can be bound:");
+    common::executeCommand(bindings, "plain_function 101");
+    common::executeCommand(bindings, "lambda 102");
+    common::executeCommand(bindings, "custom_functor 103");
+    common::executeCommand(bindings, "std_function 104");
+
+    common::printSectionHeader("Use coil::bind to bind member functions:");
+    common::executeCommand(bindings, "scaler1.scale 10");
+    common::executeCommand(bindings, "scaler2.scale 10");
+
     common::printSectionHeader("coil catches wrong number of arguments:");
-    common::executeCommand(bindings, "function 1 2");
+    common::executeCommand(bindings, "hello 1 2");
     common::executeCommand(bindings, "add 3.14");
 
     common::printSectionHeader("coil catches incompatible types:");
     common::executeCommand(bindings, "add one two");
-
-    common::printSectionHeader("You can nest commands as much as you like");
-    common::executeCommand(bindings, "scaler");
-    common::executeCommand(bindings, "scaler.scale 10");
-    common::executeCommand(bindings, "foo.bar.baz.qux");
 }
