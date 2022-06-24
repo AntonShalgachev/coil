@@ -6,6 +6,7 @@
 #include "compound/CompoundExample.h"
 #include "enums/EnumsExample.h"
 #include "errors/ErrorsExample.h"
+#include "flags/FlagsExample.h"
 #include "named/NamedExample.h"
 #include "usertypes/UsertypesExample.h"
 #include "variables/VariablesExample.h"
@@ -41,9 +42,11 @@ int main()
         , ErrorsExample
         , UsertypesExample
         , CompoundExample
+        , FlagsExample
 	>;
     // clang-format on
 
+    // TODO sort examples in the order which makes sense
     std::array<std::string_view, std::tuple_size_v<Examples>> names = {
         "basic",
         "variadic",
@@ -53,6 +56,7 @@ int main()
         "errors",
         "usertypes",
         "compound",
+        "flags",
     };
 
     std::array<std::string_view, 4> commands = {
