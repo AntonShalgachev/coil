@@ -168,8 +168,8 @@ void CompoundExample::run()
 
     common::printSectionHeader("You can omit the parenthesis as long as you don't have spaces between the subvalues:");
     common::executeCommand(bindings, "pivot 1.5,1.5");
-	common::executeCommand(bindings, "pivot 1.5;1.5");
-	common::executeCommand(bindings, "pivot 1.5|1.5");
+    common::executeCommand(bindings, "pivot 1.5;1.5");
+    common::executeCommand(bindings, "pivot 1.5|1.5");
 
     common::printSectionHeader("You will get an error if the number of subvalues are mismatched");
     common::executeCommand(bindings, "pivot 1 1");
