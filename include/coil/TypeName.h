@@ -52,3 +52,5 @@ namespace coil
     COIL_CREATE_TYPE_NAME_DECLARATION(std::string);
     COIL_CREATE_TYPE_NAME_DECLARATION(std::string_view);
 }
+
+// TODO undef this macro?
