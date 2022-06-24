@@ -16,6 +16,10 @@ namespace coil
 {
     namespace errors
     {
+        // TODO rename to something more descriptive:
+        // errors::createDeserializationError
+        // errors::createMismatchedSubvaluesError
+
         template<typename T>
         Unexpected<std::string> serializationError(ArgValue const& input, std::string_view details = {})
         {
