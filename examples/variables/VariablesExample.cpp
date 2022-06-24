@@ -32,7 +32,7 @@ void VariablesExample::run()
 
     bindings["time_scale"] = coil::variable(&timeScale);
     bindings["city"] = coil::variable(&city);
-    bindings["flags"] = ::flags(&flags);
+    bindings["flags"] = ::flagsVariable(&flags); // This allows to OR flags when invoking the command; see the description of this function
 
     bindings["print_variables"] = [&timeScale, &city, &flags](coil::Context context) {
         context.out() << "Time scale: " << timeScale << "; city: " << city << "; flags: " << magic_enum::flags::enum_name(flags) << std::endl;

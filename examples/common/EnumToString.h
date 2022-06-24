@@ -44,9 +44,7 @@ namespace coil
 
         static std::string toString(E const& value)
         {
-            // not optimal for non-flags enum types, since magic_enum::flags::enum_name returns std::string,
-            // but other solutions are possible (e.g. using different specialization for non-flag enum types)
-            return magic_enum::flags::enum_name(value);
+            return std::string{ magic_enum::enum_name(value) };
         }
     };
 }
