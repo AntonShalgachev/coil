@@ -124,7 +124,12 @@ TEST(TypeSerializerTests, TestIntToString)
 {
     using namespace std::literals;
 
-    EXPECT_EQ(coil::TypeSerializer<int>::toString(42), "42");
+    int value = 42;
+    EXPECT_EQ(coil::TypeSerializer<int>::toString(value), "42");
+    EXPECT_EQ(coil::TypeSerializer<int*>::toString(&value), "42");
+    EXPECT_EQ(coil::TypeSerializer<int*>::toString(nullptr), "null");
+    EXPECT_EQ(coil::TypeSerializer<int const*>::toString(&value), "42");
+    EXPECT_EQ(coil::TypeSerializer<int const*>::toString(nullptr), "null");
 }
 
 TEST(TypeSerializerTests, TestOutOfRangeInputFromString)
@@ -224,5 +229,10 @@ TEST(TypeSerializerTests, TestCompoundUserTypeFromStringInvalid)
 
 TEST(TypeSerializerTests, TestCompoundUserTypeToString)
 {
-    EXPECT_EQ(coil::TypeSerializer<CompoundType>::toString(CompoundType{6, 28}), "CompoundType{6,28}");
+    CompoundType value{6, 28};
+    EXPECT_EQ(coil::TypeSerializer<CompoundType>::toString(value), "CompoundType{6,28}");
+    EXPECT_EQ(coil::TypeSerializer<CompoundType*>::toString(&value), "CompoundType{6,28}");
+    EXPECT_EQ(coil::TypeSerializer<CompoundType*>::toString(nullptr), "null");
+    EXPECT_EQ(coil::TypeSerializer<CompoundType const*>::toString(&value), "CompoundType{6,28}");
+    EXPECT_EQ(coil::TypeSerializer<CompoundType const*>::toString(nullptr), "null");
 }
