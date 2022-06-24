@@ -12,6 +12,7 @@
 #include "usertypes/UsertypesExample.h"
 #include "variables/VariablesExample.h"
 #include "variadic/VariadicExample.h"
+#include "properties/PropertiesExample.h"
 
 template<typename Example>
 void bindExample(coil::Bindings& bindings, Example& example, std::string_view name)
@@ -45,6 +46,7 @@ int main()
         , CompoundExample
         , FlagsExample
         , OverloadingExample
+        , PropertiesExample
 	>;
     // clang-format on
 
@@ -60,6 +62,7 @@ int main()
         "compound",
         "flags",
         "overloading",
+        "properties",
     };
 
     std::array<std::string_view, 4> commands = {

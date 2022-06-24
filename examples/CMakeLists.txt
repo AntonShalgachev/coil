@@ -29,6 +29,8 @@ add_executable(${PROJECT_NAME}
     "flags/FlagsExample.h"
     "overloading/OverloadingExample.cpp"
     "overloading/OverloadingExample.h"
+    "properties/PropertiesExample.cpp"
+    "properties/PropertiesExample.h"
 )
 
 target_include_directories(${PROJECT_NAME} PRIVATE
