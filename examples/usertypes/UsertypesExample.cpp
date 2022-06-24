@@ -149,17 +149,8 @@ void UsertypesExample::run()
     common::executeCommand(bindings, "particles.last_particle_pos (1.5, 1.5)");
     common::executeCommand(bindings, "particles.last_particle_pos");
 
-    common::printSectionHeader("You can pass compound arguments in several ways:");
-    common::executeCommand(bindings, "particles.last_particle_pos (1.5, 1.5)");
-    common::executeCommand(bindings, "particles.last_particle_pos (1.5 1.5)");
-    common::executeCommand(bindings, "particles.last_particle_pos (1.5,1.5)");
-    common::executeCommand(bindings, "particles.last_particle_pos 1.5,1.5");
-
     common::printSectionHeader("If the input can't be converted to the user type, an error would be returned:");
     common::executeCommand(bindings, "particles.get_name string_id");
-    common::executeCommand(bindings, "particles.last_particle_pos 1 1");
-    common::executeCommand(bindings, "particles.last_particle_pos (1, 1, 1)");
-    common::executeCommand(bindings, "particles.last_particle_pos (1)");
     common::executeCommand(bindings, "particles.last_particle_pos (one 2)");
     common::executeCommand(bindings, "particles.last_particle_pos (1 two)");
 }

@@ -24,6 +24,8 @@ add_executable(${PROJECT_NAME}
     "variables/VariablesExample.h"
     "variadic/VariadicExample.cpp"
     "variadic/VariadicExample.h"
+    "compound/CompoundExample.cpp"
+    "compound/CompoundExample.h"
 )
 
 target_include_directories(${PROJECT_NAME} PRIVATE

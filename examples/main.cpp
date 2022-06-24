@@ -3,6 +3,7 @@
 #include "common/ExamplesCommon.h"
 
 #include "basic/BasicExample.h"
+#include "compound/CompoundExample.h"
 #include "enums/EnumsExample.h"
 #include "errors/ErrorsExample.h"
 #include "named/NamedExample.h"
@@ -39,6 +40,7 @@ int main()
         , EnumsExample
         , ErrorsExample
         , UsertypesExample
+        , CompoundExample
 	>;
     // clang-format on
 
@@ -50,6 +52,7 @@ int main()
         "enums",
         "errors",
         "usertypes",
+        "compound",
     };
 
     std::array<std::string_view, 4> commands = {
