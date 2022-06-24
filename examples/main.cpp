@@ -8,6 +8,7 @@
 #include "errors/ErrorsExample.h"
 #include "flags/FlagsExample.h"
 #include "named/NamedExample.h"
+#include "overloading/OverloadingExample.h"
 #include "usertypes/UsertypesExample.h"
 #include "variables/VariablesExample.h"
 #include "variadic/VariadicExample.h"
@@ -43,6 +44,7 @@ int main()
         , UsertypesExample
         , CompoundExample
         , FlagsExample
+        , OverloadingExample
 	>;
     // clang-format on
 
@@ -57,6 +59,7 @@ int main()
         "usertypes",
         "compound",
         "flags",
+        "overloading",
     };
 
     std::array<std::string_view, 4> commands = {
