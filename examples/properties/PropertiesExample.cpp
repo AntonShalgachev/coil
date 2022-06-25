@@ -12,7 +12,10 @@ namespace
         std::size_t width = 1920;
         std::size_t height = 1080;
 
-        float getAspect() const { return 1.0f * width / height; }
+        float getAspect() const
+        {
+            return 1.0f * width / height;
+        }
         void setAspect(float aspect)
         {
             width = static_cast<std::size_t>(aspect * height);
@@ -21,7 +24,7 @@ namespace
 
     float getWindowDiagonal(Window const* window)
     {
-        return std::hypotf(1.0f*window->width, 1.0f*window->height);
+        return std::hypotf(1.0f * window->width, 1.0f * window->height);
     }
 
     void setWindowDiagonal(Window* window, float value)
@@ -43,8 +46,7 @@ void PropertiesExample::run()
     bindings["window.diagonal"] = coil::property(&getWindowDiagonal, &setWindowDiagonal, &window);
 
     std::vector<int> data = {3, 1, 4};
-    bindings["data"] = [&data](coil::Context context)
-    {
+    bindings["data"] = [&data](coil::Context context) {
         context.out() << "{ ";
         for (auto const& value : data)
             context.out() << value << " ";
