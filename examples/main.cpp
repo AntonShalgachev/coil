@@ -9,10 +9,10 @@
 #include "flags/FlagsExample.h"
 #include "named/NamedExample.h"
 #include "overloading/OverloadingExample.h"
+#include "properties/PropertiesExample.h"
 #include "usertypes/UsertypesExample.h"
 #include "variables/VariablesExample.h"
 #include "variadic/VariadicExample.h"
-#include "properties/PropertiesExample.h"
 
 template<typename Example>
 void bindExample(coil::Bindings& bindings, Example& example, std::string_view name)
