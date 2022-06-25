@@ -21,14 +21,14 @@ namespace
 
     float getWindowDiagonal(Window const* window)
     {
-        return std::hypot(window->width, window->height);
+        return std::hypotf(1.0f*window->width, 1.0f*window->height);
     }
 
     void setWindowDiagonal(Window* window, float value)
     {
         float scale = value / getWindowDiagonal(window);
-        window->width *= scale;
-        window->height *= scale;
+        window->width = static_cast<std::size_t>(window->width * scale);
+        window->height = static_cast<std::size_t>(window->height * scale);
     }
 }
 
