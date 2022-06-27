@@ -14,7 +14,7 @@ namespace coil
             return *var;
         };
 
-        return overloaded(get, set);
+        return overloaded(std::move(get), std::move(set));
     }
 
     template<typename T>
@@ -26,6 +26,6 @@ namespace coil
             return *var;
         };
 
-        return overloaded(get, set);
+        return overloaded(std::move(get), std::move(set));
     }
 }
