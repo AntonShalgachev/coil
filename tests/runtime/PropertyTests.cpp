@@ -78,7 +78,7 @@ TEST(PropertyTests, TestValidGetOnObject)
     Object object = 17;
 
     coil::Bindings bindings;
-    bindings["func"] = coil::property(&Object::get, &Object::set, &object);
+    bindings["func"] = coil::bindProperty(&Object::get, &Object::set, &object);
 
     auto result = bindings.execute("func");
     EXPECT_EQ(result.errors.size(), 0u);
@@ -93,7 +93,7 @@ TEST(PropertyTests, TestValidSetOnObject)
     Object object = 17;
 
     coil::Bindings bindings;
-    bindings["func"] = coil::property(&Object::get, &Object::set, &object);
+    bindings["func"] = coil::bindProperty(&Object::get, &Object::set, &object);
 
     auto result = bindings.execute("func 42");
     EXPECT_EQ(result.errors.size(), 0u);
@@ -108,7 +108,7 @@ TEST(PropertyTests, TestWrongArgumentsOnObject)
     Object object = 17;
 
     coil::Bindings bindings;
-    bindings["func"] = coil::property(&Object::get, &Object::set, &object);
+    bindings["func"] = coil::bindProperty(&Object::get, &Object::set, &object);
 
     auto result = bindings.execute("func 1 2");
     EXPECT_EQ(result.errors.size(), 1u);
