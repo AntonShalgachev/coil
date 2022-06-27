@@ -39,13 +39,14 @@ void PropertiesExample::run()
 {
     coil::Bindings bindings;
 
-    // TODO add read-only properties
-
     Window window;
 
     bindings["window.print_size"] = [&window](coil::Context context) { context.out() << window.width << "x" << window.height << std::endl; };
-    bindings["window.aspect"] = coil::property(&Window::getAspect, &Window::setAspect, &window);
-    bindings["window.diagonal"] = coil::property(&getWindowDiagonal, &setWindowDiagonal, &window);
+    bindings["window.aspect"] = coil::bindProperty(&Window::getAspect, &Window::setAspect, &window);
+    bindings["window.diagonal"] = coil::bindProperty(&getWindowDiagonal, &setWindowDiagonal, &window);
+
+    bindings["window.readonly_aspect"] = coil::bindProperty(&Window::getAspect, &window);
+    bindings["window.readonly_diagonal"] = coil::bindProperty(&getWindowDiagonal, &window);
 
     std::vector<int> data = {3, 1, 4};
     bindings["data"] = [&data](coil::Context context) {
@@ -68,4 +69,10 @@ void PropertiesExample::run()
     common::executeCommand(bindings, "data.size");
     common::executeCommand(bindings, "data.size 7");
     common::executeCommand(bindings, "data");
+
+    common::printSectionHeader("Read-only properties produce a clear error when trying to set their value:");
+    common::executeCommand(bindings, "window.readonly_aspect");
+    common::executeCommand(bindings, "window.readonly_aspect 1.5");
+    common::executeCommand(bindings, "window.readonly_diagonal");
+    common::executeCommand(bindings, "window.readonly_diagonal 1200");
 }

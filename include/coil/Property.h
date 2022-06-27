@@ -18,8 +18,18 @@ namespace coil
         return coil::overloaded(std::move(get), std::move(set));
     }
 
+    template<typename G>
+    auto property(G getter)
+    {
+        auto get = [getter]() -> decltype(auto) { return getter(); };
+
+        auto set = [](Context context, std::string_view) { context.reportError("This property is read-only"); };
+
+        return coil::overloaded(std::move(get), std::move(set));
+    }
+
     template<typename C, typename G, typename S>
-    auto property(G&& getter, S&& setter, C* object)
+    auto bindProperty(G getter, S setter, C* object)
     {
         auto get = [getter, object]() -> decltype(auto) { return std::invoke(getter, object); };
 
@@ -32,5 +42,13 @@ namespace coil
         return coil::overloaded(std::move(get), std::move(set));
     }
 
-    // TODO add readonly properties
+    template<typename C, typename G>
+    auto bindProperty(G getter, C* object)
+    {
+        auto get = [getter, object]() -> decltype(auto) { return std::invoke(getter, object); };
+
+        auto set = [](Context context, std::string_view) { context.reportError("This property is read-only"); };
+
+        return coil::overloaded(std::move(get), std::move(set));
+    }
 }
