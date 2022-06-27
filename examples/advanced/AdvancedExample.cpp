@@ -117,7 +117,7 @@ namespace
 
         void doWorkPublicly()
         {
-            std::cout << "Subsystem is alive: " << doSomeWork("hi", 10) << std::endl;
+            std::cout << "Subsystem is alive: " << m_time << " | " << doSomeWork(m_data, m_counter) << std::endl;
         }
 
     private:
