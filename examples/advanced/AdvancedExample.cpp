@@ -98,7 +98,7 @@ namespace utils
     };
 }
 
-// #define DEBUG_CONSOLE_ENABLED
+#define DEBUG_CONSOLE_ENABLED
 
 namespace
 {
