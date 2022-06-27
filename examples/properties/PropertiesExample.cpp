@@ -39,6 +39,8 @@ void PropertiesExample::run()
 {
     coil::Bindings bindings;
 
+    // TODO add read-only properties
+
     Window window;
 
     bindings["window.print_size"] = [&window](coil::Context context) { context.out() << window.width << "x" << window.height << std::endl; };
