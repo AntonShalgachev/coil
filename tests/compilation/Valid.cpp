@@ -98,6 +98,10 @@ int main()
     cmd["foo.bar"] = coil::bindProperty(
         &Object::get, [](Object*, float) {}, &object);
     cmd["foo.bar"] = coil::bindProperty([](Object*) { return 1.0f; }, &Object::set, &object);
+    cmd["foo.bar"] = coil::property(&getVariable);
+    cmd["foo.bar"] = coil::property([]() { return 1.0f; });
+    cmd["foo.bar"] = coil::bindProperty(&Object::get, &object);
+    cmd["foo.bar"] = coil::bindProperty([](Object*) { return 1.0f; }, &object);
 
     cmd["foo.bar"] = coil::property(
         []() -> float& {
