@@ -2,10 +2,15 @@
 
 #include "common/ExamplesCommon.h"
 
+#include "advanced/AdvancedExample.h"
 #include "basic/BasicExample.h"
+#include "compound/CompoundExample.h"
 #include "enums/EnumsExample.h"
 #include "errors/ErrorsExample.h"
+#include "flags/FlagsExample.h"
 #include "named/NamedExample.h"
+#include "overloading/OverloadingExample.h"
+#include "properties/PropertiesExample.h"
 #include "usertypes/UsertypesExample.h"
 #include "variables/VariablesExample.h"
 #include "variadic/VariadicExample.h"
@@ -39,9 +44,15 @@ int main()
         , EnumsExample
         , ErrorsExample
         , UsertypesExample
+        , CompoundExample
+        , FlagsExample
+        , OverloadingExample
+        , PropertiesExample
+        , AdvancedExample
 	>;
     // clang-format on
 
+    // TODO sort examples in the order which makes sense
     std::array<std::string_view, std::tuple_size_v<Examples>> names = {
         "basic",
         "variadic",
@@ -50,6 +61,11 @@ int main()
         "enums",
         "errors",
         "usertypes",
+        "compound",
+        "flags",
+        "overloading",
+        "properties",
+        "advanced",
     };
 
     std::array<std::string_view, 4> commands = {

@@ -30,4 +30,11 @@ namespace coil
         (functors.push_back(detail::createAnyFunctor(std::move(funcs))), ...);
         return functors;
     }
+
+    // TODO add a similar function for the member functions
+    template<typename Signature>
+    auto resolve(Signature* func)
+    {
+        return func;
+    }
 }
