@@ -172,8 +172,8 @@ void AdvancedExample::run()
 
     bindings["entities.create_entity_variable"] = [&entities, &bindings](std::string_view name, std::string_view id) {
         auto get = [&entities, id]() { return entities.find(id); };
-        bindings[name] = [get]() { return get(); };
-        bindings[std::string(name) + ".id"] = [get]() { return get()->id; }; // convert to a read-only property once implemented
+        bindings[name] = coil::property([get]() { return get(); });
+        bindings[std::string(name) + ".id"] = coil::property([get]() { return get()->id; });
         bindings[std::string(name) + ".name"] = coil::property([get]() { return get()->name; }, [get](std::string const& value) { get()->name = value; });
         bindings[std::string(name) + ".payload"] = coil::property([get]() { return get()->payload; }, [get](std::string const& value) { get()->payload = value; });
     };
