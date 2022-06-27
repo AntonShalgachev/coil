@@ -31,6 +31,8 @@ add_executable(${PROJECT_NAME}
     "overloading/OverloadingExample.h"
     "properties/PropertiesExample.cpp"
     "properties/PropertiesExample.h"
+    "advanced/AdvancedExample.cpp"
+    "advanced/AdvancedExample.h"
 )
 
 target_include_directories(${PROJECT_NAME} PRIVATE
