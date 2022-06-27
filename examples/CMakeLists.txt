@@ -7,7 +7,6 @@ add_executable(${PROJECT_NAME}
     "common/EnumToString.h"
     "common/ExamplesCommon.cpp"
     "common/ExamplesCommon.h"
-    "common/FlagVariableWrapper.h"
     
 	"errors/ErrorsExample.cpp"
 	"errors/ErrorsExample.h"
@@ -24,6 +23,16 @@ add_executable(${PROJECT_NAME}
     "variables/VariablesExample.h"
     "variadic/VariadicExample.cpp"
     "variadic/VariadicExample.h"
+    "compound/CompoundExample.cpp"
+    "compound/CompoundExample.h"
+    "flags/FlagsExample.cpp"
+    "flags/FlagsExample.h"
+    "overloading/OverloadingExample.cpp"
+    "overloading/OverloadingExample.h"
+    "properties/PropertiesExample.cpp"
+    "properties/PropertiesExample.h"
+    "advanced/AdvancedExample.cpp"
+    "advanced/AdvancedExample.h"
 )
 
 target_include_directories(${PROJECT_NAME} PRIVATE
