@@ -69,7 +69,7 @@ void AdvancedExample::run()
     entities.add("npc1", "NPC 1", "A pretty weak NPC");
     entities.add("npc2", "NPC 2", "A strong NPC");
 
-    bindings["entities.rename"] = [&entities](coil::Context context, std::string_view id, std::string name) {
+    bindings["entities.rename"] = [&entities](coil::Context context, std::string_view id, std::string newName) {
         Entity* entity = entities.find(id);
         if (!entity)
         {
@@ -77,15 +77,15 @@ void AdvancedExample::run()
             return;
         }
 
-        renameEntity(entity, std::move(name));
+        renameEntity(entity, std::move(newName));
     };
 
-    bindings["entities.create_entity_variable"] = [&entities, &bindings](std::string_view name, std::string_view id) {
+    bindings["entities.create_entity_variable"] = [&entities, &bindings](std::string_view variableName, std::string_view id) {
         auto get = [&entities, id]() { return entities.find(id); };
-        bindings[name] = coil::property([get]() { return get(); });
-        bindings[std::string(name) + ".id"] = coil::property([get]() { return get()->id; });
-        bindings[std::string(name) + ".name"] = coil::property([get]() { return get()->name; }, [get](std::string const& value) { get()->name = value; });
-        bindings[std::string(name) + ".payload"] = coil::property([get]() { return get()->payload; }, [get](std::string const& value) { get()->payload = value; });
+        bindings[variableName] = coil::property([get]() { return get(); });
+        bindings[std::string(variableName) + ".id"] = coil::property([get]() { return get()->id; });
+        bindings[std::string(variableName) + ".name"] = coil::property([get]() { return get()->name; }, [get](std::string const& value) { get()->name = value; });
+        bindings[std::string(variableName) + ".payload"] = coil::property([get]() { return get()->payload; }, [get](std::string const& value) { get()->payload = value; });
     };
 
     bindings["entities.list"] = [&entities](coil::Context context) {
