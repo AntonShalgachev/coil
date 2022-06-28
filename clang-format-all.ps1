@@ -10,7 +10,7 @@ function Format-Directory {
     ForEach-Object {
         Write-Host $_.FullName
         Push-Location $_.FullName
-        &clang-format -i *.h *.cpp
+        &clang-format -i *.h *.cpp 2> $null
         Pop-Location
     }
 }
