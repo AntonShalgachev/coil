@@ -18,7 +18,7 @@ namespace coil
 
         inline AnyFunctor createAnyFunctor(AnyFunctor anyFunctor)
         {
-            return anyFunctor; // TODO check if RVO applies here
+            return anyFunctor;
         }
     }
 
@@ -29,12 +29,5 @@ namespace coil
         std::vector<AnyFunctor> functors;
         (functors.push_back(detail::createAnyFunctor(std::move(funcs))), ...);
         return functors;
-    }
-
-    // TODO add a similar function for the member functions
-    template<typename Signature>
-    auto resolve(Signature* func)
-    {
-        return func;
     }
 }
