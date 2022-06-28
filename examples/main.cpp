@@ -5,6 +5,7 @@
 #include "advanced/AdvancedExample.h"
 #include "basic/BasicExample.h"
 #include "compound/CompoundExample.h"
+#include "encapsulation/EncapsulationExample.h"
 #include "enums/EnumsExample.h"
 #include "errors/ErrorsExample.h"
 #include "flags/FlagsExample.h"
@@ -49,6 +50,7 @@ int main()
         , OverloadingExample
         , PropertiesExample
         , AdvancedExample
+        , EncapsulationExample
 	>;
     // clang-format on
 
@@ -66,6 +68,7 @@ int main()
         "overloading",
         "properties",
         "advanced",
+        "encapsulation",
     };
 
     std::array<std::string_view, 4> commands = {
