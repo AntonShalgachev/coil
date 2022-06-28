@@ -39,14 +39,14 @@ int main()
     // clang-format off
     using Examples = std::tuple<
           BasicExample
-        , VariadicExample
         , VariablesExample
-        , NamedExample
         , EnumsExample
-        , ErrorsExample
-        , UsertypesExample
-        , CompoundExample
         , FlagsExample
+        , VariadicExample
+        , NamedExample
+        , UsertypesExample
+        , ErrorsExample
+        , CompoundExample
         , OverloadingExample
         , PropertiesExample
         , AdvancedExample
@@ -54,17 +54,16 @@ int main()
 	>;
     // clang-format on
 
-    // TODO sort examples in the order which makes sense
     std::array<std::string_view, std::tuple_size_v<Examples>> names = {
         "basic",
-        "variadic",
         "variables",
-        "named",
         "enums",
-        "errors",
-        "usertypes",
-        "compound",
         "flags",
+        "variadic",
+        "named",
+        "usertypes",
+        "errors",
+        "compound",
         "overloading",
         "properties",
         "advanced",
