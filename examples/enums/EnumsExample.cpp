@@ -1,6 +1,6 @@
 #include "EnumsExample.h"
 
-#include "common/EnumToString.h" // user-provided TypeSerializer for enums
+#include "common/EnumTypeSerializer.h" // user-provided TypeSerializer for enums
 #include "common/ExamplesCommon.h"
 
 #include <iostream>
@@ -52,7 +52,7 @@ void EnumsExample::run()
     coil::Bindings bindings;
     PlayerAbilitySystem abilities;
 
-    // See EnumToString.h to see how the serialization is implemented
+    // See EnumTypeSerializer.h to see how the serialization is implemented
 
     bindings["abilities.set_ability"] = coil::bind(&PlayerAbilitySystem::setAbility, &abilities);
     bindings["abilities.get_ability"] = coil::bind(&PlayerAbilitySystem::getAbility, &abilities);

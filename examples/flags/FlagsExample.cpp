@@ -43,7 +43,7 @@ namespace
     auto flagsVariable(E* var)
     {
         // Getters and setters return the string representation of the flags variable because the
-        // TypeSerializer for enums (see examples\common\EnumToString.h) doesn't handle flags by default
+        // TypeSerializer for enums (see examples\common\EnumTypeSerializer.h) doesn't handle flags by default
 
         auto get = [var]() { return magic_enum::flags::enum_name(*var); };
         auto set = [var](std::vector<E> const& args) {

@@ -4,7 +4,7 @@ add_executable(${PROJECT_NAME}
     "main.cpp"
     
     "common/CustomTypeName.h"
-    "common/EnumToString.h"
+    "common/EnumTypeSerializer.h"
     "common/ExamplesCommon.cpp"
     "common/ExamplesCommon.h"
     

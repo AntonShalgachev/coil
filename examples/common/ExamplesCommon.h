@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CustomTypeName.h"
-#include "EnumToString.h"
+#include "EnumTypeSerializer.h"
 #include "coil/Coil.h"
 
 #include <string_view>
