@@ -3,6 +3,8 @@
 #include "Value.h"
 #include "detail/CallContext.h"
 
+#include <functional>
+
 namespace coil
 {
     class NamedValue
