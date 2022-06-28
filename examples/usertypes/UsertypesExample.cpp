@@ -106,7 +106,7 @@ namespace coil
     template<>
     struct TypeSerializer<EntityId>
     {
-        static Expected<EntityId, std::string> fromString(AnyArgView const& input)
+        static Expected<EntityId, std::string> fromString(Value const& input)
         {
             auto index = TypeSerializer<std::size_t>::fromString(input);
             if (!index)
@@ -117,7 +117,7 @@ namespace coil
                 return errors::serializationError<EntityId>(input, index.error());
             }
 
-            return EntityId{*index};
+            return EntityId{ *index };
         }
 
         static auto toString(EntityId value)
@@ -131,7 +131,7 @@ namespace coil
     template<>
     struct TypeSerializer<Vec2>
     {
-        static Expected<Vec2, std::string> fromString(AnyArgView const& input)
+        static Expected<Vec2, std::string> fromString(Value const& input)
         {
             if (input.subvalues.size() != 2)
                 return errors::wrongSubvaluesSize<Vec2>(input, 2);
@@ -144,7 +144,7 @@ namespace coil
             if (!y)
                 return errors::serializationError<Vec2>(input, y.error());
 
-            return Vec2{*x, *y};
+            return Vec2{ *x, *y };
         }
 
         static auto toString(Vec2 const& value)
@@ -158,7 +158,7 @@ namespace coil
     template<typename T>
     struct TypeSerializer<DynamicArray<T>>
     {
-        static Expected<DynamicArray<T>, std::string> fromString(AnyArgView const& input)
+        static Expected<DynamicArray<T>, std::string> fromString(Value const& input)
         {
             DynamicArray<T> result;
 

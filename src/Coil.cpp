@@ -5,13 +5,13 @@ template class std::vector<std::string>;
 template class std::optional<std::string>;
 template std::optional<std::string>::optional(std::string&&);
 
-template class std::vector<coil::AnyArgView>;
-template class std::vector<std::pair<std::string_view, coil::AnyArgView>>;
+template class std::vector<coil::Value>;
+template class std::vector<std::pair<std::string_view, coil::Value>>;
 
 template class std::vector<std::string_view>;
 
-template class std::optional<coil::AnyArgView>;
-template class coil::Expected<coil::AnyArgView, coil::NamedArgs::Error>;
+template class std::optional<coil::Value>;
+template class coil::Expected<coil::Value, coil::NamedArgs::Error>;
 
 template class coil::BasicStringWrapper<std::string>;
 template struct std::hash<coil::BasicStringWrapper<std::string>>;
@@ -233,13 +233,13 @@ namespace coil
     }
 
     /// NamedArgs.h ///
-    NamedAnyArgView::NamedAnyArgView(std::string_view key, AnyArgView value) : m_key(key), m_value(std::move(value)) {} // TODO check
+    NamedAnyArgView::NamedAnyArgView(std::string_view key, Value value) : m_key(key), m_value(std::move(value)) {} // TODO check
 
     std::string_view NamedAnyArgView::key() const
     {
         return m_key;
     }
-    AnyArgView NamedAnyArgView::value() const
+    Value NamedAnyArgView::value() const
     {
         return m_value;
     }
@@ -274,7 +274,7 @@ namespace coil
 
     NamedArgs::NamedArgs(detail::CallContext& context) : m_context(context) {}
 
-    Expected<AnyArgView, NamedArgs::Error> NamedArgs::get(std::string_view key) const
+    Expected<Value, NamedArgs::Error> NamedArgs::get(std::string_view key) const
     {
         auto it = find(key);
         if (it == end())
@@ -283,9 +283,9 @@ namespace coil
         return it->value();
     }
 
-    std::optional<AnyArgView> NamedArgs::getOrReport(std::string_view key, ArgType argType) const
+    std::optional<Value> NamedArgs::getOrReport(std::string_view key, ArgType argType) const
     {
-        if (Expected<AnyArgView, Error> anyArg = get(key))
+        if (Expected<Value, Error> anyArg = get(key))
             return *anyArg;
         else if (argType == ArgType::Required)
             m_context.reportError(std::move(anyArg).error().message);
@@ -313,17 +313,17 @@ namespace coil
         return std::find_if(begin(), end(), [key](NamedAnyArgView const& arg) { return arg.key() == key; });
     }
 
-    /// AnyArgView.h ///
-    AnyArgView::AnyArgView() = default; // @NOCOVERAGE
-    AnyArgView::AnyArgView(std::string_view value) : subvalues({value}) {}
-    AnyArgView::AnyArgView(std::vector<std::string_view> subvalues) : subvalues(std::move(subvalues)) {}
+    /// Value.h ///
+    Value::Value() = default; // @NOCOVERAGE
+    Value::Value(std::string_view value) : subvalues({value}) {}
+    Value::Value(std::vector<std::string_view> subvalues) : subvalues(std::move(subvalues)) {}
 
-    bool AnyArgView::operator==(AnyArgView const& rhs) const
+    bool Value::operator==(Value const& rhs) const
     {
         return subvalues == rhs.subvalues;
     }
 
-    std::string AnyArgView::str() const
+    std::string Value::str() const
     {
         std::stringstream ss;
         std::string_view prefix = "";
@@ -336,13 +336,13 @@ namespace coil
         return ss.str();
     }
 
-    std::ostream& operator<<(std::ostream& os, AnyArgView const& rhs)
+    std::ostream& operator<<(std::ostream& os, Value const& rhs)
     {
         return os << rhs.str();
     }
 
     /// TypeSerializer.h ///
-    coil::Expected<bool, std::string> coil::TypeSerializer<bool>::fromString(AnyArgView const& input)
+    coil::Expected<bool, std::string> coil::TypeSerializer<bool>::fromString(Value const& input)
     {
         auto equalCaseInsensitive = [](std::string_view a, std::string_view b) {
             std::size_t const length = a.length();

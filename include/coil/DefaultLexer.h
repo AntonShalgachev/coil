@@ -149,12 +149,12 @@ namespace coil
             return result;
         }
 
-        AnyArgView createAnyArg(Token const& token) const
+        Value createAnyArg(Token const& token) const
         {
             if (token.type == TokenType::GroupString)
-                return AnyArgView{splitGroup(token.value)};
+                return Value{splitGroup(token.value)};
 
-            return AnyArgView{{token.value}};
+            return Value{{token.value}};
         }
 
         coil::Expected<void, std::string> tokenize(std::string_view str) const
