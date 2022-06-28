@@ -52,7 +52,7 @@ namespace
 
     void addEntities(std::size_t id, std::string name)
     {
-        entities.push_back(Entity{ id, std::move(name) });
+        entities.push_back(Entity{id, std::move(name)});
     }
 }
 
