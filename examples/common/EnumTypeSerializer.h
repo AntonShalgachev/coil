@@ -10,8 +10,6 @@
 #include <ostream>
 #include <string>
 
-// TODO rename this file to "EnumTypeSerializer"
-
 namespace coil
 {
     // It's up to a user to implement TypeSerializer for enums
