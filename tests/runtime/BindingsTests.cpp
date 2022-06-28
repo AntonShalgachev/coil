@@ -108,7 +108,7 @@ namespace coil
     template<typename T>
     struct TypeSerializer<Tracker<T>>
     {
-        static Expected<Tracker<T>, std::string> fromString(ArgValue const& input)
+        static Expected<Tracker<T>, std::string> fromString(AnyArgView const& input)
         {
             Expected<T, std::string> innerValue = TypeSerializer<T>::fromString(input);
             if (innerValue)
@@ -126,7 +126,7 @@ namespace coil
     template<>
     struct TypeSerializer<CompoundType>
     {
-        static Expected<CompoundType, std::string> fromString(ArgValue const& input)
+        static Expected<CompoundType, std::string> fromString(AnyArgView const& input)
         {
             if (input.subvalues.size() != 2)
                 return errors::wrongSubvaluesSize<CompoundType>(input, 2);
@@ -738,7 +738,7 @@ TEST(BindingsTests, TestNamedArgsGetOrReport)
         {
             auto o = namedArgs.getOrReport("arg1", coil::NamedArgs::ArgType::Required);
             ASSERT_TRUE(o.has_value());
-            EXPECT_EQ(o->getRaw().str(), "str"sv);
+            EXPECT_EQ(o->str(), "str"sv);
             EXPECT_FALSE(context.hasErrors());
         }
 
@@ -841,9 +841,9 @@ TEST(BindingsTests, TestTypeNames)
     EXPECT_EQ(coil::TypeName<long double>::name(), "long double"sv);
 }
 
-TEST(BindingsTests, TestArgValueToStream)
+TEST(BindingsTests, TestAnyArgToStream)
 {
-    coil::ArgValue value({"foo", "bar"});
+    coil::AnyArgView value({"foo", "bar"});
     std::stringstream ss;
     ss << value;
     EXPECT_EQ(ss.str(), "foo bar");

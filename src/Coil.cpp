@@ -5,8 +5,8 @@ template class std::vector<std::string>;
 template class std::optional<std::string>;
 template std::optional<std::string>::optional(std::string&&);
 
-template class std::vector<coil::ArgValue>;
-template class std::vector<std::pair<std::string_view, coil::ArgValue>>;
+template class std::vector<coil::AnyArgView>;
+template class std::vector<std::pair<std::string_view, coil::AnyArgView>>;
 
 template class std::vector<std::string_view>;
 
@@ -233,7 +233,7 @@ namespace coil
     }
 
     /// NamedArgs.h ///
-    NamedAnyArgView::NamedAnyArgView(std::string_view key, ArgValue value) : m_key(key), m_value(value) {}
+    NamedAnyArgView::NamedAnyArgView(std::string_view key, AnyArgView value) : m_key(key), m_value(std::move(value)) {} // TODO check
 
     std::string_view NamedAnyArgView::key() const
     {
@@ -313,17 +313,17 @@ namespace coil
         return std::find_if(begin(), end(), [key](NamedAnyArgView const& arg) { return arg.key() == key; });
     }
 
-    /// ArgValue.h ///
-    ArgValue::ArgValue() = default; // @NOCOVERAGE
-    ArgValue::ArgValue(std::string_view value) : subvalues({value}) {}
-    ArgValue::ArgValue(std::vector<std::string_view> subvalues) : subvalues(std::move(subvalues)) {}
+    /// AnyArgView.h ///
+    AnyArgView::AnyArgView() = default; // @NOCOVERAGE
+    AnyArgView::AnyArgView(std::string_view value) : subvalues({value}) {}
+    AnyArgView::AnyArgView(std::vector<std::string_view> subvalues) : subvalues(std::move(subvalues)) {}
 
-    bool ArgValue::operator==(ArgValue const& rhs) const
+    bool AnyArgView::operator==(AnyArgView const& rhs) const
     {
         return subvalues == rhs.subvalues;
     }
 
-    std::string ArgValue::str() const
+    std::string AnyArgView::str() const
     {
         std::stringstream ss;
         std::string_view prefix = "";
@@ -336,13 +336,13 @@ namespace coil
         return ss.str();
     }
 
-    std::ostream& operator<<(std::ostream& os, ArgValue const& rhs)
+    std::ostream& operator<<(std::ostream& os, AnyArgView const& rhs)
     {
         return os << rhs.str();
     }
 
     /// TypeSerializer.h ///
-    coil::Expected<bool, std::string> coil::TypeSerializer<bool>::fromString(ArgValue const& input)
+    coil::Expected<bool, std::string> coil::TypeSerializer<bool>::fromString(AnyArgView const& input)
     {
         auto equalCaseInsensitive = [](std::string_view a, std::string_view b) {
             std::size_t const length = a.length();

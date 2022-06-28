@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ArgValue.h"
+#include "AnyArgView.h"
 #include "Expected.h"
 #include "TypeName.h"
 #include "Utils.h"
@@ -21,7 +21,7 @@ namespace coil
         // errors::createMismatchedSubvaluesError
 
         template<typename T>
-        Unexpected<std::string> serializationError(ArgValue const& input, std::string_view details = {})
+        Unexpected<std::string> serializationError(AnyArgView const& input, std::string_view details = {})
         {
             std::string_view typeName = TypeName<T>::name();
 
@@ -34,7 +34,7 @@ namespace coil
         }
 
         template<typename T>
-        Unexpected<std::string> wrongSubvaluesSize(ArgValue const& input, std::size_t expectedSubvalues)
+        Unexpected<std::string> wrongSubvaluesSize(AnyArgView const& input, std::size_t expectedSubvalues)
         {
             return serializationError<T>(input, formatString("Expected %d subvalues, got %d", expectedSubvalues, input.subvalues.size()));
         }
@@ -50,13 +50,13 @@ namespace coil
     template<typename T>
     struct TypeSerializer<T, std::enable_if_t<std::is_arithmetic_v<T>>>
     {
-        static Expected<T, std::string> fromString(ArgValue const& input);
+        static Expected<T, std::string> fromString(AnyArgView const& input);
 
         static std::string toString(T const& value);
     };
 
     template<typename T>
-    coil::Expected<T, std::string> TypeSerializer<T, std::enable_if_t<std::is_arithmetic_v<T>>>::fromString(ArgValue const& input)
+    coil::Expected<T, std::string> TypeSerializer<T, std::enable_if_t<std::is_arithmetic_v<T>>>::fromString(AnyArgView const& input)
     {
         if (input.subvalues.size() != 1)
             return errors::wrongSubvaluesSize<T>(input, 1);
@@ -88,7 +88,7 @@ namespace coil
     template<>
     struct TypeSerializer<bool>
     {
-        static Expected<bool, std::string> fromString(ArgValue const& input);
+        static Expected<bool, std::string> fromString(AnyArgView const& input);
         static std::string toString(bool const& value);
     };
 
@@ -105,13 +105,13 @@ namespace coil
     template<class Elem, class Traits, class Alloc>
     struct TypeSerializer<std::basic_string<Elem, Traits, Alloc>>
     {
-        static Expected<std::basic_string<Elem, Traits, Alloc>, std::string> fromString(ArgValue const& input);
+        static Expected<std::basic_string<Elem, Traits, Alloc>, std::string> fromString(AnyArgView const& input);
 
         static std::string toString(std::basic_string<Elem, Traits, Alloc> const& value);
     };
 
     template<class Elem, class Traits, class Alloc>
-    coil::Expected<std::basic_string<Elem, Traits, Alloc>, std::string> coil::TypeSerializer<std::basic_string<Elem, Traits, Alloc>>::fromString(ArgValue const& input)
+    coil::Expected<std::basic_string<Elem, Traits, Alloc>, std::string> coil::TypeSerializer<std::basic_string<Elem, Traits, Alloc>>::fromString(AnyArgView const& input)
     {
         if (input.subvalues.size() != 1)
             return errors::wrongSubvaluesSize<std::basic_string<Elem, Traits, Alloc>>(input, 1);
@@ -130,13 +130,13 @@ namespace coil
     template<class Elem, class Traits>
     struct TypeSerializer<std::basic_string_view<Elem, Traits>>
     {
-        static Expected<std::basic_string_view<Elem, Traits>, std::string> fromString(ArgValue const& input);
+        static Expected<std::basic_string_view<Elem, Traits>, std::string> fromString(AnyArgView const& input);
 
         static std::string toString(std::basic_string_view<Elem, Traits> const& value);
     };
 
     template<class Elem, class Traits>
-    coil::Expected<std::basic_string_view<Elem, Traits>, std::string> coil::TypeSerializer<std::basic_string_view<Elem, Traits>>::fromString(ArgValue const& input)
+    coil::Expected<std::basic_string_view<Elem, Traits>, std::string> coil::TypeSerializer<std::basic_string_view<Elem, Traits>>::fromString(AnyArgView const& input)
     {
         if (input.subvalues.size() != 1)
             return errors::wrongSubvaluesSize<std::basic_string_view<Elem, Traits>>(input, 1);
@@ -155,13 +155,13 @@ namespace coil
     template<typename T>
     struct TypeSerializer<std::optional<T>>
     {
-        static Expected<std::optional<T>, std::string> fromString(ArgValue const& input);
+        static Expected<std::optional<T>, std::string> fromString(AnyArgView const& input);
 
         static std::string toString(std::optional<T> const& value);
     };
 
     template<typename T>
-    coil::Expected<std::optional<T>, std::string> coil::TypeSerializer<std::optional<T>>::fromString(ArgValue const& input)
+    coil::Expected<std::optional<T>, std::string> coil::TypeSerializer<std::optional<T>>::fromString(AnyArgView const& input)
     {
         if (input.subvalues.empty() || input.subvalues[0].empty())
             return std::optional<T>{};
@@ -187,13 +187,13 @@ namespace coil
     template<typename T>
     struct TypeSerializer<std::vector<T>>
     {
-        static Expected<std::vector<T>, std::string> fromString(ArgValue const& input);
+        static Expected<std::vector<T>, std::string> fromString(AnyArgView const& input);
 
         static std::string toString(std::vector<T> const& value);
     };
 
     template<typename T>
-    coil::Expected<std::vector<T>, std::string> coil::TypeSerializer<std::vector<T>>::fromString(ArgValue const& input)
+    coil::Expected<std::vector<T>, std::string> coil::TypeSerializer<std::vector<T>>::fromString(AnyArgView const& input)
     {
         std::vector<T> result;
         result.reserve(input.subvalues.size());

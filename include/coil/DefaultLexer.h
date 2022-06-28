@@ -149,12 +149,12 @@ namespace coil
             return result;
         }
 
-        ArgValue createArgValue(Token const& token) const
+        AnyArgView createAnyArg(Token const& token) const
         {
             if (token.type == TokenType::GroupString)
-                return ArgValue{splitGroup(token.value)};
+                return AnyArgView{splitGroup(token.value)};
 
-            return ArgValue{{token.value}};
+            return AnyArgView{{token.value}};
         }
 
         coil::Expected<void, std::string> tokenize(std::string_view str) const
@@ -261,11 +261,11 @@ namespace coil
                 if (tokens.secondaryTokenIndex)
                 {
                     Token const& secondaryToken = m_tokens[*tokens.secondaryTokenIndex];
-                    m_input.namedArguments.emplace_back(primaryToken.value, createArgValue(secondaryToken));
+                    m_input.namedArguments.emplace_back(primaryToken.value, createAnyArg(secondaryToken));
                 }
                 else
                 {
-                    m_input.arguments.push_back(createArgValue(primaryToken));
+                    m_input.arguments.push_back(createAnyArg(primaryToken));
                 }
 
                 tokens.reset();
