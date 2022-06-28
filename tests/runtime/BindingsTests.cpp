@@ -108,7 +108,7 @@ namespace coil
     template<typename T>
     struct TypeSerializer<Tracker<T>>
     {
-        static Expected<Tracker<T>, std::string> fromString(AnyArgView const& input)
+        static Expected<Tracker<T>, std::string> fromString(Value const& input)
         {
             Expected<T, std::string> innerValue = TypeSerializer<T>::fromString(input);
             if (innerValue)
@@ -126,7 +126,7 @@ namespace coil
     template<>
     struct TypeSerializer<CompoundType>
     {
-        static Expected<CompoundType, std::string> fromString(AnyArgView const& input)
+        static Expected<CompoundType, std::string> fromString(Value const& input)
         {
             if (input.subvalues.size() != 2)
                 return errors::wrongSubvaluesSize<CompoundType>(input, 2);
@@ -673,10 +673,10 @@ TEST(BindingsTests, TestNonStdException)
     EXPECT_PRED2(containsError, result.errors, "Exception caught during execution");
 }
 
-TEST(BindingsTests, TestAnyArgView)
+TEST(BindingsTests, TestValue)
 {
     coil::Bindings bindings;
-    bindings["func"] = [](coil::AnyArgView const& value) { return *value.get<int>(); };
+    bindings["func"] = [](coil::Value const& value) { return *value.get<int>(); };
 
     auto result = bindings.execute("func 42");
     EXPECT_EQ(result.returnValue, "42");
@@ -843,7 +843,7 @@ TEST(BindingsTests, TestTypeNames)
 
 TEST(BindingsTests, TestAnyArgToStream)
 {
-    coil::AnyArgView value({"foo", "bar"});
+    coil::Value value({"foo", "bar"});
     std::stringstream ss;
     ss << value;
     EXPECT_EQ(ss.str(), "foo bar");

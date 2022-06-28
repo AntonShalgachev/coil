@@ -11,14 +11,13 @@ namespace coil
     template<typename T, typename>
     struct TypeSerializer;
 
-    // TODO it's not a "view" anymore
-    struct AnyArgView
+    struct Value
     {
-        AnyArgView();
-        AnyArgView(std::string_view value);
-        AnyArgView(std::vector<std::string_view> subvalues);
+        Value();
+        Value(std::string_view value);
+        Value(std::vector<std::string_view> subvalues);
 
-        bool operator==(AnyArgView const& rhs) const;
+        bool operator==(Value const& rhs) const;
 
         template<typename T>
         Expected<T, std::string> get() const
@@ -31,12 +30,12 @@ namespace coil
         std::vector<std::string_view> subvalues;
     };
 
-    std::ostream& operator<<(std::ostream& os, AnyArgView const& rhs);
+    std::ostream& operator<<(std::ostream& os, Value const& rhs);
 
     template<>
-    struct TypeSerializer<AnyArgView, void>
+    struct TypeSerializer<Value, void>
     {
-        static Expected<AnyArgView, std::string> fromString(AnyArgView const& value)
+        static Expected<Value, std::string> fromString(Value const& value)
         {
             return value; // TODO prevent a copy
         }

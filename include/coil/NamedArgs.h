@@ -1,6 +1,6 @@
 #pragma once
 
-#include "AnyArgView.h"
+#include "Value.h"
 #include "detail/CallContext.h"
 
 namespace coil
@@ -8,14 +8,14 @@ namespace coil
     class NamedAnyArgView
     {
     public:
-        NamedAnyArgView(std::string_view key, AnyArgView value);
+        NamedAnyArgView(std::string_view key, Value value);
 
         std::string_view key() const;
-        AnyArgView value() const;
+        Value value() const;
 
     private:
         std::string_view m_key;
-        AnyArgView m_value;
+        Value m_value;
     };
 
     class NamedArgsIterator
@@ -73,7 +73,7 @@ namespace coil
 
         NamedArgs(detail::CallContext& context);
 
-        Expected<AnyArgView, Error> get(std::string_view key) const;
+        Expected<Value, Error> get(std::string_view key) const;
 
         template<typename T>
         Expected<T, Error> get(std::string_view key) const;
@@ -84,7 +84,7 @@ namespace coil
             Required,
         };
 
-        std::optional<AnyArgView> getOrReport(std::string_view key, ArgType argType = ArgType::Optional) const;
+        std::optional<Value> getOrReport(std::string_view key, ArgType argType = ArgType::Optional) const;
 
         template<typename T>
         std::optional<T> getOrReport(std::string_view key, ArgType argType = ArgType::Optional, std::optional<T> defaultValue = {}) const;
@@ -104,7 +104,7 @@ namespace coil
     template<typename T>
     Expected<T, NamedArgs::Error> NamedArgs::get(std::string_view key) const
     {
-        Expected<AnyArgView, Error> anyArg = get(key);
+        Expected<Value, Error> anyArg = get(key);
         if (!anyArg)
             return makeUnexpected(std::move(anyArg).error());
 

@@ -84,7 +84,7 @@ namespace coil
     template<>
     struct TypeSerializer<Point>
     {
-        static Expected<Point, std::string> fromString(AnyArgView const& input)
+        static Expected<Point, std::string> fromString(Value const& input)
         {
             if (input.subvalues.size() != 2)
                 return errors::wrongSubvaluesSize<Point>(input, 2);

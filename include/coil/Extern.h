@@ -1,6 +1,6 @@
 #pragma once
 
-#include "AnyArgView.h"
+#include "Value.h"
 #include "Expected.h"
 #include "NamedArgs.h"
 #include "TypeSerializer.h"
@@ -16,13 +16,13 @@ extern template class std::vector<std::string>;
 extern template class std::optional<std::string>;
 extern template std::optional<std::string>::optional(std::string&&);
 
-extern template class std::vector<coil::AnyArgView>;
-extern template class std::vector<std::pair<std::string_view, coil::AnyArgView>>;
+extern template class std::vector<coil::Value>;
+extern template class std::vector<std::pair<std::string_view, coil::Value>>;
 
 extern template class std::vector<std::string_view>;
 
-extern template class std::optional<coil::AnyArgView>;
-extern template class coil::Expected<coil::AnyArgView, coil::NamedArgs::Error>;
+extern template class std::optional<coil::Value>;
+extern template class coil::Expected<coil::Value, coil::NamedArgs::Error>;
 
 extern template class coil::BasicStringWrapper<std::string>;
 extern template struct std::hash<coil::BasicStringWrapper<std::string>>;

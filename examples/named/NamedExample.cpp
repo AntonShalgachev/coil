@@ -179,7 +179,7 @@ void NamedExample::run()
     common::printSectionHeader("You can iterate over NamedArgs:");
     common::executeCommand(bindings, "print_args arg1 = value1 arg2 = 0.1 arg3 = true arg4 = 3.1415");
 
-    common::printSectionHeader("You can treat individual argument as AnyArgView:");
+    common::printSectionHeader("You can treat individual argument as a typeless Value:");
     common::executeCommand(bindings, "print_floats arg1 = value1 arg2 = 0.1 arg3 = true arg4 = 3.1415");
 
     common::printSectionHeader("You can use NamedArgs to override default values");

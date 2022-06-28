@@ -18,7 +18,7 @@ namespace
         return std::sqrt(value);
     }
 
-    float getFloat(coil::Context context, coil::AnyArgView arg)
+    float getFloat(coil::Context context, coil::Value const& arg)
     {
         auto asFloat = arg.get<float>();
         if (asFloat)
@@ -28,7 +28,7 @@ namespace
         return 0.0f;
     }
 
-    std::string_view getTypeName(coil::Context context, coil::AnyArgView arg)
+    std::string_view getTypeName(coil::Context context, coil::Value const& arg)
     {
         if (auto asBool = arg.get<bool>())
             return "bool";

@@ -43,7 +43,7 @@ namespace coil
     template<>
     struct TypeSerializer<WithoutDefaultConstructor>
     {
-        static Expected<WithoutDefaultConstructor, std::string> fromString(AnyArgView const& input)
+        static Expected<WithoutDefaultConstructor, std::string> fromString(Value const& input)
         {
             auto innerValue = TypeSerializer<int>::fromString(input);
 
@@ -62,7 +62,7 @@ namespace coil
     template<>
     struct TypeSerializer<CompoundType>
     {
-        static Expected<CompoundType, std::string> fromString(AnyArgView const& input)
+        static Expected<CompoundType, std::string> fromString(Value const& input)
         {
             if (input.subvalues.size() != 2)
                 return errors::wrongSubvaluesSize<CompoundType>(input, 2);
