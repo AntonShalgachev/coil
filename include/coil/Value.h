@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Expected.h"
-// #include "TypeSerializer.h"
 
 #include <string_view>
 #include <vector>
@@ -22,7 +21,7 @@ namespace coil
         template<typename T>
         Expected<T, std::string> get() const
         {
-            return TypeSerializer<T>::fromString(*this);
+            return TypeSerializer<T, void>::fromString(*this);
         }
 
         std::string str() const;
