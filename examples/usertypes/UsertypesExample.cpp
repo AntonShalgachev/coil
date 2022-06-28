@@ -117,7 +117,7 @@ namespace coil
                 return errors::serializationError<EntityId>(input, index.error());
             }
 
-            return EntityId{ *index };
+            return EntityId{*index};
         }
 
         static auto toString(EntityId value)
@@ -144,7 +144,7 @@ namespace coil
             if (!y)
                 return errors::serializationError<Vec2>(input, y.error());
 
-            return Vec2{ *x, *y };
+            return Vec2{*x, *y};
         }
 
         static auto toString(Vec2 const& value)
