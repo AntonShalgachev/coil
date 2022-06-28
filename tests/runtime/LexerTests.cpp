@@ -399,14 +399,14 @@ TEST(LexerTests, TestCompoundArgsErrors)
 {
     coil::DefaultLexer lexer;
 
-    EXPECT_EQ(lexer("func (arg,arg"), coil::makeUnexpected("Token '(' doesn't have an opening/closing token"));
-    EXPECT_EQ(lexer("func arg,arg)"), coil::makeUnexpected("Token ')' doesn't have an opening/closing token"));
+    EXPECT_EQ(lexer("func (arg,arg"), coil::makeUnexpected("Token '(' doesn't have a corresponding opening/closing token"));
+    EXPECT_EQ(lexer("func arg,arg)"), coil::makeUnexpected("Token ')' doesn't have a corresponding opening/closing token"));
 
-    EXPECT_EQ(lexer("func arg(ument"), coil::makeUnexpected("Token '(' doesn't have an opening/closing token"));
-    EXPECT_EQ(lexer("func argum)ent"), coil::makeUnexpected("Token ')' doesn't have an opening/closing token"));
+    EXPECT_EQ(lexer("func arg(ument"), coil::makeUnexpected("Token '(' doesn't have a corresponding opening/closing token"));
+    EXPECT_EQ(lexer("func argum)ent"), coil::makeUnexpected("Token ')' doesn't have a corresponding opening/closing token"));
 
-    EXPECT_EQ(lexer("func ("), coil::makeUnexpected("Token '(' doesn't have an opening/closing token"));
-    EXPECT_EQ(lexer("func )"), coil::makeUnexpected("Token ')' doesn't have an opening/closing token"));
+    EXPECT_EQ(lexer("func ("), coil::makeUnexpected("Token '(' doesn't have a corresponding opening/closing token"));
+    EXPECT_EQ(lexer("func )"), coil::makeUnexpected("Token ')' doesn't have a corresponding opening/closing token"));
 }
 
 TEST(LexerTests, TestStringsErrors)
