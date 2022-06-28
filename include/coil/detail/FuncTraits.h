@@ -77,7 +77,6 @@ namespace coil::detail
     {
     };
 
-    // TODO use C++20 concepts
     template<typename Func>
     struct FuncTraits<Func, std::void_t<decltype(&Func::operator())>> : public FuncTraitsImpl<decltype(&Func::operator())>
     {
