@@ -15,13 +15,11 @@ namespace
 
     auto toggle(bool* var)
     {
-        auto toggler = [var]()
-        {
+        auto toggler = [var]() {
             *var = !*var;
             return *var;
         };
-        auto setter = [var](bool val)
-        {
+        auto setter = [var](bool val) {
             *var = std::move(val);
             return *var;
         };
