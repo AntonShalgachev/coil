@@ -149,7 +149,7 @@ namespace coil
             return result;
         }
 
-        Value createAnyArg(Token const& token) const
+        Value createValue(Token const& token) const
         {
             if (token.type == TokenType::GroupString)
                 return Value{splitGroup(token.value)};
@@ -261,11 +261,11 @@ namespace coil
                 if (tokens.secondaryTokenIndex)
                 {
                     Token const& secondaryToken = m_tokens[*tokens.secondaryTokenIndex];
-                    m_input.namedArguments.emplace_back(primaryToken.value, createAnyArg(secondaryToken));
+                    m_input.namedArguments.emplace_back(primaryToken.value, createValue(secondaryToken));
                 }
                 else
                 {
-                    m_input.arguments.push_back(createAnyArg(primaryToken));
+                    m_input.arguments.push_back(createValue(primaryToken));
                 }
 
                 tokens.reset();

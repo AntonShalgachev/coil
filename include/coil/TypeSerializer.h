@@ -166,7 +166,7 @@ namespace coil
         if (input.subvalues.empty() || input.subvalues[0].empty())
             return std::optional<T>{};
 
-        Expected<T, std::string> innerValue = TypeSerializer<T>::fromString(input.subvalues[0]);
+        auto innerValue = TypeSerializer<T>::fromString(input.subvalues[0]);
         if (innerValue)
             return std::optional<T>{*innerValue};
 
@@ -200,7 +200,7 @@ namespace coil
 
         for (std::string_view subvalue : input.subvalues)
         {
-            Expected<T, std::string> expectedArg = TypeSerializer<T>::fromString(subvalue);
+            auto expectedArg = TypeSerializer<T>::fromString(subvalue);
             if (!expectedArg)
                 return errors::serializationError<std::vector<T>>(input, std::move(expectedArg).error());
 
