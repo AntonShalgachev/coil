@@ -94,14 +94,14 @@ namespace
     void printArgs(coil::Context context)
     {
         for (coil::NamedAnyArgView arg : context.namedArgs())
-            context.out() << arg.key() << ": " << arg.value().getRaw() << std::endl;
+            context.out() << arg.key() << ": " << arg.value() << std::endl;
     }
 
     void printFloats(coil::Context context)
     {
         for (coil::NamedAnyArgView arg : context.namedArgs())
             if (arg.value().get<float>())
-                context.out() << arg.key() << ": " << arg.value().getRaw() << std::endl;
+                context.out() << arg.key() << ": " << arg.value() << std::endl;
     }
 
     enum class SaveGameType

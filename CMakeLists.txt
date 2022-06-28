@@ -20,7 +20,6 @@ add_library(coil
 
     "include/coil/AnyArgView.h"
     "include/coil/AnyFunctor.h"
-    "include/coil/ArgValue.h"
     "include/coil/Bind.h"
     "include/coil/Bindings.h"
     "include/coil/Coil.h"

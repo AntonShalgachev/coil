@@ -65,7 +65,7 @@ namespace
         if (context.hasErrors())
             return;
 
-        context.out() << requiredAnyArg->getRaw() << ", " << *requiredFloatArg;
+        context.out() << *requiredAnyArg << ", " << *requiredFloatArg;
         if (optionalFloatArg)
             context.out() << ", " << *optionalFloatArg;
         context.out() << std::endl;

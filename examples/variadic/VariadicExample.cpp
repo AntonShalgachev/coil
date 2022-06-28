@@ -40,7 +40,7 @@ namespace
         if (target)
             target->name = newName;
         else
-            context.reportError("Failed to find entity '"s + entity.getRaw().str() + "'"s);
+            context.reportError("Failed to find entity '"s + entity.str() + "'"s);
     }
 
     void printEntities(coil::Context context)

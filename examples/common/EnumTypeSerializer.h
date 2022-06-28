@@ -19,7 +19,7 @@ namespace coil
     template<typename E>
     struct TypeSerializer<E, std::enable_if_t<std::is_enum_v<E>>>
     {
-        static Expected<E, std::string> fromString(ArgValue const& input)
+        static Expected<E, std::string> fromString(AnyArgView const& input)
         {
             if (input.subvalues.size() != 1)
                 return errors::wrongSubvaluesSize<E>(input, 1);
