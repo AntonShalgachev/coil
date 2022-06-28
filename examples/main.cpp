@@ -17,21 +17,33 @@
 #include "variadic/VariadicExample.h"
 
 template<typename Example>
-void bindExample(coil::Bindings& bindings, Example& example, std::string_view name)
+void bindExample(coil::Bindings& bindings, Example& example)
 {
-    bindings[name] = coil::bind(&Example::run, &example);
+    bindings[Example::name] = coil::bind(&Example::run, &example);
 }
 
 template<typename... Examples, std::size_t... Is>
-void bindExamples(coil::Bindings& bindings, std::tuple<Examples...>& examples, std::array<std::string_view, sizeof...(Examples)> const& names, std::index_sequence<Is...>)
+void bindExamples(coil::Bindings& bindings, std::tuple<Examples...>& examples, std::index_sequence<Is...>)
 {
-    (bindExample(bindings, std::get<Is>(examples), std::get<Is>(names)), ...);
+    (bindExample(bindings, std::get<Is>(examples)), ...);
 }
 
 template<typename... Examples>
-void bindExamples(coil::Bindings& bindings, std::tuple<Examples...>& examples, std::array<std::string_view, sizeof...(Examples)> const& names)
+void bindExamples(coil::Bindings& bindings, std::tuple<Examples...>& examples)
 {
-    bindExamples(bindings, examples, names, std::make_index_sequence<sizeof...(Examples)>{});
+    bindExamples(bindings, examples, std::make_index_sequence<sizeof...(Examples)>{});
+}
+
+template<typename ExamplesTuple, std::size_t... Is>
+auto extractNames(std::index_sequence<Is...>)
+{
+    return std::array<std::string_view, sizeof...(Is)>{std::tuple_element_t<Is, ExamplesTuple>::name...};
+}
+
+template<typename ExamplesTuple>
+auto extractNames()
+{
+    return extractNames<ExamplesTuple>(std::make_index_sequence<std::tuple_size_v<ExamplesTuple>>());
 }
 
 int main()
@@ -54,21 +66,7 @@ int main()
 	>;
     // clang-format on
 
-    std::array<std::string_view, std::tuple_size_v<Examples>> names = {
-        "basic",
-        "variables",
-        "enums",
-        "flags",
-        "variadic",
-        "named",
-        "usertypes",
-        "errors",
-        "compound",
-        "overloading",
-        "properties",
-        "advanced",
-        "encapsulation",
-    };
+    auto names = extractNames<Examples>();
 
     std::array<std::string_view, 4> commands = {
         "help",
@@ -101,7 +99,7 @@ int main()
     };
 
     Examples examples;
-    bindExamples(bindings, examples, names);
+    bindExamples(bindings, examples);
 
     auto execute = [&bindings](std::string_view str) {
         auto result = bindings.execute(str);
