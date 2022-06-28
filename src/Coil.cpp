@@ -384,7 +384,7 @@ namespace coil
         return std::string{value};
     }
 
-    /// ExecutionResult.h ///
+    /// TypeName.h ///
     COIL_CREATE_TYPE_NAME_DEFINITION(bool);
     COIL_CREATE_TYPE_NAME_DEFINITION(char);
     COIL_CREATE_TYPE_NAME_DEFINITION(signed char);
