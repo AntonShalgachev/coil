@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Context.h"
+#include "../TypeSerializer.h"
 #include "../Types.h"
 #include "FuncTraits.h"
 
