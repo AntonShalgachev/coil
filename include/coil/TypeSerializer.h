@@ -189,7 +189,7 @@ namespace coil
     {
         static Expected<std::vector<T>, std::string> fromString(ArgValue const& input);
 
-        // TODO implement toString
+        static std::string toString(std::vector<T> const& value);
     };
 
     template<typename T>
@@ -208,6 +208,22 @@ namespace coil
         }
 
         return result;
+    }
+
+    template<typename T>
+    std::string coil::TypeSerializer<std::vector<T>>::toString(std::vector<T> const& value)
+    {
+        std::stringstream ss;
+        ss << '{';
+        std::string_view separator = "";
+        for (T const& element : value)
+        {
+            ss << separator << TypeSerializer<T>::toString(element);
+            separator = ", ";
+        }
+        ss << '}';
+
+        return ss.str();
     }
 
     //////////////////////////////////////
