@@ -75,7 +75,7 @@ void EnumsExample::run()
     common::executeCommand(bindings, "abilities.get_ability");
     common::executeCommand(bindings, "abilities.get_reset_mode");
 
-	common::printSectionHeader("Enum variables can also be used:");
-	common::executeCommand(bindings, "variable_type");
-	common::executeCommand(bindings, "variable_type Float");
+    common::printSectionHeader("Enum variables can also be used:");
+    common::executeCommand(bindings, "variable_type");
+    common::executeCommand(bindings, "variable_type Float");
 }
