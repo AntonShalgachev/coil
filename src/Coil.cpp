@@ -233,13 +233,13 @@ namespace coil
     }
 
     /// NamedArgs.h ///
-    NamedValue::NamedValue(std::string_view key, Value value) : m_key(key), m_value(std::move(value)) {} // TODO check
+    NamedValue::NamedValue(std::string_view key, Value const& value) : m_key(key), m_value(value) {}
 
     std::string_view NamedValue::key() const
     {
         return m_key;
     }
-    Value NamedValue::value() const
+    Value const& NamedValue::value() const
     {
         return m_value;
     }
@@ -274,23 +274,23 @@ namespace coil
 
     NamedArgs::NamedArgs(detail::CallContext& context) : m_context(context) {}
 
-    Expected<Value, NamedArgs::Error> NamedArgs::get(std::string_view key) const
+    Expected<std::reference_wrapper<Value const>, NamedArgs::Error> NamedArgs::get(std::string_view key) const
     {
         auto it = find(key);
         if (it == end())
             return makeUnexpected(Error(Error::Type::MissingKey, formatString("Missing named argument '%.*s'", key.size(), key.data())));
 
-        return it->value();
+        return {it->value()};
     }
 
-    std::optional<Value> NamedArgs::getOrReport(std::string_view key, ArgType argType) const
+    Value const* NamedArgs::getOrReport(std::string_view key, ArgType argType) const
     {
-        if (Expected<Value, Error> anyArg = get(key))
-            return *anyArg;
+        if (auto anyArg = get(key))
+            return &static_cast<Value const&>(*anyArg);
         else if (argType == ArgType::Required)
             m_context.reportError(std::move(anyArg).error().message);
 
-        return {};
+        return nullptr;
     }
 
     std::size_t NamedArgs::size() const
@@ -339,6 +339,16 @@ namespace coil
     std::ostream& operator<<(std::ostream& os, Value const& rhs)
     {
         return os << rhs.str();
+    }
+
+    coil::Expected<std::reference_wrapper<Value const>, std::string> coil::TypeSerializer<Value>::fromString(Value const& value)
+    {
+        return {value};
+    }
+
+    std::string coil::TypeSerializer<Value>::toString(Value const& value)
+    {
+        return value.str();
     }
 
     /// TypeSerializer.h ///

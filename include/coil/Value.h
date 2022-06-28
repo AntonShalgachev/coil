@@ -35,9 +35,7 @@ namespace coil
     template<>
     struct TypeSerializer<Value, void>
     {
-        static Expected<Value, std::string> fromString(Value const& value)
-        {
-            return value; // TODO prevent a copy
-        }
+        static Expected<std::reference_wrapper<Value const>, std::string> fromString(Value const& value);
+        static std::string toString(Value const& value);
     };
 }

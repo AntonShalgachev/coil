@@ -737,14 +737,14 @@ TEST(BindingsTests, TestNamedArgsGetOrReport)
 
         {
             auto o = namedArgs.getOrReport("arg1", coil::NamedArgs::ArgType::Required);
-            ASSERT_TRUE(o.has_value());
+            ASSERT_TRUE(o);
             EXPECT_EQ(o->str(), "str"sv);
             EXPECT_FALSE(context.hasErrors());
         }
 
         {
             auto o = namedArgs.getOrReport("non_existent_arg", coil::NamedArgs::ArgType::Optional);
-            ASSERT_FALSE(o.has_value());
+            ASSERT_FALSE(o);
             EXPECT_FALSE(context.hasErrors());
         }
     };

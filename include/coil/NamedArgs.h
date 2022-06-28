@@ -8,14 +8,14 @@ namespace coil
     class NamedValue
     {
     public:
-        NamedValue(std::string_view key, Value value);
+        NamedValue(std::string_view key, Value const& value);
 
         std::string_view key() const;
-        Value value() const;
+        Value const& value() const;
 
     private:
         std::string_view m_key;
-        Value m_value; // TODO store reference, check for no copies (std::move)
+        Value const& m_value;
     };
 
     class NamedArgsIterator
@@ -73,7 +73,7 @@ namespace coil
 
         NamedArgs(detail::CallContext& context);
 
-        Expected<Value, Error> get(std::string_view key) const;
+        Expected<std::reference_wrapper<Value const>, Error> get(std::string_view key) const;
 
         template<typename T>
         Expected<T, Error> get(std::string_view key) const;
@@ -84,7 +84,7 @@ namespace coil
             Required,
         };
 
-        std::optional<Value> getOrReport(std::string_view key, ArgType argType = ArgType::Optional) const;
+        Value const* getOrReport(std::string_view key, ArgType argType = ArgType::Optional) const;
 
         template<typename T>
         std::optional<T> getOrReport(std::string_view key, ArgType argType = ArgType::Optional, std::optional<T> defaultValue = {}) const;
@@ -104,11 +104,11 @@ namespace coil
     template<typename T>
     Expected<T, NamedArgs::Error> NamedArgs::get(std::string_view key) const
     {
-        Expected<Value, Error> typelessValue = get(key);
+        auto typelessValue = get(key);
         if (!typelessValue)
             return makeUnexpected(std::move(typelessValue).error());
 
-        Expected<T, std::string> value = typelessValue->get<T>();
+        Expected<T, std::string> value = static_cast<Value const&>(*typelessValue).get<T>();
         if (!value)
             return makeUnexpected(Error(Error::Type::TypeMismatch, std::move(value).error()));
 
