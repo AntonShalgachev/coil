@@ -5,17 +5,17 @@
 
 namespace coil
 {
-    class NamedAnyArgView
+    class NamedValue
     {
     public:
-        NamedAnyArgView(std::string_view key, Value value);
+        NamedValue(std::string_view key, Value value);
 
         std::string_view key() const;
         Value value() const;
 
     private:
         std::string_view m_key;
-        Value m_value;
+        Value m_value; // TODO store reference, check for no copies (std::move)
     };
 
     class NamedArgsIterator
@@ -24,19 +24,19 @@ namespace coil
         using UnderlyingIteratorT = decltype(std::declval<ExecutionInput>().namedArguments)::const_iterator;
 
         using iterator_category = std::forward_iterator_tag;
-        using value_type = NamedAnyArgView;
+        using value_type = NamedValue;
         using difference_type = UnderlyingIteratorT::difference_type;
-        using pointer = NamedAnyArgView*;
-        using reference = NamedAnyArgView&;
+        using pointer = NamedValue*;
+        using reference = NamedValue&;
 
         NamedArgsIterator(UnderlyingIteratorT iterator);
 
-        NamedAnyArgView operator*();
+        NamedValue operator*();
 
         struct NamedArgContainer
         {
-            NamedAnyArgView arg;
-            NamedAnyArgView* operator->()
+            NamedValue arg;
+            NamedValue* operator->()
             {
                 return std::addressof(arg);
             }
@@ -104,11 +104,11 @@ namespace coil
     template<typename T>
     Expected<T, NamedArgs::Error> NamedArgs::get(std::string_view key) const
     {
-        Expected<Value, Error> anyArg = get(key);
-        if (!anyArg)
-            return makeUnexpected(std::move(anyArg).error());
+        Expected<Value, Error> typelessValue = get(key);
+        if (!typelessValue)
+            return makeUnexpected(std::move(typelessValue).error());
 
-        Expected<T, std::string> value = anyArg->get<T>();
+        Expected<T, std::string> value = typelessValue->get<T>();
         if (!value)
             return makeUnexpected(Error(Error::Type::TypeMismatch, std::move(value).error()));
 

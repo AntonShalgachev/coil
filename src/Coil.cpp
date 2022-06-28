@@ -233,22 +233,22 @@ namespace coil
     }
 
     /// NamedArgs.h ///
-    NamedAnyArgView::NamedAnyArgView(std::string_view key, Value value) : m_key(key), m_value(std::move(value)) {} // TODO check
+    NamedValue::NamedValue(std::string_view key, Value value) : m_key(key), m_value(std::move(value)) {} // TODO check
 
-    std::string_view NamedAnyArgView::key() const
+    std::string_view NamedValue::key() const
     {
         return m_key;
     }
-    Value NamedAnyArgView::value() const
+    Value NamedValue::value() const
     {
         return m_value;
     }
 
     NamedArgsIterator::NamedArgsIterator(UnderlyingIteratorT iterator) : m_iterator(iterator) {}
 
-    NamedAnyArgView NamedArgsIterator::operator*()
+    NamedValue NamedArgsIterator::operator*()
     {
-        return NamedAnyArgView(m_iterator->first, m_iterator->second);
+        return NamedValue(m_iterator->first, m_iterator->second);
     }
 
     NamedArgsIterator::NamedArgContainer NamedArgsIterator::operator->()
@@ -310,7 +310,7 @@ namespace coil
 
     NamedArgsIterator NamedArgs::find(std::string_view key) const
     {
-        return std::find_if(begin(), end(), [key](NamedAnyArgView const& arg) { return arg.key() == key; });
+        return std::find_if(begin(), end(), [key](NamedValue const& arg) { return arg.key() == key; });
     }
 
     /// Value.h ///
