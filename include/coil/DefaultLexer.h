@@ -204,7 +204,7 @@ namespace coil
                         i++;
 
                     if (i >= str.size())
-                        return makeUnexpected(formatString("Token '%c' doesn't have an opening/closing token", str[tokenBegin])); // TODO "a corresponding opening/closing token"
+                        return makeUnexpected(formatString("Token '%c' doesn't have a corresponding opening/closing token", str[tokenBegin]));
 
                     m_tokens.emplace_back(TokenType::GroupString, str.substr(tokenBegin + 1, i - tokenBegin - 1));
                     break;
