@@ -121,10 +121,10 @@ namespace coil
     }
 
     /// Bindings.h ///
-	void Bindings::setLexer(LexerFunc lexer)
-	{
-		m_lexer = std::move(lexer);
-	}
+    void Bindings::setLexer(LexerFunc lexer)
+    {
+        m_lexer = std::move(lexer);
+    }
 
     BindingProxy<Bindings> Bindings::operator[](std::string_view name)
     {
