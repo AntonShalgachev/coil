@@ -55,32 +55,25 @@ namespace coil
             return std::isspace(c);
         }
 
-        static bool isGroupChar(unsigned char c)
+        bool isGroupChar(unsigned char c) const
         {
-            // TODO make configurable?
-            static std::vector<unsigned char> chars = {'(', ')'};
-            return std::find(chars.begin(), chars.end(), c) != chars.end();
+            return std::find(m_groupParentheses.begin(), m_groupParentheses.end(), c) != m_groupParentheses.end();
         }
 
-        static bool isQuote(unsigned char c)
+        bool isQuote(unsigned char c) const
         {
-            // TODO make configurable?
-            static std::vector<unsigned char> quotes = {'\'', '"'};
-            return std::find(quotes.begin(), quotes.end(), c) != quotes.end();
+            return std::find(m_quotes.begin(), m_quotes.end(), c) != m_quotes.end();
         }
 
-        static bool isGroupSeparator(unsigned char c)
+        bool isGroupSeparator(unsigned char c) const
         {
-            // TODO make configurable?
-            static std::vector<unsigned char> chars = {',', ';', '|'};
-
             if (isSpace(c))
                 return true;
 
-            return std::find(chars.begin(), chars.end(), c) != chars.end();
+            return std::find(m_groupSeparators.begin(), m_groupSeparators.end(), c) != m_groupSeparators.end();
         }
 
-        static CharType getCharType(unsigned char c)
+        CharType getCharType(unsigned char c) const
         {
             if (c == '=')
                 return CharType::Assignment;
@@ -123,7 +116,7 @@ namespace coil
 
                 std::size_t stringBegin = i;
                 bool inQuotes = false;
-                auto shouldSkipChar = [](unsigned char c, bool inQuotes) { return inQuotes || !isGroupSeparator(c); };
+                auto shouldSkipChar = [this](unsigned char c, bool inQuotes) { return inQuotes || !isGroupSeparator(c); };
                 while ((i < str.size()) && shouldSkipChar(str[i], inQuotes))
                 {
                     if (isQuote(str[i]))
@@ -313,5 +306,10 @@ namespace coil
 
             return {std::move(input)};
         }
+
+    private:
+        std::string_view m_groupParentheses = "()";
+        std::string_view m_quotes = "'\"";
+        std::string_view m_groupSeparators = ",;|";
     };
 }
