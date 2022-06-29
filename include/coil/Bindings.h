@@ -15,14 +15,17 @@
 
 namespace coil
 {
-    using StringWrapper = BasicStringWrapper<std::string>;
-
     template<typename BindingsT>
     class BindingProxy;
 
     class Bindings
     {
     public:
+        using StringWrapper = BasicStringWrapper<std::string>;
+        using LexerFunc = std::function<Expected<ExecutionInput, std::string>(std::string_view)>;
+
+        void setLexer(LexerFunc lexer);
+
         BindingProxy<Bindings> operator[](std::string_view name);
 
         template<typename Func>
@@ -43,31 +46,12 @@ namespace coil
         std::vector<std::string_view> const& commands() const;
 
         ExecutionResult execute(std::string_view command);
-
-        template<typename InputT, typename LexerT>
-        ExecutionResult execute(InputT&& command, LexerT&& lexer)
-        {
-            static_assert(std::is_invocable_v<LexerT, InputT>, "LexerT should be invocable with InputT");
-
-            auto input = lexer(std::forward<InputT>(command));
-            if (!input)
-            {
-                ExecutionResult result;
-                result.errors.push_back(std::string("Syntax error: ") + input.error());
-                return result;
-            }
-
-            static_assert(std::is_convertible_v<decltype(*input), ExecutionInput const&>, "The result of invoking LexerT should be convertible to ExecutionInput const&");
-
-            return execute(*input);
-        }
-
         ExecutionResult execute(ExecutionInput const& input);
 
     private:
         void execute(detail::CallContext& context);
 
-        DefaultLexer m_defaultLexer;
+        LexerFunc m_lexer = DefaultLexer{};
 
         std::unordered_map<StringWrapper, std::vector<AnyFunctor>> m_commands;
         std::vector<std::string_view> m_commandNames;
