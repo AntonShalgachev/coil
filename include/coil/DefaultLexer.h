@@ -16,6 +16,11 @@ namespace coil
     struct DefaultLexer
     {
     public:
+        DefaultLexer(std::string_view groupParenthesis = "()", std::string_view quotes = "'\"", std::string_view groupSeparators = ",;|")
+            : m_groupParentheses(groupParenthesis), m_quotes(quotes), m_groupSeparators(groupSeparators)
+        {
+        }
+
         Expected<ExecutionInput, std::string> operator()(std::string_view str) const
         {
             auto tokens = tokenize(str);
@@ -308,8 +313,8 @@ namespace coil
         }
 
     private:
-        std::string_view m_groupParentheses = "()";
-        std::string_view m_quotes = "'\"";
-        std::string_view m_groupSeparators = ",;|";
+        std::string_view m_groupParentheses;
+        std::string_view m_quotes;
+        std::string_view m_groupSeparators;
     };
 }
