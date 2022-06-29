@@ -230,6 +230,11 @@ namespace coil
         return m_callContext.log();
     }
 
+    void Context::log(std::string_view str)
+    {
+        log() << str;
+    }
+
     void Context::reportError(std::string error)
     {
         m_callContext.reportError(std::move(error));
