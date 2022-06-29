@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ArgValue.h"
+#include "Value.h"
 
 #include <string>
 #include <unordered_map>
@@ -11,15 +11,8 @@ namespace coil
     struct ExecutionInput
     {
         std::string_view name;
-        std::vector<ArgValue> arguments;
-        std::vector<std::pair<std::string_view, ArgValue>> namedArguments;
-
-        void reset()
-        {
-            name = {};
-            arguments.clear();
-            namedArguments.clear();
-        }
+        std::vector<Value> arguments;
+        std::vector<std::pair<std::string_view, Value>> namedArguments;
 
         auto tie() const
         {

@@ -18,9 +18,7 @@ add_library(coil
     "include/coil/detail/FuncTraits.h"
     "include/coil/detail/StringWrapper.h"
 
-    "include/coil/AnyArgView.h"
     "include/coil/AnyFunctor.h"
-    "include/coil/ArgValue.h"
     "include/coil/Bind.h"
     "include/coil/Bindings.h"
     "include/coil/Coil.h"
@@ -37,6 +35,7 @@ add_library(coil
     "include/coil/Types.h"
     "include/coil/TypeSerializer.h"
     "include/coil/Utils.h"
+    "include/coil/Value.h"
     "include/coil/Variable.h"
 
     "src/Coil.cpp"

@@ -108,13 +108,13 @@ namespace coil
     template<typename T>
     struct TypeSerializer<Tracker<T>>
     {
-        static Expected<Tracker<T>, std::string> fromString(ArgValue const& input)
+        static Expected<Tracker<T>, std::string> fromString(Value const& input)
         {
             Expected<T, std::string> innerValue = TypeSerializer<T>::fromString(input);
             if (innerValue)
                 return Tracker<T>{*innerValue};
 
-            return errors::serializationError<Tracker<T>>(input, innerValue.error());
+            return errors::createGenericError<Tracker<T>>(input, innerValue.error());
         }
 
         static std::string toString(Tracker<T> const& value)
@@ -126,18 +126,18 @@ namespace coil
     template<>
     struct TypeSerializer<CompoundType>
     {
-        static Expected<CompoundType, std::string> fromString(ArgValue const& input)
+        static Expected<CompoundType, std::string> fromString(Value const& input)
         {
             if (input.subvalues.size() != 2)
-                return errors::wrongSubvaluesSize<CompoundType>(input, 2);
+                return errors::createMismatchedSubvaluesError<CompoundType>(input, 2);
 
             auto field1 = TypeSerializer<int>::fromString(input.subvalues[0]);
             auto field2 = TypeSerializer<int>::fromString(input.subvalues[1]);
 
             if (!field1)
-                return errors::serializationError<CompoundType>(input, field1.error());
+                return errors::createGenericError<CompoundType>(input, field1.error());
             if (!field2)
-                return errors::serializationError<CompoundType>(input, field2.error());
+                return errors::createGenericError<CompoundType>(input, field2.error());
 
             return CompoundType{*field1, *field2};
         }
@@ -574,11 +574,19 @@ TEST(BindingsTests, TestFunctionReturnValue)
 TEST(BindingsTests, TestOutput)
 {
     coil::Bindings bindings;
-    bindings["func"] = [](coil::Context context, std::string value) { context.out() << value; };
-    auto result = bindings.execute("func Test");
+    bindings["func_stream"] = [](coil::Context context, std::string value) { context.log() << value; };
+    bindings["func_string"] = [](coil::Context context, std::string value) { context.log(value); };
 
-    EXPECT_EQ(result.errors.size(), 0u);
-    EXPECT_EQ(result.output.str(), "Test");
+    {
+        auto result = bindings.execute("func_stream Stream");
+        EXPECT_EQ(result.errors.size(), 0u);
+        EXPECT_EQ(result.output.str(), "Stream");
+    }
+    {
+        auto result = bindings.execute("func_string String");
+        EXPECT_EQ(result.errors.size(), 0u);
+        EXPECT_EQ(result.output.str(), "String");
+    }
 }
 
 TEST(BindingsTests, TestContextError)
@@ -673,13 +681,20 @@ TEST(BindingsTests, TestNonStdException)
     EXPECT_PRED2(containsError, result.errors, "Exception caught during execution");
 }
 
-TEST(BindingsTests, TestAnyArgView)
+TEST(BindingsTests, TestValue)
 {
     coil::Bindings bindings;
-    bindings["func"] = [](coil::AnyArgView const& value) { return *value.get<int>(); };
+    bindings["func_receive"] = [](coil::Value const& value) { return *value.get<int>(); };
+    bindings["func_return"] = [](coil::Value const& value) { return value; };
 
-    auto result = bindings.execute("func 42");
-    EXPECT_EQ(result.returnValue, "42");
+    {
+        auto result = bindings.execute("func_receive 42");
+        EXPECT_EQ(result.returnValue, "42");
+    }
+    {
+        auto result = bindings.execute("func_return Value");
+        EXPECT_EQ(result.returnValue, "Value");
+    }
 }
 
 TEST(BindingsTests, TestNamedArgsGet)
@@ -737,14 +752,14 @@ TEST(BindingsTests, TestNamedArgsGetOrReport)
 
         {
             auto o = namedArgs.getOrReport("arg1", coil::NamedArgs::ArgType::Required);
-            ASSERT_TRUE(o.has_value());
-            EXPECT_EQ(o->getRaw().str(), "str"sv);
+            ASSERT_TRUE(o);
+            EXPECT_EQ(o->str(), "str"sv);
             EXPECT_FALSE(context.hasErrors());
         }
 
         {
             auto o = namedArgs.getOrReport("non_existent_arg", coil::NamedArgs::ArgType::Optional);
-            ASSERT_FALSE(o.has_value());
+            ASSERT_FALSE(o);
             EXPECT_FALSE(context.hasErrors());
         }
     };
@@ -841,9 +856,9 @@ TEST(BindingsTests, TestTypeNames)
     EXPECT_EQ(coil::TypeName<long double>::name(), "long double"sv);
 }
 
-TEST(BindingsTests, TestArgValueToStream)
+TEST(BindingsTests, TestAnyArgToStream)
 {
-    coil::ArgValue value({"foo", "bar"});
+    coil::Value value({"foo", "bar"});
     std::stringstream ss;
     ss << value;
     EXPECT_EQ(ss.str(), "foo bar");
@@ -896,4 +911,23 @@ TEST(BindingsTests, TestPointers)
         EXPECT_EQ(result.errors.size(), 0u);
         EXPECT_EQ(result.returnValue, "null");
     }
+}
+
+TEST(BindingsTests, TestCustomLexer)
+{
+    coil::Bindings bindings;
+
+    auto lexer = [](std::string_view input) -> coil::Expected<coil::ExecutionInput, std::string> {
+        coil::ExecutionInput result;
+        result.name = input;
+        return result;
+    };
+
+    bindings.setLexer(std::move(lexer));
+
+    bindings["func with spaces"] = []() { return 42; };
+
+    auto result = bindings.execute("func with spaces");
+    EXPECT_EQ(result.errors.size(), 0u);
+    EXPECT_EQ(result.returnValue, "42");
 }

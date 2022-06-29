@@ -41,12 +41,25 @@ namespace
 
     void createExplosion(coil::Context context, std::string_view id)
     {
-        context.out() << "Creating an explosion '" << id << "' with the default radius" << std::endl;
+        context.log() << "Creating an explosion '" << id << "' with the default radius" << std::endl;
     }
 
     void createExplosion(coil::Context context, std::string_view id, float radius)
     {
-        context.out() << "Creating an explosion '" << id << "' with the radius " << radius << std::endl;
+        context.log() << "Creating an explosion '" << id << "' with the radius " << radius << std::endl;
+    }
+
+    // A small helper function template which returns the pointer to the specific overloaded function
+    // Signature should be of form R(Arg1, Arg2), where R -- return type, ArgN -- parameter types
+    // Usage:
+    // int func(int, float) {return 42;}
+    // bool func(float, std::string) {return false;}
+    // bindings["func1"] = coil::resolve<int(int, float)>(func);
+    // bindings["func2"] = coil::resolve<bool(float, std::string)>(func);
+    template<typename Signature>
+    Signature* resolve(Signature* func)
+    {
+        return func;
     }
 }
 
@@ -60,9 +73,9 @@ void OverloadingExample::run()
     bindings["func"] = coil::overloaded(&func1, &func2, &func3);
     bindings["mixed_func"] = coil::overloaded([]() { return "lambda1"; }, &func2, coil::bind(&Object::func1, &object1), coil::bind(&Object::func2, &object2));
     bindings["explosions.create"] = coil::overloaded(
-        // use coil::resolve to get a pointer to the specific overloaded function
-        coil::resolve<void(coil::Context, std::string_view)>(createExplosion),
-        coil::resolve<void(coil::Context, std::string_view, float)>(createExplosion));
+        // use ::resolve to get a pointer to the specific overloaded function
+        ::resolve<void(coil::Context, std::string_view)>(createExplosion),
+        ::resolve<void(coil::Context, std::string_view, float)>(createExplosion));
 
     common::printSectionHeader("Several functions can be bound to the same command:");
     common::executeCommand(bindings, "func");

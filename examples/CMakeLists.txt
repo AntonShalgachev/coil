@@ -4,7 +4,7 @@ add_executable(${PROJECT_NAME}
     "main.cpp"
     
     "common/CustomTypeName.h"
-    "common/EnumToString.h"
+    "common/EnumTypeSerializer.h"
     "common/ExamplesCommon.cpp"
     "common/ExamplesCommon.h"
     
@@ -33,6 +33,8 @@ add_executable(${PROJECT_NAME}
     "properties/PropertiesExample.h"
     "advanced/AdvancedExample.cpp"
     "advanced/AdvancedExample.h"
+    "encapsulation/EncapsulationExample.cpp"
+    "encapsulation/EncapsulationExample.h"
 )
 
 target_include_directories(${PROJECT_NAME} PRIVATE

@@ -91,7 +91,7 @@ namespace
 
     [[maybe_unused]] void freeFuncWithoutArgsWithContext(coil::Context) {}
 
-    [[maybe_unused]] std::size_t funcVariadicVector(float, std::string const&, std::vector<coil::AnyArgView> const& args)
+    [[maybe_unused]] std::size_t funcVariadicVector(float, std::string const&, std::vector<coil::Value> const& args)
     {
         return args.size();
     }
@@ -148,7 +148,7 @@ namespace coil
     template<typename E>
     struct TypeSerializer<E, std::enable_if_t<std::is_enum_v<E>>>
     {
-        static Expected<E, std::string> fromString(ArgValue const& input)
+        static Expected<E, std::string> fromString(Value const& input)
         {
             return E{};
         }
@@ -162,7 +162,7 @@ namespace coil
     template<>
     struct TypeSerializer<Object>
     {
-        static Expected<Object, std::string> fromString(ArgValue const& input)
+        static Expected<Object, std::string> fromString(Value const& input)
         {
             return Object{};
         }

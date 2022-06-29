@@ -70,7 +70,7 @@ namespace coil
 
     private:
         detail::AnyStorageBase* m_storage = nullptr;
-        std::size_t m_arity;
+        std::size_t m_arity = 0;
     };
 
     template<typename FunctionWrapper>
@@ -79,5 +79,4 @@ namespace coil
         m_storage = new detail::AnyStorage<FunctionWrapper>(std::move(func));
         m_arity = FunctionWrapper::ArgsTraits::UserArgumentTypes::size;
     }
-
 }

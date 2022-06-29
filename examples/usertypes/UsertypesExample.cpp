@@ -106,7 +106,7 @@ namespace coil
     template<>
     struct TypeSerializer<EntityId>
     {
-        static Expected<EntityId, std::string> fromString(ArgValue const& input)
+        static Expected<EntityId, std::string> fromString(Value const& input)
         {
             auto index = TypeSerializer<std::size_t>::fromString(input);
             if (!index)
@@ -114,7 +114,7 @@ namespace coil
                 // You can pass additional information to this function, which could clarify
                 // what went wrong. Here we pass `index.error()`, which is an error message
                 // from the index deserialization with the details
-                return errors::serializationError<EntityId>(input, index.error());
+                return errors::createGenericError<EntityId>(input, index.error());
             }
 
             return EntityId{*index};
@@ -131,18 +131,18 @@ namespace coil
     template<>
     struct TypeSerializer<Vec2>
     {
-        static Expected<Vec2, std::string> fromString(ArgValue const& input)
+        static Expected<Vec2, std::string> fromString(Value const& input)
         {
             if (input.subvalues.size() != 2)
-                return errors::wrongSubvaluesSize<Vec2>(input, 2);
+                return errors::createMismatchedSubvaluesError<Vec2>(input, 2);
 
             auto x = TypeSerializer<float>::fromString(input.subvalues[0]);
             auto y = TypeSerializer<float>::fromString(input.subvalues[1]);
 
             if (!x)
-                return errors::serializationError<Vec2>(input, x.error());
+                return errors::createGenericError<Vec2>(input, x.error());
             if (!y)
-                return errors::serializationError<Vec2>(input, y.error());
+                return errors::createGenericError<Vec2>(input, y.error());
 
             return Vec2{*x, *y};
         }
@@ -158,7 +158,7 @@ namespace coil
     template<typename T>
     struct TypeSerializer<DynamicArray<T>>
     {
-        static Expected<DynamicArray<T>, std::string> fromString(ArgValue const& input)
+        static Expected<DynamicArray<T>, std::string> fromString(Value const& input)
         {
             DynamicArray<T> result;
 
@@ -166,7 +166,7 @@ namespace coil
             {
                 Expected<T, std::string> expectedArg = TypeSerializer<T>::fromString(subvalue);
                 if (!expectedArg)
-                    return errors::serializationError<DynamicArray<T>>(input, std::move(expectedArg).error());
+                    return errors::createGenericError<DynamicArray<T>>(input, std::move(expectedArg).error());
 
                 result.push_back(*std::move(expectedArg));
             }

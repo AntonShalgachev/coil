@@ -13,7 +13,7 @@ namespace coil::detail
         ExecutionInput const& input;
         ExecutionResult result;
 
-        std::ostream& out();
+        std::ostream& log();
 
         void reportError(std::string error);
 
