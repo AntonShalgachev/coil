@@ -121,6 +121,11 @@ namespace coil
     }
 
     /// Bindings.h ///
+	void Bindings::setLexer(LexerFunc lexer)
+	{
+		m_lexer = std::move(lexer);
+	}
+
     BindingProxy<Bindings> Bindings::operator[](std::string_view name)
     {
         return BindingProxy<Bindings>{*this, {name}};
@@ -167,7 +172,15 @@ namespace coil
 
     ExecutionResult Bindings::execute(std::string_view command)
     {
-        return execute(command, m_defaultLexer);
+        Expected<ExecutionInput, std::string> input = m_lexer(command);
+        if (!input)
+        {
+            ExecutionResult result;
+            result.errors.push_back(std::string("Syntax error: ") + input.error());
+            return result;
+        }
+
+        return execute(*input);
     }
 
     void Bindings::execute(detail::CallContext& context)
