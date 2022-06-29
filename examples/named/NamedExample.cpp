@@ -70,11 +70,11 @@ namespace
             return nameOk && minAmountOk && sourceOk && typeOk;
         };
 
-        context.out() << "ID\tName\tAmount\tSource\tType" << std::endl;
+        context.log() << "ID\tName\tAmount\tSource\tType" << std::endl;
 
         for (Item const& item : items)
             if (doesItemMatch(item))
-                printItem(context.out(), item);
+                printItem(context.log(), item);
     }
 
     void addItem(coil::Context context, std::uint64_t id, std::string_view name)
@@ -93,15 +93,15 @@ namespace
 
     void printArgs(coil::Context context)
     {
-        for (coil::NamedAnyArgView arg : context.namedArgs())
-            context.out() << arg.key() << ": " << arg.value().getRaw() << std::endl;
+        for (auto const& arg : context.namedArgs())
+            context.log() << arg.key() << ": " << arg.value() << std::endl;
     }
 
     void printFloats(coil::Context context)
     {
-        for (coil::NamedAnyArgView arg : context.namedArgs())
+        for (auto const& arg : context.namedArgs())
             if (arg.value().get<float>())
-                context.out() << arg.key() << ": " << arg.value().getRaw() << std::endl;
+                context.log() << arg.key() << ": " << arg.value() << std::endl;
     }
 
     enum class SaveGameType
@@ -120,7 +120,7 @@ namespace
         if (!type || !delay)
             return;
 
-        context.out() << "Saving game with type " << magic_enum::enum_name(*type) << " and delay " << *delay << "ms" << std::endl;
+        context.log() << "Saving game with type " << magic_enum::enum_name(*type) << " and delay " << *delay << "ms" << std::endl;
     }
 
     void requiredAndOptional(coil::Context context)
@@ -132,9 +132,9 @@ namespace
             return; // the error is already reported
 
         if (auto valueBool = requiredAnyArg->get<bool>())
-            context.out() << "Required: " << std::boolalpha << *valueBool << std::noboolalpha << std::endl;
+            context.log() << "Required: " << std::boolalpha << *valueBool << std::noboolalpha << std::endl;
         else if (auto valueInt = requiredAnyArg->get<int>())
-            context.out() << "Required: " << *valueInt << std::endl;
+            context.log() << "Required: " << *valueInt << std::endl;
         else
             context.reportErrors(std::move(valueBool).error(), std::move(valueInt).error());
 
@@ -142,9 +142,9 @@ namespace
         if (optionalAnyArg)
         {
             if (auto valueBool = optionalAnyArg->get<bool>())
-                context.out() << "Optional: " << std::boolalpha << *valueBool << std::noboolalpha << std::endl;
+                context.log() << "Optional: " << std::boolalpha << *valueBool << std::noboolalpha << std::endl;
             else if (auto valueInt = optionalAnyArg->get<int>())
-                context.out() << "Optional: " << *valueInt << std::endl;
+                context.log() << "Optional: " << *valueInt << std::endl;
             else
                 context.reportErrors(std::move(valueBool).error(), std::move(valueInt).error());
         }
@@ -179,7 +179,7 @@ void NamedExample::run()
     common::printSectionHeader("You can iterate over NamedArgs:");
     common::executeCommand(bindings, "print_args arg1 = value1 arg2 = 0.1 arg3 = true arg4 = 3.1415");
 
-    common::printSectionHeader("You can treat individual argument as AnyArgView:");
+    common::printSectionHeader("You can treat individual argument as a typeless Value:");
     common::executeCommand(bindings, "print_floats arg1 = value1 arg2 = 0.1 arg3 = true arg4 = 3.1415");
 
     common::printSectionHeader("You can use NamedArgs to override default values");

@@ -30,6 +30,10 @@ int main()
     cmd["foo.bar"] = &funcVariadicVector;
     cmd["foo.bar"] = &funcFloatVector;
     cmd["foo.bar"] = &funcOptional;
+    cmd["foo.bar"] = [](coil::Value) {};
+    cmd["foo.bar"] = [](coil::Value const) {};
+    cmd["foo.bar"] = [](coil::Value const&) {};
+    cmd["foo.bar"] = []() { return coil::Value{}; };
 
     // Functors with enums
     cmd["foo.bar"] = &funcScopedEnum;

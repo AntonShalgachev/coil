@@ -3,21 +3,6 @@
 #include <string>
 #include <string_view>
 
-// TODO move basic names here
-
-#define COIL_CREATE_TYPE_NAME_DECLARATION(T) \
-    template<>                               \
-    struct TypeName<T>                       \
-    {                                        \
-        static std::string_view name();      \
-    }
-
-#define COIL_CREATE_TYPE_NAME_DEFINITION(T) \
-    std::string_view TypeName<T>::name()    \
-    {                                       \
-        return #T;                          \
-    }
-
 namespace coil
 {
     // This is the expected signature of the class
@@ -32,6 +17,23 @@ namespace coil
 
     template<typename T, typename = void>
     struct TypeName;
+}
+
+// TODO make these type name declarations optional
+namespace coil
+{
+#define COIL_CREATE_TYPE_NAME_DECLARATION(T) \
+    template<>                               \
+    struct TypeName<T>                       \
+    {                                        \
+        static std::string_view name();      \
+    }
+
+#define COIL_CREATE_TYPE_NAME_DEFINITION(T) \
+    std::string_view TypeName<T>::name()    \
+    {                                       \
+        return #T;                          \
+    }
 
     COIL_CREATE_TYPE_NAME_DECLARATION(bool);
     COIL_CREATE_TYPE_NAME_DECLARATION(char);
@@ -52,5 +54,3 @@ namespace coil
     COIL_CREATE_TYPE_NAME_DECLARATION(std::string);
     COIL_CREATE_TYPE_NAME_DECLARATION(std::string_view);
 }
-
-// TODO undef this macro?

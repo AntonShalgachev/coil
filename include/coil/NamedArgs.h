@@ -1,21 +1,23 @@
 #pragma once
 
-#include "AnyArgView.h"
+#include "Value.h"
 #include "detail/CallContext.h"
+
+#include <functional>
 
 namespace coil
 {
-    class NamedAnyArgView
+    class NamedValue
     {
     public:
-        NamedAnyArgView(std::string_view key, ArgValue value);
+        NamedValue(std::string_view key, Value const& value);
 
         std::string_view key() const;
-        AnyArgView value() const;
+        Value const& value() const;
 
     private:
         std::string_view m_key;
-        AnyArgView m_value;
+        Value const& m_value;
     };
 
     class NamedArgsIterator
@@ -24,19 +26,19 @@ namespace coil
         using UnderlyingIteratorT = decltype(std::declval<ExecutionInput>().namedArguments)::const_iterator;
 
         using iterator_category = std::forward_iterator_tag;
-        using value_type = NamedAnyArgView;
+        using value_type = NamedValue;
         using difference_type = UnderlyingIteratorT::difference_type;
-        using pointer = NamedAnyArgView*;
-        using reference = NamedAnyArgView&;
+        using pointer = NamedValue*;
+        using reference = NamedValue&;
 
         NamedArgsIterator(UnderlyingIteratorT iterator);
 
-        NamedAnyArgView operator*();
+        NamedValue operator*();
 
         struct NamedArgContainer
         {
-            NamedAnyArgView arg;
-            NamedAnyArgView* operator->()
+            NamedValue arg;
+            NamedValue* operator->()
             {
                 return std::addressof(arg);
             }
@@ -73,7 +75,7 @@ namespace coil
 
         NamedArgs(detail::CallContext& context);
 
-        Expected<AnyArgView, Error> get(std::string_view key) const;
+        Expected<std::reference_wrapper<Value const>, Error> get(std::string_view key) const;
 
         template<typename T>
         Expected<T, Error> get(std::string_view key) const;
@@ -84,7 +86,7 @@ namespace coil
             Required,
         };
 
-        std::optional<AnyArgView> getOrReport(std::string_view key, ArgType argType = ArgType::Optional) const;
+        Value const* getOrReport(std::string_view key, ArgType argType = ArgType::Optional) const;
 
         template<typename T>
         std::optional<T> getOrReport(std::string_view key, ArgType argType = ArgType::Optional, std::optional<T> defaultValue = {}) const;
@@ -104,11 +106,11 @@ namespace coil
     template<typename T>
     Expected<T, NamedArgs::Error> NamedArgs::get(std::string_view key) const
     {
-        Expected<AnyArgView, Error> anyArg = get(key);
-        if (!anyArg)
-            return makeUnexpected(std::move(anyArg).error());
+        auto typelessValue = get(key);
+        if (!typelessValue)
+            return makeUnexpected(std::move(typelessValue).error());
 
-        Expected<T, std::string> value = anyArg->get<T>();
+        Expected<T, std::string> value = static_cast<Value const&>(*typelessValue).get<T>();
         if (!value)
             return makeUnexpected(Error(Error::Type::TypeMismatch, std::move(value).error()));
 

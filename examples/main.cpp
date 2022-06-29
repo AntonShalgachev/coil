@@ -5,6 +5,7 @@
 #include "advanced/AdvancedExample.h"
 #include "basic/BasicExample.h"
 #include "compound/CompoundExample.h"
+#include "encapsulation/EncapsulationExample.h"
 #include "enums/EnumsExample.h"
 #include "errors/ErrorsExample.h"
 #include "flags/FlagsExample.h"
@@ -16,21 +17,33 @@
 #include "variadic/VariadicExample.h"
 
 template<typename Example>
-void bindExample(coil::Bindings& bindings, Example& example, std::string_view name)
+void bindExample(coil::Bindings& bindings, Example& example)
 {
-    bindings[name] = coil::bind(&Example::run, &example);
+    bindings[Example::name] = coil::bind(&Example::run, &example);
 }
 
 template<typename... Examples, std::size_t... Is>
-void bindExamples(coil::Bindings& bindings, std::tuple<Examples...>& examples, std::array<std::string_view, sizeof...(Examples)> const& names, std::index_sequence<Is...>)
+void bindExamples(coil::Bindings& bindings, std::tuple<Examples...>& examples, std::index_sequence<Is...>)
 {
-    (bindExample(bindings, std::get<Is>(examples), std::get<Is>(names)), ...);
+    (bindExample(bindings, std::get<Is>(examples)), ...);
 }
 
 template<typename... Examples>
-void bindExamples(coil::Bindings& bindings, std::tuple<Examples...>& examples, std::array<std::string_view, sizeof...(Examples)> const& names)
+void bindExamples(coil::Bindings& bindings, std::tuple<Examples...>& examples)
 {
-    bindExamples(bindings, examples, names, std::make_index_sequence<sizeof...(Examples)>{});
+    bindExamples(bindings, examples, std::make_index_sequence<sizeof...(Examples)>{});
+}
+
+template<typename ExamplesTuple, std::size_t... Is>
+auto extractNames(std::index_sequence<Is...>)
+{
+    return std::array<std::string_view, sizeof...(Is)>{std::tuple_element_t<Is, ExamplesTuple>::name...};
+}
+
+template<typename ExamplesTuple>
+auto extractNames()
+{
+    return extractNames<ExamplesTuple>(std::make_index_sequence<std::tuple_size_v<ExamplesTuple>>());
 }
 
 int main()
@@ -38,35 +51,22 @@ int main()
     // clang-format off
     using Examples = std::tuple<
           BasicExample
-        , VariadicExample
         , VariablesExample
-        , NamedExample
         , EnumsExample
-        , ErrorsExample
-        , UsertypesExample
-        , CompoundExample
         , FlagsExample
+        , VariadicExample
+        , NamedExample
+        , UsertypesExample
+        , ErrorsExample
+        , CompoundExample
         , OverloadingExample
         , PropertiesExample
         , AdvancedExample
+        , EncapsulationExample
 	>;
     // clang-format on
 
-    // TODO sort examples in the order which makes sense
-    std::array<std::string_view, std::tuple_size_v<Examples>> names = {
-        "basic",
-        "variadic",
-        "variables",
-        "named",
-        "enums",
-        "errors",
-        "usertypes",
-        "compound",
-        "flags",
-        "overloading",
-        "properties",
-        "advanced",
-    };
+    auto names = extractNames<Examples>();
 
     std::array<std::string_view, 4> commands = {
         "help",
@@ -80,18 +80,18 @@ int main()
     coil::Bindings bindings;
 
     bindings["help"] = [&commands, &names](coil::Context context) {
-        context.out() << "Available commands:" << std::endl;
+        context.log() << "Available commands:" << std::endl;
         for (std::string_view name : names)
-            context.out() << '\t' << name << std::endl;
-        context.out() << std::endl;
+            context.log() << '\t' << name << std::endl;
+        context.log() << std::endl;
         for (std::string_view name : commands)
-            context.out() << '\t' << name << std::endl;
+            context.log() << '\t' << name << std::endl;
     };
     bindings["exit"] = [&shouldExit]() { shouldExit = true; };
     bindings["list"] = [&names](coil::Context context) {
-        context.out() << "Available examples:" << std::endl;
+        context.log() << "Available examples:" << std::endl;
         for (std::string_view name : names)
-            context.out() << '\t' << name << std::endl;
+            context.log() << '\t' << name << std::endl;
     };
     bindings["run_all"] = [&names, &bindings]() {
         for (std::string_view name : names)
@@ -99,7 +99,7 @@ int main()
     };
 
     Examples examples;
-    bindExamples(bindings, examples, names);
+    bindExamples(bindings, examples);
 
     auto execute = [&bindings](std::string_view str) {
         auto result = bindings.execute(str);

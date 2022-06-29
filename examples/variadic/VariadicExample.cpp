@@ -28,7 +28,7 @@ namespace
         return nullptr;
     }
 
-    void renameEntity(coil::Context context, coil::AnyArgView entity, std::string_view newName)
+    void renameEntity(coil::Context context, coil::Value entity, std::string_view newName)
     {
         Entity* target = nullptr;
         if (auto id = entity.get<std::uint64_t>())
@@ -40,14 +40,14 @@ namespace
         if (target)
             target->name = newName;
         else
-            context.reportError("Failed to find entity '"s + entity.getRaw().str() + "'"s);
+            context.reportError("Failed to find entity '"s + entity.str() + "'"s);
     }
 
     void printEntities(coil::Context context)
     {
-        context.out() << "Entities:" << std::endl;
+        context.log() << "Entities:" << std::endl;
         for (Entity const& entity : entities)
-            context.out() << entity.id << ": " << entity.name << std::endl;
+            context.log() << entity.id << ": " << entity.name << std::endl;
     }
 
     void addEntities(std::size_t id, std::string name)
@@ -64,7 +64,7 @@ void VariadicExample::run()
     bindings["entities.list"] = &printEntities;
     bindings["entities.add"] = &addEntities;
 
-    common::printSectionHeader("AnyArgView can be used with any type:");
+    common::printSectionHeader("Value can be used with any type:");
     common::executeCommand(bindings, "entities.add 0 entity0");
     common::executeCommand(bindings, "entities.add 1 entity1");
     common::executeCommand(bindings, "entities.add 2 entity2");
