@@ -89,10 +89,10 @@ void AdvancedExample::run()
     };
 
     bindings["entities.list"] = [&entities](coil::Context context) {
-        context.out() << "ID\tName\tPayload" << std::endl;
-        context.out() << "--\t----\t-------" << std::endl;
+        context.log() << "ID\tName\tPayload" << std::endl;
+        context.log() << "--\t----\t-------" << std::endl;
         for (Entity const& entity : entities.getEntities())
-            context.out() << entity.id << '\t' << entity.name << '\t' << entity.payload << std::endl;
+            context.log() << entity.id << '\t' << entity.name << '\t' << entity.payload << std::endl;
     };
 
     common::printSectionHeader("You can wrap functions taking pointers:");

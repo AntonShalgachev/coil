@@ -41,7 +41,7 @@ void PropertiesExample::run()
 
     Window window;
 
-    bindings["window.print_size"] = [&window](coil::Context context) { context.out() << window.width << "x" << window.height << std::endl; };
+    bindings["window.print_size"] = [&window](coil::Context context) { context.log() << window.width << "x" << window.height << std::endl; };
     bindings["window.aspect"] = coil::bindProperty(&Window::getAspect, &Window::setAspect, &window);
     bindings["window.diagonal"] = coil::bindProperty(&getWindowDiagonal, &setWindowDiagonal, &window);
 
@@ -50,10 +50,10 @@ void PropertiesExample::run()
 
     std::vector<int> data = {3, 1, 4};
     bindings["data"] = [&data](coil::Context context) {
-        context.out() << "{ ";
+        context.log() << "{ ";
         for (auto const& value : data)
-            context.out() << value << " ";
-        context.out() << "}" << std::endl;
+            context.log() << value << " ";
+        context.log() << "}" << std::endl;
     };
     bindings["data.size"] = coil::property([&data]() { return data.size(); }, [&data](std::size_t size) { data.resize(size); });
 

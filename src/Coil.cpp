@@ -72,7 +72,7 @@ namespace coil
         /// CallContext.h ///
         CallContext::CallContext(ExecutionInput const& input) : input(input) {}
 
-        std::ostream& CallContext::out()
+        std::ostream& CallContext::log()
         {
             return result.output;
         }
@@ -225,9 +225,9 @@ namespace coil
     /// Context.h ///
     Context::Context(detail::CallContext& callContext) : m_callContext(callContext) {}
 
-    std::ostream& Context::out()
+    std::ostream& Context::log()
     {
-        return m_callContext.out();
+        return m_callContext.log();
     }
 
     void Context::reportError(std::string error)

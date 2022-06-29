@@ -80,18 +80,18 @@ int main()
     coil::Bindings bindings;
 
     bindings["help"] = [&commands, &names](coil::Context context) {
-        context.out() << "Available commands:" << std::endl;
+        context.log() << "Available commands:" << std::endl;
         for (std::string_view name : names)
-            context.out() << '\t' << name << std::endl;
-        context.out() << std::endl;
+            context.log() << '\t' << name << std::endl;
+        context.log() << std::endl;
         for (std::string_view name : commands)
-            context.out() << '\t' << name << std::endl;
+            context.log() << '\t' << name << std::endl;
     };
     bindings["exit"] = [&shouldExit]() { shouldExit = true; };
     bindings["list"] = [&names](coil::Context context) {
-        context.out() << "Available examples:" << std::endl;
+        context.log() << "Available examples:" << std::endl;
         for (std::string_view name : names)
-            context.out() << '\t' << name << std::endl;
+            context.log() << '\t' << name << std::endl;
     };
     bindings["run_all"] = [&names, &bindings]() {
         for (std::string_view name : names)

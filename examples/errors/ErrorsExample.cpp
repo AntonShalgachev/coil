@@ -65,10 +65,10 @@ namespace
         if (context.hasErrors())
             return;
 
-        context.out() << *requiredAnyArg << ", " << *requiredFloatArg;
+        context.log() << *requiredAnyArg << ", " << *requiredFloatArg;
         if (optionalFloatArg)
-            context.out() << ", " << *optionalFloatArg;
-        context.out() << std::endl;
+            context.log() << ", " << *optionalFloatArg;
+        context.log() << std::endl;
     }
 }
 
