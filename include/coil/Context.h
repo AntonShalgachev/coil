@@ -12,6 +12,7 @@ namespace coil
         Context(detail::CallContext& callContext);
 
         std::ostream& log();
+        void log(std::string_view str);
 
         void reportError(std::string error);
 
