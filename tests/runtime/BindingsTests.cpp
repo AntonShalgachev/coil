@@ -574,11 +574,19 @@ TEST(BindingsTests, TestFunctionReturnValue)
 TEST(BindingsTests, TestOutput)
 {
     coil::Bindings bindings;
-    bindings["func"] = [](coil::Context context, std::string value) { context.log() << value; };
-    auto result = bindings.execute("func Test");
+    bindings["func_stream"] = [](coil::Context context, std::string value) { context.log() << value; };
+    bindings["func_string"] = [](coil::Context context, std::string value) { context.log(value); };
 
-    EXPECT_EQ(result.errors.size(), 0u);
-    EXPECT_EQ(result.output.str(), "Test");
+    {
+        auto result = bindings.execute("func_stream Stream");
+        EXPECT_EQ(result.errors.size(), 0u);
+        EXPECT_EQ(result.output.str(), "Stream");
+    }
+    {
+        auto result = bindings.execute("func_string String");
+        EXPECT_EQ(result.errors.size(), 0u);
+        EXPECT_EQ(result.output.str(), "String");
+    }
 }
 
 TEST(BindingsTests, TestContextError)
@@ -676,10 +684,17 @@ TEST(BindingsTests, TestNonStdException)
 TEST(BindingsTests, TestValue)
 {
     coil::Bindings bindings;
-    bindings["func"] = [](coil::Value const& value) { return *value.get<int>(); };
+    bindings["func_receive"] = [](coil::Value const& value) { return *value.get<int>(); };
+    bindings["func_return"] = [](coil::Value const& value) { return value; };
 
-    auto result = bindings.execute("func 42");
-    EXPECT_EQ(result.returnValue, "42");
+    {
+        auto result = bindings.execute("func_receive 42");
+        EXPECT_EQ(result.returnValue, "42");
+    }
+    {
+        auto result = bindings.execute("func_return Value");
+        EXPECT_EQ(result.returnValue, "Value");
+    }
 }
 
 TEST(BindingsTests, TestNamedArgsGet)
@@ -896,4 +911,23 @@ TEST(BindingsTests, TestPointers)
         EXPECT_EQ(result.errors.size(), 0u);
         EXPECT_EQ(result.returnValue, "null");
     }
+}
+
+TEST(BindingsTests, TestCustomLexer)
+{
+    coil::Bindings bindings;
+
+    auto lexer = [](std::string_view input) -> coil::Expected<coil::ExecutionInput, std::string> {
+        coil::ExecutionInput result;
+        result.name = input;
+        return result;
+    };
+
+    bindings.setLexer(std::move(lexer));
+
+    bindings["func with spaces"] = []() { return 42; };
+
+    auto result = bindings.execute("func with spaces");
+    EXPECT_EQ(result.errors.size(), 0u);
+    EXPECT_EQ(result.returnValue, "42");
 }
