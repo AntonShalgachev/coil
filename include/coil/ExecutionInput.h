@@ -14,13 +14,6 @@ namespace coil
         std::vector<Value> arguments;
         std::vector<std::pair<std::string_view, Value>> namedArguments;
 
-        void reset()
-        {
-            name = {};
-            arguments.clear();
-            namedArguments.clear();
-        }
-
         auto tie() const
         {
             return std::tie(name, arguments, namedArguments);
