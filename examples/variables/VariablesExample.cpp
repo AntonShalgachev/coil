@@ -44,7 +44,7 @@ void VariablesExample::run()
     bindings["god_toggle"] = ::toggle(&godMode);
 
     bindings["print_variables"] = [&timeScale, &city, &type](coil::Context context) {
-        context.out() << "Time scale: " << timeScale << "; city: " << city << "; type: " << magic_enum::enum_name(type) << std::endl;
+        context.log() << "Time scale: " << timeScale << "; city: " << city << "; type: " << magic_enum::enum_name(type) << std::endl;
     };
 
     common::printSectionHeader("Calling variable without arguments will return its value:");

@@ -131,9 +131,9 @@ void CompoundExample::run()
     bindings["particles.get"] = coil::bind(&ParticleSystem::get, &system);
     bindings["particles.update"] = coil::bind(&ParticleSystem::update, &system);
     bindings["particles.list"] = [&system](coil::Context context) {
-        context.out() << "ID\tPos\tVel" << std::endl;
+        context.log() << "ID\tPos\tVel" << std::endl;
         for (ParticleSystem::Particle const& particle : system.getParticles())
-            context.out() << particle.id << '\t' << particle.position << '\t' << particle.velocity << std::endl;
+            context.log() << particle.id << '\t' << particle.position << '\t' << particle.velocity << std::endl;
     };
 
     Point pivot;

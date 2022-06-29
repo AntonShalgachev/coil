@@ -70,13 +70,13 @@ void FlagsExample::run()
     bindings["entity.flags"] = ::flagsVariable(&flags);
     bindings["entity.draw"] = [&flags](coil::Context context) {
         if ((flags & EntityDebugDrawFlags::DrawBoundingBox) == EntityDebugDrawFlags::DrawBoundingBox)
-            context.out() << "Drawing bounding box" << std::endl;
+            context.log() << "Drawing bounding box" << std::endl;
         if ((flags & EntityDebugDrawFlags::DrawOrigin) == EntityDebugDrawFlags::DrawOrigin)
-            context.out() << "Drawing origin" << std::endl;
+            context.log() << "Drawing origin" << std::endl;
         if ((flags & EntityDebugDrawFlags::DrawWireframe) == EntityDebugDrawFlags::DrawWireframe)
-            context.out() << "Drawing wireframe" << std::endl;
+            context.log() << "Drawing wireframe" << std::endl;
         if ((flags & EntityDebugDrawFlags::DrawName) == EntityDebugDrawFlags::DrawName)
-            context.out() << "Drawing name" << std::endl;
+            context.log() << "Drawing name" << std::endl;
     };
 
     common::printSectionHeader("Getting the value of a flag variable returns a string represenation of it:");

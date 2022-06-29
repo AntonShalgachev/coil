@@ -13,19 +13,19 @@ namespace
 
     void helloWithContext(coil::Context context)
     {
-        context.out() << "Hello, world!" << std::endl;
+        context.log() << "Hello, world!" << std::endl;
     }
 
     void printRepeated(coil::Context context, std::string const& val, std::size_t repetitions)
     {
         for (std::size_t i = 0; i < repetitions; i++)
-            context.out() << val;
-        context.out() << std::endl;
+            context.log() << val;
+        context.log() << std::endl;
     }
 
     void printQuoted(coil::Context context, std::string_view val)
     {
-        context.out() << "'" << val << "'" << std::endl;
+        context.log() << "'" << val << "'" << std::endl;
     }
 
     bool invert(bool val)

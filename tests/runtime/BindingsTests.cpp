@@ -574,7 +574,7 @@ TEST(BindingsTests, TestFunctionReturnValue)
 TEST(BindingsTests, TestOutput)
 {
     coil::Bindings bindings;
-    bindings["func"] = [](coil::Context context, std::string value) { context.out() << value; };
+    bindings["func"] = [](coil::Context context, std::string value) { context.log() << value; };
     auto result = bindings.execute("func Test");
 
     EXPECT_EQ(result.errors.size(), 0u);

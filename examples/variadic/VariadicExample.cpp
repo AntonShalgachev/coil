@@ -45,9 +45,9 @@ namespace
 
     void printEntities(coil::Context context)
     {
-        context.out() << "Entities:" << std::endl;
+        context.log() << "Entities:" << std::endl;
         for (Entity const& entity : entities)
-            context.out() << entity.id << ": " << entity.name << std::endl;
+            context.log() << entity.id << ": " << entity.name << std::endl;
     }
 
     void addEntities(std::size_t id, std::string name)
