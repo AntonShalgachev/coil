@@ -380,7 +380,7 @@ namespace coil
         };
 
         if (input.subvalues.size() != 1)
-            return errors::wrongSubvaluesSize<bool>(input, 1);
+            return errors::createMismatchedSubvaluesError<bool>(input, 1);
 
         auto value = input.subvalues[0];
 
@@ -394,7 +394,7 @@ namespace coil
         if (equalCaseInsensitive(value, "false"))
             return false;
 
-        return errors::serializationError<bool>(input);
+        return errors::createGenericError<bool>(input);
     }
 
     std::string coil::TypeSerializer<bool>::toString(bool const& value)

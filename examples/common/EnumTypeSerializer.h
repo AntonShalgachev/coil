@@ -22,7 +22,7 @@ namespace coil
         static Expected<E, std::string> fromString(Value const& input)
         {
             if (input.subvalues.size() != 1)
-                return errors::wrongSubvaluesSize<E>(input, 1);
+                return errors::createMismatchedSubvaluesError<E>(input, 1);
 
             auto value = input.subvalues[0];
 
@@ -39,7 +39,7 @@ namespace coil
 
             std::string names = ::utils::flatten(magic_enum::enum_names<E>(), "'");
 
-            return errors::serializationError<E>(input, formatString("Possible values are [%s]", names.c_str()));
+            return errors::createGenericError<E>(input, formatString("Possible values are [%s]", names.c_str()));
         }
 
         static std::string toString(E const& value)
