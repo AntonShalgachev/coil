@@ -15,7 +15,7 @@ function Format-Directory {
     }
 }
 
-Format-Directory src
-Format-Directory include
-Format-Directory examples
-Format-Directory tests {$_.FullName -notlike "*build*" -And $_.FullName -notlike "*generated*" -And $_.FullName -notlike "*scripts*"}
+Format-Directory ../src
+Format-Directory ../include
+Format-Directory ../examples
+Format-Directory ../tests {$_.FullName -notlike "*build*" -And $_.FullName -notlike "*generated*" -And $_.FullName -notlike "*scripts*"}
