@@ -16,18 +16,13 @@ namespace coil
     struct DefaultLexer
     {
     public:
-        Expected<std::reference_wrapper<ExecutionInput>, std::string> operator()(std::string_view str) const
+        Expected<ExecutionInput, std::string> operator()(std::string_view str) const
         {
-            m_input.reset();
-            m_tokens.clear();
+            auto tokens = tokenize(str);
+            if (!tokens)
+                return makeUnexpected(std::move(tokens).error());
 
-            if (auto res = tokenize(str); !res)
-                return makeUnexpected(std::move(res).error());
-
-            if (auto res = parse(); !res)
-                return makeUnexpected(std::move(res).error());
-
-            return std::ref(m_input);
+            return parse(*std::move(tokens));
         }
 
     private:
@@ -157,8 +152,10 @@ namespace coil
             return Value{{token.value}};
         }
 
-        coil::Expected<void, std::string> tokenize(std::string_view str) const
+        coil::Expected<std::vector<Token>, std::string> tokenize(std::string_view str) const
         {
+            std::vector<Token> tokens;
+
             for (std::size_t i = 0; i < str.size(); i++)
             {
                 while ((i < str.size()) && getCharType(str[i]) == CharType::Space)
@@ -181,12 +178,12 @@ namespace coil
                         i++;
                     }
 
-                    m_tokens.emplace_back(type, str.substr(tokenBegin, i - tokenBegin));
+                    tokens.emplace_back(type, str.substr(tokenBegin, i - tokenBegin));
                     i--; // return to the last 'String' char
                     break;
                 }
                 case CharType::Assignment:
-                    m_tokens.emplace_back(TokenType::Assignment, str.substr(i, 1));
+                    tokens.emplace_back(TokenType::Assignment, str.substr(i, 1));
                     break;
                 case CharType::Quote:
                     i++;
@@ -196,7 +193,7 @@ namespace coil
                     if (i >= str.size())
                         return makeUnexpected(formatString("Token '%c' doesn't have a corresponding opening/closing quote", str[tokenBegin]));
 
-                    m_tokens.emplace_back(TokenType::String, str.substr(tokenBegin + 1, i - tokenBegin - 1));
+                    tokens.emplace_back(TokenType::String, str.substr(tokenBegin + 1, i - tokenBegin - 1));
                     break;
                 case CharType::Group:
                     i++;
@@ -206,26 +203,28 @@ namespace coil
                     if (i >= str.size())
                         return makeUnexpected(formatString("Token '%c' doesn't have a corresponding opening/closing token", str[tokenBegin]));
 
-                    m_tokens.emplace_back(TokenType::GroupString, str.substr(tokenBegin + 1, i - tokenBegin - 1));
+                    tokens.emplace_back(TokenType::GroupString, str.substr(tokenBegin + 1, i - tokenBegin - 1));
                     break;
                 default:
                     return makeUnexpected("Internal error"); // @NOCOVERAGE
                 }
             }
 
-            return {};
+            return {std::move(tokens)};
         }
 
-        Expected<void, std::string> parse() const
+        Expected<ExecutionInput, std::string> parse(std::vector<Token> tokens) const
         {
-            if (m_tokens.empty())
-                return {};
+            ExecutionInput input;
 
-            Token const& firstToken = m_tokens.front();
+            if (tokens.empty())
+                return ExecutionInput{};
+
+            Token const& firstToken = tokens.front();
             if (firstToken.type != TokenType::String)
                 return makeUnexpected(formatString("Unexpected token '%.*s' at the beginning of the expression", firstToken.value.size(), firstToken.value.data()));
 
-            m_input.name = firstToken.value;
+            input.name = firstToken.value;
 
             struct ArgTokens
             {
@@ -250,35 +249,35 @@ namespace coil
                 SecondaryToken,
             };
 
-            ArgTokens tokens;
+            ArgTokens argTokens;
             StringTokenType nextTokenType = StringTokenType::PrimaryToken;
 
-            auto addCurrentTokens = [this, &tokens]() {
-                if (!tokens.primaryTokenIndex)
+            auto addCurrentTokens = [this, &tokens, &input, &argTokens]() {
+                if (!argTokens.primaryTokenIndex)
                     return;
 
-                Token const& primaryToken = m_tokens[*tokens.primaryTokenIndex];
-                if (tokens.secondaryTokenIndex)
+                Token const& primaryToken = tokens[*argTokens.primaryTokenIndex];
+                if (argTokens.secondaryTokenIndex)
                 {
-                    Token const& secondaryToken = m_tokens[*tokens.secondaryTokenIndex];
-                    m_input.namedArguments.emplace_back(primaryToken.value, createValue(secondaryToken));
+                    Token const& secondaryToken = tokens[*argTokens.secondaryTokenIndex];
+                    input.namedArguments.emplace_back(primaryToken.value, createValue(secondaryToken));
                 }
                 else
                 {
-                    m_input.arguments.push_back(createValue(primaryToken));
+                    input.arguments.push_back(createValue(primaryToken));
                 }
 
-                tokens.reset();
+                argTokens.reset();
             };
 
-            for (std::size_t i = 1; i < m_tokens.size(); i++)
+            for (std::size_t i = 1; i < tokens.size(); i++)
             {
-                Token const& token = m_tokens[i];
+                Token const& token = tokens[i];
 
                 switch (token.type)
                 {
                 case TokenType::Assignment:
-                    if (!tokens.primaryTokenIndex)
+                    if (!argTokens.primaryTokenIndex)
                         return makeUnexpected("Unexpected token '=': no name for the named argument is provided");
                     if (nextTokenType == StringTokenType::SecondaryToken)
                         return makeUnexpected("Expected an argument value, found '='");
@@ -289,15 +288,15 @@ namespace coil
                     switch (nextTokenType)
                     {
                     case StringTokenType::PrimaryToken:
-                        if (tokens.primaryTokenIndex)
+                        if (argTokens.primaryTokenIndex)
                             addCurrentTokens();
-                        tokens.primaryTokenIndex = i;
+                        argTokens.primaryTokenIndex = i;
                         break;
                     case StringTokenType::SecondaryToken:
-                        if (!tokens.primaryTokenIndex)
+                        if (!argTokens.primaryTokenIndex)
                             return makeUnexpected("Internal error"); // @NOCOVERAGE
 
-                        tokens.secondaryTokenIndex = i;
+                        argTokens.secondaryTokenIndex = i;
                         addCurrentTokens();
                         break;
                     }
@@ -312,11 +311,7 @@ namespace coil
 
             addCurrentTokens();
 
-            return {};
+            return {std::move(input)};
         }
-
-        // TODO not thread safe
-        mutable ExecutionInput m_input;
-        mutable std::vector<Token> m_tokens;
     };
 }
