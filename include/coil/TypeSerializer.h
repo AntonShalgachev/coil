@@ -16,12 +16,8 @@ namespace coil
 {
     namespace errors
     {
-        // TODO rename to something more descriptive:
-        // errors::createDeserializationError
-        // errors::createMismatchedSubvaluesError
-
         template<typename T>
-        Unexpected<std::string> serializationError(Value const& input, std::string_view details = {})
+        Unexpected<std::string> createGenericError(Value const& input, std::string_view details = {})
         {
             std::string_view typeName = TypeName<T>::name();
 
@@ -34,9 +30,9 @@ namespace coil
         }
 
         template<typename T>
-        Unexpected<std::string> wrongSubvaluesSize(Value const& input, std::size_t expectedSubvalues)
+        Unexpected<std::string> createMismatchedSubvaluesError(Value const& input, std::size_t expectedSubvalues)
         {
-            return serializationError<T>(input, formatString("Expected %d subvalues, got %d", expectedSubvalues, input.subvalues.size()));
+            return createGenericError<T>(input, formatString("Expected %d subvalues, got %d", expectedSubvalues, input.subvalues.size()));
         }
     }
 
@@ -59,7 +55,7 @@ namespace coil
     coil::Expected<T, std::string> TypeSerializer<T, std::enable_if_t<std::is_arithmetic_v<T>>>::fromString(Value const& input)
     {
         if (input.subvalues.size() != 1)
-            return errors::wrongSubvaluesSize<T>(input, 1);
+            return errors::createMismatchedSubvaluesError<T>(input, 1);
 
         auto inputValue = input.subvalues[0];
         auto begin = inputValue.data();
@@ -69,10 +65,10 @@ namespace coil
         std::from_chars_result result = std::from_chars(begin, end, value);
 
         if (result.ec == std::errc::result_out_of_range)
-            return errors::serializationError<T>(input, "the value can't be represented in this type");
+            return errors::createGenericError<T>(input, "the value can't be represented in this type");
 
         if (result.ptr != end || result.ec != std::errc{})
-            return errors::serializationError<T>(input);
+            return errors::createGenericError<T>(input);
 
         return value;
     }
@@ -114,7 +110,7 @@ namespace coil
     coil::Expected<std::basic_string<Elem, Traits, Alloc>, std::string> coil::TypeSerializer<std::basic_string<Elem, Traits, Alloc>>::fromString(Value const& input)
     {
         if (input.subvalues.size() != 1)
-            return errors::wrongSubvaluesSize<std::basic_string<Elem, Traits, Alloc>>(input, 1);
+            return errors::createMismatchedSubvaluesError<std::basic_string<Elem, Traits, Alloc>>(input, 1);
 
         return std::basic_string<Elem, Traits, Alloc>{input.subvalues[0]};
     }
@@ -139,7 +135,7 @@ namespace coil
     coil::Expected<std::basic_string_view<Elem, Traits>, std::string> coil::TypeSerializer<std::basic_string_view<Elem, Traits>>::fromString(Value const& input)
     {
         if (input.subvalues.size() != 1)
-            return errors::wrongSubvaluesSize<std::basic_string_view<Elem, Traits>>(input, 1);
+            return errors::createMismatchedSubvaluesError<std::basic_string_view<Elem, Traits>>(input, 1);
 
         return input.subvalues[0];
     }
@@ -170,7 +166,7 @@ namespace coil
         if (innerValue)
             return std::optional<T>{*innerValue};
 
-        return errors::serializationError<std::optional<T>>(input, std::move(innerValue).error());
+        return errors::createGenericError<std::optional<T>>(input, std::move(innerValue).error());
     }
 
     template<typename T>
@@ -202,7 +198,7 @@ namespace coil
         {
             auto expectedArg = TypeSerializer<T>::fromString(subvalue);
             if (!expectedArg)
-                return errors::serializationError<std::vector<T>>(input, std::move(expectedArg).error());
+                return errors::createGenericError<std::vector<T>>(input, std::move(expectedArg).error());
 
             result.push_back(*std::move(expectedArg));
         }

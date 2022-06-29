@@ -87,15 +87,15 @@ namespace coil
         static Expected<Point, std::string> fromString(Value const& input)
         {
             if (input.subvalues.size() != 2)
-                return errors::wrongSubvaluesSize<Point>(input, 2);
+                return errors::createMismatchedSubvaluesError<Point>(input, 2);
 
             auto x = TypeSerializer<float>::fromString(input.subvalues[0]);
             auto y = TypeSerializer<float>::fromString(input.subvalues[1]);
 
             if (!x)
-                return errors::serializationError<Point>(input, x.error());
+                return errors::createGenericError<Point>(input, x.error());
             if (!y)
-                return errors::serializationError<Point>(input, y.error());
+                return errors::createGenericError<Point>(input, y.error());
 
             return Point{*x, *y};
         }

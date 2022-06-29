@@ -114,7 +114,7 @@ namespace coil
             if (innerValue)
                 return Tracker<T>{*innerValue};
 
-            return errors::serializationError<Tracker<T>>(input, innerValue.error());
+            return errors::createGenericError<Tracker<T>>(input, innerValue.error());
         }
 
         static std::string toString(Tracker<T> const& value)
@@ -129,15 +129,15 @@ namespace coil
         static Expected<CompoundType, std::string> fromString(Value const& input)
         {
             if (input.subvalues.size() != 2)
-                return errors::wrongSubvaluesSize<CompoundType>(input, 2);
+                return errors::createMismatchedSubvaluesError<CompoundType>(input, 2);
 
             auto field1 = TypeSerializer<int>::fromString(input.subvalues[0]);
             auto field2 = TypeSerializer<int>::fromString(input.subvalues[1]);
 
             if (!field1)
-                return errors::serializationError<CompoundType>(input, field1.error());
+                return errors::createGenericError<CompoundType>(input, field1.error());
             if (!field2)
-                return errors::serializationError<CompoundType>(input, field2.error());
+                return errors::createGenericError<CompoundType>(input, field2.error());
 
             return CompoundType{*field1, *field2};
         }
