@@ -68,31 +68,21 @@ int main()
 
     auto names = extractNames<Examples>();
 
-    std::array<std::string_view, 4> commands = {
-        "help",
-        "list",
-        "run_all",
-        "exit",
-    };
-
     bool shouldExit = false;
 
     coil::Bindings bindings;
 
-    bindings["help"] = [&commands, &names](coil::Context context) {
-        context.log() << "Available commands:" << std::endl;
-        for (std::string_view name : names)
-            context.log() << '\t' << name << std::endl;
-        context.log() << std::endl;
-        for (std::string_view name : commands)
-            context.log() << '\t' << name << std::endl;
-    };
-    bindings["exit"] = [&shouldExit]() { shouldExit = true; };
-    bindings["list"] = [&names](coil::Context context) {
+    bindings["help"] = [&names](coil::Context context) {
         context.log() << "Available examples:" << std::endl;
         for (std::string_view name : names)
-            context.log() << '\t' << name << std::endl;
+            context.log() << "    " << name << std::endl;
+        context.log() << std::endl;
+        context.log() << "Type the example name to run it" << std::endl;
+        context.log() << "Type 'help' for this help" << std::endl;
+        context.log() << "Type 'exit' to exit" << std::endl;
+        context.log() << std::endl;
     };
+    bindings["exit"] = [&shouldExit]() { shouldExit = true; };
     bindings["run_all"] = [&names, &bindings]() {
         for (std::string_view name : names)
             bindings.execute(name);
