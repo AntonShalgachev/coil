@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Expected.h"
+#include "TypeName.h"
 
 #include <functional>
 #include <string>
@@ -38,5 +39,14 @@ namespace coil
     {
         static Expected<std::reference_wrapper<Value const>, std::string> fromString(Value const& value);
         static std::string toString(Value const& value);
+    };
+
+    template<>
+    struct TypeName<Value>
+    {
+        static std::string_view name()
+        {
+            return "coil::Value";
+        }
     };
 }
