@@ -94,7 +94,7 @@ namespace coil
     {
         using namespace std;
         swap(rhs.m_storage, m_storage);
-        swap(rhs.m_arity, m_arity);
+        swap(rhs.m_parameterTypes, m_parameterTypes);
     }
 
     AnyFunctor::~AnyFunctor()
@@ -117,7 +117,12 @@ namespace coil
 
     std::size_t AnyFunctor::arity() const
     {
-        return m_arity;
+        return m_parameterTypes.size();
+    }
+
+    std::vector<std::string_view> const& AnyFunctor::parameterTypes() const
+    {
+        return m_parameterTypes;
     }
 
     /// Bindings.h ///
