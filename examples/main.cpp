@@ -61,8 +61,8 @@ int main()
         , CompoundExample
         , OverloadingExample
         , PropertiesExample
-        , AdvancedExample
         , EncapsulationExample
+        , AdvancedExample
 	>;
     // clang-format on
 
