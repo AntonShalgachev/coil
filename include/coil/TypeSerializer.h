@@ -76,7 +76,9 @@ namespace coil
     template<typename T>
     std::string TypeSerializer<T, std::enable_if_t<std::is_arithmetic_v<T>>>::toString(T const& value)
     {
-        return std::to_string(value);
+        std::stringstream ss;
+        ss << value;
+        return ss.str();
     }
 
     //////////////////////////////////////
