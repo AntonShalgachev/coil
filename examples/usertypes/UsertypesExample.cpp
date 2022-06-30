@@ -101,7 +101,7 @@ namespace particles
 
 namespace coil
 {
-    // To be able to (de)serialize your types you'll have to provide a specializationof coil::TypeSerializer
+    // To be able to (de)serialize your types you'll have to provide a specialization of coil::TypeSerializer
 
     template<>
     struct TypeSerializer<EntityId>

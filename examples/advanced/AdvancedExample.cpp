@@ -3,7 +3,7 @@
 #include "common/ExamplesCommon.h"
 
 // In these examples:
-// * Wrapping functions taking pointers
+// * Wrapping functions which take pointers
 // * Creating coil variables dynamically
 
 namespace
