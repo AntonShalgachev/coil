@@ -20,7 +20,6 @@ namespace
         {
             None,
             SpeedBoost,
-            NoRecoil,
             IncreasedHealth,
         };
 
@@ -81,4 +80,9 @@ void EnumsExample::run()
     common::printSectionHeader("Enum variables can also be used:");
     common::executeCommand(bindings, "variable_type");
     common::executeCommand(bindings, "variable_type Float");
+
+    common::printSectionHeader("It is possible to make the enum conversion errors detailed:");
+    common::executeCommand(bindings, "variable_type Custom");
+    common::executeCommand(bindings, "abilities.set_ability NoRecoil AfterDelay");
+    common::executeCommand(bindings, "abilities.set_ability SpeedBoost AfterFrame");
 }
