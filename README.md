@@ -85,7 +85,6 @@ The priorities of the library (in the order of importance):
 See [examples](examples) directory and the corresponding [README.md](examples/README.md) for information about the available examples
 
 ## Building
-<!-- TODO -->
 
 The project contains the following CMake options:
 * `COIL_EXAMPLES`: adds examples

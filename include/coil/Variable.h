@@ -22,7 +22,7 @@ namespace coil
     {
         auto get = [var]() -> T const& { return *var; };
         auto set = [var](Context context, T) -> T const& {
-            context.reportError("Cannot write to a read-only variable"); // TODO Rename to "This variable is read-only"
+            context.reportError("This variable is read-only");
             return *var;
         };
 

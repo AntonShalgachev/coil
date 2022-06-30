@@ -373,7 +373,7 @@ TEST(BindingsTests, TestReadonlyVariableWrite)
     auto result = bindings.execute("var 365");
 
     EXPECT_EQ(result.errors.size(), 1u);
-    EXPECT_PRED2(containsError, result.errors, "Cannot write to a read-only variable");
+    EXPECT_PRED2(containsError, result.errors, "This variable is read-only");
     EXPECT_EQ(variable, 42);
 }
 
