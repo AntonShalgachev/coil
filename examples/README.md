@@ -3,7 +3,7 @@
 This folder contains various examples. They are organized as a single shell-like application, where you are prompted to type the name of the example
 
 ## Building
-Just set the `COIL_EXAMPLES` option before generating the CMake project. See the details in the root [README.md](../README.md#installation)
+Just set the `COIL_EXAMPLES` option before generating the CMake project. See the details in the root [README.md](../README.md#building)
 
 ## List of examples
 
