@@ -5,6 +5,7 @@
 // In these examples:
 // * Wrapping functions which take pointers
 // * Creating coil variables dynamically
+// * A variable wrapper for angles (to allow degrees and radians input)
 
 namespace
 {
@@ -44,6 +45,57 @@ namespace
     void renameEntity(Entity* entity, std::string newName)
     {
         entity->name = std::move(newName);
+    }
+
+    // An alternative would be to create a new type and to define its TypeSerializer so that
+    // you could also easily pass angles in various functions
+    std::string angleToString(float degrees)
+    {
+        std::stringstream ss;
+        ss << degrees << " degrees";
+        return ss.str();
+    }
+
+    auto angleVariable(float* var)
+    {
+        auto get = [var]() { return angleToString(*var); };
+        auto set = [var](coil::Context context, std::string_view val) {
+            if (val.empty())
+            {
+                context.reportError("Conversion error");
+                return angleToString(*var);
+            }
+
+            std::string_view numberString = val;
+            bool numberIsRadians = false;
+
+            char lastChar = val.back();
+            if (lastChar == 'r')
+            {
+                numberIsRadians = true;
+                numberString = val.substr(0, val.size() - 1);
+            }
+            else if (lastChar == 'd')
+            {
+                numberIsRadians = false;
+                numberString = val.substr(0, val.size() - 1);
+            }
+
+            auto expectedValue = coil::TypeSerializer<float>::fromString(numberString);
+            if (!expectedValue)
+            {
+                context.reportError(std::move(expectedValue).error());
+                return angleToString(*var);
+            }
+
+            *var = *expectedValue;
+            if (numberIsRadians)
+                *var *= (180.0f / 3.14159265358979f);
+
+            return angleToString(*var);
+        };
+
+        return coil::overloaded(std::move(get), std::move(set));
     }
 }
 
@@ -96,6 +148,9 @@ void AdvancedExample::run()
             context.log() << entity.id << '\t' << entity.name << '\t' << entity.payload << std::endl;
     };
 
+    float angle = 45.0f;
+    bindings["direction"] = ::angleVariable(&angle);
+
     common::printSectionHeader("You can use lambdas to wrap functions taking pointers:");
     common::executeCommand(bindings, "entities.list");
     common::executeCommand(bindings, "entities.rename npc1 'Enemy'");
@@ -110,4 +165,9 @@ void AdvancedExample::run()
     common::executeCommand(bindings, "player_entity.payload");
     common::executeCommand(bindings, "player_entity.payload 'I am a modified player'");
     common::executeCommand(bindings, "entities.list");
+
+    common::printSectionHeader("Angle variable wrapper:");
+    common::executeCommand(bindings, "direction 30");
+    common::executeCommand(bindings, "direction 60d");
+    common::executeCommand(bindings, "direction 3.1415926535r");
 }
