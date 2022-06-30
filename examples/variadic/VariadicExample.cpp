@@ -30,11 +30,23 @@ namespace
 
     void renameEntity(coil::Context context, coil::Value entity, std::string_view newName)
     {
+        // Here the argument `entity` is variadic: internally it's a string, but it can be converted to any type
+        // coil::Value::get<T> returns Expected<T, std::string>, so if the conversion failed, you have an option
+        // either to silently ignore this error, or to report the error
+
+        // Here we try to convert `entity` to different types. If converting to integer succeeded, then we are
+        // going to find the entity by that id. We try then conversion to a string. If the conversion still
+        // doesn't succeed, then we report all previous errors (`id` and `name` both contain errors, not values),
+        // so the user would know which conversions were attempted
+
+        // See ErrorsExample ('errors') to learn more about reporting errors
         Entity* target = nullptr;
         if (auto id = entity.get<std::uint64_t>())
             target = getEntityById(*id);
         else if (auto name = entity.get<std::string_view>())
             target = getEntityByName(*name);
+        else
+            return context.reportErrors("Unknown type of 'entity'", std::move(id).error(), std::move(name).error());
 
         using namespace std::literals::string_literals;
         if (target)

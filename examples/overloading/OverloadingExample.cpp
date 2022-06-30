@@ -77,7 +77,7 @@ void OverloadingExample::run()
         ::resolve<void(coil::Context, std::string_view)>(createExplosion),
         ::resolve<void(coil::Context, std::string_view, float)>(createExplosion));
 
-    common::printSectionHeader("Several functions can be bound to the same command:");
+    common::printSectionHeader("Use coil::overloaded to bind several functions to the same command:");
     common::executeCommand(bindings, "func");
     common::executeCommand(bindings, "func 42");
     common::executeCommand(bindings, "func 42 3.14");
@@ -86,7 +86,7 @@ void OverloadingExample::run()
     common::executeCommand(bindings, "mixed_func foo 3.14");
     common::executeCommand(bindings, "mixed_func foo 3.14 true");
 
-    common::printSectionHeader("An overloaded C++ function can also be bound by listing all overloads with coil::resolve");
+    common::printSectionHeader("An overloaded C++ function can also be bound by listing all overloads explicitly with ::resolve:");
     common::executeCommand(bindings, "explosions.create small");
     common::executeCommand(bindings, "explosions.create small 1.5");
 

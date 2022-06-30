@@ -1,9 +1,14 @@
 #include "EnumsExample.h"
 
+#include "common/CustomTypeName.h"     // user-provided TypeName for enums
 #include "common/EnumTypeSerializer.h" // user-provided TypeSerializer for enums
 #include "common/ExamplesCommon.h"
 
 #include <iostream>
+
+// The main challenge with enums is that C++ doesn't offer any means to get a string name of the enum item
+// In order for enums to work, we need to provide specializations for TypeSerialization and TypeName
+// Check `EnumTypeSerializer.h` and `CustomTypeName.h` to check how these specializations are implemented
 
 namespace
 {
@@ -60,8 +65,6 @@ void EnumsExample::run()
     };
 
     VariableType variableType = VariableType::String;
-
-    // See EnumTypeSerializer.h to see how the serialization is implemented
 
     bindings["abilities.set_ability"] = coil::bind(&PlayerAbilitySystem::setAbility, &abilities);
     bindings["abilities.get_ability"] = coil::bind(&PlayerAbilitySystem::getAbility, &abilities);

@@ -13,6 +13,12 @@ namespace
         Type3
     };
 
+    // This function creates a wrapper for the boolean variable
+    // No arguments: toggle the boolean, return the new value
+    // One boolean argument: set the value to the argument, return the new value
+    //
+    // This is different to coil::variable, which just returns the current value when
+    // executed without any arguments
     auto toggle(bool* var)
     {
         auto toggler = [var]() {
@@ -24,6 +30,7 @@ namespace
             return *var;
         };
 
+        // See OverloadingExample ('overloading') for details about this function
         return coil::overloaded(std::move(toggler), std::move(setter));
     }
 }
@@ -39,7 +46,7 @@ void VariablesExample::run()
 
     bindings["time_scale"] = coil::variable(&timeScale);
     bindings["city"] = coil::variable(&city);
-    bindings["type"] = coil::variable(&type);
+    bindings["type"] = coil::variable(&type); // See EnumsExample ('enums') to learn more about enums
     bindings["god_var"] = coil::variable(&godMode);
     bindings["god_toggle"] = ::toggle(&godMode);
 
