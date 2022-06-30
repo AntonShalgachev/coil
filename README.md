@@ -66,14 +66,14 @@ The priorities of the library (in the order of importance):
 
 * Customizable syntax (see [Custom Lexer](#custom-lexer))
 * Any callable objects: free functions, lambdas, member functions, custom functors with `operator()`
-* Variables (`camera.fov` and `camera.fov 90`)
+* Variables (e.g. `camera.fov` to get and `camera.fov 90` to set)
 * Enums (serialization has to be implemented in your code, e.g. with [magic_enum](https://github.com/Neargye/magic_enum))
-* Compound arguments (E.g. 3D point: `particles.spawn resource_id (10, 1, 5)`)
+* Compound arguments (e.g. 3D point: `particles.spawn resource_id (10, 1, 5)`)
 * Any-like arguments (to allow the command handle several types)
 * Named arguments (`object.command foo=3.14 bar=true`)
 * Human-readable `bool` serialization
 * Customizable error messages
-* Custom command syntax (with a custom Lexer)
+* Customizable command syntax (with a custom Lexer)
 * User-defined types
 * Properties (getter/setter)
 * Configurable use of exceptions
