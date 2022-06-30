@@ -60,3 +60,4 @@ This example shows how to organize the commands inside an object so that:
 This example lists a couple of advanced applications:
 * How to wrap functions which take pointers
 * How to create variables dynamically from another command
+* A variable wrapper for angles (to allow degrees and radians input)
