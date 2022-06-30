@@ -46,7 +46,7 @@ namespace coil
         std::vector<std::string_view> const& commands() const;
 
         ExecutionResult execute(std::string_view command);
-        ExecutionResult execute(ExecutionInput const& input);
+        ExecutionResult execute(ExecutionInput input);
 
     private:
         void execute(detail::CallContext& context);

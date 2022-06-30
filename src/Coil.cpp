@@ -70,7 +70,7 @@ namespace coil
         }
 
         /// CallContext.h ///
-        CallContext::CallContext(ExecutionInput const& input) : input(input) {}
+        CallContext::CallContext(ExecutionInput input) : input(std::move(input)) {}
 
         std::ostream& CallContext::log()
         {
@@ -163,10 +163,11 @@ namespace coil
         return m_commandNames;
     }
 
-    ExecutionResult Bindings::execute(ExecutionInput const& input)
+    ExecutionResult Bindings::execute(ExecutionInput input)
     {
-        detail::CallContext context{input};
+        detail::CallContext context{std::move(input)};
         execute(context);
+        context.result.input = std::move(context.input);
         return std::move(context).result;
     }
 

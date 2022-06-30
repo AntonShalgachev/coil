@@ -8,9 +8,9 @@ namespace coil::detail
 {
     struct CallContext
     {
-        CallContext(ExecutionInput const& input);
+        CallContext(ExecutionInput input);
 
-        ExecutionInput const& input;
+        ExecutionInput input;
         ExecutionResult result;
 
         std::ostream& log();
