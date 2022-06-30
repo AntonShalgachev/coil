@@ -61,7 +61,7 @@ assert(variable == 84);
 
 The library doesn't use any dependencies or macros: everything is implemented in pure C++ with the help of templates. The library is optimized to reduce compilation time as much as possible. Moreover, naive bindings implementation takes more time to compile (see [Compilation time impact](#compilation-time-impact)).
 
-The priorities of the library:
+The priorities of the library (in the order of importance):
 * Low compilation time overhead
 * User-friendly API
 * Runtime performance
@@ -69,15 +69,14 @@ The priorities of the library:
 ## Features
 
 * Customizable syntax (see [Custom Lexer](#custom-lexer))
-* Any callable objects: free functions, lambdas, member functions, objects with `operator()`
-* Variables
+* Any callable objects: free functions, lambdas, member functions, custom functors with `operator()`
+* Variables (`camera.fov` and `camera.fov 90`)
 * Enums (serialization has to be implemented in your code, e.g. with [magic_enum](https://github.com/Neargye/magic_enum))
-* Optional arguments
-* Variable amount of arguments (using vector-like containers)
+* Compound arguments (E.g. 3D point: `particles.spawn resource_id (10, 1, 5)`)
 * Any-like arguments (to allow the command handle several types)
 * Named arguments (`object.command foo=3.14 bar=true`)
 * Human-readable `bool` serialization
-* Error handling
+* Customizable error messages
 * Custom command syntax (with a custom Lexer)
 * User-defined types
 * Properties (getter/setter)
