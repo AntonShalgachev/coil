@@ -20,7 +20,8 @@ Table of contents:
 - [Introduction](#introduction)
 - [Features](#features)
 - [Examples](#examples)
-- [Installation](#installation)
+- [Building](#building)
+- [Integration](#integration)
 - [Motivation](#motivation)
 - [Limitations](#limitations)
 - [Applications](#applications)
@@ -83,11 +84,61 @@ The priorities of the library (in the order of importance):
 ## Examples
 See [examples](examples) directory and the corresponding [README.md](examples/README.md) for information about the available examples
 
-## Installation
+## Building
+<!-- TODO -->
 
-`coil` is a header-only library, so all you have to do is to copy whole `coil/include/coil` to your include directory. If your project uses CMake, you can also copy `coil/CMakeLists.txt`.
+The project contains the following CMake options:
+* `COIL_EXAMPLES`: adds examples
+* `COIL_RUNTIME_TESTS`: adds runtime tests
+* `COIL_COMPILATION_TESTS`: performs compilation test during CMake project generation
+* `COIL_COMPILATION_TIME_BENCHMARK`: adds compilation time benchmark
+* `COIL_COMPILATION_TIME_BENCHMARK_TRACE`: tells the Clang to generate trace file to profile compilation
+* `COIL_COMPILATION_TIME_BENCHMARK_WITH_COIL`: tells the compilation time benchmark to use `coil` (this library) as the command bindings
+* `COIL_COMPILATION_TIME_BENCHMARK_WITH_MANUAL`: tells the compilation time benchmark to use naively implemented command bindings
 
-<!-- Mention extern templates and moving implementation to cpp if it gets implemented -->
+All options are `OFF` by default
+
+### Building examples
+Run the following command to generate the project: `cmake -B build -DCOIL_EXAMPLES=ON`. This will add the `examples` target to the project, which is an executable you'll want to run
+
+### Building tests
+Run the following command to generate the project: `cmake -B build -DCOIL_RUNTIME_TESTS=ON`. This will add the `cmake_tests` target to the project. Run this executable to execute all the tests
+
+### Performing compilation tests
+Add `-DCOIL_COMPILATION_TESTS=ON` to the CMake arguments to perform the compilation test during the project generation. This utilizes CMake's `try_compile` command
+
+## Integration
+
+### CMake FetchContent
+
+```cmake
+FetchContent_Declare(
+    coil
+    GIT_REPOSITORY https://github.com/AntonShalgachev/coil # or use URL
+)
+FetchContent_MakeAvailable(coil)
+```
+
+Then later in your target:
+```cmake
+target_link_libraries(app PRIVATE coil::coil)
+```
+
+Since all options are `OFF` by default, you don't need to explicitly set anything if you only want to import the library without examples/tests
+
+### CMake add_subdirectory
+
+Copy the entire source tree into your project, then in your `CMakeLists.txt` call:
+```cmake
+add_subdirectory(path/to/coil)
+target_link_libraries(app PRIVATE coil::coil)
+```
+
+Since all options are `OFF` by default, you don't need to explicitly set anything if you only want to import the library without examples/tests
+
+### Manual integration
+
+Copy `include/coil` and `src` to your project and ensure all the files from `src` are being compiled
 
 ## Motivation
 
