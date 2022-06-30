@@ -3,7 +3,8 @@
 #include "common/ExamplesCommon.h"
 
 // In these examples:
-// 1. Dynamic variables
+// * Wrapping functions taking pointers
+// * Creating coil variables dynamically
 
 namespace
 {
@@ -95,7 +96,7 @@ void AdvancedExample::run()
             context.log() << entity.id << '\t' << entity.name << '\t' << entity.payload << std::endl;
     };
 
-    common::printSectionHeader("You can wrap functions taking pointers:");
+    common::printSectionHeader("You can use lambdas to wrap functions taking pointers:");
     common::executeCommand(bindings, "entities.list");
     common::executeCommand(bindings, "entities.rename npc1 'Enemy'");
     common::executeCommand(bindings, "entities.list");
