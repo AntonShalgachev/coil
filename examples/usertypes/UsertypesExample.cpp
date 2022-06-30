@@ -4,6 +4,14 @@
 
 #include <numeric>
 
+// In most cases you'll have to provide 2 specializations per user type:
+// * TypeSerializer to be able to convert your type to/from string
+// * TypeName to be able to display the name of your type when an error occurs
+//
+// If you use RTTI, nameof library or any other means to get a name of the generic
+// type, then you won't need to provide a TypeName specialization for your type. See
+// `CustomTypeName.h` to check the general-case implementation of it using RTTI
+
 namespace
 {
     struct Vec2
