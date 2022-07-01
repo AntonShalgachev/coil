@@ -21,6 +21,11 @@
           "name": "COIL_RUNTIME_TESTS",
           "value": "True",
           "type": "BOOL"
+        },
+        {
+          "name": "COIL_CATCH_EXCEPTIONS",
+          "value": "True",
+          "type": "BOOL"
         }
       ]
     },
@@ -42,6 +47,11 @@
         },
         {
           "name": "COIL_RUNTIME_TESTS",
+          "value": "True",
+          "type": "BOOL"
+        },
+        {
+          "name": "COIL_CATCH_EXCEPTIONS",
           "value": "True",
           "type": "BOOL"
         }
@@ -67,6 +77,11 @@
           "name": "COIL_RUNTIME_TESTS",
           "value": "True",
           "type": "BOOL"
+        },
+        {
+          "name": "COIL_CATCH_EXCEPTIONS",
+          "value": "True",
+          "type": "BOOL"
         }
       ]
     },
@@ -88,6 +103,11 @@
         },
         {
           "name": "COIL_RUNTIME_TESTS",
+          "value": "True",
+          "type": "BOOL"
+        },
+        {
+          "name": "COIL_CATCH_EXCEPTIONS",
           "value": "True",
           "type": "BOOL"
         }
