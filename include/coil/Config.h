@@ -1,0 +1,5 @@
+#pragma once
+
+#ifndef COIL_CONFIG_CATCH_EXCEPTIONS
+    #define COIL_CONFIG_CATCH_EXCEPTIONS 0
+#endif

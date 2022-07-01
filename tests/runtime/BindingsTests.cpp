@@ -662,10 +662,13 @@ TEST(BindingsTests, TestStdException)
 
     coil::ExecutionResult result;
 
+#if COIL_CONFIG_CATCH_EXCEPTIONS
     EXPECT_NO_THROW({ result = bindings.execute("func"); });
-
     EXPECT_EQ(result.errors.size(), 1u);
     EXPECT_PRED2(containsError, result.errors, "Exception caught during execution: Test runtime exception");
+#else
+    EXPECT_THROW({ result = bindings.execute("func"); }, std::runtime_error);
+#endif
 }
 
 TEST(BindingsTests, TestNonStdException)
@@ -675,10 +678,13 @@ TEST(BindingsTests, TestNonStdException)
 
     coil::ExecutionResult result;
 
+#if COIL_CONFIG_CATCH_EXCEPTIONS
     EXPECT_NO_THROW({ result = bindings.execute("func"); });
-
     EXPECT_EQ(result.errors.size(), 1u);
     EXPECT_PRED2(containsError, result.errors, "Exception caught during execution");
+#else
+    EXPECT_THROW({ result = bindings.execute("func"); }, int);
+#endif
 }
 
 TEST(BindingsTests, TestValue)
