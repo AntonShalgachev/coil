@@ -16,6 +16,8 @@ Cpp11BracedListStyle: true
 BinPackArguments: 'false'
 BinPackParameters: 'false'
 
+IndentPPDirectives: BeforeHash
+
 AllowShortLambdasOnASingleLine: All
 AllowShortFunctionsOnASingleLine: Empty
 ConstructorInitializerAllOnOneLineOrOnePerLine: true
