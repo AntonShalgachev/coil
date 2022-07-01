@@ -13,8 +13,6 @@ This is a C++17 library that allows you to call functions at runtime using a sim
 
 > ⚠️ **The library is currently under development.** Major changes are to be expected, although the main branch is kept more or less stable
 
-> ⚠️ This README file is also not up-to-date and might not reflect the most recent library changes
-
 Table of contents:
 - [Quick peek](#quick-peek)
 - [Introduction](#introduction)
@@ -87,6 +85,7 @@ See [examples](examples) directory and the corresponding [README.md](examples/RE
 ## Building
 
 The project contains the following CMake options:
+* `COIL_CATCH_EXCEPTIONS`: catch and report exceptions
 * `COIL_EXAMPLES`: adds examples
 * `COIL_RUNTIME_TESTS`: adds runtime tests
 * `COIL_COMPILATION_TESTS`: performs compilation test during CMake project generation
@@ -115,6 +114,10 @@ FetchContent_Declare(
     coil
     GIT_REPOSITORY https://github.com/AntonShalgachev/coil # or use URL
 )
+
+# Configure coil if necessary:
+# set(COIL_CATCH_EXCEPTIONS ON CACHE INTERNAL "")
+
 FetchContent_MakeAvailable(coil)
 ```
 
@@ -129,15 +132,14 @@ Since all options are `OFF` by default, you don't need to explicitly set anythin
 
 Copy the entire source tree into your project, then in your `CMakeLists.txt` call:
 ```cmake
+# Configure coil if necessary:
+# set(COIL_CATCH_EXCEPTIONS ON CACHE INTERNAL "")
+
 add_subdirectory(path/to/coil)
 target_link_libraries(app PRIVATE coil::coil)
 ```
 
 Since all options are `OFF` by default, you don't need to explicitly set anything if you only want to import the library without examples/tests
-
-### Manual integration
-
-Copy `include/coil` and `src` to your project and ensure all the files from `src` are being compiled
 
 ## Motivation
 
