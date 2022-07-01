@@ -946,3 +946,13 @@ TEST(BindingsTests, TestFunctorParameterTypes)
     EXPECT_EQ(parameterTypes[0], "int");
     EXPECT_EQ(parameterTypes[1], "float");
 }
+
+
+TEST(BindingsTests, TestEmptyFunctorParameterTypes)
+{
+	coil::Bindings bindings;
+
+	std::vector<coil::AnyFunctor> const& functors = bindings.get("func");
+
+	ASSERT_EQ(functors.size(), 0u);
+}
