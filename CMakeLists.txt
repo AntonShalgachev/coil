@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.15.0 FATAL_ERROR)
 
 project(coil LANGUAGES C CXX VERSION 1.0)
 
+set(COIL_CATCH_EXCEPTIONS OFF CACHE BOOL "Configure Coil to catch exceptions in commands")
+
 set(COIL_EXAMPLES OFF CACHE BOOL "Coil examples")
 set(COIL_RUNTIME_TESTS OFF CACHE BOOL "Coil runtime tests")
 set(COIL_COMPILATION_TESTS OFF CACHE BOOL "Run Coil compilation tests within CMake")
@@ -22,6 +24,7 @@ add_library(coil
     "include/coil/Bind.h"
     "include/coil/Bindings.h"
     "include/coil/Coil.h"
+    "include/coil/Config.h"
     "include/coil/Context.h"
     "include/coil/DefaultLexer.h"
     "include/coil/ExecutionInput.h"
@@ -52,6 +55,10 @@ if(MSVC)
   target_compile_options(coil PRIVATE /W4 /WX)
 else()
   target_compile_options(coil PRIVATE -Wall -Wextra -Wpedantic -Werror)
+endif()
+
+if (${COIL_CATCH_EXCEPTIONS})
+    target_compile_definitions(coil PUBLIC COIL_CONFIG_CATCH_EXCEPTIONS=1)
 endif()
 
 if (${COIL_EXAMPLES})
