@@ -940,19 +940,18 @@ TEST(BindingsTests, TestFunctorParameterTypes)
     std::vector<coil::AnyFunctor> const& functors = bindings.get("func");
 
     ASSERT_EQ(functors.size(), 1u);
-    
+
     std::vector<std::string_view> const& parameterTypes = functors[0].parameterTypes();
     ASSERT_EQ(parameterTypes.size(), 2u);
     EXPECT_EQ(parameterTypes[0], "int");
     EXPECT_EQ(parameterTypes[1], "float");
 }
 
-
 TEST(BindingsTests, TestEmptyFunctorParameterTypes)
 {
-	coil::Bindings bindings;
+    coil::Bindings bindings;
 
-	std::vector<coil::AnyFunctor> const& functors = bindings.get("func");
+    std::vector<coil::AnyFunctor> const& functors = bindings.get("func");
 
-	ASSERT_EQ(functors.size(), 0u);
+    ASSERT_EQ(functors.size(), 0u);
 }
