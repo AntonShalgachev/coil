@@ -70,7 +70,7 @@ namespace coil
         }
 
         /// CallContext.h ///
-        CallContext::CallContext(ExecutionInput const& input) : input(input) {}
+        CallContext::CallContext(ExecutionInput input) : input(std::move(input)) {}
 
         std::ostream& CallContext::log()
         {
@@ -94,7 +94,7 @@ namespace coil
     {
         using namespace std;
         swap(rhs.m_storage, m_storage);
-        swap(rhs.m_arity, m_arity);
+        swap(rhs.m_parameterTypes, m_parameterTypes);
     }
 
     AnyFunctor::~AnyFunctor()
@@ -117,7 +117,12 @@ namespace coil
 
     std::size_t AnyFunctor::arity() const
     {
-        return m_arity;
+        return m_parameterTypes.size();
+    }
+
+    std::vector<std::string_view> const& AnyFunctor::parameterTypes() const
+    {
+        return m_parameterTypes;
     }
 
     /// Bindings.h ///
@@ -152,6 +157,17 @@ namespace coil
         m_commands.erase(name);
     }
 
+    std::vector<AnyFunctor> const& Bindings::get(std::string_view name)
+    {
+        static std::vector<AnyFunctor> emptyFunctors;
+
+        auto it = m_commands.find(name);
+        if (it == m_commands.end())
+            return emptyFunctors;
+
+        return it->second;
+    }
+
     void Bindings::clear()
     {
         m_commandNames.clear();
@@ -163,10 +179,11 @@ namespace coil
         return m_commandNames;
     }
 
-    ExecutionResult Bindings::execute(ExecutionInput const& input)
+    ExecutionResult Bindings::execute(ExecutionInput input)
     {
-        detail::CallContext context{input};
+        detail::CallContext context{std::move(input)};
         execute(context);
+        context.result.input = std::move(context.input);
         return std::move(context).result;
     }
 

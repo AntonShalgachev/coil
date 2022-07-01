@@ -2,7 +2,7 @@
 
 #include "TypeName.h"
 
-#include <array>
+#include <vector>
 
 namespace coil
 {
@@ -11,5 +11,11 @@ namespace coil
     {
         static std::size_t constexpr size = sizeof...(Args);
         using IndicesType = std::make_index_sequence<size>;
+
+        static std::vector<std::string_view> const& names()
+        {
+            static std::vector<std::string_view> data = {TypeName<Args>::name()...};
+            return data;
+        }
     };
 }

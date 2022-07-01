@@ -64,19 +64,20 @@ namespace coil
         void invokeTrampoline(detail::CallContext& context);
 
         std::size_t arity() const;
+        std::vector<std::string_view> const& parameterTypes() const;
 
     private:
         void destroy();
 
     private:
         detail::AnyStorageBase* m_storage = nullptr;
-        std::size_t m_arity = 0;
+        std::vector<std::string_view> m_parameterTypes;
     };
 
     template<typename FunctionWrapper>
     coil::AnyFunctor::AnyFunctor(FunctionWrapper func)
     {
         m_storage = new detail::AnyStorage<FunctionWrapper>(std::move(func));
-        m_arity = FunctionWrapper::ArgsTraits::UserArgumentTypes::size;
+        m_parameterTypes = FunctionWrapper::ArgsTraits::UserArgumentTypes::names();
     }
 }
