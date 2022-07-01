@@ -59,16 +59,6 @@ namespace coil
             return Context{context};
         }
 
-        void reportExceptionError(CallContext& context)
-        {
-            context.reportError("Exception caught during execution");
-        }
-
-        void reportExceptionError(CallContext& context, std::exception const& ex)
-        {
-            context.reportError(formatString("Exception caught during execution: %s", ex.what()));
-        }
-
         /// CallContext.h ///
         CallContext::CallContext(ExecutionInput input) : input(std::move(input)) {}
 
@@ -217,9 +207,26 @@ namespace coil
 
         auto& functors = it->second;
 
-        for (auto& functor : functors)
-            if (functor.arity() == context.input.arguments.size())
-                return functor.invokeTrampoline(context);
+#if COIL_CONFIG_CATCH_EXCEPTIONS
+        try
+#endif // COIL_CONFIG_CATCH_EXCEPTIONS
+        {
+            for (auto& functor : functors)
+                if (functor.arity() == context.input.arguments.size())
+                    return functor.invokeTrampoline(context);
+        }
+#if COIL_CONFIG_CATCH_EXCEPTIONS
+        catch (std::exception const& ex)
+        {
+            context.reportError(formatString("Exception caught during execution: %s", ex.what()));
+            return;
+        }
+        catch (...)
+        {
+            context.reportError("Exception caught during execution");
+            return;
+        }
+#endif // COIL_CONFIG_CATCH_EXCEPTIONS
 
         std::stringstream argsCount;
 

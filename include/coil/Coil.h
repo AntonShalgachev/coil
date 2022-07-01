@@ -2,6 +2,7 @@
 
 #include "Bind.h"
 #include "Bindings.h"
+#include "Config.h"
 #include "Context.h"
 #include "Extern.h"
 #include "NamedArgs.h"

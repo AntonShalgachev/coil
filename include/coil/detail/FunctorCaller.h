@@ -3,7 +3,6 @@
 #include "../TypeSerializer.h"
 #include "../Types.h"
 #include "CallContext.h"
-#include "FuncTraits.h"
 
 #include <string>
 
@@ -13,9 +12,6 @@ namespace coil::detail
     Context createContext(CallContext& context);
     template<>
     Context createContext<0>(CallContext& context);
-
-    void reportExceptionError(CallContext& context);
-    void reportExceptionError(CallContext& context, std::exception const& ex);
 
     template<typename T>
     void reportError(CallContext& context, Expected<T, std::string> const& result)
@@ -33,20 +29,9 @@ namespace coil::detail
             return;
         }
 
-        try
-        {
-            std::optional<std::string> returnValue = func.invoke(createContext<NonUserIndices>(context)..., *std::move(expectedArgs)...);
-            if (!context.hasErrors())
-                context.result.returnValue = returnValue;
-        }
-        catch (std::exception const& ex)
-        {
-            reportExceptionError(context, ex);
-        }
-        catch (...)
-        {
-            reportExceptionError(context);
-        }
+        std::optional<std::string> returnValue = func.invoke(createContext<NonUserIndices>(context)..., *std::move(expectedArgs)...);
+        if (!context.hasErrors())
+            context.result.returnValue = returnValue;
     }
 
     template<typename FuncWrapper, std::size_t... NonUserIndices, typename... UserArgs, std::size_t... UserIndices>
