@@ -99,8 +99,10 @@ COIL_FUNCTION_ARGS_TEMPLATE(coil::Context, double, double);
 #endif
 
 #ifdef USE_MANUAL
+    #include <cctype>
+#endif
 
-#include <cctype>
+#ifdef USE_MANUAL
 
 void DumbBindings::registerCommand(std::string name, CommandHandlerFunc func)
 {
