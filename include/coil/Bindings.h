@@ -41,7 +41,7 @@ namespace coil
 
         void remove(std::string_view name);
 
-        std::vector<AnyFunctor> const& get(std::string_view name);
+        std::vector<AnyFunctor> const& get(std::string_view name) const;
 
         void clear();
 
