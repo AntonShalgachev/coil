@@ -943,11 +943,12 @@ TEST(BindingsTests, TestFunctorParameterTypes)
     coil::Bindings bindings;
     bindings["func"] = [](int, float) {};
 
-    std::vector<coil::AnyFunctor> const& functors = bindings.get("func");
+    std::vector<coil::AnyFunctor> const* functors = bindings.get("func");
 
-    ASSERT_EQ(functors.size(), 1u);
+    ASSERT_TRUE(functors);
+    ASSERT_EQ(functors->size(), 1u);
 
-    std::vector<std::string_view> const& parameterTypes = functors[0].parameterTypes();
+    std::vector<std::string_view> const& parameterTypes = (*functors)[0].parameterTypes();
     ASSERT_EQ(parameterTypes.size(), 2u);
     EXPECT_EQ(parameterTypes[0], "int");
     EXPECT_EQ(parameterTypes[1], "float");
@@ -957,7 +958,7 @@ TEST(BindingsTests, TestEmptyFunctorParameterTypes)
 {
     coil::Bindings bindings;
 
-    std::vector<coil::AnyFunctor> const& functors = bindings.get("func");
+    std::vector<coil::AnyFunctor> const* functors = bindings.get("func");
 
-    ASSERT_EQ(functors.size(), 0u);
+    ASSERT_FALSE(functors);
 }

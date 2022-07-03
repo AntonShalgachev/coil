@@ -147,15 +147,13 @@ namespace coil
         m_commands.erase(name);
     }
 
-    std::vector<AnyFunctor> const& Bindings::get(std::string_view name) const
+    std::vector<AnyFunctor> const* Bindings::get(std::string_view name) const
     {
-        static std::vector<AnyFunctor> emptyFunctors;
-
         auto it = m_commands.find(name);
         if (it == m_commands.end())
-            return emptyFunctors;
+            return nullptr;
 
-        return it->second;
+        return &it->second;
     }
 
     void Bindings::clear()
