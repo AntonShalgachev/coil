@@ -115,6 +115,11 @@ namespace coil
         return m_parameterTypes;
     }
 
+    std::string_view AnyFunctor::returnType() const
+    {
+        return m_returnType;
+    }
+
     /// Bindings.h ///
     void Bindings::setLexer(LexerFunc lexer)
     {
@@ -435,6 +440,7 @@ namespace coil
     }
 
     /// TypeName.h ///
+    COIL_CREATE_TYPE_NAME_DEFINITION(void);
     COIL_CREATE_TYPE_NAME_DEFINITION(bool);
     COIL_CREATE_TYPE_NAME_DEFINITION(char);
     COIL_CREATE_TYPE_NAME_DEFINITION(signed char);
