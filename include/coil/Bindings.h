@@ -31,6 +31,7 @@ namespace coil
         template<typename Func>
         void add(std::string_view name, Func func)
         {
+            // TODO return command container
             static_assert(detail::FuncTraits<Func>::isFunc, "Func should be a functor object");
             using FunctionWrapper = typename detail::FuncTraits<Func>::FunctionWrapperType;
             add(name, AnyFunctor{FunctionWrapper{std::move(func)}});
