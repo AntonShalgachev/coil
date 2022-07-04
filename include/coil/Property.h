@@ -23,7 +23,10 @@ namespace coil
     {
         auto get = [getter]() -> decltype(auto) { return getter(); };
 
-        auto set = [](Context context, std::string_view) { context.reportError("This property is read-only"); };
+        auto set = [getter](Context context, std::string_view) -> decltype(auto) {
+            context.reportError("This property is read-only");
+            return getter();
+        };
 
         return coil::overloaded(std::move(get), std::move(set));
     }
@@ -48,7 +51,10 @@ namespace coil
         auto get = [getter, object]() -> decltype(auto) { return std::invoke(getter, object); };
 
         using T = std::decay_t<decltype(std::invoke(getter, object))>;
-        auto set = [](Context context, T) { context.reportError("This property is read-only"); };
+        auto set = [getter, object](Context context, T) -> decltype(auto) {
+            context.reportError("This property is read-only");
+            return std::invoke(getter, object);
+        };
 
         return coil::overloaded(std::move(get), std::move(set));
     }
