@@ -85,6 +85,7 @@ namespace coil
         using namespace std;
         swap(rhs.m_storage, m_storage);
         swap(rhs.m_parameterTypes, m_parameterTypes);
+        swap(rhs.m_returnType, m_returnType);
     }
 
     AnyFunctor::~AnyFunctor()
