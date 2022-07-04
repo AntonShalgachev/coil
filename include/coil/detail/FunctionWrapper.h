@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Context.h"
+#include "../TypeName.h"
 #include "../TypeSerializer.h"
 #include "../Types.h"
 #include "FuncTraits.h"
@@ -43,6 +44,9 @@ namespace coil::detail
 
             m_callFunc = &FunctionWrapper<Args...>::typedCall<Func, C>;
             m_destroyFunc = &FunctionWrapper<Args...>::typedDestroy<Func>;
+
+            using R = typename FuncTraits<Func>::ReturnType;
+            returnType = TypeName<SimpleDecay<std::remove_pointer_t<R>>>::name();
         }
         ~FunctionWrapper();
 
@@ -53,6 +57,8 @@ namespace coil::detail
         FunctionWrapper& operator=(FunctionWrapper&& rhs) = delete;
 
         std::optional<std::string> invoke(Args... args);
+
+        std::string_view returnType;
 
     private:
         using CallFuncPtr = std::optional<std::string> (FunctionWrapper::*)(Args... args);
@@ -105,6 +111,7 @@ namespace coil::detail
         m_obj = rhs.m_obj;
         m_callFunc = rhs.m_callFunc;
         m_destroyFunc = rhs.m_destroyFunc;
+        returnType = rhs.returnType;
     }
 
     template<typename... Args>
