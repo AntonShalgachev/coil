@@ -238,6 +238,6 @@ namespace coil
         if (!value)
             return "null";
 
-        return TypeSerializer<std::decay_t<T>>::toString(*value);
+        return TypeSerializer<std::remove_cv_t<std::remove_reference_t<T>>>::toString(*value);
     }
 }

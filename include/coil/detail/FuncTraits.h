@@ -15,7 +15,7 @@ namespace coil::detail
     public:
         static constexpr bool isFunc = true;
 
-        using ReturnType = std::decay_t<R>;
+        using ReturnType = std::remove_cv_t<std::remove_reference_t<R>>;
         using FunctionWrapperType = FunctionWrapper<Args...>;
         static constexpr bool isConst = IsConst;
     };

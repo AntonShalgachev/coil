@@ -9,7 +9,6 @@ namespace coil
     class BasicStringWrapper
     {
     public:
-        static_assert(std::is_same_v<UnderlyingType, std::decay_t<UnderlyingType>>, "UnderlyingType should be a decayed type");
         static_assert(std::is_convertible_v<UnderlyingType, std::string_view>, "UnderlyingType should be convertible to std::string_view");
 
         BasicStringWrapper(std::string_view str) : m_str(str) {}
