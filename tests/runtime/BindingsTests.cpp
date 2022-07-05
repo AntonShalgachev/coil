@@ -941,14 +941,13 @@ TEST(BindingsTests, TestCustomLexer)
 TEST(BindingsTests, TestFunctorMetadata)
 {
     coil::Bindings bindings;
-    bindings["func"] = [](int, float) -> bool { return true; };
 
-    std::vector<coil::AnyFunctor> const* functors = bindings.get("func");
+    auto func = [](int, float) -> bool { return true; };
+    coil::Bindings::Command const& command = bindings.add("func", std::move(func));
 
-    ASSERT_TRUE(functors);
-    ASSERT_EQ(functors->size(), 1u);
+    ASSERT_EQ(command.functors.size(), 1u);
 
-    coil::AnyFunctor const& functor = (*functors)[0];
+    coil::AnyFunctor const& functor = command.functors[0];
 
     std::vector<std::string_view> const& parameterTypes = functor.parameterTypes();
     ASSERT_EQ(parameterTypes.size(), 2u);
@@ -956,13 +955,15 @@ TEST(BindingsTests, TestFunctorMetadata)
     EXPECT_EQ(parameterTypes[1], "float");
 
     EXPECT_EQ(functor.returnType(), "bool");
+
+    EXPECT_EQ(&command, bindings.get("func"));
 }
 
 TEST(BindingsTests, TestEmptyFunctorMetadata)
 {
     coil::Bindings bindings;
 
-    std::vector<coil::AnyFunctor> const* functors = bindings.get("func");
+    coil::Bindings::Command const* command = bindings.get("func");
 
-    ASSERT_FALSE(functors);
+    ASSERT_FALSE(command);
 }
