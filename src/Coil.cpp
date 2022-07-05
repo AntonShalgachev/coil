@@ -18,6 +18,7 @@ template class coil::BasicStringWrapper<std::string>;
 template struct std::hash<coil::BasicStringWrapper<std::string>>;
 
 template class coil::BindingProxy<coil::Bindings>;
+template class std::unique_ptr<coil::Lexer>;
 
 template class std::basic_string_view<char>;
 template class std::basic_string<char>;

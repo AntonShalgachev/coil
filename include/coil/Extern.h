@@ -28,6 +28,7 @@ extern template class coil::BasicStringWrapper<std::string>;
 extern template struct std::hash<coil::BasicStringWrapper<std::string>>;
 
 extern template class coil::BindingProxy<coil::Bindings>;
+extern template class std::unique_ptr<coil::Lexer>;
 
 extern template class std::basic_string_view<char>;
 extern template class std::basic_string<char>;
