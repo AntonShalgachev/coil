@@ -1,9 +1,9 @@
 #pragma once
 
 #include "AnyFunctor.h"
-#include "DefaultLexer.h"
 #include "ExecutionResult.h"
 #include "Expected.h"
+#include "Lexer.h"
 #include "Utils.h"
 #include "detail/FuncTraits.h"
 #include "detail/FunctorCaller.h"
@@ -27,9 +27,10 @@ namespace coil
         };
 
         using StringWrapper = BasicStringWrapper<std::string>;
-        using LexerFunc = std::function<Expected<ExecutionInput, std::string>(std::string_view)>;
 
-        void setLexer(LexerFunc lexer);
+        Bindings();
+
+        void setLexer(std::unique_ptr<Lexer> lexer);
 
         BindingProxy<Bindings> operator[](std::string_view name);
 
@@ -58,7 +59,7 @@ namespace coil
     private:
         void execute(detail::CallContext& context);
 
-        LexerFunc m_lexer = DefaultLexer{};
+        std::unique_ptr<Lexer> m_lexer;
 
         std::unordered_map<StringWrapper, Command> m_commands;
         std::vector<std::string_view> m_commandNames;
