@@ -21,6 +21,11 @@ namespace coil
     class Bindings
     {
     public:
+        struct Command
+        {
+            std::vector<AnyFunctor> functors;
+        };
+
         using StringWrapper = BasicStringWrapper<std::string>;
         using LexerFunc = std::function<Expected<ExecutionInput, std::string>(std::string_view)>;
 
@@ -34,7 +39,7 @@ namespace coil
             // TODO return command container
             static_assert(detail::FuncTraits<Func>::isFunc, "Func should be a functor object");
             using FunctionWrapper = typename detail::FuncTraits<Func>::FunctionWrapperType;
-            add(name, AnyFunctor{FunctionWrapper{std::move(func)}});
+            return add(name, AnyFunctor{FunctionWrapper{std::move(func)}});
         }
 
         void add(std::string_view name, AnyFunctor anyFunctor);
@@ -42,7 +47,7 @@ namespace coil
 
         void remove(std::string_view name);
 
-        std::vector<AnyFunctor> const* get(std::string_view name) const;
+        Command const* get(std::string_view name) const;
 
         void clear();
 
@@ -56,7 +61,7 @@ namespace coil
 
         LexerFunc m_lexer = DefaultLexer{};
 
-        std::unordered_map<StringWrapper, std::vector<AnyFunctor>> m_commands;
+        std::unordered_map<StringWrapper, Command> m_commands;
         std::vector<std::string_view> m_commandNames;
     };
 
