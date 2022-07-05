@@ -34,15 +34,15 @@ namespace coil
         BindingProxy<Bindings> operator[](std::string_view name);
 
         template<typename Func>
-        Bindings::Command const* add(std::string_view name, Func func)
+        Bindings::Command const& add(std::string_view name, Func func)
         {
             static_assert(detail::FuncTraits<Func>::isFunc, "Func should be a functor object");
             using FunctionWrapper = typename detail::FuncTraits<Func>::FunctionWrapperType;
             return add(name, AnyFunctor{FunctionWrapper{std::move(func)}});
         }
 
-        Bindings::Command const* add(std::string_view name, AnyFunctor anyFunctor);
-        Bindings::Command const* add(std::string_view name, std::vector<AnyFunctor> anyFunctors);
+        Bindings::Command const& add(std::string_view name, AnyFunctor anyFunctor);
+        Bindings::Command const& add(std::string_view name, std::vector<AnyFunctor> anyFunctors);
 
         void remove(std::string_view name);
 

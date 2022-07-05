@@ -943,12 +943,11 @@ TEST(BindingsTests, TestFunctorMetadata)
     coil::Bindings bindings;
 
     auto func = [](int, float) -> bool { return true; };
-    coil::Bindings::Command const* command = bindings.add("func", std::move(func));
+    coil::Bindings::Command const& command = bindings.add("func", std::move(func));
 
-    ASSERT_TRUE(command);
-    ASSERT_EQ(command->functors.size(), 1u);
+    ASSERT_EQ(command.functors.size(), 1u);
 
-    coil::AnyFunctor const& functor = command->functors[0];
+    coil::AnyFunctor const& functor = command.functors[0];
 
     std::vector<std::string_view> const& parameterTypes = functor.parameterTypes();
     ASSERT_EQ(parameterTypes.size(), 2u);
@@ -957,7 +956,7 @@ TEST(BindingsTests, TestFunctorMetadata)
 
     EXPECT_EQ(functor.returnType(), "bool");
 
-    EXPECT_EQ(command, bindings.get("func"));
+    EXPECT_EQ(&command, bindings.get("func"));
 }
 
 TEST(BindingsTests, TestEmptyFunctorMetadata)
