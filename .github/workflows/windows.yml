@@ -64,27 +64,3 @@ jobs:
         files: ./Codecov.xml
         fail_ci_if_error: true
         functionalities: fix
-
-  msvc2019-compilation:
-    runs-on: windows-2019
-    strategy:
-      matrix:
-        bindings: [COIL, MANUAL]
-    steps:
-    - uses: actions/checkout@v2
-    - name: Cmake
-      run: cmake -B ${{github.workspace}}/build -G "Visual Studio 16 2019" -DCOIL_COMPILE_TIME=ON -DCOIL_COMPILE_TIME_WITH_${{ matrix.bindings }}=ON
-    - name: Build
-      run: cmake --build ${{github.workspace}}/build --config Debug --parallel 10
-
-  msvc2022-compilation:
-    runs-on: windows-2022
-    strategy:
-      matrix:
-        bindings: [COIL, MANUAL]
-    steps:
-    - uses: actions/checkout@v2
-    - name: Cmake
-      run: cmake -B ${{github.workspace}}/build -G "Visual Studio 17 2022" -DCOIL_COMPILE_TIME=ON -DCOIL_COMPILE_TIME_WITH_${{ matrix.bindings }}=ON
-    - name: Build
-      run: cmake --build ${{github.workspace}}/build --config Debug --parallel 10
