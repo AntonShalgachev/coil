@@ -65,6 +65,7 @@ namespace coil
 
         std::size_t arity() const;
         std::vector<std::string_view> const& parameterTypes() const;
+        std::string_view returnType() const;
 
     private:
         void destroy();
@@ -72,11 +73,13 @@ namespace coil
     private:
         detail::AnyStorageBase* m_storage = nullptr;
         std::vector<std::string_view> m_parameterTypes;
+        std::string_view m_returnType;
     };
 
     template<typename FunctionWrapper>
     coil::AnyFunctor::AnyFunctor(FunctionWrapper func)
     {
+        m_returnType = func.returnType;
         m_storage = new detail::AnyStorage<FunctionWrapper>(std::move(func));
         m_parameterTypes = FunctionWrapper::ArgsTraits::UserArgumentTypes::names();
     }
