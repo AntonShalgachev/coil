@@ -1,4 +1,5 @@
 #include "coil/Coil.h"
+#include "coil/DefaultLexer.h"
 
 // Explicitly instantiate used templates here in order to avoid intantiating them in each source file
 template class std::vector<std::string>;
@@ -122,7 +123,9 @@ namespace coil
     }
 
     /// Bindings.h ///
-    void Bindings::setLexer(LexerFunc lexer)
+    Bindings::Bindings() : m_lexer(std::make_unique<DefaultLexer>()) {}
+
+    void Bindings::setLexer(std::unique_ptr<Lexer> lexer)
     {
         m_lexer = std::move(lexer);
     }
@@ -184,7 +187,7 @@ namespace coil
 
     ExecutionResult Bindings::execute(std::string_view command)
     {
-        Expected<ExecutionInput, std::string> input = m_lexer(command);
+        Expected<ExecutionInput, std::string> input = m_lexer->parse(command);
         if (!input)
         {
             ExecutionResult result;

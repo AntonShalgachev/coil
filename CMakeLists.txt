@@ -31,6 +31,7 @@ add_library(coil
     "include/coil/ExecutionResult.h"
     "include/coil/Expected.h"
     "include/coil/Extern.h"
+    "include/coil/Lexer.h"
     "include/coil/NamedArgs.h"
     "include/coil/Overloaded.h"
     "include/coil/Property.h"
