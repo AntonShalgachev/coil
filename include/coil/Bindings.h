@@ -76,8 +76,7 @@ namespace coil
         {
             static_assert(detail::FuncTraits<Func>::isFunc, "Func should be a functor object");
             using FunctionWrapper = typename detail::FuncTraits<Func>::FunctionWrapperType;
-            m_bindings.add(m_name, AnyFunctor{FunctionWrapper{std::move(func)}});
-            return *this;
+            return operator=(AnyFunctor{FunctionWrapper{std::move(func)}});
         }
         BindingProxy& operator=(AnyFunctor anyFunctor)
         {
