@@ -938,23 +938,27 @@ TEST(BindingsTests, TestCustomLexer)
     EXPECT_EQ(result.returnValue, "42");
 }
 
-TEST(BindingsTests, TestFunctorParameterTypes)
+TEST(BindingsTests, TestFunctorMetadata)
 {
     coil::Bindings bindings;
-    bindings["func"] = [](int, float) {};
+    bindings["func"] = [](int, float) -> bool { return true; };
 
     std::vector<coil::AnyFunctor> const* functors = bindings.get("func");
 
     ASSERT_TRUE(functors);
     ASSERT_EQ(functors->size(), 1u);
 
-    std::vector<std::string_view> const& parameterTypes = (*functors)[0].parameterTypes();
+    coil::AnyFunctor const& functor = (*functors)[0];
+
+    std::vector<std::string_view> const& parameterTypes = functor.parameterTypes();
     ASSERT_EQ(parameterTypes.size(), 2u);
     EXPECT_EQ(parameterTypes[0], "int");
     EXPECT_EQ(parameterTypes[1], "float");
+
+    EXPECT_EQ(functor.returnType(), "bool");
 }
 
-TEST(BindingsTests, TestEmptyFunctorParameterTypes)
+TEST(BindingsTests, TestEmptyFunctorMetadata)
 {
     coil::Bindings bindings;
 
