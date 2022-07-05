@@ -9,6 +9,7 @@
 #include <memory>
 #include <optional>
 #include <string>
+#include <string_view>
 
 namespace coil::detail
 {
@@ -35,7 +36,7 @@ namespace coil::detail
         using ArgsTraits = ArgsTraitsImpl<SimpleDecay<Args>...>;
 
         template<typename Func, typename C = void>
-        FunctionWrapper(Func func, C* obj = nullptr)
+        FunctionWrapper(Func func, C* obj = nullptr) : returnType(TypeName<SimpleDecay<std::remove_pointer_t<typename FuncTraits<Func>::ReturnType>>>::name())
         {
             static_assert(!std::is_member_function_pointer_v<Func> || !std::is_void_v<C>, "Func can only be a member function if C isn't void");
 
@@ -44,9 +45,6 @@ namespace coil::detail
 
             m_callFunc = &FunctionWrapper<Args...>::typedCall<Func, C>;
             m_destroyFunc = &FunctionWrapper<Args...>::typedDestroy<Func>;
-
-            using R = typename FuncTraits<Func>::ReturnType;
-            returnType = TypeName<SimpleDecay<std::remove_pointer_t<R>>>::name();
         }
         ~FunctionWrapper();
 
@@ -103,7 +101,7 @@ namespace coil::detail
     };
 
     template<typename... Args>
-    FunctionWrapper<Args...>::FunctionWrapper(FunctionWrapper<Args...>&& rhs)
+    FunctionWrapper<Args...>::FunctionWrapper(FunctionWrapper<Args...>&& rhs) : returnType(rhs.returnType)
     {
         m_func = rhs.m_func;
         rhs.m_func = nullptr;
@@ -111,7 +109,6 @@ namespace coil::detail
         m_obj = rhs.m_obj;
         m_callFunc = rhs.m_callFunc;
         m_destroyFunc = rhs.m_destroyFunc;
-        returnType = rhs.returnType;
     }
 
     template<typename... Args>

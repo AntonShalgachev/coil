@@ -1,8 +1,8 @@
 #pragma once
 
-#include "DefaultLexer.h"
 #include "ExecutionInput.h"
 #include "Expected.h"
+#include "Lexer.h"
 #include "Utils.h"
 
 #include <cctype>
@@ -13,7 +13,7 @@ namespace coil
 {
     struct ExecutionInput;
 
-    struct DefaultLexer
+    class DefaultLexer : public Lexer
     {
     public:
         DefaultLexer(std::string_view groupParenthesis = "()", std::string_view quotes = "'\"", std::string_view groupSeparators = ",;|")
@@ -21,7 +21,7 @@ namespace coil
         {
         }
 
-        Expected<ExecutionInput, std::string> operator()(std::string_view str) const
+        Expected<ExecutionInput, std::string> parse(std::string_view str) const override
         {
             auto tokens = tokenize(str);
             if (!tokens)
@@ -216,7 +216,7 @@ namespace coil
             ExecutionInput input;
 
             if (tokens.empty())
-                return ExecutionInput{};
+                return input;
 
             Token const& firstToken = tokens.front();
             if (firstToken.type != TokenType::String)

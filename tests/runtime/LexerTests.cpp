@@ -2,6 +2,8 @@
 
 #include "gtest/gtest.h"
 
+#include "coil/DefaultLexer.h"
+
 #include <list>
 #include <random>
 
@@ -186,20 +188,20 @@ TEST(LexerTest, TestSpacesEmpty)
 {
     coil::DefaultLexer lexer;
 
-    EXPECT_EQ(lexer(""), createInput("", {}, {}));
-    EXPECT_EQ(lexer(" "), createInput("", {}, {}));
-    EXPECT_EQ(lexer("\t"), createInput("", {}, {}));
-    EXPECT_EQ(lexer("  "), createInput("", {}, {}));
-    EXPECT_EQ(lexer("\t\t"), createInput("", {}, {}));
-    EXPECT_EQ(lexer(" \t"), createInput("", {}, {}));
-    EXPECT_EQ(lexer("\t "), createInput("", {}, {}));
+    EXPECT_EQ(lexer.parse(""), createInput("", {}, {}));
+    EXPECT_EQ(lexer.parse(" "), createInput("", {}, {}));
+    EXPECT_EQ(lexer.parse("\t"), createInput("", {}, {}));
+    EXPECT_EQ(lexer.parse("  "), createInput("", {}, {}));
+    EXPECT_EQ(lexer.parse("\t\t"), createInput("", {}, {}));
+    EXPECT_EQ(lexer.parse(" \t"), createInput("", {}, {}));
+    EXPECT_EQ(lexer.parse("\t "), createInput("", {}, {}));
 }
 
 TEST(LexerTest, TestSpacesNoArgs)
 {
     coil::DefaultLexer lexer;
 
-    EXPECT_EQ(lexer(" foo.bar.func "), createInput("foo.bar.func", {}, {}));
+    EXPECT_EQ(lexer.parse(" foo.bar.func "), createInput("foo.bar.func", {}, {}));
 }
 
 TEST(LexerTest, TestSpacesArgs)
@@ -208,9 +210,9 @@ TEST(LexerTest, TestSpacesArgs)
 
     auto input = createInput("func", args("arg1", "arg2"), {});
 
-    EXPECT_EQ(lexer(" func arg1 arg2 "), input);
-    EXPECT_EQ(lexer(" func  arg1 arg2 "), input);
-    EXPECT_EQ(lexer(" func arg1  arg2 "), input);
+    EXPECT_EQ(lexer.parse(" func arg1 arg2 "), input);
+    EXPECT_EQ(lexer.parse(" func  arg1 arg2 "), input);
+    EXPECT_EQ(lexer.parse(" func arg1  arg2 "), input);
 }
 
 TEST(LexerTest, TestSpacesNamedArgs)
@@ -219,208 +221,208 @@ TEST(LexerTest, TestSpacesNamedArgs)
 
     auto input = createInput("func", args(), {{"arg1", createValue("foo")}, {"arg2", createValue("bar")}});
 
-    EXPECT_EQ(lexer(" func arg1=foo arg2=bar "), input);
-    EXPECT_EQ(lexer(" func  arg1=foo arg2=bar "), input);
-    EXPECT_EQ(lexer(" func  arg1 =foo arg2=bar "), input);
-    EXPECT_EQ(lexer(" func  arg1= foo arg2=bar "), input);
-    EXPECT_EQ(lexer(" func  arg1 = foo arg2=bar "), input);
-    EXPECT_EQ(lexer(" func  arg1 = foo arg2 =bar "), input);
-    EXPECT_EQ(lexer(" func  arg1 = foo arg2= bar "), input);
-    EXPECT_EQ(lexer(" func  arg1 = foo arg2 = bar "), input);
-    EXPECT_EQ(lexer(" func  arg1 = foo  arg2 = bar "), input);
+    EXPECT_EQ(lexer.parse(" func arg1=foo arg2=bar "), input);
+    EXPECT_EQ(lexer.parse(" func  arg1=foo arg2=bar "), input);
+    EXPECT_EQ(lexer.parse(" func  arg1 =foo arg2=bar "), input);
+    EXPECT_EQ(lexer.parse(" func  arg1= foo arg2=bar "), input);
+    EXPECT_EQ(lexer.parse(" func  arg1 = foo arg2=bar "), input);
+    EXPECT_EQ(lexer.parse(" func  arg1 = foo arg2 =bar "), input);
+    EXPECT_EQ(lexer.parse(" func  arg1 = foo arg2= bar "), input);
+    EXPECT_EQ(lexer.parse(" func  arg1 = foo arg2 = bar "), input);
+    EXPECT_EQ(lexer.parse(" func  arg1 = foo  arg2 = bar "), input);
 }
 
 TEST(LexerTests, TestCompoundArgs)
 {
     coil::DefaultLexer lexer;
 
-    EXPECT_EQ(lexer("func arg1,arg2"), createInput("func", {coil::Value{{"arg1", "arg2"}}}, {}));
-    EXPECT_EQ(lexer("func (arg1 arg2)"), createInput("func", {coil::Value{{"arg1", "arg2"}}}, {}));
-    EXPECT_EQ(lexer("func (arg1,arg2)"), createInput("func", {coil::Value{{"arg1", "arg2"}}}, {}));
-    EXPECT_EQ(lexer("func (arg1, arg2)"), createInput("func", {coil::Value{{"arg1", "arg2"}}}, {}));
-    EXPECT_EQ(lexer("func (arg1 , arg2)"), createInput("func", {coil::Value{{"arg1", "arg2"}}}, {}));
-    EXPECT_EQ(lexer("func ( arg1 , arg2 )"), createInput("func", {coil::Value{{"arg1", "arg2"}}}, {}));
-    EXPECT_EQ(lexer("func ( arg1 arg2 )"), createInput("func", {coil::Value{{"arg1", "arg2"}}}, {}));
+    EXPECT_EQ(lexer.parse("func arg1,arg2"), createInput("func", {coil::Value{{"arg1", "arg2"}}}, {}));
+    EXPECT_EQ(lexer.parse("func (arg1 arg2)"), createInput("func", {coil::Value{{"arg1", "arg2"}}}, {}));
+    EXPECT_EQ(lexer.parse("func (arg1,arg2)"), createInput("func", {coil::Value{{"arg1", "arg2"}}}, {}));
+    EXPECT_EQ(lexer.parse("func (arg1, arg2)"), createInput("func", {coil::Value{{"arg1", "arg2"}}}, {}));
+    EXPECT_EQ(lexer.parse("func (arg1 , arg2)"), createInput("func", {coil::Value{{"arg1", "arg2"}}}, {}));
+    EXPECT_EQ(lexer.parse("func ( arg1 , arg2 )"), createInput("func", {coil::Value{{"arg1", "arg2"}}}, {}));
+    EXPECT_EQ(lexer.parse("func ( arg1 arg2 )"), createInput("func", {coil::Value{{"arg1", "arg2"}}}, {}));
 }
 
 TEST(LexerTests, TestCompoundNamedArgs)
 {
     coil::DefaultLexer lexer;
 
-    EXPECT_EQ(lexer("func arg=arg1,arg2"), createInput("func", args(), {{"arg", coil::Value{{"arg1", "arg2"}}}}));
-    EXPECT_EQ(lexer("func arg=(arg1 arg2)"), createInput("func", args(), {{"arg", coil::Value{{"arg1", "arg2"}}}}));
-    EXPECT_EQ(lexer("func arg=(arg1,arg2)"), createInput("func", args(), {{"arg", coil::Value{{"arg1", "arg2"}}}}));
-    EXPECT_EQ(lexer("func arg=(arg1, arg2)"), createInput("func", args(), {{"arg", coil::Value{{"arg1", "arg2"}}}}));
-    EXPECT_EQ(lexer("func arg=(arg1 , arg2)"), createInput("func", args(), {{"arg", coil::Value{{"arg1", "arg2"}}}}));
-    EXPECT_EQ(lexer("func arg=( arg1 , arg2 )"), createInput("func", args(), {{"arg", coil::Value{{"arg1", "arg2"}}}}));
-    EXPECT_EQ(lexer("func arg=( arg1 arg2 )"), createInput("func", args(), {{"arg", coil::Value{{"arg1", "arg2"}}}}));
+    EXPECT_EQ(lexer.parse("func arg=arg1,arg2"), createInput("func", args(), {{"arg", coil::Value{{"arg1", "arg2"}}}}));
+    EXPECT_EQ(lexer.parse("func arg=(arg1 arg2)"), createInput("func", args(), {{"arg", coil::Value{{"arg1", "arg2"}}}}));
+    EXPECT_EQ(lexer.parse("func arg=(arg1,arg2)"), createInput("func", args(), {{"arg", coil::Value{{"arg1", "arg2"}}}}));
+    EXPECT_EQ(lexer.parse("func arg=(arg1, arg2)"), createInput("func", args(), {{"arg", coil::Value{{"arg1", "arg2"}}}}));
+    EXPECT_EQ(lexer.parse("func arg=(arg1 , arg2)"), createInput("func", args(), {{"arg", coil::Value{{"arg1", "arg2"}}}}));
+    EXPECT_EQ(lexer.parse("func arg=( arg1 , arg2 )"), createInput("func", args(), {{"arg", coil::Value{{"arg1", "arg2"}}}}));
+    EXPECT_EQ(lexer.parse("func arg=( arg1 arg2 )"), createInput("func", args(), {{"arg", coil::Value{{"arg1", "arg2"}}}}));
 }
 
 TEST(LexerTests, TestCompoundNamedArgsEdgeCases)
 {
     coil::DefaultLexer lexer;
 
-    EXPECT_EQ(lexer("func arg=arg(um)ent"), createInput("func", args("um", "ent"), {{"arg", createValue("arg")}}));
-    EXPECT_EQ(lexer("func arg=()"), createInput("func", args(), {{"arg", coil::Value{}}}));
-    EXPECT_EQ(lexer("func arg=( )"), createInput("func", args(), {{"arg", coil::Value{}}}));
-    EXPECT_EQ(lexer("func arg=(,)"), createInput("func", args(), {{"arg", coil::Value{}}}));
-    EXPECT_EQ(lexer("func arg=( , )"), createInput("func", args(), {{"arg", coil::Value{}}}));
+    EXPECT_EQ(lexer.parse("func arg=arg(um)ent"), createInput("func", args("um", "ent"), {{"arg", createValue("arg")}}));
+    EXPECT_EQ(lexer.parse("func arg=()"), createInput("func", args(), {{"arg", coil::Value{}}}));
+    EXPECT_EQ(lexer.parse("func arg=( )"), createInput("func", args(), {{"arg", coil::Value{}}}));
+    EXPECT_EQ(lexer.parse("func arg=(,)"), createInput("func", args(), {{"arg", coil::Value{}}}));
+    EXPECT_EQ(lexer.parse("func arg=( , )"), createInput("func", args(), {{"arg", coil::Value{}}}));
 }
 
 TEST(LexerTests, TestEmpty)
 {
     coil::DefaultLexer lexer;
 
-    EXPECT_EQ(lexer(""), createInput("", {}, {}));
+    EXPECT_EQ(lexer.parse(""), createInput("", {}, {}));
 }
 
 TEST(LexerTests, TestNoArgs)
 {
     coil::DefaultLexer lexer;
 
-    EXPECT_EQ(lexer("func"), createInput("func", {}, {}));
+    EXPECT_EQ(lexer.parse("func"), createInput("func", {}, {}));
 }
 
 TEST(LexerTests, TestArgs)
 {
     coil::DefaultLexer lexer;
 
-    EXPECT_EQ(lexer("func arg1"), createInput("func", args("arg1"), {}));
-    EXPECT_EQ(lexer("func arg1 arg2"), createInput("func", args("arg1", "arg2"), {}));
+    EXPECT_EQ(lexer.parse("func arg1"), createInput("func", args("arg1"), {}));
+    EXPECT_EQ(lexer.parse("func arg1 arg2"), createInput("func", args("arg1", "arg2"), {}));
 }
 
 TEST(LexerTests, TestNamedArgs)
 {
     coil::DefaultLexer lexer;
 
-    EXPECT_EQ(lexer("func arg1=foo"), createInput("func", args(), {{"arg1", createValue("foo")}}));
-    EXPECT_EQ(lexer("func arg1=foo arg2=bar"), createInput("func", args(), {{"arg1", createValue("foo")}, {"arg2", createValue("bar")}}));
+    EXPECT_EQ(lexer.parse("func arg1=foo"), createInput("func", args(), {{"arg1", createValue("foo")}}));
+    EXPECT_EQ(lexer.parse("func arg1=foo arg2=bar"), createInput("func", args(), {{"arg1", createValue("foo")}, {"arg2", createValue("bar")}}));
 }
 
 TEST(LexerTests, TestArgsAndNamedArgs)
 {
     coil::DefaultLexer lexer;
 
-    EXPECT_EQ(lexer("func arg1 arg2 arg3=foo arg4=bar"), createInput("func", args("arg1", "arg2"), {{"arg3", createValue("foo")}, {"arg4", createValue("bar")}}));
+    EXPECT_EQ(lexer.parse("func arg1 arg2 arg3=foo arg4=bar"), createInput("func", args("arg1", "arg2"), {{"arg3", createValue("foo")}, {"arg4", createValue("bar")}}));
 }
 
 TEST(LexerTests, TestIntegerArgs)
 {
     coil::DefaultLexer lexer;
 
-    EXPECT_EQ(lexer("foo.bar.func 1"), createInput("foo.bar.func", args("1"), {}));
-    EXPECT_EQ(lexer("foo.bar.func 1 arg"), createInput("foo.bar.func", args("1", "arg"), {}));
-    EXPECT_EQ(lexer("foo.bar.func 1 arg 2"), createInput("foo.bar.func", args("1", "arg", "2"), {}));
+    EXPECT_EQ(lexer.parse("foo.bar.func 1"), createInput("foo.bar.func", args("1"), {}));
+    EXPECT_EQ(lexer.parse("foo.bar.func 1 arg"), createInput("foo.bar.func", args("1", "arg"), {}));
+    EXPECT_EQ(lexer.parse("foo.bar.func 1 arg 2"), createInput("foo.bar.func", args("1", "arg", "2"), {}));
 }
 
 TEST(LexerTests, TestIntegerNamedArgs)
 {
     coil::DefaultLexer lexer;
 
-    EXPECT_EQ(lexer("foo.bar.func arg1=1"), createInput("foo.bar.func", args(), {{"arg1", createValue("1")}}));
-    EXPECT_EQ(lexer("foo.bar.func arg1=1 arg2=arg"), createInput("foo.bar.func", args(), {{"arg1", createValue("1")}, {"arg2", createValue("arg")}}));
-    EXPECT_EQ(lexer("foo.bar.func arg1=1 arg2=arg arg3=2"), createInput("foo.bar.func", args(), {{"arg1", createValue("1")}, {"arg2", createValue("arg")}, {"arg3", createValue("2")}}));
+    EXPECT_EQ(lexer.parse("foo.bar.func arg1=1"), createInput("foo.bar.func", args(), {{"arg1", createValue("1")}}));
+    EXPECT_EQ(lexer.parse("foo.bar.func arg1=1 arg2=arg"), createInput("foo.bar.func", args(), {{"arg1", createValue("1")}, {"arg2", createValue("arg")}}));
+    EXPECT_EQ(lexer.parse("foo.bar.func arg1=1 arg2=arg arg3=2"), createInput("foo.bar.func", args(), {{"arg1", createValue("1")}, {"arg2", createValue("arg")}, {"arg3", createValue("2")}}));
 }
 
 TEST(LexerTests, TestFloatArgs)
 {
     coil::DefaultLexer lexer;
 
-    EXPECT_EQ(lexer("foo.bar.func 3.14"), createInput("foo.bar.func", args("3.14"), {}));
-    EXPECT_EQ(lexer("foo.bar.func 3.14 arg"), createInput("foo.bar.func", args("3.14", "arg"), {}));
-    EXPECT_EQ(lexer("foo.bar.func 3.14 arg 2.0"), createInput("foo.bar.func", args("3.14", "arg", "2.0"), {}));
+    EXPECT_EQ(lexer.parse("foo.bar.func 3.14"), createInput("foo.bar.func", args("3.14"), {}));
+    EXPECT_EQ(lexer.parse("foo.bar.func 3.14 arg"), createInput("foo.bar.func", args("3.14", "arg"), {}));
+    EXPECT_EQ(lexer.parse("foo.bar.func 3.14 arg 2.0"), createInput("foo.bar.func", args("3.14", "arg", "2.0"), {}));
 }
 
 TEST(LexerTests, TestFloatNamedArgs)
 {
     coil::DefaultLexer lexer;
 
-    EXPECT_EQ(lexer("foo.bar.func arg1=3.14"), createInput("foo.bar.func", {}, {{"arg1", createValue("3.14")}}));
-    EXPECT_EQ(lexer("foo.bar.func arg1=3.14 arg2=arg"), createInput("foo.bar.func", {}, {{"arg1", createValue("3.14")}, {"arg2", createValue("arg")}}));
-    EXPECT_EQ(lexer("foo.bar.func arg1=3.14 arg2=arg arg3=2.0"), createInput("foo.bar.func", {}, {{"arg1", createValue("3.14")}, {"arg2", createValue("arg")}, {"arg3", createValue("2.0")}}));
+    EXPECT_EQ(lexer.parse("foo.bar.func arg1=3.14"), createInput("foo.bar.func", {}, {{"arg1", createValue("3.14")}}));
+    EXPECT_EQ(lexer.parse("foo.bar.func arg1=3.14 arg2=arg"), createInput("foo.bar.func", {}, {{"arg1", createValue("3.14")}, {"arg2", createValue("arg")}}));
+    EXPECT_EQ(lexer.parse("foo.bar.func arg1=3.14 arg2=arg arg3=2.0"), createInput("foo.bar.func", {}, {{"arg1", createValue("3.14")}, {"arg2", createValue("arg")}, {"arg3", createValue("2.0")}}));
 }
 
 TEST(LexerTests, TestShortFloatArgs)
 {
     coil::DefaultLexer lexer;
 
-    EXPECT_EQ(lexer("foo.bar.func .14"), createInput("foo.bar.func", args(".14"), {}));
-    EXPECT_EQ(lexer("foo.bar.func .14 arg"), createInput("foo.bar.func", args(".14", "arg"), {}));
-    EXPECT_EQ(lexer("foo.bar.func .14 arg .0"), createInput("foo.bar.func", args(".14", "arg", ".0"), {}));
+    EXPECT_EQ(lexer.parse("foo.bar.func .14"), createInput("foo.bar.func", args(".14"), {}));
+    EXPECT_EQ(lexer.parse("foo.bar.func .14 arg"), createInput("foo.bar.func", args(".14", "arg"), {}));
+    EXPECT_EQ(lexer.parse("foo.bar.func .14 arg .0"), createInput("foo.bar.func", args(".14", "arg", ".0"), {}));
 }
 
 TEST(LexerTests, TestShortFloatNamedArgs)
 {
     coil::DefaultLexer lexer;
 
-    EXPECT_EQ(lexer("foo.bar.func arg1=.14"), createInput("foo.bar.func", args(), {{"arg1", createValue(".14")}}));
-    EXPECT_EQ(lexer("foo.bar.func arg1=.14 arg2=arg"), createInput("foo.bar.func", args(), {{"arg1", createValue(".14")}, {"arg2", createValue("arg")}}));
-    EXPECT_EQ(lexer("foo.bar.func arg1=.14 arg2=arg arg3=.0"), createInput("foo.bar.func", args(), {{"arg1", createValue(".14")}, {"arg2", createValue("arg")}, {"arg3", createValue(".0")}}));
+    EXPECT_EQ(lexer.parse("foo.bar.func arg1=.14"), createInput("foo.bar.func", args(), {{"arg1", createValue(".14")}}));
+    EXPECT_EQ(lexer.parse("foo.bar.func arg1=.14 arg2=arg"), createInput("foo.bar.func", args(), {{"arg1", createValue(".14")}, {"arg2", createValue("arg")}}));
+    EXPECT_EQ(lexer.parse("foo.bar.func arg1=.14 arg2=arg arg3=.0"), createInput("foo.bar.func", args(), {{"arg1", createValue(".14")}, {"arg2", createValue("arg")}, {"arg3", createValue(".0")}}));
 }
 
 TEST(LexerTests, TestStrings)
 {
     coil::DefaultLexer lexer;
-    EXPECT_EQ(lexer("foo.bar.func foo 'bar' baz"), createInput("foo.bar.func", args("foo", "bar", "baz"), {}));
-    EXPECT_EQ(lexer("foo.bar.func foo ' bar ' baz"), createInput("foo.bar.func", args("foo", " bar ", "baz"), {}));
-    EXPECT_EQ(lexer("foo.bar.func 'foo bar baz'"), createInput("foo.bar.func", args("foo bar baz"), {}));
-    EXPECT_EQ(lexer("foo.bar.func 'foo,bar,baz'"), createInput("foo.bar.func", args("foo,bar,baz"), {}));
-    EXPECT_EQ(lexer("foo.bar.func 'foo;bar;baz'"), createInput("foo.bar.func", args("foo;bar;baz"), {}));
-    EXPECT_EQ(lexer("foo.bar.func 'foo|bar|baz'"), createInput("foo.bar.func", args("foo|bar|baz"), {}));
-    EXPECT_EQ(lexer("foo.bar.func 'foo=bar=baz'"), createInput("foo.bar.func", args("foo=bar=baz"), {}));
-    EXPECT_EQ(lexer("foo.bar.func '(foo bar baz)'"), createInput("foo.bar.func", args("(foo bar baz)"), {}));
-    EXPECT_EQ(lexer("foo.bar.func ('foo   bar' baz)"), createInput("foo.bar.func", {coil::Value{{"foo   bar", "baz"}}}, {}));
+    EXPECT_EQ(lexer.parse("foo.bar.func foo 'bar' baz"), createInput("foo.bar.func", args("foo", "bar", "baz"), {}));
+    EXPECT_EQ(lexer.parse("foo.bar.func foo ' bar ' baz"), createInput("foo.bar.func", args("foo", " bar ", "baz"), {}));
+    EXPECT_EQ(lexer.parse("foo.bar.func 'foo bar baz'"), createInput("foo.bar.func", args("foo bar baz"), {}));
+    EXPECT_EQ(lexer.parse("foo.bar.func 'foo,bar,baz'"), createInput("foo.bar.func", args("foo,bar,baz"), {}));
+    EXPECT_EQ(lexer.parse("foo.bar.func 'foo;bar;baz'"), createInput("foo.bar.func", args("foo;bar;baz"), {}));
+    EXPECT_EQ(lexer.parse("foo.bar.func 'foo|bar|baz'"), createInput("foo.bar.func", args("foo|bar|baz"), {}));
+    EXPECT_EQ(lexer.parse("foo.bar.func 'foo=bar=baz'"), createInput("foo.bar.func", args("foo=bar=baz"), {}));
+    EXPECT_EQ(lexer.parse("foo.bar.func '(foo bar baz)'"), createInput("foo.bar.func", args("(foo bar baz)"), {}));
+    EXPECT_EQ(lexer.parse("foo.bar.func ('foo   bar' baz)"), createInput("foo.bar.func", {coil::Value{{"foo   bar", "baz"}}}, {}));
 
-    EXPECT_EQ(lexer("foo.bar.func foo \"bar\" baz"), createInput("foo.bar.func", args("foo", "bar", "baz"), {}));
-    EXPECT_EQ(lexer("foo.bar.func foo \" bar \" baz"), createInput("foo.bar.func", args("foo", " bar ", "baz"), {}));
-    EXPECT_EQ(lexer("foo.bar.func \"foo bar baz\""), createInput("foo.bar.func", args("foo bar baz"), {}));
-    EXPECT_EQ(lexer("foo.bar.func \"foo,bar,baz\""), createInput("foo.bar.func", args("foo,bar,baz"), {}));
-    EXPECT_EQ(lexer("foo.bar.func \"foo;bar;baz\""), createInput("foo.bar.func", args("foo;bar;baz"), {}));
-    EXPECT_EQ(lexer("foo.bar.func \"foo|bar|baz\""), createInput("foo.bar.func", args("foo|bar|baz"), {}));
-    EXPECT_EQ(lexer("foo.bar.func \"foo=bar=baz\""), createInput("foo.bar.func", args("foo=bar=baz"), {}));
-    EXPECT_EQ(lexer("foo.bar.func \"(foo bar baz)\""), createInput("foo.bar.func", args("(foo bar baz)"), {}));
-    EXPECT_EQ(lexer("foo.bar.func (\"foo   bar\" baz)"), createInput("foo.bar.func", {coil::Value{{"foo   bar", "baz"}}}, {}));
+    EXPECT_EQ(lexer.parse("foo.bar.func foo \"bar\" baz"), createInput("foo.bar.func", args("foo", "bar", "baz"), {}));
+    EXPECT_EQ(lexer.parse("foo.bar.func foo \" bar \" baz"), createInput("foo.bar.func", args("foo", " bar ", "baz"), {}));
+    EXPECT_EQ(lexer.parse("foo.bar.func \"foo bar baz\""), createInput("foo.bar.func", args("foo bar baz"), {}));
+    EXPECT_EQ(lexer.parse("foo.bar.func \"foo,bar,baz\""), createInput("foo.bar.func", args("foo,bar,baz"), {}));
+    EXPECT_EQ(lexer.parse("foo.bar.func \"foo;bar;baz\""), createInput("foo.bar.func", args("foo;bar;baz"), {}));
+    EXPECT_EQ(lexer.parse("foo.bar.func \"foo|bar|baz\""), createInput("foo.bar.func", args("foo|bar|baz"), {}));
+    EXPECT_EQ(lexer.parse("foo.bar.func \"foo=bar=baz\""), createInput("foo.bar.func", args("foo=bar=baz"), {}));
+    EXPECT_EQ(lexer.parse("foo.bar.func \"(foo bar baz)\""), createInput("foo.bar.func", args("(foo bar baz)"), {}));
+    EXPECT_EQ(lexer.parse("foo.bar.func (\"foo   bar\" baz)"), createInput("foo.bar.func", {coil::Value{{"foo   bar", "baz"}}}, {}));
 }
 
 TEST(LexerTests, TestErrors)
 {
     coil::DefaultLexer lexer;
 
-    EXPECT_EQ(lexer("=val"), coil::makeUnexpected("Unexpected token '=' at the beginning of the expression"));
-    EXPECT_EQ(lexer("command=arg"), coil::makeUnexpected("Unexpected token '=': no name for the named argument is provided"));
-    EXPECT_EQ(lexer("command arg=val=foo"), coil::makeUnexpected("Unexpected token '=': no name for the named argument is provided"));
-    EXPECT_EQ(lexer("command arg="), coil::makeUnexpected("Expected an argument value, found end of string"));
-    EXPECT_EQ(lexer("command arg=="), coil::makeUnexpected("Expected an argument value, found '='"));
-    EXPECT_EQ(lexer("command arg==value"), coil::makeUnexpected("Expected an argument value, found '='"));
-    EXPECT_EQ(lexer("==value"), coil::makeUnexpected("Unexpected token '=' at the beginning of the expression"));
+    EXPECT_EQ(lexer.parse("=val"), coil::makeUnexpected("Unexpected token '=' at the beginning of the expression"));
+    EXPECT_EQ(lexer.parse("command=arg"), coil::makeUnexpected("Unexpected token '=': no name for the named argument is provided"));
+    EXPECT_EQ(lexer.parse("command arg=val=foo"), coil::makeUnexpected("Unexpected token '=': no name for the named argument is provided"));
+    EXPECT_EQ(lexer.parse("command arg="), coil::makeUnexpected("Expected an argument value, found end of string"));
+    EXPECT_EQ(lexer.parse("command arg=="), coil::makeUnexpected("Expected an argument value, found '='"));
+    EXPECT_EQ(lexer.parse("command arg==value"), coil::makeUnexpected("Expected an argument value, found '='"));
+    EXPECT_EQ(lexer.parse("==value"), coil::makeUnexpected("Unexpected token '=' at the beginning of the expression"));
 }
 
 TEST(LexerTests, TestCompoundArgsErrors)
 {
     coil::DefaultLexer lexer;
 
-    EXPECT_EQ(lexer("func (arg,arg"), coil::makeUnexpected("Token '(' doesn't have a corresponding opening/closing token"));
-    EXPECT_EQ(lexer("func arg,arg)"), coil::makeUnexpected("Token ')' doesn't have a corresponding opening/closing token"));
+    EXPECT_EQ(lexer.parse("func (arg,arg"), coil::makeUnexpected("Token '(' doesn't have a corresponding opening/closing token"));
+    EXPECT_EQ(lexer.parse("func arg,arg)"), coil::makeUnexpected("Token ')' doesn't have a corresponding opening/closing token"));
 
-    EXPECT_EQ(lexer("func arg(ument"), coil::makeUnexpected("Token '(' doesn't have a corresponding opening/closing token"));
-    EXPECT_EQ(lexer("func argum)ent"), coil::makeUnexpected("Token ')' doesn't have a corresponding opening/closing token"));
+    EXPECT_EQ(lexer.parse("func arg(ument"), coil::makeUnexpected("Token '(' doesn't have a corresponding opening/closing token"));
+    EXPECT_EQ(lexer.parse("func argum)ent"), coil::makeUnexpected("Token ')' doesn't have a corresponding opening/closing token"));
 
-    EXPECT_EQ(lexer("func ("), coil::makeUnexpected("Token '(' doesn't have a corresponding opening/closing token"));
-    EXPECT_EQ(lexer("func )"), coil::makeUnexpected("Token ')' doesn't have a corresponding opening/closing token"));
+    EXPECT_EQ(lexer.parse("func ("), coil::makeUnexpected("Token '(' doesn't have a corresponding opening/closing token"));
+    EXPECT_EQ(lexer.parse("func )"), coil::makeUnexpected("Token ')' doesn't have a corresponding opening/closing token"));
 }
 
 TEST(LexerTests, TestStringsErrors)
 {
     coil::DefaultLexer lexer;
 
-    EXPECT_EQ(lexer("func arg,arg\""), coil::makeUnexpected("Token '\"' doesn't have a corresponding opening/closing quote"));
-    EXPECT_EQ(lexer("func arg arg\""), coil::makeUnexpected("Token '\"' doesn't have a corresponding opening/closing quote"));
-    EXPECT_EQ(lexer("func \"arg,arg"), coil::makeUnexpected("Token '\"' doesn't have a corresponding opening/closing quote"));
-    EXPECT_EQ(lexer("func \"arg arg"), coil::makeUnexpected("Token '\"' doesn't have a corresponding opening/closing quote"));
+    EXPECT_EQ(lexer.parse("func arg,arg\""), coil::makeUnexpected("Token '\"' doesn't have a corresponding opening/closing quote"));
+    EXPECT_EQ(lexer.parse("func arg arg\""), coil::makeUnexpected("Token '\"' doesn't have a corresponding opening/closing quote"));
+    EXPECT_EQ(lexer.parse("func \"arg,arg"), coil::makeUnexpected("Token '\"' doesn't have a corresponding opening/closing quote"));
+    EXPECT_EQ(lexer.parse("func \"arg arg"), coil::makeUnexpected("Token '\"' doesn't have a corresponding opening/closing quote"));
 
-    EXPECT_EQ(lexer("func argum\"ent"), coil::makeUnexpected("Token '\"' doesn't have a corresponding opening/closing quote"));
+    EXPECT_EQ(lexer.parse("func argum\"ent"), coil::makeUnexpected("Token '\"' doesn't have a corresponding opening/closing quote"));
 
-    EXPECT_EQ(lexer("func \""), coil::makeUnexpected("Token '\"' doesn't have a corresponding opening/closing quote"));
+    EXPECT_EQ(lexer.parse("func \""), coil::makeUnexpected("Token '\"' doesn't have a corresponding opening/closing quote"));
 }
 
 TEST(LexerTests, TestGenerated)
@@ -436,6 +438,6 @@ TEST(LexerTests, TestGenerated)
         auto input = generateRandomInput(engine);
         auto str = generateRandomInputString(engine, input);
 
-        EXPECT_PRED3(test, str, lexer(str), input);
+        EXPECT_PRED3(test, str, lexer.parse(str), input);
     }
 }

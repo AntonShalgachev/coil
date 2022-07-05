@@ -923,13 +923,17 @@ TEST(BindingsTests, TestCustomLexer)
 {
     coil::Bindings bindings;
 
-    auto lexer = [](std::string_view input) -> coil::Expected<coil::ExecutionInput, std::string> {
-        coil::ExecutionInput result;
-        result.name = input;
-        return result;
+    struct CustomLexer : public coil::Lexer
+    {
+        coil::Expected<coil::ExecutionInput, std::string> parse(std::string_view input) const override
+        {
+            coil::ExecutionInput result;
+            result.name = input;
+            return result;
+        }
     };
 
-    bindings.setLexer(std::move(lexer));
+    bindings.setLexer(std::make_unique<CustomLexer>());
 
     bindings["func with spaces"] = []() { return 42; };
 
