@@ -101,7 +101,7 @@ namespace coil::detail
     };
 
     template<typename... Args>
-    FunctionWrapper<Args...>::FunctionWrapper(FunctionWrapper<Args...>&& rhs)
+    FunctionWrapper<Args...>::FunctionWrapper(FunctionWrapper<Args...>&& rhs) : returnType(rhs.returnType)
     {
         m_func = rhs.m_func;
         rhs.m_func = nullptr;
@@ -109,7 +109,6 @@ namespace coil::detail
         m_obj = rhs.m_obj;
         m_callFunc = rhs.m_callFunc;
         m_destroyFunc = rhs.m_destroyFunc;
-        returnType = rhs.returnType;
     }
 
     template<typename... Args>
