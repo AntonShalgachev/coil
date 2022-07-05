@@ -941,9 +941,9 @@ TEST(BindingsTests, TestCustomLexer)
 TEST(BindingsTests, TestFunctorMetadata)
 {
     coil::Bindings bindings;
-    bindings["func"] = [](int, float) -> bool { return true; };
 
-    coil::Bindings::Command const* command = bindings.get("func");
+    auto func = [](int, float) -> bool { return true; };
+    coil::Bindings::Command const* command = bindings.add("func", std::move(func));
 
     ASSERT_TRUE(command);
     ASSERT_EQ(command->functors.size(), 1u);
@@ -956,6 +956,8 @@ TEST(BindingsTests, TestFunctorMetadata)
     EXPECT_EQ(parameterTypes[1], "float");
 
     EXPECT_EQ(functor.returnType(), "bool");
+
+    EXPECT_EQ(command, bindings.get("func"));
 }
 
 TEST(BindingsTests, TestEmptyFunctorMetadata)

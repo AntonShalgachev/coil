@@ -132,7 +132,7 @@ namespace coil
         return BindingProxy<Bindings>{*this, {name}};
     }
 
-    void Bindings::add(std::string_view name, AnyFunctor anyFunctor)
+    Bindings::Command const* Bindings::add(std::string_view name, AnyFunctor anyFunctor)
     {
         // No move list-initialization in vector? Really, C++?
         std::vector<AnyFunctor> functors;
@@ -140,10 +140,15 @@ namespace coil
         return add(name, std::move(functors));
     }
 
-    void Bindings::add(std::string_view name, std::vector<AnyFunctor> anyFunctors)
+    Bindings::Command const* Bindings::add(std::string_view name, std::vector<AnyFunctor> anyFunctors)
     {
-        auto it = m_commands.insert_or_assign(name, Command{std::move(anyFunctors)}).first;
+        auto [it, success] = m_commands.insert_or_assign(name, Command{std::move(anyFunctors)});
+
+        if (!success)
+            return nullptr;
+
         m_commandNames.push_back(it->first);
+        return &it->second;
     }
 
     void Bindings::remove(std::string_view name)
