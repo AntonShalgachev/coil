@@ -216,7 +216,7 @@ namespace coil
             ExecutionInput input;
 
             if (tokens.empty())
-                return ExecutionInput{};
+                return input;
 
             Token const& firstToken = tokens.front();
             if (firstToken.type != TokenType::String)
