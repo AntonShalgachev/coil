@@ -77,10 +77,8 @@ namespace coil
     };
 
     template<typename FunctionWrapper>
-    coil::AnyFunctor::AnyFunctor(FunctionWrapper func)
+    coil::AnyFunctor::AnyFunctor(FunctionWrapper func) : m_parameterTypes(FunctionWrapper::ArgsTraits::UserArgumentTypes::names()), m_returnType(func.returnType)
     {
-        m_returnType = func.returnType;
         m_storage = new detail::AnyStorage<FunctionWrapper>(std::move(func));
-        m_parameterTypes = FunctionWrapper::ArgsTraits::UserArgumentTypes::names();
     }
 }
