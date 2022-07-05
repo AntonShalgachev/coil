@@ -85,6 +85,7 @@ namespace coil
         using namespace std;
         swap(rhs.m_storage, m_storage);
         swap(rhs.m_parameterTypes, m_parameterTypes);
+        swap(rhs.m_returnType, m_returnType);
     }
 
     AnyFunctor::~AnyFunctor()
@@ -113,6 +114,11 @@ namespace coil
     std::vector<std::string_view> const& AnyFunctor::parameterTypes() const
     {
         return m_parameterTypes;
+    }
+
+    std::string_view AnyFunctor::returnType() const
+    {
+        return m_returnType;
     }
 
     /// Bindings.h ///
@@ -435,6 +441,7 @@ namespace coil
     }
 
     /// TypeName.h ///
+    COIL_CREATE_TYPE_NAME_DEFINITION(void);
     COIL_CREATE_TYPE_NAME_DEFINITION(bool);
     COIL_CREATE_TYPE_NAME_DEFINITION(char);
     COIL_CREATE_TYPE_NAME_DEFINITION(signed char);
