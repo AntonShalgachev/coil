@@ -34,18 +34,6 @@ template std::string&& std::forward<std::string>(std::string&) noexcept;
 
 template std::vector<coil::AnyFunctor>::~vector();
 
-COIL_TYPE_SERIALIZER_TEMPLATE(signed short);
-COIL_TYPE_SERIALIZER_TEMPLATE(unsigned short);
-COIL_TYPE_SERIALIZER_TEMPLATE(signed int);
-COIL_TYPE_SERIALIZER_TEMPLATE(unsigned int);
-COIL_TYPE_SERIALIZER_TEMPLATE(signed long);
-COIL_TYPE_SERIALIZER_TEMPLATE(unsigned long);
-COIL_TYPE_SERIALIZER_TEMPLATE(signed long long);
-COIL_TYPE_SERIALIZER_TEMPLATE(unsigned long long);
-COIL_TYPE_SERIALIZER_TEMPLATE(float);
-COIL_TYPE_SERIALIZER_TEMPLATE(double);
-COIL_TYPE_SERIALIZER_TEMPLATE(long double);
-
 namespace coil
 {
     namespace detail
