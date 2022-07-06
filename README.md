@@ -24,7 +24,7 @@ Table of contents:
 - [Limitations](#limitations)
 - [Applications](#applications)
 - [Compilation time impact](#compilation-time-impact)
-- [Runtime performance](#runtime-performance)
+- [Roadmap](#roadmap)
 - [Known problems](#known-problems)
 
 ## Quick peek
@@ -225,6 +225,15 @@ These are the numbers I've got on my machine:
 | Coil          | 16.172605514526367 | 12.114667296409607 |
 | Naive         | 20.63681662082672  | 17.464430809020996 |
 
-## Runtime performance
+## Roadmap
+- [ ] Do more research on the compilation time
+- [ ] Clean up the code with the help of clang-tidy and IWYU
+- [ ] Remove heavy files from the repository
+- [ ] Simplify DefaultLexer
+- [ ] Reorganize tests (make them more modular)
+- [ ] Test `coil` in the actual project
+- [ ] Research if C++20 features would decrease compilation time
+- [ ] More features (if useful)
+    - [ ] Callback when variable changes
 
 ## Known problems
