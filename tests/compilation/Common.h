@@ -173,8 +173,8 @@ namespace coil
         }
     };
 
-    template<typename T>
-    struct TypeName<T>
+    template<typename T, typename>
+    struct TypeName
     {
         static std::string_view name()
         {
