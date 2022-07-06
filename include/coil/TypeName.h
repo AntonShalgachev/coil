@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Config.h"
+
 #include <string>
 #include <string_view>
 
@@ -35,6 +37,7 @@ namespace coil
         return #T;                          \
     }
 
+#if COIL_CONFIG_BASIC_TYPENAME
     COIL_CREATE_TYPE_NAME_DECLARATION(void);
     COIL_CREATE_TYPE_NAME_DECLARATION(bool);
     COIL_CREATE_TYPE_NAME_DECLARATION(char);
@@ -51,7 +54,7 @@ namespace coil
     COIL_CREATE_TYPE_NAME_DECLARATION(float);
     COIL_CREATE_TYPE_NAME_DECLARATION(double);
     COIL_CREATE_TYPE_NAME_DECLARATION(long double);
-
     COIL_CREATE_TYPE_NAME_DECLARATION(std::string);
     COIL_CREATE_TYPE_NAME_DECLARATION(std::string_view);
+#endif // COIL_CONFIG_BASIC_TYPENAME
 }
