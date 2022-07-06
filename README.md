@@ -85,16 +85,17 @@ See [examples](examples) directory and the corresponding [README.md](examples/RE
 ## Building
 
 The project contains the following CMake options:
-* `COIL_CATCH_EXCEPTIONS`: catch and report exceptions
-* `COIL_EXAMPLES`: adds examples
-* `COIL_RUNTIME_TESTS`: adds runtime tests
-* `COIL_COMPILATION_TESTS`: performs compilation test during CMake project generation
-* `COIL_COMPILATION_TIME_BENCHMARK`: adds compilation time benchmark
-* `COIL_COMPILATION_TIME_BENCHMARK_TRACE`: tells the Clang to generate trace file to profile compilation
-* `COIL_COMPILATION_TIME_BENCHMARK_WITH_COIL`: tells the compilation time benchmark to use `coil` (this library) as the command bindings
-* `COIL_COMPILATION_TIME_BENCHMARK_WITH_MANUAL`: tells the compilation time benchmark to use naively implemented command bindings
-
-All options are `OFF` by default
+* Library configuration:
+    * `COIL_CATCH_EXCEPTIONS` (`OFF` by default): catch and report exceptions thrown in the command
+    * `COIL_BASIC_TYPENAME` (`ON` by default): include the implementation of `coil::TypeName` for the basic types
+* Project options (all `OFF` by default):
+    * `COIL_EXAMPLES`: adds examples
+    * `COIL_RUNTIME_TESTS`: adds runtime tests
+    * `COIL_COMPILATION_TESTS`: performs compilation test during CMake project generation
+    * `COIL_COMPILATION_TIME_BENCHMARK`: adds compilation time benchmark
+    * `COIL_COMPILATION_TIME_BENCHMARK_TRACE`: tells the Clang to generate trace file to profile compilation
+    * `COIL_COMPILATION_TIME_BENCHMARK_WITH_COIL`: tells the compilation time benchmark to use `coil` (this library) as the command bindings
+    * `COIL_COMPILATION_TIME_BENCHMARK_WITH_MANUAL`: tells the compilation time benchmark to use naively implemented command bindings
 
 ### Building examples
 Run the following command to generate the project: `cmake -B build -DCOIL_EXAMPLES=ON`. This will add the `examples` target to the project, which is an executable you'll want to run
@@ -117,6 +118,7 @@ FetchContent_Declare(
 
 # Configure coil if necessary:
 # set(COIL_CATCH_EXCEPTIONS ON CACHE INTERNAL "")
+# set(COIL_BASIC_TYPENAME OFF CACHE INTERNAL "")
 
 FetchContent_MakeAvailable(coil)
 ```
@@ -126,7 +128,7 @@ Then later in your target:
 target_link_libraries(app PRIVATE coil::coil)
 ```
 
-Since all options are `OFF` by default, you don't need to explicitly set anything if you only want to import the library without examples/tests
+You don't need to explicitly set anything if you only want to import the library without examples/tests
 
 ### CMake add_subdirectory
 
@@ -134,12 +136,13 @@ Copy the entire source tree into your project, then in your `CMakeLists.txt` cal
 ```cmake
 # Configure coil if necessary:
 # set(COIL_CATCH_EXCEPTIONS ON CACHE INTERNAL "")
+# set(COIL_BASIC_TYPENAME OFF CACHE INTERNAL "")
 
 add_subdirectory(path/to/coil)
 target_link_libraries(app PRIVATE coil::coil)
 ```
 
-Since all options are `OFF` by default, you don't need to explicitly set anything if you only want to import the library without examples/tests
+You don't need to explicitly set anything if you only want to import the library without examples/tests
 
 ## Motivation
 
