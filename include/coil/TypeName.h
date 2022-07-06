@@ -31,10 +31,10 @@ namespace coil
         static std::string_view name();      \
     }
 
-#define COIL_CREATE_TYPE_NAME_DEFINITION(T) \
-    std::string_view TypeName<T>::name()    \
-    {                                       \
-        return #T;                          \
+#define COIL_CREATE_TYPE_NAME_DEFINITION(T, str) \
+    std::string_view TypeName<T>::name()         \
+    {                                            \
+        return str;                              \
     }
 
     COIL_CREATE_TYPE_NAME_DECLARATION(bool);
