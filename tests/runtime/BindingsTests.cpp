@@ -846,20 +846,25 @@ TEST(BindingsTests, TestTypeNames)
     using namespace std::literals;
 
     EXPECT_EQ(coil::TypeName<bool>::name(), "bool"sv);
+
+#if COIL_CONFIG_BASIC_TYPENAME
     EXPECT_EQ(coil::TypeName<char>::name(), "char"sv);
-    EXPECT_EQ(coil::TypeName<signed char>::name(), "signed char"sv);
-    EXPECT_EQ(coil::TypeName<unsigned char>::name(), "unsigned char"sv);
+    EXPECT_EQ(coil::TypeName<signed char>::name(), "schar"sv);
+    EXPECT_EQ(coil::TypeName<unsigned char>::name(), "uchar"sv);
     EXPECT_EQ(coil::TypeName<short>::name(), "short"sv);
-    EXPECT_EQ(coil::TypeName<unsigned short>::name(), "unsigned short"sv);
+    EXPECT_EQ(coil::TypeName<unsigned short>::name(), "ushort"sv);
     EXPECT_EQ(coil::TypeName<int>::name(), "int"sv);
-    EXPECT_EQ(coil::TypeName<unsigned int>::name(), "unsigned int"sv);
+    EXPECT_EQ(coil::TypeName<unsigned int>::name(), "uint"sv);
     EXPECT_EQ(coil::TypeName<long>::name(), "long"sv);
-    EXPECT_EQ(coil::TypeName<unsigned long>::name(), "unsigned long"sv);
-    EXPECT_EQ(coil::TypeName<long long>::name(), "long long"sv);
-    EXPECT_EQ(coil::TypeName<unsigned long long>::name(), "unsigned long long"sv);
+    EXPECT_EQ(coil::TypeName<unsigned long>::name(), "ulong"sv);
+    EXPECT_EQ(coil::TypeName<long long>::name(), "llong"sv);
+    EXPECT_EQ(coil::TypeName<unsigned long long>::name(), "ullong"sv);
     EXPECT_EQ(coil::TypeName<float>::name(), "float"sv);
     EXPECT_EQ(coil::TypeName<double>::name(), "double"sv);
-    EXPECT_EQ(coil::TypeName<long double>::name(), "long double"sv);
+    EXPECT_EQ(coil::TypeName<long double>::name(), "ldouble"sv);
+    EXPECT_EQ(coil::TypeName<std::string_view>::name(), "std::string_view"sv);
+    EXPECT_EQ(coil::TypeName<std::string>::name(), "std::string"sv);
+#endif // COIL_CONFIG_BASIC_TYPENAME
 }
 
 TEST(BindingsTests, TestAnyArgToStream)
