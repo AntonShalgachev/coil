@@ -236,6 +236,9 @@ These are the numbers I've got on my machine:
 - [ ] Reorganize tests (make them more modular)
 - [ ] Test `coil` in the actual project
 - [ ] Research if C++20 features would decrease compilation time
+- [ ] Proper documentation
+    - [ ] How to decrease compilation time
+    - [ ] Which parts can be customized and how
 - [ ] More features (if useful)
     - [ ] Callback when variable changes
 
