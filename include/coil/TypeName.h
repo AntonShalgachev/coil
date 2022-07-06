@@ -37,9 +37,10 @@ namespace coil
         return #T;                          \
     }
 
+    COIL_CREATE_TYPE_NAME_DECLARATION(bool);
+
 #if COIL_CONFIG_BASIC_TYPENAME
     COIL_CREATE_TYPE_NAME_DECLARATION(void);
-    COIL_CREATE_TYPE_NAME_DECLARATION(bool);
     COIL_CREATE_TYPE_NAME_DECLARATION(char);
     COIL_CREATE_TYPE_NAME_DECLARATION(signed char);
     COIL_CREATE_TYPE_NAME_DECLARATION(unsigned char);
