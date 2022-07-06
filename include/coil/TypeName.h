@@ -21,7 +21,6 @@ namespace coil
     struct TypeName;
 }
 
-// TODO make these type name declarations optional
 namespace coil
 {
 #define COIL_CREATE_TYPE_NAME_DECLARATION(T) \
