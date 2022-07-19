@@ -31,65 +31,65 @@ namespace
         Type type = Type::None;
     };
 
-    std::vector<Item> items = {
-        {0, "coin", 7000, Source::Loot, Type::Currency},
-        {1, "gems", 40, Source::Reward, Type::Currency},
-        {2, "sword", 1, Source::Loot, Type::Weapon},
-        {3, "machete", 1, Source::Reward, Type::Weapon},
-        {4, "katana", 1, Source::Loot, Type::Weapon},
-        {5, "rifle", 1, Source::Loot, Type::Weapon},
-        {6, "knife", 2, Source::Reward, Type::Weapon},
-        {7, "key", 1, Source::Loot, Type::Key},
-    };
-
-    void printItem(std::ostream& os, Item const& item)
+    class Inventory
     {
-        os << item.id << '\t' << item.name << '\t' << item.amount << '\t' << magic_enum::enum_name(item.source) << '\t' << magic_enum::enum_name(item.type) << std::endl;
-    }
+    public:
+        void list(coil::Context context)
+        {
+            auto namedArgs = context.namedArgs();
 
-    void printItems(coil::Context context)
-    {
-        auto namedArgs = context.namedArgs();
+            auto name = namedArgs.getOrReport<std::string_view>("name", coil::NamedArgs::ArgType::Optional);
+            auto minAmount = namedArgs.getOrReport<std::size_t>("min_amount", coil::NamedArgs::ArgType::Optional);
+            auto source = namedArgs.getOrReport<Source>("source", coil::NamedArgs::ArgType::Optional);
+            auto type = namedArgs.getOrReport<Type>("type", coil::NamedArgs::ArgType::Optional);
 
-        auto name = namedArgs.getOrReport<std::string_view>("name", coil::NamedArgs::ArgType::Optional);
-        auto minAmount = namedArgs.getOrReport<std::size_t>("min_amount", coil::NamedArgs::ArgType::Optional);
-        auto source = namedArgs.getOrReport<Source>("source", coil::NamedArgs::ArgType::Optional);
-        auto type = namedArgs.getOrReport<Type>("type", coil::NamedArgs::ArgType::Optional);
+            // if any of the above arguments didn't have the correct type, then the error would be reported and
+            // the returned value would be an empty std::optional
+            if (context.hasErrors())
+                return;
 
-        // if any of the above arguments didn't have the correct type, then the error would be reported and
-        // the returned value would be an empty std::optional
-        if (context.hasErrors())
-            return;
+            auto doesItemMatch = [&](Item const& item) {
+                bool const nameOk = !name || (item.name.find(*name) != std::string_view::npos);
+                bool const minAmountOk = !minAmount || item.amount >= *minAmount;
+                bool const sourceOk = !source || item.source == *source;
+                bool const typeOk = !type || item.type == *type;
 
-        auto doesItemMatch = [&](Item const& item) {
-            bool const nameOk = !name || (item.name.find(*name) != std::string_view::npos);
-            bool const minAmountOk = !minAmount || item.amount >= *minAmount;
-            bool const sourceOk = !source || item.source == *source;
-            bool const typeOk = !type || item.type == *type;
+                return nameOk && minAmountOk && sourceOk && typeOk;
+            };
 
-            return nameOk && minAmountOk && sourceOk && typeOk;
+            context.log() << "ID\tName\tAmount\tSource\tType" << std::endl;
+
+            for (Item const& item : m_items)
+                if (doesItemMatch(item))
+                    context.log() << item.id << '\t' << item.name << '\t' << item.amount << '\t' << magic_enum::enum_name(item.source) << '\t' << magic_enum::enum_name(item.type) << std::endl;
+        }
+
+        void add(coil::Context context, std::uint64_t id, std::string_view name)
+        {
+            auto namedArgs = context.namedArgs();
+
+            auto amount = namedArgs.getOrReport<std::size_t>("amount", coil::NamedArgs::ArgType::Optional, 1);
+            auto type = namedArgs.getOrReport<Type>("type", coil::NamedArgs::ArgType::Optional, Type::Weapon);
+
+            // This might happen if the above arguments exist, but they can't be represented in the specified C++ type
+            if (!amount || !type)
+                return;
+
+            m_items.push_back({id, name, *amount, Source::Debug, *type});
+        }
+
+    private:
+        std::vector<Item> m_items = {
+            {0, "coin", 7000, Source::Loot, Type::Currency},
+            {1, "gems", 40, Source::Reward, Type::Currency},
+            {2, "sword", 1, Source::Loot, Type::Weapon},
+            {3, "machete", 1, Source::Reward, Type::Weapon},
+            {4, "katana", 1, Source::Loot, Type::Weapon},
+            {5, "rifle", 1, Source::Loot, Type::Weapon},
+            {6, "knife", 2, Source::Reward, Type::Weapon},
+            {7, "key", 1, Source::Loot, Type::Key},
         };
-
-        context.log() << "ID\tName\tAmount\tSource\tType" << std::endl;
-
-        for (Item const& item : items)
-            if (doesItemMatch(item))
-                printItem(context.log(), item);
-    }
-
-    void addItem(coil::Context context, std::uint64_t id, std::string_view name)
-    {
-        auto namedArgs = context.namedArgs();
-
-        auto amount = namedArgs.getOrReport<std::size_t>("amount", coil::NamedArgs::ArgType::Optional, 1);
-        auto type = namedArgs.getOrReport<Type>("type", coil::NamedArgs::ArgType::Optional, Type::Weapon);
-
-        // This might happen if the above arguments exist, but they can't be represented in the specified C++ type
-        if (!amount || !type)
-            return;
-
-        items.push_back({id, name, *amount, Source::Debug, *type});
-    }
+    };
 
     void printArgs(coil::Context context)
     {
@@ -155,8 +155,9 @@ void NamedExample::run()
 {
     coil::Bindings bindings;
 
-    bindings["inventory.list"] = &printItems;
-    bindings["inventory.add"] = &addItem;
+    Inventory inventory;
+    bindings["inventory.list"] = coil::bind(&Inventory::list, &inventory);
+    bindings["inventory.add"] = coil::bind(&Inventory::add, &inventory);
 
     bindings["print_args"] = &printArgs;
     bindings["print_floats"] = &printFloats;
