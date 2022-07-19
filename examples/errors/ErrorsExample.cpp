@@ -7,13 +7,21 @@
 
 namespace
 {
-    float checkedSqrt(coil::Context context, float value)
+    float sqrtWithContext(coil::Context context, float value)
     {
         if (value < 0.0f)
         {
             context.reportError("Value should be non-negative!");
             return 0.0f;
         }
+
+        return std::sqrt(value);
+    }
+
+    float sqrtWithExceptions(float value)
+    {
+        if (value < 0.0f)
+            throw std::invalid_argument("Value should be non-negative!");
 
         return std::sqrt(value);
     }
@@ -76,7 +84,8 @@ void ErrorsExample::run()
 {
     coil::Bindings bindings;
 
-    bindings["sqrt"] = checkedSqrt;
+    bindings["sqrt_context"] = sqrtWithContext;
+    bindings["sqrt_except"] = sqrtWithExceptions;
     bindings["get_float"] = getFloat;
     bindings["get_type_name"] = getTypeName;
     bindings["test_named_args"] = testNamedArgs;
@@ -91,8 +100,12 @@ void ErrorsExample::run()
     common::executeCommand(bindings, ".foo");
 
     common::printSectionHeader("You can use coil::Context before user arguments to report any errors during the command");
-    common::executeCommand(bindings, "sqrt 9.8596");
-    common::executeCommand(bindings, "sqrt -1");
+    common::executeCommand(bindings, "sqrt_context 9.8596");
+    common::executeCommand(bindings, "sqrt_context -1");
+
+    common::printSectionHeader("You can also throw exceptions to signal errors:");
+    common::executeCommand(bindings, "sqrt_except 9.8596");
+    common::executeCommand(bindings, "sqrt_except -1");
 
     common::printSectionHeader("You can also pass a coil::Expected value if it has an error type convertible to std::string");
     common::executeCommand(bindings, "get_float 0.1");
