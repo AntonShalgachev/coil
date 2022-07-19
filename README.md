@@ -11,8 +11,6 @@
 
 This is a C++17 library that allows you to call functions at runtime using a simple yet powerful command-like scripting language. It has no dependencies. `coil` relies on the templates, however it's optimized for compilation speed (see [Compilation time impact](#compilation-time-impact))
 
-> ⚠️ **The library is currently under development.** Major changes are to be expected, although the main branch is kept more or less stable
-
 Table of contents:
 - [Quick peek](#quick-peek)
 - [Introduction](#introduction)
