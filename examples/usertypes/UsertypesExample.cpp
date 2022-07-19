@@ -55,56 +55,37 @@ namespace
     private:
         std::vector<T> m_data;
     };
-}
 
-namespace entities
-{
-    std::vector<std::string> entityNames;
-
-    EntityId add(std::string name)
+    class Entities
     {
-        std::size_t newId = entityNames.size();
-        entityNames.push_back(std::move(name));
-        return EntityId{newId};
-    }
+    public:
+        EntityId add(std::string name)
+        {
+            std::size_t newId = m_entityNames.size();
+            m_entityNames.push_back(std::move(name));
+            return EntityId{newId};
+        }
 
-    std::optional<EntityId> find(std::string const& name)
-    {
-        auto it = std::find(entityNames.begin(), entityNames.end(), name);
-        if (it != entityNames.end())
-            return EntityId{static_cast<std::size_t>(std::distance(entityNames.begin(), it))};
+        std::optional<EntityId> find(std::string const& name)
+        {
+            auto it = std::find(m_entityNames.begin(), m_entityNames.end(), name);
+            if (it != m_entityNames.end())
+                return EntityId{static_cast<std::size_t>(std::distance(m_entityNames.begin(), it))};
 
-        return {};
-    }
+            return {};
+        }
 
-    void removeSome(DynamicArray<std::string> const& names)
-    {
-        for (std::string const& name : names)
-            entityNames.erase(std::remove(entityNames.begin(), entityNames.end(), name), entityNames.end());
-    }
+        void removeSome(DynamicArray<std::string> const& names)
+        {
+            for (std::string const& name : names)
+                m_entityNames.erase(std::remove(m_entityNames.begin(), m_entityNames.end(), name), m_entityNames.end());
+        }
 
-    EntityId focusedEntity = EntityId{0};
-}
+        EntityId focusedEntity = EntityId{0};
 
-namespace particles
-{
-    struct Particle
-    {
-        Vec2 pos{};
-        Vec2 vel{};
+    private:
+        std::vector<std::string> m_entityNames;
     };
-
-    Particle spawnedParticle;
-
-    void spawn(Vec2 pos, Vec2 vel)
-    {
-        spawnedParticle = Particle{pos, vel};
-    }
-
-    Vec2 getPosAt(float t)
-    {
-        return spawnedParticle.pos + spawnedParticle.vel * t;
-    }
 }
 
 namespace coil
@@ -219,18 +200,25 @@ void UsertypesExample::run()
 {
     coil::Bindings bindings;
 
-    bindings["entities.add"] = &entities::add;
-    bindings["entities.find"] = &entities::find;
-    bindings["entities.focused_entity"] = coil::variable(&entities::focusedEntity);
-    bindings["entities.remove_some"] = &entities::removeSome;
+    Entities entities;
+    bindings["entities.add"] = coil::bind(&Entities::add, &entities);
+    bindings["entities.find"] = coil::bind(&Entities::find, &entities);
+    bindings["entities.focused_entity"] = coil::variable(&entities.focusedEntity);
+    bindings["entities.remove_some"] = coil::bind(&Entities::removeSome, &entities);
 
-    bindings["particles.spawn"] = &particles::spawn;
-    bindings["particles.get_pos_at"] = &particles::getPosAt;
-    bindings["particles.last_particle_pos"] = coil::variable(&particles::spawnedParticle.pos);
+    struct Particle
+    {
+        Vec2 pos{};
+        Vec2 vel{};
+    };
+    Particle spawnedParticle;
+    bindings["particles.spawn"] = [&spawnedParticle](Vec2 pos, Vec2 vel) { spawnedParticle = Particle{pos, vel}; };
+    bindings["particles.get_pos_at"] = [&spawnedParticle](float t) { return spawnedParticle.pos + spawnedParticle.vel * t; };
+    bindings["particles.last_particle_pos"] = coil::variable(&spawnedParticle.pos);
 
     bindings["sum"] = [](DynamicArray<int> const& values) { return std::accumulate(values.begin(), values.end(), 0); };
 
-    common::printSectionHeader("You can use any user defined types:");
+    common::printSectionHeader("You can use user defined types:");
     common::executeCommand(bindings, "entities.add player");
     common::executeCommand(bindings, "entities.add coop_player");
     common::executeCommand(bindings, "entities.add enemy");
@@ -248,7 +236,6 @@ void UsertypesExample::run()
     common::executeCommand(bindings, "sum (1 2 3 4 5)");
 
     common::printSectionHeader("If the input can't be converted to the user type, an error would be returned:");
-    common::executeCommand(bindings, "particles.get_name string_id");
     common::executeCommand(bindings, "particles.last_particle_pos (one 2)");
     common::executeCommand(bindings, "particles.last_particle_pos (1 two)");
     common::executeCommand(bindings, "sum (one two)");
