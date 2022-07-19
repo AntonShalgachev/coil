@@ -38,15 +38,16 @@ save_game type=Memory delay=150
 ```
 
 ### Usertypes
-This example demonstrates how to use various user types with the `coil` library. Among others you'll find here an example of a `Vec2` struct (2D point)and a `DynamicArray` class (similar to `std::vector`), all of which can be used with `coil`
+This example demonstrates how to use various user types with the `coil` library. Among others you'll find here an example of a `Vec2` struct (2D point) and a `DynamicArray` class (similar to `std::vector`), all of which can be used with `coil`
 
 ### Errors
-This example explains how to report errors in your commands to the user. One example of that is `sqrt` function, which reports an error if the passed argument is negative. Another example is error handling if you use variadic arguments or named arguments and the conversion to a specific type has failed
+This example explains how to report errors in your commands to the user. One example of that is `sqrt` function, which reports an error if the passed argument is negative (either by writing the error message directly or by throwing an exception). Another example is error handling if you use variadic arguments or named arguments and the conversion to a specific type has failed
 
 ### Compound
+This example shows the usage of compound/composite types (types which consist of 2 or more elements) and demonstrates the syntax. There you will find the `Point` struct (consisting of 2 floats), and several ways of passing this point as an argument to the command
 
 ### Overloading
-This examples gives an overview of binding several function to a single command (i.e. overloading them). This example also shows a way to bind a C++ overloaded function to a command
+This example gives an overview of binding several function to a single command (i.e. overloading them). This example also shows a way to bind a C++ overloaded function to a command
 
 ### Properties
 This example demonstrates how to create a "property": a variable-like command which use a setter and a getter to set/get its value. It also gives an example of read-only properies
