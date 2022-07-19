@@ -190,6 +190,10 @@ This library is an attempt to get rid of these problems by providing a straightf
 
 One can easily implement a debug console in any C++ game engine using `coil`. For that you need to pass user input to `coil::Bindings::execute` when the command needs to be executed and store the returned object (`ExecutionResult`). You can report output, return value and/or errors of the command in the console UI with the help of `ExecutionResult::output`, `ExecutionResult::returnValue` and `ExecutionResult::errors`.
 
+You can see an example of such a debug console in my engine:
+
+![Demo of a debug console](.github/images/custom-engine.gif "Demo")
+
 ### Interactive command-line interface (CLI)
 
 To implement an interactive CLI, you can execute `coil::Bindings::execute` in a simple loop. You can check the implementation of examples (see `examples` directory), they use interactive CLI
