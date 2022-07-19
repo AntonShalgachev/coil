@@ -60,7 +60,6 @@ The priorities of the library (in the order of importance):
 
 ## Features
 
-* Customizable syntax (see [Custom Lexer](#custom-lexer))
 * Any callable objects: free functions, lambdas, member functions, custom functors with `operator()`
 * Variables (e.g. `camera.fov` to get and `camera.fov 90` to set)
 * Enums (serialization has to be implemented in your code, e.g. with [magic_enum](https://github.com/Neargye/magic_enum))
@@ -69,9 +68,9 @@ The priorities of the library (in the order of importance):
 * Named arguments (`object.command foo=3.14 bar=true`)
 * Human-readable `bool` serialization
 * Customizable error messages
-* Customizable command syntax (with a custom Lexer)
 * User-defined types
 * Properties (getter/setter)
+* Customizable command syntax (with a custom Lexer)
 * Configurable use of exceptions
 * No RTTI
 * No unnecessary heap allocations (Lexer operates on `string_view`s)
