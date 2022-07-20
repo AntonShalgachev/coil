@@ -56,7 +56,6 @@ The library doesn't use any dependencies or macros: everything is implemented in
 The priorities of the library (in the order of importance):
 * Low compilation time overhead
 * User-friendly API
-* Runtime performance
 
 ## Features
 
@@ -66,7 +65,6 @@ The priorities of the library (in the order of importance):
 * Compound arguments (e.g. 3D point: `particles.spawn resource_id (10, 1, 5)`)
 * Any-like arguments (to allow the command handle several types)
 * Named arguments (`object.command foo=3.14 bar=true`)
-* Human-readable `bool` serialization
 * Customizable error messages
 * User-defined types
 * Properties (getter/setter)
@@ -74,7 +72,7 @@ The priorities of the library (in the order of importance):
 * Configurable use of exceptions
 * No RTTI
 * No unnecessary heap allocations (Lexer operates on `string_view`s)
-* Modern C++ without dependencies
+* Modern C++ without dependencies (except for STL)
 
 ## Examples
 See [examples](examples) directory and the corresponding [README.md](examples/README.md) for information about the available examples
@@ -216,8 +214,6 @@ The test is performed for 3 configurations:
 - "Naive": debug bindings are implemented in a naive way, where a dedicated wrapper function has to be written for each function/variable
 
 For each configuration project is generated using `cmake` (Ninja generator), then a build is performed once, discarding the compilation duration, and then the project is rebuilt 10 times (cleaning before each iteration). The durations of these 10 builds are analyzed to compute the median, average, minimum and maximum time
-
-You can see the test script here: [scripts/test_compilation/run.ps1](scripts/test_compilation/run.ps1).
 
 ### Results
 
