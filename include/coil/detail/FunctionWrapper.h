@@ -43,8 +43,8 @@ namespace coil::detail
             m_func = new Func(std::move(func));
             m_obj = const_cast<std::remove_const_t<C>*>(obj); // this pointer would be casted back to C* in typedCall
 
-            m_callFunc = &FunctionWrapper<Args...>::typedCall<Func, C>;
-            m_destroyFunc = &FunctionWrapper<Args...>::typedDestroy<Func>;
+            m_callFunc = &FunctionWrapper<Args...>::template typedCall<Func, C>;
+            m_destroyFunc = &FunctionWrapper<Args...>::template typedDestroy<Func>;
         }
         ~FunctionWrapper();
 
