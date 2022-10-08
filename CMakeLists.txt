@@ -20,6 +20,8 @@ add_library(coil
     "include/coil/detail/FunctorCaller.h"
     "include/coil/detail/FuncTraits.h"
     "include/coil/detail/StringWrapper.h"
+    "include/coil/detail/TypeTraits.h"
+    "include/coil/detail/Utility.h"
 
     "include/coil/AnyFunctor.h"
     "include/coil/Bind.h"

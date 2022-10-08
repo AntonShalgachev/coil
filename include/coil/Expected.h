@@ -1,17 +1,19 @@
 #pragma once
 
+#include "detail/TypeTraits.h"
+#include "detail/Utility.h"
+
 #include <cassert>
-#include <type_traits>
 
 namespace coil
 {
     template<typename T>
     class Unexpected
     {
-        static_assert(!std::is_void_v<T>, "T shouldn't be void");
+        static_assert(!IsVoidV<T>, "T shouldn't be void");
 
     public:
-        Unexpected(T value) : m_value(std::move(value)) {}
+        Unexpected(T value) : m_value(Move(value)) {}
 
         T const& value() const&
         {
@@ -23,28 +25,28 @@ namespace coil
         }
         T&& value() &&
         {
-            return std::move(m_value);
+            return Move(m_value);
         }
 
         template<typename U>
         operator Unexpected<U>() const&
         {
-            static_assert(std::is_convertible_v<T const&, U>, "U should be convertible to T");
+            static_assert(IsConvertibleV<T const&, U>, "U should be convertible to T");
             return Unexpected<U>{m_value};
         }
 
         template<typename U>
         operator Unexpected<U>() &
         {
-            static_assert(std::is_convertible_v<T&, U>, "U should be convertible to T");
+            static_assert(IsConvertibleV<T&, U>, "U should be convertible to T");
             return Unexpected<U>{m_value};
         }
 
         template<typename U>
         operator Unexpected<U>() &&
         {
-            static_assert(std::is_convertible_v<T&&, U>, "U should be convertible to T");
-            return Unexpected<U>{std::move(m_value)};
+            static_assert(IsConvertibleV<T&&, U>, "U should be convertible to T");
+            return Unexpected<U>{Move(m_value)};
         }
 
     private:
@@ -62,21 +64,21 @@ namespace coil
     template<typename T>
     Unexpected<T> makeUnexpected(T value)
     {
-        return Unexpected<std::remove_cv_t<std::remove_reference_t<T>>>(std::move(value));
+        return Unexpected<RemoveCvT<RemoveReferenceT<T>>>(Move(value));
     }
 
     template<typename T, typename E>
     class ExpectedBase
     {
-        static_assert(!std::is_void_v<E>, "E can't be void");
+        static_assert(!IsVoidV<E>, "E can't be void");
 
     public:
-        ExpectedBase(T value) : m_expected(std::move(value)), m_hasValue(true) {}
+        ExpectedBase(T value) : m_expected(Move(value)), m_hasValue(true) {}
 
         template<typename U>
-        ExpectedBase(Unexpected<U> error) : m_unexpected(std::move(error)), m_hasValue(false)
+        ExpectedBase(Unexpected<U> error) : m_unexpected(Move(error)), m_hasValue(false)
         {
-            static_assert(std::is_convertible_v<U&&, E>, "U should be convertible to E");
+            static_assert(IsConvertibleV<U&&, E>, "U should be convertible to E");
         }
 
         ExpectedBase(ExpectedBase<T, E> const& rhs)
@@ -86,7 +88,7 @@ namespace coil
 
         ExpectedBase(ExpectedBase<T, E>&& rhs) noexcept
         {
-            constructFrom(std::move(rhs));
+            constructFrom(Move(rhs));
         }
 
         ~ExpectedBase() // not virtual
@@ -117,16 +119,16 @@ namespace coil
         {
             if (m_hasValue && rhs.m_hasValue)
             {
-                m_expected = std::move(rhs).m_expected;
+                m_expected = Move(rhs).m_expected;
             }
             else if (!m_hasValue && !rhs.m_hasValue)
             {
-                m_unexpected = std::move(rhs).m_unexpected;
+                m_unexpected = Move(rhs).m_unexpected;
             }
             else
             {
                 destruct();
-                constructFrom(std::move(rhs));
+                constructFrom(Move(rhs));
             }
 
             return *this;
@@ -155,7 +157,7 @@ namespace coil
         E&& error() &&
         {
             assert(!hasValue());
-            return std::move(m_unexpected).value();
+            return Move(m_unexpected).value();
         }
 
         template<typename E2>
@@ -169,18 +171,18 @@ namespace coil
         {
             m_hasValue = rhs.m_hasValue;
             if (rhs.m_hasValue)
-                new (std::addressof(m_expected)) T(rhs.m_expected);
+                new (&m_expected) T(rhs.m_expected);
             else
-                new (std::addressof(m_unexpected)) Unexpected<E>(rhs.m_unexpected);
+                new (&m_unexpected) Unexpected<E>(rhs.m_unexpected);
         }
 
         void constructFrom(ExpectedBase<T, E>&& rhs)
         {
             m_hasValue = rhs.m_hasValue;
             if (rhs.m_hasValue)
-                new (std::addressof(m_expected)) T(std::move(rhs.m_expected));
+                new (&m_expected) T(Move(rhs.m_expected));
             else
-                new (std::addressof(m_unexpected)) Unexpected<E>(std::move(rhs.m_unexpected));
+                new (&m_unexpected) Unexpected<E>(Move(rhs.m_unexpected));
         }
 
         void destruct()
@@ -209,11 +211,11 @@ namespace coil
         using Base::operator bool;
         using Base::operator==;
 
-        Expected(T value) : Base(std::move(value)) {}
+        Expected(T value) : Base(Move(value)) {}
 
         Expected(Expected<T, E> const& rhs) : Base(rhs) {}
 
-        Expected(Expected<T, E>&& rhs) noexcept : Base(std::move(rhs)) {}
+        Expected(Expected<T, E>&& rhs) noexcept : Base(Move(rhs)) {}
 
         ~Expected(){}; // not default to enable explicit instantiation
 
@@ -224,13 +226,13 @@ namespace coil
 
         Expected<T, E>& operator=(Expected<T, E>&& rhs) noexcept
         {
-            return static_cast<Expected<T, E>&>(Base::operator=(std::move(rhs)));
+            return static_cast<Expected<T, E>&>(Base::operator=(Move(rhs)));
         }
 
         template<typename T2, typename E2>
         bool operator==(Expected<T2, E2> const& rhs) const
         {
-            static_assert(!std::is_void_v<T2>, "Can't compare T with void");
+            static_assert(!IsVoidV<T2>, "Can't compare T with void");
 
             if (this->hasValue() && rhs.hasValue())
                 return value() == rhs.value();
@@ -262,7 +264,7 @@ namespace coil
         T&& value() &&
         {
             assert(this->hasValue());
-            return std::move(*this).m_expected;
+            return Move(*this).m_expected;
         }
 
         T const& operator*() const&
@@ -275,7 +277,7 @@ namespace coil
         }
         T&& operator*() &&
         {
-            return std::move(*this).value();
+            return Move(*this).value();
         }
 
         T const* operator->() const
@@ -305,9 +307,9 @@ namespace coil
             constructFrom(rhs);
         }
 
-        Expected(Expected<void, E>&& rhs) noexcept : Base(std::move(rhs))
+        Expected(Expected<void, E>&& rhs) noexcept : Base(Move(rhs))
         {
-            constructFrom(std::move(rhs));
+            constructFrom(Move(rhs));
         }
 
         ~Expected(){}; // not default to enable explicit instantiation
@@ -319,7 +321,7 @@ namespace coil
 
         Expected<void, E>& operator=(Expected<void, E>&& rhs) noexcept
         {
-            return static_cast<Expected<void, E>&>(Base::operator=(std::move(rhs)));
+            return static_cast<Expected<void, E>&>(Base::operator=(Move(rhs)));
         }
 
         template<typename E2>

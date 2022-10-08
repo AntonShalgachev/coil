@@ -1,8 +1,8 @@
 #pragma once
+
+#include "TypeTraits.h"
 #include "../Context.h"
 #include "../Types.h"
-
-#include <type_traits>
 
 namespace coil::detail
 {
@@ -15,7 +15,7 @@ namespace coil::detail
     public:
         static constexpr bool isFunc = true;
 
-        using ReturnType = std::remove_cv_t<std::remove_reference_t<R>>;
+        using ReturnType = RemoveCvT<RemoveReferenceT<R>>;
         using FunctionWrapperType = FunctionWrapper<Args...>;
         static constexpr bool isConst = IsConst;
     };
