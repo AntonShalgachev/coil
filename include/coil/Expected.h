@@ -1,37 +1,10 @@
 #pragma once
 
-#include <exception>
+#include <cassert>
+#include <type_traits>
 
 namespace coil
 {
-    template<class E>
-    class BadExpectedAccess : public std::exception
-    {
-    public:
-        explicit BadExpectedAccess(E e) : m_value(std::move(e)) {}
-
-        char const* what() const noexcept override
-        {
-            return "Bad expected access";
-        }
-
-        E const& error() const&
-        {
-            return m_value;
-        }
-        E& error() &
-        {
-            return m_value;
-        }
-        E&& error() &&
-        {
-            return std::move(m_value);
-        }
-
-    private:
-        E m_value;
-    };
-
     template<typename T>
     class Unexpected
     {
@@ -171,14 +144,17 @@ namespace coil
 
         E const& error() const&
         {
+            assert(!hasValue());
             return m_unexpected.value();
         }
         E& error() &
         {
+            assert(!hasValue());
             return m_unexpected.value();
         }
         E&& error() &&
         {
+            assert(!hasValue());
             return std::move(m_unexpected).value();
         }
 
@@ -273,22 +249,19 @@ namespace coil
 
         T const& value() const&
         {
-            if (!this->hasValue())
-                throw BadExpectedAccess<E>(this->error());
+            assert(this->hasValue());
             return this->m_expected;
         }
 
         T& value() &
         {
-            if (!this->hasValue())
-                throw BadExpectedAccess<E>(this->error());
+            assert(this->hasValue());
             return this->m_expected;
         }
 
         T&& value() &&
         {
-            if (!this->hasValue())
-                throw BadExpectedAccess<E>(std::move(*this).error());
+            assert(this->hasValue());
             return std::move(*this).m_expected;
         }
 
