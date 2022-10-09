@@ -2,6 +2,8 @@
 
 #include "common/ExamplesCommon.h"
 
+#include <algorithm>
+
 // In these examples:
 // * Wrapping functions which take pointers
 // * Creating coil variables dynamically
