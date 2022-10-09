@@ -67,6 +67,16 @@ namespace coil
     {
         return os << "'" << unexpected.value() << "'";
     }
+
+    inline bool operator==(ExecutionInput const& lhs, ExecutionInput const& rhs)
+    {
+        auto tie = [](ExecutionInput const& value)
+        {
+            return std::tie(value.name, value.arguments, value.namedArguments);
+        };
+
+        return tie(lhs) == tie(rhs);
+    }
 }
 
 inline bool containsError(std::vector<std::string> const& errors, std::string const& value)
