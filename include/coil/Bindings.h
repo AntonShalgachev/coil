@@ -10,6 +10,7 @@
 #include "detail/StringWrapper.h"
 #include "detail/Utility.h"
 
+#include <memory>
 #include <string>
 #include <unordered_map>
 
