@@ -2,8 +2,13 @@
 
 namespace coil
 {
+#if defined(__clang__) || defined(_MSC_VER)
     template<typename From, typename To>
     inline constexpr bool IsConvertibleV = __is_convertible_to(From, To);
+#elif defined(__GNUC__)
+    template<typename From, typename To>
+    inline constexpr bool IsConvertibleV = __is_convertible(From, To);
+#endif
 
     template<typename T>
     struct RemoveCv { using Type = T; };
@@ -25,10 +30,10 @@ namespace coil
     template<typename T>
     using RemoveReferenceT = typename RemoveReference<T>::Type;
 
-#ifdef __clang__
+#if defined(__clang__)
     template <typename T1, typename T2>
     inline constexpr bool IsSameV = __is_same(T1, T2);
-#elif _MSC_VER
+#elif defined(_MSC_VER)
     template <typename T1, typename T2>
     inline constexpr bool IsSameV = false;
     template <typename T>
