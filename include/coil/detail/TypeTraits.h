@@ -25,7 +25,7 @@ namespace coil
 #if defined(__clang__)
     template <typename T1, typename T2>
     inline constexpr bool IsSameV = __is_same(T1, T2);
-#elif defined(_MSC_VER)
+#else
     template <typename T1, typename T2>
     inline constexpr bool IsSameV = false;
     template <typename T>
