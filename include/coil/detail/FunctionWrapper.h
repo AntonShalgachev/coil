@@ -18,14 +18,14 @@ namespace coil::detail
     struct ArgsTraitsImpl
     {
         using UserArgumentTypes = Types<Args...>;
-        using NonUserArgsIndices = std::index_sequence<>;
+        using NonUserArgsIndices = IndexSequence<>;
     };
 
     template<typename... Tail>
     struct ArgsTraitsImpl<Context, Tail...>
     {
         using UserArgumentTypes = Types<Tail...>;
-        using NonUserArgsIndices = std::index_sequence<0>;
+        using NonUserArgsIndices = IndexSequence<0>;
     };
 
     template<typename... Args>
@@ -65,9 +65,9 @@ namespace coil::detail
             Func& func = *static_cast<Func*>(m_func);
             [[maybe_unused]] C* obj = static_cast<C*>(m_obj);
             using R = typename FuncTraits<Func>::ReturnType;
-            if constexpr (std::is_void_v<R>)
+            if constexpr (IsVoidV<R>)
             {
-                if constexpr (std::is_void_v<C>)
+                if constexpr (IsVoidV<C>)
                     func(Move(args)...);
                 else
                     (obj->*func)(Move(args)...);
@@ -75,7 +75,7 @@ namespace coil::detail
             }
             else
             {
-                if constexpr (std::is_void_v<C>)
+                if constexpr (IsVoidV<C>)
                     return TypeSerializer<R>::toString(func(Move(args)...));
                 else
                     return TypeSerializer<R>::toString((obj->*func)(Move(args)...));

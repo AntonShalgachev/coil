@@ -36,7 +36,7 @@ namespace coil::detail
     }
 
     template<typename FuncWrapper, std::size_t... NonUserIndices, typename... UserArgs, std::size_t... UserIndices>
-    void unpackAndInvoke(FuncWrapper& func, CallContext& context, std::index_sequence<NonUserIndices...>, Types<UserArgs...>, std::index_sequence<UserIndices...>)
+    void unpackAndInvoke(FuncWrapper& func, CallContext& context, IndexSequence<NonUserIndices...>, Types<UserArgs...>, IndexSequence<UserIndices...>)
     {
         invoke<FuncWrapper, NonUserIndices...>(func, context, TypeSerializer<UserArgs>::fromString(context.input.arguments[UserIndices])...);
     }
