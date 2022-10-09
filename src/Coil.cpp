@@ -350,7 +350,10 @@ namespace coil
 
     NamedArgsIterator NamedArgs::find(std::string_view key) const
     {
-        return std::find_if(begin(), end(), [key](NamedValue const& arg) { return arg.key() == key; });
+        for (auto it = begin(); it != end(); ++it)
+            if (it->key() == key)
+                return it;
+        return end();
     }
 
     /// Value.h ///
