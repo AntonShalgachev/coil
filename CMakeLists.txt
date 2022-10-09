@@ -80,5 +80,13 @@ if (${COIL_COMPILATION_TESTS})
     add_subdirectory(tests/compilation)
 endif()
 if(${COIL_COMPILATION_TIME_BENCHMARK})
+    set(BASE_COMPILE_OPTIONS)
+    if (COIL_COMPILATION_TIME_BENCHMARK_TRACE AND CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+        message(STATUS "Compiling with ftime-trace")
+        list(APPEND BASE_COMPILE_OPTIONS -ftime-trace -ftime-trace-granularity=0)
+    endif()
+    
+    target_compile_options(coil PRIVATE ${BASE_COMPILE_OPTIONS})
+
     add_subdirectory(tests/compilation_performance)
 endif()
