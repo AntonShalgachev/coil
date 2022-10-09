@@ -31,21 +31,18 @@ namespace coil
         template<typename U>
         operator Unexpected<U>() const&
         {
-            static_assert(IsConvertibleV<T const&, U>, "U should be convertible to T");
             return Unexpected<U>{m_value};
         }
 
         template<typename U>
         operator Unexpected<U>() &
         {
-            static_assert(IsConvertibleV<T&, U>, "U should be convertible to T");
             return Unexpected<U>{m_value};
         }
 
         template<typename U>
         operator Unexpected<U>() &&
         {
-            static_assert(IsConvertibleV<T&&, U>, "U should be convertible to T");
             return Unexpected<U>{Move(m_value)};
         }
 
@@ -78,7 +75,7 @@ namespace coil
         template<typename U>
         ExpectedBase(Unexpected<U> error) : m_unexpected(Move(error)), m_hasValue(false)
         {
-            static_assert(IsConvertibleV<U&&, E>, "U should be convertible to E");
+            
         }
 
         ExpectedBase(ExpectedBase<T, E> const& rhs)

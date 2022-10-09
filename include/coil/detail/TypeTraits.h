@@ -2,14 +2,6 @@
 
 namespace coil
 {
-#if defined(__clang__) || defined(_MSC_VER)
-    template<typename From, typename To>
-    inline constexpr bool IsConvertibleV = __is_convertible_to(From, To);
-#elif defined(__GNUC__)
-    template<typename From, typename To>
-    inline constexpr bool IsConvertibleV = __is_convertible(From, To);
-#endif
-
     template<typename T>
     struct RemoveCv { using Type = T; };
     template<typename T>
