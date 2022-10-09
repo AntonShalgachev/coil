@@ -3,7 +3,6 @@
 #include "Expected.h"
 #include "TypeName.h"
 
-#include <functional>
 #include <string>
 #include <string_view>
 #include <vector>

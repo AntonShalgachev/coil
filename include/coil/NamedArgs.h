@@ -4,8 +4,6 @@
 #include "detail/CallContext.h"
 #include "detail/Utility.h"
 
-#include <functional>
-
 namespace coil
 {
     class NamedValue
