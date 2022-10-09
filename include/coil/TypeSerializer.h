@@ -4,6 +4,7 @@
 #include "TypeName.h"
 #include "Utils.h"
 #include "Value.h"
+#include "detail/Utility.h"
 
 #include <algorithm>
 #include <cctype>
@@ -168,7 +169,7 @@ namespace coil
         if (innerValue)
             return std::optional<T>{*innerValue};
 
-        return errors::createGenericError<std::optional<T>>(input, std::move(innerValue).error());
+        return errors::createGenericError<std::optional<T>>(input, Move(innerValue).error());
     }
 
     template<typename T>
@@ -200,9 +201,9 @@ namespace coil
         {
             auto expectedArg = TypeSerializer<T>::fromString(subvalue);
             if (!expectedArg)
-                return errors::createGenericError<std::vector<T>>(input, std::move(expectedArg).error());
+                return errors::createGenericError<std::vector<T>>(input, Move(expectedArg).error());
 
-            result.push_back(*std::move(expectedArg));
+            result.push_back(*Move(expectedArg));
         }
 
         return result;

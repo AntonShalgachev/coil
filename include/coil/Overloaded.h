@@ -2,6 +2,7 @@
 
 #include "AnyFunctor.h"
 #include "detail/FuncTraits.h"
+#include "detail/Utility.h"
 
 #include <vector>
 
@@ -13,7 +14,7 @@ namespace coil
         AnyFunctor createAnyFunctor(Func func)
         {
             static_assert((detail::FuncTraits<Func>::isFunc), "Funcs should be functor objects");
-            return AnyFunctor{typename detail::FuncTraits<Func>::FunctionWrapperType{std::move(func)}};
+            return AnyFunctor{ typename detail::FuncTraits<Func>::FunctionWrapperType{Move(func)} };
         }
 
         inline AnyFunctor createAnyFunctor(AnyFunctor anyFunctor)
@@ -27,7 +28,7 @@ namespace coil
     {
         // No move list-initialization in vector? Really, C++?
         std::vector<AnyFunctor> functors;
-        (functors.push_back(detail::createAnyFunctor(std::move(funcs))), ...);
+        (functors.push_back(detail::createAnyFunctor(Move(funcs))), ...);
         return functors;
     }
 }

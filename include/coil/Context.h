@@ -3,6 +3,7 @@
 #include "Expected.h"
 #include "NamedArgs.h"
 #include "detail/CallContext.h"
+#include "detail/Utility.h"
 
 namespace coil
 {
@@ -19,7 +20,7 @@ namespace coil
         template<typename... Ts>
         void reportErrors(Ts&&... errors)
         {
-            (reportError(std::forward<Ts>(errors)), ...);
+            (reportError(Forward<Ts>(errors)), ...);
         }
 
         bool hasErrors() const;

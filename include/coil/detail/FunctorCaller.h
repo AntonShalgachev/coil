@@ -3,6 +3,7 @@
 #include "../TypeSerializer.h"
 #include "../Types.h"
 #include "CallContext.h"
+#include "Utility.h"
 
 #include <string>
 
@@ -29,7 +30,7 @@ namespace coil::detail
             return;
         }
 
-        std::optional<std::string> returnValue = func.invoke(createContext<NonUserIndices>(context)..., *std::move(expectedArgs)...);
+        std::optional<std::string> returnValue = func.invoke(createContext<NonUserIndices>(context)..., *Move(expectedArgs)...);
         if (!context.hasErrors())
             context.result.returnValue = returnValue;
     }

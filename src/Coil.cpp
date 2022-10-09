@@ -25,12 +25,12 @@ template class std::basic_string<char>;
 
 template class coil::Unexpected<std::string>;
 template coil::Unexpected<std::string> coil::makeUnexpected(std::string value);
-template coil::Unexpected<std::string>&& std::move<coil::Unexpected<std::string>&>(coil::Unexpected<std::string>&) noexcept;
+template coil::Unexpected<std::string>&& coil::Move<coil::Unexpected<std::string>&>(coil::Unexpected<std::string>&) noexcept;
 
-template coil::detail::AnyStorageBase*&& std::move<coil::detail::AnyStorageBase*&>(coil::detail::AnyStorageBase*&) noexcept;
+template coil::detail::AnyStorageBase*&& coil::Move<coil::detail::AnyStorageBase*&>(coil::detail::AnyStorageBase*&) noexcept;
 template void std::swap<coil::detail::AnyStorageBase*>(coil::detail::AnyStorageBase*&, coil::detail::AnyStorageBase*&) noexcept;
 
-template std::string&& std::forward<std::string>(std::string&) noexcept;
+template std::string&& coil::Forward<std::string>(std::string&) noexcept;
 
 template std::vector<coil::AnyFunctor>::~vector();
 
@@ -50,7 +50,7 @@ namespace coil
         }
 
         /// CallContext.h ///
-        CallContext::CallContext(ExecutionInput input) : input(std::move(input)) {}
+        CallContext::CallContext(ExecutionInput input) : input(coil::Move(input)) {}
 
         std::ostream& CallContext::log()
         {
@@ -59,7 +59,7 @@ namespace coil
 
         void CallContext::reportError(std::string error)
         {
-            result.errors.push_back(std::move(error));
+            result.errors.push_back(coil::Move(error));
         }
 
         bool CallContext::hasErrors() const
@@ -116,7 +116,7 @@ namespace coil
 
     void Bindings::setLexer(std::unique_ptr<Lexer> lexer)
     {
-        m_lexer = std::move(lexer);
+        m_lexer = coil::Move(lexer);
     }
 
     BindingProxy<Bindings> Bindings::operator[](std::string_view name)
@@ -128,13 +128,13 @@ namespace coil
     {
         // No move list-initialization in vector? Really, C++?
         std::vector<AnyFunctor> functors;
-        functors.push_back(std::move(anyFunctor));
-        return add(name, std::move(functors));
+        functors.push_back(coil::Move(anyFunctor));
+        return add(name, coil::Move(functors));
     }
 
     Bindings::Command const& Bindings::add(std::string_view name, std::vector<AnyFunctor> anyFunctors)
     {
-        auto it = m_commands.insert_or_assign(name, Command{std::move(anyFunctors)}).first;
+        auto it = m_commands.insert_or_assign(name, Command{coil::Move(anyFunctors)}).first;
 
         m_commandNames.push_back(it->first);
         return it->second;
@@ -168,10 +168,10 @@ namespace coil
 
     ExecutionResult Bindings::execute(ExecutionInput input)
     {
-        detail::CallContext context{std::move(input)};
+        detail::CallContext context{coil::Move(input)};
         execute(context);
-        context.result.input = std::move(context.input);
-        return std::move(context).result;
+        context.result.input = coil::Move(context.input);
+        return coil::Move(context).result;
     }
 
     ExecutionResult Bindings::execute(std::string_view command)
@@ -241,7 +241,7 @@ namespace coil
         std::string const expectedStr = argsCount.str();
         std::size_t const actualArgsCount = context.input.arguments.size();
         auto error = formatString("Wrong number of arguments to '%.*s': expected %s, got %d", context.input.name.size(), context.input.name.data(), expectedStr.c_str(), actualArgsCount);
-        context.reportError(std::move(error));
+        context.reportError(coil::Move(error));
     }
 
     /// Context.h ///
@@ -259,7 +259,7 @@ namespace coil
 
     void Context::reportError(std::string error)
     {
-        m_callContext.reportError(std::move(error));
+        m_callContext.reportError(coil::Move(error));
     }
 
     bool Context::hasErrors() const
@@ -328,7 +328,7 @@ namespace coil
         if (auto anyArg = get(key))
             return &static_cast<Value const&>(*anyArg);
         else if (argType == ArgType::Required)
-            m_context.reportError(std::move(anyArg).error().message);
+            m_context.reportError(coil::Move(anyArg).error().message);
 
         return nullptr;
     }
@@ -356,7 +356,7 @@ namespace coil
     /// Value.h ///
     Value::Value() = default; // @NOCOVERAGE
     Value::Value(std::string_view value) : subvalues({value}) {}
-    Value::Value(std::vector<std::string_view> subvalues) : subvalues(std::move(subvalues)) {}
+    Value::Value(std::vector<std::string_view> subvalues) : subvalues(coil::Move(subvalues)) {}
 
     bool Value::operator==(Value const& rhs) const
     {

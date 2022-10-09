@@ -8,6 +8,7 @@
 #include "detail/FuncTraits.h"
 #include "detail/FunctorCaller.h"
 #include "detail/StringWrapper.h"
+#include "detail/Utility.h"
 
 #include <functional>
 #include <string>
@@ -39,7 +40,7 @@ namespace coil
         {
             static_assert(detail::FuncTraits<Func>::isFunc, "Func should be a functor object");
             using FunctionWrapper = typename detail::FuncTraits<Func>::FunctionWrapperType;
-            return add(name, AnyFunctor{FunctionWrapper{std::move(func)}});
+            return add(name, AnyFunctor{FunctionWrapper{Move(func)}});
         }
 
         Bindings::Command const& add(std::string_view name, AnyFunctor anyFunctor);
@@ -76,16 +77,16 @@ namespace coil
         {
             static_assert(detail::FuncTraits<Func>::isFunc, "Func should be a functor object");
             using FunctionWrapper = typename detail::FuncTraits<Func>::FunctionWrapperType;
-            return operator=(AnyFunctor{FunctionWrapper{std::move(func)}});
+            return operator=(AnyFunctor{FunctionWrapper{Move(func)}});
         }
         BindingProxy& operator=(AnyFunctor anyFunctor)
         {
-            m_bindings.add(m_name, std::move(anyFunctor));
+            m_bindings.add(m_name, Move(anyFunctor));
             return *this;
         }
         BindingProxy& operator=(std::vector<AnyFunctor> anyFunctors)
         {
-            m_bindings.add(m_name, std::move(anyFunctors));
+            m_bindings.add(m_name, Move(anyFunctors));
             return *this;
         }
         BindingProxy& operator=(std::nullptr_t)

@@ -42,4 +42,9 @@ namespace coil
 
     template<typename T>
     inline constexpr bool IsVoidV = IsSameV<RemoveCvT<T>, void>;
+
+    template <typename>
+    constexpr bool IsConstV = false;
+    template <typename T>
+    constexpr bool IsConstV<const T> = true;
 }

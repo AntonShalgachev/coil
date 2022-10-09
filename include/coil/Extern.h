@@ -7,6 +7,7 @@
 #include "Value.h"
 #include "Variable.h"
 #include "detail/StringWrapper.h"
+#include "detail/Utility.h"
 
 #include <optional>
 #include <string>
@@ -36,12 +37,12 @@ extern template class std::basic_string<char>;
 
 extern template class coil::Unexpected<std::string>;
 extern template coil::Unexpected<std::string> coil::makeUnexpected(std::string value);
-extern template coil::Unexpected<std::string>&& std::move<coil::Unexpected<std::string>&>(coil::Unexpected<std::string>&) noexcept;
+extern template coil::Unexpected<std::string>&& coil::Move<coil::Unexpected<std::string>&>(coil::Unexpected<std::string>&) noexcept;
 
-extern template coil::detail::AnyStorageBase*&& std::move<coil::detail::AnyStorageBase*&>(coil::detail::AnyStorageBase*&) noexcept;
+extern template coil::detail::AnyStorageBase*&& coil::Move<coil::detail::AnyStorageBase*&>(coil::detail::AnyStorageBase*&) noexcept;
 extern template void std::swap<coil::detail::AnyStorageBase*>(coil::detail::AnyStorageBase*&, coil::detail::AnyStorageBase*&) noexcept;
 
-extern template std::string&& std::forward<std::string>(std::string&) noexcept;
+extern template std::string&& coil::Forward<std::string>(std::string&) noexcept;
 
 extern template std::vector<coil::AnyFunctor>::~vector();
 
@@ -59,9 +60,9 @@ extern template std::vector<coil::AnyFunctor>::~vector();
     SPECIFIER template class coil::Expected<T, std::string>;                                                                                  \
     SPECIFIER template coil::ExpectedBase<bool, std::string>::ExpectedBase(coil::Unexpected<std::string>);                                    \
     SPECIFIER template void coil::detail::reportError<T>(coil::detail::CallContext & context, coil::Expected<T, std::string> const& result);  \
-    SPECIFIER template coil::Expected<T, std::string>&& std::move<coil::Expected<T, std::string>&>(coil::Expected<T, std::string>&) noexcept; \
-    SPECIFIER template T&& std::forward<T>(T&) noexcept;                                                                                      \
-    SPECIFIER template T&& std::move<T&>(T&) noexcept
+    SPECIFIER template coil::Expected<T, std::string>&& coil::Move<coil::Expected<T, std::string>&>(coil::Expected<T, std::string>&) noexcept; \
+    SPECIFIER template T&& coil::Forward<T>(T&) noexcept;                                                                                      \
+    SPECIFIER template T&& coil::Move<T&>(T&) noexcept
 
 #define COIL_NAMED_ARGS_TEMPLATE_BASE(SPECIFIER, T)                                                                   \
     SPECIFIER template class std::optional<T>;                                                                        \

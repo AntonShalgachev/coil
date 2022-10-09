@@ -5,8 +5,8 @@
 #include "../TypeSerializer.h"
 #include "../Types.h"
 #include "FuncTraits.h"
+#include "Utility.h"
 
-#include <memory>
 #include <optional>
 #include <string>
 #include <string_view>
@@ -40,7 +40,7 @@ namespace coil::detail
         {
             static_assert(!std::is_member_function_pointer_v<Func> || !std::is_void_v<C>, "Func can only be a member function if C isn't void");
 
-            m_func = new Func(std::move(func));
+            m_func = new Func(Move(func));
             m_obj = const_cast<std::remove_const_t<C>*>(obj); // this pointer would be casted back to C* in typedCall
 
             m_callFunc = &FunctionWrapper<Args...>::template typedCall<Func, C>;
@@ -71,17 +71,17 @@ namespace coil::detail
             if constexpr (std::is_void_v<R>)
             {
                 if constexpr (std::is_void_v<C>)
-                    func(std::move(args)...);
+                    func(Move(args)...);
                 else
-                    (obj->*func)(std::move(args)...);
+                    (obj->*func)(Move(args)...);
                 return {};
             }
             else
             {
                 if constexpr (std::is_void_v<C>)
-                    return TypeSerializer<R>::toString(func(std::move(args)...));
+                    return TypeSerializer<R>::toString(func(Move(args)...));
                 else
-                    return TypeSerializer<R>::toString((obj->*func)(std::move(args)...));
+                    return TypeSerializer<R>::toString((obj->*func)(Move(args)...));
             }
         }
 
@@ -120,6 +120,6 @@ namespace coil::detail
     template<typename... Args>
     std::optional<std::string> FunctionWrapper<Args...>::invoke(Args... args)
     {
-        return (this->*m_callFunc)(std::move(args)...);
+        return (this->*m_callFunc)(Move(args)...);
     }
 }

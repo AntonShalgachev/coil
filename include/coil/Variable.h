@@ -2,6 +2,7 @@
 
 #include "Context.h"
 #include "Overloaded.h"
+#include "detail/Utility.h"
 
 namespace coil
 {
@@ -10,11 +11,11 @@ namespace coil
     {
         auto get = [var]() -> T const& { return *var; };
         auto set = [var](T val) -> T const& {
-            *var = std::move(val);
+            *var = Move(val);
             return *var;
         };
 
-        return overloaded(std::move(get), std::move(set));
+        return overloaded(Move(get), Move(set));
     }
 
     template<typename T>
@@ -26,6 +27,6 @@ namespace coil
             return *var;
         };
 
-        return overloaded(std::move(get), std::move(set));
+        return overloaded(Move(get), Move(set));
     }
 }

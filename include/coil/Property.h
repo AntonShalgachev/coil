@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Overloaded.h"
+#include "detail/Utility.h"
 
 namespace coil
 {
@@ -10,12 +11,12 @@ namespace coil
         auto get = [getter]() -> decltype(auto) { return getter(); };
 
         using T = std::remove_cv_t<std::remove_reference_t<decltype(getter())>>;
-        auto set = [getter, setter = std::move(setter)](T const& value) -> decltype(auto) {
+        auto set = [getter, setter = Move(setter)](T const& value) -> decltype(auto) {
             setter(value);
             return getter();
         };
 
-        return coil::overloaded(std::move(get), std::move(set));
+        return coil::overloaded(Move(get), Move(set));
     }
 
     template<typename G>
@@ -28,7 +29,7 @@ namespace coil
             return getter();
         };
 
-        return coil::overloaded(std::move(get), std::move(set));
+        return coil::overloaded(Move(get), Move(set));
     }
 
     template<typename C, typename G, typename S>
@@ -37,12 +38,12 @@ namespace coil
         auto get = [getter, object]() -> decltype(auto) { return std::invoke(getter, object); };
 
         using T = std::remove_cv_t<std::remove_reference_t<decltype(std::invoke(getter, object))>>;
-        auto set = [getter, setter = std::move(setter), object](T const& value) -> decltype(auto) {
+        auto set = [getter, setter = Move(setter), object](T const& value) -> decltype(auto) {
             std::invoke(setter, object, value);
             return std::invoke(getter, object);
         };
 
-        return coil::overloaded(std::move(get), std::move(set));
+        return coil::overloaded(Move(get), Move(set));
     }
 
     template<typename C, typename G>
@@ -56,6 +57,6 @@ namespace coil
             return std::invoke(getter, object);
         };
 
-        return coil::overloaded(std::move(get), std::move(set));
+        return coil::overloaded(Move(get), Move(set));
     }
 }

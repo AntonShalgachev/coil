@@ -4,6 +4,7 @@
 #include "Expected.h"
 #include "Lexer.h"
 #include "Utils.h"
+#include "detail/Utility.h"
 
 #include <cctype>
 #include <optional>
@@ -25,9 +26,9 @@ namespace coil
         {
             auto tokens = tokenize(str);
             if (!tokens)
-                return makeUnexpected(std::move(tokens).error());
+                return makeUnexpected(Move(tokens).error());
 
-            return parse(*std::move(tokens));
+            return parse(*Move(tokens));
         }
 
     private:
@@ -208,7 +209,7 @@ namespace coil
                 }
             }
 
-            return {std::move(tokens)};
+            return {Move(tokens)};
         }
 
         Expected<ExecutionInput, std::string> parse(std::vector<Token> tokens) const
@@ -309,7 +310,7 @@ namespace coil
 
             addCurrentTokens();
 
-            return {std::move(input)};
+            return {Move(input)};
         }
 
     private:

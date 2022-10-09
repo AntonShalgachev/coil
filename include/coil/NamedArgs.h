@@ -2,6 +2,7 @@
 
 #include "Value.h"
 #include "detail/CallContext.h"
+#include "detail/Utility.h"
 
 #include <functional>
 
@@ -67,7 +68,7 @@ namespace coil
                 TypeMismatch,
             };
 
-            Error(Type type, std::string message) : type(type), message(std::move(message)) {}
+            Error(Type type, std::string message) : type(type), message(Move(message)) {}
 
             Type type = Type::MissingKey;
             std::string message;
@@ -108,13 +109,13 @@ namespace coil
     {
         auto typelessValue = get(key);
         if (!typelessValue)
-            return makeUnexpected(std::move(typelessValue).error());
+            return makeUnexpected(Move(typelessValue).error());
 
         Expected<T, std::string> value = static_cast<Value const&>(*typelessValue).get<T>();
         if (!value)
-            return makeUnexpected(Error(Error::Type::TypeMismatch, std::move(value).error()));
+            return makeUnexpected(Error(Error::Type::TypeMismatch, Move(value).error()));
 
-        return *std::move(value);
+        return *Move(value);
     }
 
     template<typename T>
@@ -125,7 +126,7 @@ namespace coil
         else if (argType == ArgType::Optional && value.error().type == Error::Type::MissingKey)
             return defaultValue;
         else
-            m_context.reportError(std::move(value).error().message);
+            m_context.reportError(Move(value).error().message);
 
         return {};
     }

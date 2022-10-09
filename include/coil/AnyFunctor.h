@@ -3,6 +3,7 @@
 #include "detail/CallContext.h"
 #include "detail/FunctionWrapper.h"
 #include "detail/FunctorCaller.h"
+#include "detail/Utility.h"
 
 namespace coil
 {
@@ -31,7 +32,7 @@ namespace coil
         };
 
         template<typename FuncWrapper>
-        coil::detail::AnyStorage<FuncWrapper>::AnyStorage(FuncWrapper func) : m_funcWrapper(std::move(func))
+        coil::detail::AnyStorage<FuncWrapper>::AnyStorage(FuncWrapper func) : m_funcWrapper(Move(func))
         {
         }
 
@@ -79,6 +80,6 @@ namespace coil
     template<typename FunctionWrapper>
     coil::AnyFunctor::AnyFunctor(FunctionWrapper func) : m_parameterTypes(FunctionWrapper::ArgsTraits::UserArgumentTypes::names()), m_returnType(func.returnType)
     {
-        m_storage = new detail::AnyStorage<FunctionWrapper>(std::move(func));
+        m_storage = new detail::AnyStorage<FunctionWrapper>(Move(func));
     }
 }
