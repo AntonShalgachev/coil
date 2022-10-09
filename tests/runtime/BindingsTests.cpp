@@ -875,24 +875,6 @@ TEST(BindingsTests, TestAnyArgToStream)
     EXPECT_EQ(ss.str(), "foo bar");
 }
 
-TEST(BindingsTests, TestGetCommandNames)
-{
-    coil::Bindings bindings;
-    bindings["func1"] = []() {};
-    bindings["func2"] = []() {};
-    bindings["func3"] = []() {};
-
-    EXPECT_EQ(bindings.commands(), (std::vector<std::string_view>{"func1", "func2", "func3"}));
-
-    bindings.remove("func2");
-
-    EXPECT_EQ(bindings.commands(), (std::vector<std::string_view>{"func1", "func3"}));
-
-    bindings.clear();
-
-    EXPECT_EQ(bindings.commands(), (std::vector<std::string_view>{}));
-}
-
 TEST(BindingsTests, TestPointers)
 {
     coil::Bindings bindings;

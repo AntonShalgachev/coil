@@ -134,15 +134,14 @@ namespace coil
 
     Bindings::Command const& Bindings::add(std::string_view name, std::vector<AnyFunctor> anyFunctors)
     {
-        auto it = m_commands.insert_or_assign(name, Command{coil::Move(anyFunctors)}).first;
+        auto it = m_commands.insert_or_assign(name, Command{ std::string_view{}, coil::Move(anyFunctors) }).first;
+        it->second.name = it->first;
 
-        m_commandNames.push_back(it->first);
         return it->second;
     }
 
     void Bindings::remove(std::string_view name)
     {
-        m_commandNames.erase(std::remove(m_commandNames.begin(), m_commandNames.end(), name), m_commandNames.end());
         m_commands.erase(name);
     }
 
@@ -157,13 +156,7 @@ namespace coil
 
     void Bindings::clear()
     {
-        m_commandNames.clear();
         m_commands.clear();
-    }
-
-    std::vector<std::string_view> const& Bindings::commands() const
-    {
-        return m_commandNames;
     }
 
     ExecutionResult Bindings::execute(ExecutionInput input)

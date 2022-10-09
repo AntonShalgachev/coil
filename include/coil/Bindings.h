@@ -24,6 +24,7 @@ namespace coil
     public:
         struct Command
         {
+            std::string_view name;
             std::vector<AnyFunctor> functors;
         };
 
@@ -52,8 +53,6 @@ namespace coil
 
         void clear();
 
-        std::vector<std::string_view> const& commands() const;
-
         ExecutionResult execute(std::string_view command);
         ExecutionResult execute(ExecutionInput input);
 
@@ -63,7 +62,6 @@ namespace coil
         std::unique_ptr<Lexer> m_lexer;
 
         std::unordered_map<StringWrapper, Command> m_commands;
-        std::vector<std::string_view> m_commandNames;
     };
 
     template<typename BindingsT>
