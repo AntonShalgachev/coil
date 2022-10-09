@@ -56,9 +56,8 @@ extern template std::vector<coil::AnyFunctor>::~vector();
 #define COIL_VARIABLE_TEMPLATE_BASE(SPECIFIER, T) SPECIFIER template std::vector<coil::AnyFunctor> coil::variable<T>(T * var)
 
 #define COIL_ARGUMENT_TEMPLATE_BASE(SPECIFIER, T)                                                                                             \
-    SPECIFIER template class coil::ExpectedBase<T, std::string>;                                                                              \
     SPECIFIER template class coil::Expected<T, std::string>;                                                                                  \
-    SPECIFIER template coil::ExpectedBase<T, std::string>::ExpectedBase(coil::Unexpected<std::string>);                                    \
+    SPECIFIER template coil::Expected<T, std::string>::Expected(coil::Unexpected<std::string>);                                    \
     SPECIFIER template void coil::detail::reportError<T>(coil::detail::CallContext & context, coil::Expected<T, std::string> const& result);  \
     SPECIFIER template coil::Expected<T, std::string>&& coil::Move<coil::Expected<T, std::string>&>(coil::Expected<T, std::string>&) noexcept; \
     SPECIFIER template T&& coil::Forward<T>(T&) noexcept;                                                                                      \
@@ -66,7 +65,6 @@ extern template std::vector<coil::AnyFunctor>::~vector();
 
 #define COIL_NAMED_ARGS_TEMPLATE_BASE(SPECIFIER, T)                                                                   \
     SPECIFIER template class std::optional<T>;                                                                        \
-    SPECIFIER template class coil::ExpectedBase<T, coil::NamedArgs::Error>;                                           \
     SPECIFIER template class coil::Expected<T, coil::NamedArgs::Error>;                                               \
     SPECIFIER template coil::Expected<T, coil::NamedArgs::Error> coil::NamedArgs::get<T>(std::string_view key) const; \
     SPECIFIER template std::optional<T> coil::NamedArgs::getOrReport<T>(std::string_view key, coil::NamedArgs::ArgType argType, std::optional<T> defaultValue) const
