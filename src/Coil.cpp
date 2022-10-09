@@ -314,7 +314,7 @@ namespace coil
 
     NamedArgs::NamedArgs(detail::CallContext& context) : m_context(context) {}
 
-    Expected<std::reference_wrapper<Value const>, NamedArgs::Error> NamedArgs::get(std::string_view key) const
+    Expected<ReferenceWrapper<Value const>, NamedArgs::Error> NamedArgs::get(std::string_view key) const
     {
         auto it = find(key);
         if (it == end())
@@ -381,7 +381,7 @@ namespace coil
         return os << rhs.str();
     }
 
-    coil::Expected<std::reference_wrapper<Value const>, std::string> coil::TypeSerializer<Value>::fromString(Value const& value)
+    coil::Expected<ReferenceWrapper<Value const>, std::string> coil::TypeSerializer<Value>::fromString(Value const& value)
     {
         return {value};
     }

@@ -16,6 +16,7 @@ set(COIL_COMPILATION_TIME_BENCHMARK_WITH_MANUAL OFF CACHE BOOL "Use manually-wri
 
 add_library(coil
     "include/coil/detail/CallContext.h"
+    "include/coil/detail/Functional.h"
     "include/coil/detail/FunctionWrapper.h"
     "include/coil/detail/FunctorCaller.h"
     "include/coil/detail/FuncTraits.h"

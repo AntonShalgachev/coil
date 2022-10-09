@@ -2,6 +2,7 @@
 
 #include "Expected.h"
 #include "TypeName.h"
+#include "detail/Functional.h"
 
 #include <string>
 #include <string_view>
@@ -36,7 +37,7 @@ namespace coil
     template<>
     struct TypeSerializer<Value, void>
     {
-        static Expected<std::reference_wrapper<Value const>, std::string> fromString(Value const& value);
+        static Expected<ReferenceWrapper<Value const>, std::string> fromString(Value const& value);
         static std::string toString(Value const& value);
     };
 

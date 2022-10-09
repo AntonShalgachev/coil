@@ -2,6 +2,7 @@
 
 #include "Value.h"
 #include "detail/CallContext.h"
+#include "detail/Functional.h"
 #include "detail/Utility.h"
 
 namespace coil
@@ -74,7 +75,7 @@ namespace coil
 
         NamedArgs(detail::CallContext& context);
 
-        Expected<std::reference_wrapper<Value const>, Error> get(std::string_view key) const;
+        Expected<ReferenceWrapper<Value const>, Error> get(std::string_view key) const;
 
         template<typename T>
         Expected<T, Error> get(std::string_view key) const;
