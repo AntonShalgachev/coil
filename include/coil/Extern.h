@@ -58,7 +58,7 @@ extern template std::vector<coil::AnyFunctor>::~vector();
 #define COIL_ARGUMENT_TEMPLATE_BASE(SPECIFIER, T)                                                                                             \
     SPECIFIER template class coil::ExpectedBase<T, std::string>;                                                                              \
     SPECIFIER template class coil::Expected<T, std::string>;                                                                                  \
-    SPECIFIER template coil::ExpectedBase<bool, std::string>::ExpectedBase(coil::Unexpected<std::string>);                                    \
+    SPECIFIER template coil::ExpectedBase<T, std::string>::ExpectedBase(coil::Unexpected<std::string>);                                    \
     SPECIFIER template void coil::detail::reportError<T>(coil::detail::CallContext & context, coil::Expected<T, std::string> const& result);  \
     SPECIFIER template coil::Expected<T, std::string>&& coil::Move<coil::Expected<T, std::string>&>(coil::Expected<T, std::string>&) noexcept; \
     SPECIFIER template T&& coil::Forward<T>(T&) noexcept;                                                                                      \
