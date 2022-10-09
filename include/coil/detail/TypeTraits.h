@@ -23,6 +23,19 @@ namespace coil
     using RemoveReferenceT = typename RemoveReference<T>::Type;
 
     template<typename T>
+    struct RemovePointer { using Type = T; };
+    template<typename T>
+    struct RemovePointer<T*> { using Type = T; };
+    template<typename T>
+    struct RemovePointer<T* const> { using Type = T; };
+    template<typename T>
+    struct RemovePointer<T* volatile> { using Type = T; };
+    template<typename T>
+    struct RemovePointer<T* const volatile> { using Type = T; };
+    template<typename T>
+    using RemovePointerT = typename RemovePointer<T>::Type;
+
+    template<typename T>
     using DecayT = RemoveCvT<RemoveReferenceT<T>>;
 
 #if defined(__clang__)
