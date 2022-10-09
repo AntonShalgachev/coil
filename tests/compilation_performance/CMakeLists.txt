@@ -22,14 +22,9 @@ set_target_properties(${PROJECT_NAME} PROPERTIES CXX_EXTENSIONS OFF)
 
 target_precompile_headers(${PROJECT_NAME} PRIVATE "pch.h")
 
-set(COMPILE_OPTIONS)
+set(COMPILE_OPTIONS ${BASE_COMPILE_OPTIONS})
 if(MSVC)
     set(COMPILE_OPTIONS /W4 /FC /permissive-)
-endif()
-
-if (COIL_COMPILATION_TIME_BENCHMARK_TRACE AND CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-    message(STATUS "Clang in use")
-    list(APPEND COMPILE_OPTIONS -ftime-trace -ftime-trace-granularity=0)
 endif()
 
 target_compile_options(${PROJECT_NAME} PRIVATE
