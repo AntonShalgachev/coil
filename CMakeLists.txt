@@ -15,6 +15,7 @@ set(COIL_COMPILATION_TIME_BENCHMARK_WITH_COIL OFF CACHE BOOL "Use Coil library f
 set(COIL_COMPILATION_TIME_BENCHMARK_WITH_MANUAL OFF CACHE BOOL "Use manually-written bindings for compilation time benchmark")
 
 add_library(coil
+    "include/coil/detail/Algorithm.h"
     "include/coil/detail/CallContext.h"
     "include/coil/detail/Functional.h"
     "include/coil/detail/FunctionWrapper.h"

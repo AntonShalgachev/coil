@@ -4,6 +4,7 @@
 #include "Expected.h"
 #include "Lexer.h"
 #include "Utils.h"
+#include "detail/Algorithm.h"
 #include "detail/Utility.h"
 
 #include <cctype>
@@ -63,12 +64,12 @@ namespace coil
 
         bool isGroupChar(unsigned char c) const
         {
-            return std::find(m_groupParentheses.begin(), m_groupParentheses.end(), c) != m_groupParentheses.end();
+            return coil::find(m_groupParentheses.begin(), m_groupParentheses.end(), c) != m_groupParentheses.end();
         }
 
         bool isQuote(unsigned char c) const
         {
-            return std::find(m_quotes.begin(), m_quotes.end(), c) != m_quotes.end();
+            return coil::find(m_quotes.begin(), m_quotes.end(), c) != m_quotes.end();
         }
 
         bool isGroupSeparator(unsigned char c) const
@@ -76,7 +77,7 @@ namespace coil
             if (isSpace(c))
                 return true;
 
-            return std::find(m_groupSeparators.begin(), m_groupSeparators.end(), c) != m_groupSeparators.end();
+            return coil::find(m_groupSeparators.begin(), m_groupSeparators.end(), c) != m_groupSeparators.end();
         }
 
         CharType getCharType(unsigned char c) const
