@@ -3,6 +3,7 @@
 #include "common/ExamplesCommon.h"
 
 #include <numeric>
+#include <algorithm>
 
 // In most cases you'll have to provide 2 specializations per user type:
 // * TypeSerializer to be able to convert your type to/from string
