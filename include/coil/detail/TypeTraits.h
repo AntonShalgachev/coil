@@ -22,6 +22,9 @@ namespace coil
     template<typename T>
     using RemoveReferenceT = typename RemoveReference<T>::Type;
 
+    template<typename T>
+    using DecayT = RemoveCvT<RemoveReferenceT<T>>;
+
 #if defined(__clang__)
     template <typename T1, typename T2>
     inline constexpr bool IsSameV = __is_same(T1, T2);
@@ -39,4 +42,9 @@ namespace coil
     constexpr bool IsConstV = false;
     template <typename T>
     constexpr bool IsConstV<const T> = true;
+    
+    template< class T >
+    constexpr bool IsMemberPointerV = false;
+    template< class T, class U >
+    constexpr bool IsMemberPointerV<T U::*> = true;
 }
