@@ -489,7 +489,7 @@ namespace coil
         std::string str;
         str.resize(stringSize);
 
-        int result = std::vsnprintf(str.data(), str.size() + 1, format, args);
+        [[maybe_unused]] int result = std::vsnprintf(str.data(), str.size() + 1, format, args);
 
         assert(result >= 0 && static_cast<std::size_t>(result) <= str.size());
 
