@@ -33,9 +33,11 @@ namespace
             return result;
         }
 
-        friend std::ostream& operator<<(std::ostream& os, Point const& rhs)
+        std::string toString() const
         {
-            return os << "(" << rhs.x << "," << rhs.y << ")";
+            std::stringstream ss;
+            ss << "(" << x << "," << y << ")";
+            return ss.str();
         }
     };
 
@@ -44,14 +46,14 @@ namespace
     public:
         struct Particle
         {
-            std::string_view id;
+            std::string id;
             Point position;
             Point velocity;
         };
 
         void add(std::string_view id, Point position, Point velocity)
         {
-            m_particles.push_back(Particle{id, std::move(position), std::move(velocity)});
+            m_particles.push_back(Particle{ std::string{id}, std::move(position), std::move(velocity) });
         }
 
         Particle* get(std::string_view id)
@@ -102,9 +104,7 @@ namespace coil
 
         static auto toString(Point const& value)
         {
-            std::stringstream ss;
-            ss << value;
-            return ss.str();
+            return value.toString();
         }
     };
 
@@ -115,7 +115,7 @@ namespace coil
         static auto toString(ParticleSystem::Particle const& particle)
         {
             std::stringstream ss;
-            ss << "{'" << particle.id << "': p " << particle.position << ", v " << particle.velocity << "}";
+            ss << "{'" << particle.id << "': p " << particle.position.toString() << ", v " << particle.velocity.toString() << "}";
             return ss.str();
         }
     };
@@ -131,9 +131,10 @@ void CompoundExample::run()
     bindings["particles.get"] = coil::bind(&ParticleSystem::get, &system);
     bindings["particles.update"] = coil::bind(&ParticleSystem::update, &system);
     bindings["particles.list"] = [&system](coil::Context context) {
-        context.log() << "ID\tPos\tVel" << std::endl;
+        context.logline("ID\tPos\tVel");
+        context.logline("--\t---\t---");
         for (ParticleSystem::Particle const& particle : system.getParticles())
-            context.log() << particle.id << '\t' << particle.position << '\t' << particle.velocity << std::endl;
+            context.loglinef("%s\t%s\t%s", particle.id.c_str(), particle.position.toString().c_str(), particle.velocity.toString().c_str());
     };
 
     Point pivot;

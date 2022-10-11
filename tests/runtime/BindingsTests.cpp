@@ -574,18 +574,30 @@ TEST(BindingsTests, TestFunctionReturnValue)
 TEST(BindingsTests, TestOutput)
 {
     coil::Bindings bindings;
-    bindings["func_stream"] = [](coil::Context context, std::string value) { context.log() << value; };
-    bindings["func_string"] = [](coil::Context context, std::string value) { context.log(value); };
+    bindings["func_log"] = [](coil::Context context, std::string value) { context.log(value); };
+    bindings["func_logf"] = [](coil::Context context, std::string value) { context.logf("%s", value.c_str()); };
+    bindings["func_logline"] = [](coil::Context context, std::string value) { context.logline(value); };
+    bindings["func_loglinef"] = [](coil::Context context, std::string value) { context.loglinef("%s", value.c_str()); };
 
     {
-        auto result = bindings.execute("func_stream Stream");
+        auto result = bindings.execute("func_log value");
         EXPECT_EQ(result.errors.size(), 0u);
-        EXPECT_EQ(result.output.str(), "Stream");
+        EXPECT_EQ(result.output, "value");
     }
     {
-        auto result = bindings.execute("func_string String");
+        auto result = bindings.execute("func_logf value");
         EXPECT_EQ(result.errors.size(), 0u);
-        EXPECT_EQ(result.output.str(), "String");
+        EXPECT_EQ(result.output, "value");
+    }
+    {
+        auto result = bindings.execute("func_logline value");
+        EXPECT_EQ(result.errors.size(), 0u);
+        EXPECT_EQ(result.output, "value\n");
+    }
+    {
+        auto result = bindings.execute("func_loglinef value");
+        EXPECT_EQ(result.errors.size(), 0u);
+        EXPECT_EQ(result.output, "value\n");
     }
 }
 

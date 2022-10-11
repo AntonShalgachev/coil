@@ -41,12 +41,12 @@ namespace
 
     void createExplosion(coil::Context context, std::string_view id)
     {
-        context.log() << "Creating an explosion '" << id << "' with the default radius" << std::endl;
+        context.loglinef("Creating an explosion '%.*s' with the default radius", id.size(), id.data());
     }
 
     void createExplosion(coil::Context context, std::string_view id, float radius)
     {
-        context.log() << "Creating an explosion '" << id << "' with the radius " << radius << std::endl;
+        context.loglinef("Creating an explosion '%.*s' with the radius %f", id.size(), id.data(), radius);
     }
 
     // A small helper function template which returns the pointer to the specific overloaded function

@@ -144,10 +144,10 @@ void AdvancedExample::run()
     };
 
     bindings["entities.list"] = [&entities](coil::Context context) {
-        context.log() << "ID\tName\tPayload" << std::endl;
-        context.log() << "--\t----\t-------" << std::endl;
+        context.logline("ID\tName\tPayload");
+        context.logline("--\t----\t-------");
         for (Entity const& entity : entities.getEntities())
-            context.log() << entity.id << '\t' << entity.name << '\t' << entity.payload << std::endl;
+            context.loglinef("%s\t%s\t%s", entity.id.c_str(), entity.name.c_str(), entity.payload.c_str());
     };
 
     float angle = 45.0f;

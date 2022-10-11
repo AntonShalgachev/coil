@@ -73,10 +73,10 @@ namespace
         if (context.hasErrors())
             return;
 
-        context.log() << *requiredAnyArg << ", " << *requiredFloatArg;
+        context.logf("%s, %f", requiredAnyArg->str().c_str(), *requiredFloatArg);
         if (optionalFloatArg)
-            context.log() << ", " << *optionalFloatArg;
-        context.log() << std::endl;
+            context.logf(", %f", *optionalFloatArg);
+            
     }
 }
 

@@ -30,7 +30,9 @@ void common::executeCommand(coil::Bindings& bindings, std::string_view command)
     for (const auto& error : result.errors)
         std::cout << errorColor << "\tError: " << error << termcolor::reset << std::endl;
 
-    std::cout << outputColor << result.output.str() << termcolor::reset;
+    std::cout << outputColor << result.output << termcolor::reset;
+    if (!result.output.empty() && result.output.back() != '\n')
+        std::cout << std::endl;
 
     if (result.returnValue)
         std::cout << "\tReturned '" << returnColor << *result.returnValue << termcolor::reset << "'" << std::endl;

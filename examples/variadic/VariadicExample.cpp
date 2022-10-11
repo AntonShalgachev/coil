@@ -58,9 +58,9 @@ namespace
 
         void list(coil::Context context)
         {
-            context.log() << "Entities:" << std::endl;
+            context.logline("Entities:");
             for (Entity const& entity : m_entities)
-                context.log() << entity.id << ": " << entity.name << std::endl;
+                context.loglinef("%llu: %s", entity.id, entity.name.c_str());
         }
 
         void add(std::size_t id, std::string name)

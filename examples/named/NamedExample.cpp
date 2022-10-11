@@ -57,11 +57,16 @@ namespace
                 return nameOk && minAmountOk && sourceOk && typeOk;
             };
 
-            context.log() << "ID\tName\tAmount\tSource\tType" << std::endl;
+            context.logline("ID\tName\tAmount\tSource\tType");
+            context.logline("--\t----\t------\t------\t----");
 
             for (Item const& item : m_items)
+            {
+                auto sourceName = magic_enum::enum_name(item.source);
+                auto typeName = magic_enum::enum_name(item.type);
                 if (doesItemMatch(item))
-                    context.log() << item.id << '\t' << item.name << '\t' << item.amount << '\t' << magic_enum::enum_name(item.source) << '\t' << magic_enum::enum_name(item.type) << std::endl;
+                    context.loglinef("%llu\t%.*s\t%llu\t%.*s\t%.*s", item.id, item.name.size(), item.name.data(), item.amount, sourceName.size(), sourceName.data(), typeName.size(), typeName.data());
+            }
         }
 
         void add(coil::Context context, std::uint64_t id, std::string_view name)
@@ -93,15 +98,15 @@ namespace
 
     void printArgs(coil::Context context)
     {
-        for (auto const& arg : context.namedArgs())
-            context.log() << arg.key() << ": " << arg.value() << std::endl;
+        for (coil::NamedValue const& arg : context.namedArgs())
+            context.loglinef("%.*s: %s", arg.key().size(), arg.key().data(), arg.value().str().c_str());
     }
 
     void printFloats(coil::Context context)
     {
         for (auto const& arg : context.namedArgs())
-            if (arg.value().get<float>())
-                context.log() << arg.key() << ": " << arg.value() << std::endl;
+            if (auto val = arg.value().get<float>())
+                context.loglinef("%.*s: %f", arg.key().size(), arg.key().data(), *val);
     }
 
     enum class SaveGameType
@@ -120,7 +125,8 @@ namespace
         if (!type || !delay)
             return;
 
-        context.log() << "Saving game with type " << magic_enum::enum_name(*type) << " and delay " << *delay << "ms" << std::endl;
+        std::string_view typeName = magic_enum::enum_name(*type);
+        context.loglinef("Saving game with type %.*s and delay %f ms", typeName.size(), typeName.data(), *delay);
     }
 
     void requiredAndOptional(coil::Context context)
@@ -132,9 +138,9 @@ namespace
             return; // the error is already reported
 
         if (auto valueBool = requiredAnyArg->get<bool>())
-            context.log() << "Required: " << std::boolalpha << *valueBool << std::noboolalpha << std::endl;
+            context.loglinef("Required: %s", *valueBool ? "true" : "false");
         else if (auto valueInt = requiredAnyArg->get<int>())
-            context.log() << "Required: " << *valueInt << std::endl;
+            context.loglinef("Required: %d", *valueInt);
         else
             context.reportErrors(std::move(valueBool).error(), std::move(valueInt).error());
 
@@ -142,9 +148,9 @@ namespace
         if (optionalAnyArg)
         {
             if (auto valueBool = optionalAnyArg->get<bool>())
-                context.log() << "Optional: " << std::boolalpha << *valueBool << std::noboolalpha << std::endl;
+                context.loglinef("Optional: %s", *valueBool ? "true" : "false");
             else if (auto valueInt = optionalAnyArg->get<int>())
-                context.log() << "Optional: " << *valueInt << std::endl;
+                context.loglinef("Optional: %d", *valueInt);
             else
                 context.reportErrors(std::move(valueBool).error(), std::move(valueInt).error());
         }

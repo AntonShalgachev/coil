@@ -1,6 +1,8 @@
 #include "coil/Coil.h"
 #include "coil/DefaultLexer.h"
 
+#include <cstdarg>
+
 // Explicitly instantiate used templates here in order to avoid intantiating them in each source file
 template class std::vector<std::string>;
 template class std::optional<std::string>;
@@ -51,11 +53,6 @@ namespace coil
 
         /// CallContext.h ///
         CallContext::CallContext(ExecutionInput input) : input(coil::Move(input)) {}
-
-        std::ostream& CallContext::log()
-        {
-            return result.output;
-        }
 
         void CallContext::reportError(std::string error)
         {
@@ -191,7 +188,7 @@ namespace coil
         auto it = m_commands.find(context.input.name);
         if (it == m_commands.end())
         {
-            context.result.errors.push_back(formatString("No function '%.*s' is registered", context.input.name.size(), context.input.name.data()));
+            context.result.errors.push_back(sprintf("No function '%.*s' is registered", context.input.name.size(), context.input.name.data()));
             return;
         }
 
@@ -209,7 +206,7 @@ namespace coil
 #if COIL_CONFIG_CATCH_EXCEPTIONS
         catch (std::exception const& ex)
         {
-            context.reportError(formatString("Exception caught during execution: %s", ex.what()));
+            context.reportError(sprintf("Exception caught during execution: %s", ex.what()));
             return;
         }
         catch (...)
@@ -233,21 +230,39 @@ namespace coil
 
         std::string const expectedStr = argsCount.str();
         std::size_t const actualArgsCount = context.input.arguments.size();
-        auto error = formatString("Wrong number of arguments to '%.*s': expected %s, got %d", context.input.name.size(), context.input.name.data(), expectedStr.c_str(), actualArgsCount);
+        auto error = sprintf("Wrong number of arguments to '%.*s': expected %s, got %d", context.input.name.size(), context.input.name.data(), expectedStr.c_str(), actualArgsCount);
         context.reportError(coil::Move(error));
     }
 
     /// Context.h ///
     Context::Context(detail::CallContext& callContext) : m_callContext(callContext) {}
 
-    std::ostream& Context::log()
+    void Context::log(std::string str)
     {
-        return m_callContext.log();
+        m_callContext.result.output += std::move(str);
     }
 
-    void Context::log(std::string_view str)
+    void Context::logline(std::string str)
     {
-        log() << str;
+        m_callContext.result.output.reserve(m_callContext.result.output.size() + str.size() + 1);
+        m_callContext.result.output += std::move(str);
+        m_callContext.result.output += '\n';
+    }
+
+    void Context::logf(char const* format, ...)
+    {
+        std::va_list args;
+        va_start(args, format);
+        log(vsprintf(format, args));
+        va_end(args);
+    }
+
+    void Context::loglinef(char const* format, ...)
+    {
+        std::va_list args;
+        va_start(args, format);
+        logline(vsprintf(format, args));
+        va_end(args);
     }
 
     void Context::reportError(std::string error)
@@ -311,7 +326,7 @@ namespace coil
     {
         auto it = find(key);
         if (it == end())
-            return makeUnexpected(Error(Error::Type::MissingKey, formatString("Missing named argument '%.*s'", key.size(), key.data())));
+            return makeUnexpected(Error(Error::Type::MissingKey, sprintf("Missing named argument '%.*s'", key.size(), key.data())));
 
         return {it->value()};
     }
@@ -452,4 +467,32 @@ namespace coil
     COIL_CREATE_TYPE_NAME_DEFINITION(std::string, "std::string");
     COIL_CREATE_TYPE_NAME_DEFINITION(std::string_view, "std::string_view");
 #endif // COIL_CONFIG_BASIC_TYPENAME
+
+    /// Utils.h ///
+    std::string sprintf(char const* format, ...)
+    {
+        std::va_list args;
+        va_start(args, format);
+        auto res = vsprintf(format, args);
+        va_end(args);
+
+        return res;
+    }
+
+    std::string vsprintf(char const* format, std::va_list args)
+    {
+        std::va_list args2;
+        va_copy(args2, args);
+        std::size_t stringSize = static_cast<std::size_t>(std::vsnprintf(nullptr, 0, format, args2));
+        va_end(args2);
+
+        std::string str;
+        str.resize(stringSize);
+
+        int result = std::vsnprintf(str.data(), str.size() + 1, format, args);
+
+        assert(result >= 0 && static_cast<std::size_t>(result) <= str.size());
+
+        return str;
+    }
 }

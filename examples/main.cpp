@@ -73,14 +73,14 @@ int main()
     coil::Bindings bindings;
 
     bindings["help"] = [&names](coil::Context context) {
-        context.log() << "Available examples:" << std::endl;
+        context.logline("Available examples:");
         for (std::string_view name : names)
-            context.log() << "    " << name << std::endl;
-        context.log() << std::endl;
-        context.log() << "Type the example name to run it" << std::endl;
-        context.log() << "Type 'help' for this help" << std::endl;
-        context.log() << "Type 'exit' to exit" << std::endl;
-        context.log() << std::endl;
+            context.logf("    %.*s\n", name.size(), name.data());
+        context.logline("");
+        context.logline("Type the example name to run it");
+        context.logline("Type 'help' for this help");
+        context.logline("Type 'exit' to exit");
+        context.logline("");
     };
     bindings["exit"] = [&shouldExit]() { shouldExit = true; };
     bindings["run_all"] = [&names, &bindings]() {
@@ -96,7 +96,11 @@ int main()
 
         for (const auto& error : result.errors)
             std::cout << "Error: " << error << std::endl;
-        std::cout << result.output.str();
+
+        std::cout << result.output;
+        if (!result.output.empty() && result.output.back() != '\n')
+            std::cout << std::endl;
+
         if (result.returnValue)
             std::cout << "Return value: '" << *result.returnValue << "'" << std::endl;
     };

@@ -12,8 +12,10 @@ namespace coil
     public:
         Context(detail::CallContext& callContext);
 
-        std::ostream& log();
-        void log(std::string_view str);
+        void log(std::string str);
+        void logline(std::string str);
+        void logf(char const* format, ...);
+        void loglinef(char const* format, ...);
 
         void reportError(std::string error);
 

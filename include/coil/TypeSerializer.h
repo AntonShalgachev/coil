@@ -23,15 +23,15 @@ namespace coil
             std::string representation = input.str();
 
             if (details.empty())
-                return makeUnexpected(formatString("Unable to convert '%s' to type '%.*s'", representation.c_str(), typeName.length(), typeName.data()));
+                return makeUnexpected(sprintf("Unable to convert '%s' to type '%.*s'", representation.c_str(), typeName.length(), typeName.data()));
 
-            return makeUnexpected(formatString("Unable to convert '%s' to type '%.*s': %.*s", representation.c_str(), typeName.length(), typeName.data(), details.length(), details.data()));
+            return makeUnexpected(sprintf("Unable to convert '%s' to type '%.*s': %.*s", representation.c_str(), typeName.length(), typeName.data(), details.length(), details.data()));
         }
 
         template<typename T>
         Unexpected<std::string> createMismatchedSubvaluesError(Value const& input, std::size_t expectedSubvalues)
         {
-            return createGenericError<T>(input, formatString("Expected %d subvalues, got %d", expectedSubvalues, input.subvalues.size()));
+            return createGenericError<T>(input, sprintf("Expected %d subvalues, got %d", expectedSubvalues, input.subvalues.size()));
         }
     }
 

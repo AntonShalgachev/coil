@@ -191,7 +191,7 @@ namespace coil
                         i++;
 
                     if (i >= str.size())
-                        return makeUnexpected(formatString("Token '%c' doesn't have a corresponding opening/closing quote", str[tokenBegin]));
+                        return makeUnexpected(sprintf("Token '%c' doesn't have a corresponding opening/closing quote", str[tokenBegin]));
 
                     tokens.emplace_back(TokenType::String, str.substr(tokenBegin + 1, i - tokenBegin - 1));
                     break;
@@ -201,7 +201,7 @@ namespace coil
                         i++;
 
                     if (i >= str.size())
-                        return makeUnexpected(formatString("Token '%c' doesn't have a corresponding opening/closing token", str[tokenBegin]));
+                        return makeUnexpected(sprintf("Token '%c' doesn't have a corresponding opening/closing token", str[tokenBegin]));
 
                     tokens.emplace_back(TokenType::GroupString, str.substr(tokenBegin + 1, i - tokenBegin - 1));
                     break;
@@ -222,7 +222,7 @@ namespace coil
 
             Token const& firstToken = tokens.front();
             if (firstToken.type != TokenType::String)
-                return makeUnexpected(formatString("Unexpected token '%.*s' at the beginning of the expression", firstToken.value.size(), firstToken.value.data()));
+                return makeUnexpected(sprintf("Unexpected token '%.*s' at the beginning of the expression", static_cast<int>(firstToken.value.size()), firstToken.value.data()));
 
             input.name = firstToken.value;
 
