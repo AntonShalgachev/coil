@@ -4,6 +4,7 @@
 #include <functional>
 #include <optional>
 #include <vector>
+#include <ostream>
 
 #include "coil/Coil.h"
 

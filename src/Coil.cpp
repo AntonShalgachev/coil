@@ -2,6 +2,7 @@
 #include "coil/DefaultLexer.h"
 
 #include <cstdarg>
+#include <ostream>
 
 // Explicitly instantiate used templates here in order to avoid intantiating them in each source file
 template class std::vector<std::string>;
@@ -216,19 +217,19 @@ namespace coil
         }
 #endif // COIL_CONFIG_CATCH_EXCEPTIONS
 
-        std::stringstream argsCount;
+        std::string expectedStr;
+        expectedStr.reserve(functors.size() * 3); // N + (N-2)*2 + 4
 
         for (std::size_t i = 0; i < functors.size(); i++)
         {
             if (i > 0 && i != functors.size() - 1)
-                argsCount << ", ";
+                expectedStr += ", ";
             if (i > 0 && i == functors.size() - 1)
-                argsCount << " or ";
+                expectedStr += " or ";
 
-            argsCount << functors[i].arity();
+            expectedStr += std::to_string(functors[i].arity());
         }
 
-        std::string const expectedStr = argsCount.str();
         std::size_t const actualArgsCount = context.input.arguments.size();
         auto error = sprintf("Wrong number of arguments to '%.*s': expected %s, got %d", context.input.name.size(), context.input.name.data(), expectedStr.c_str(), actualArgsCount);
         context.reportError(coil::Move(error));
@@ -376,15 +377,16 @@ namespace coil
 
     std::string Value::str() const
     {
-        std::stringstream ss;
+        std::string result;
         std::string_view prefix = "";
         for (std::string_view subvalue : subvalues)
         {
-            ss << prefix << subvalue;
+            result += prefix;
+            result += subvalue;
             prefix = " ";
         }
 
-        return ss.str();
+        return result;
     }
 
     std::ostream& operator<<(std::ostream& os, Value const& rhs)

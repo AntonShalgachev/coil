@@ -8,7 +8,6 @@
 
 #include <charconv>
 #include <optional>
-#include <sstream>
 #include <string>
 
 namespace coil
@@ -75,9 +74,7 @@ namespace coil
     template<typename T>
     std::string TypeSerializer<T, std::enable_if_t<std::is_arithmetic_v<T>>>::toString(T const& value)
     {
-        std::stringstream ss;
-        ss << value;
-        return ss.str();
+        return std::to_string(value);
     }
 
     //////////////////////////////////////
@@ -210,17 +207,18 @@ namespace coil
     template<typename T>
     std::string coil::TypeSerializer<std::vector<T>>::toString(std::vector<T> const& value)
     {
-        std::stringstream ss;
-        ss << '{';
+        std::string result = "{";
         std::string_view separator = "";
+
         for (T const& element : value)
         {
-            ss << separator << TypeSerializer<T>::toString(element);
+            result += separator;
+            result += TypeSerializer<T>::toString(element);
             separator = ", ";
         }
-        ss << '}';
+        result += "}";
 
-        return ss.str();
+        return result;
     }
 
     //////////////////////////////////////
