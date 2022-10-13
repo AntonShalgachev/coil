@@ -879,12 +879,10 @@ TEST(BindingsTests, TestTypeNames)
 #endif // COIL_CONFIG_BASIC_TYPENAME
 }
 
-TEST(BindingsTests, TestAnyArgToStream)
+TEST(BindingsTests, TestAnyArgToString)
 {
     coil::Value value({"foo", "bar"});
-    std::stringstream ss;
-    ss << value;
-    EXPECT_EQ(ss.str(), "foo bar");
+    EXPECT_EQ(value.str(), "foo bar");
 }
 
 TEST(BindingsTests, TestPointers)

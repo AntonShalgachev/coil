@@ -2,7 +2,6 @@
 #include "coil/DefaultLexer.h"
 
 #include <cstdarg>
-#include <ostream>
 
 // Explicitly instantiate used templates here in order to avoid intantiating them in each source file
 template class std::vector<std::string>;
@@ -387,11 +386,6 @@ namespace coil
         }
 
         return result;
-    }
-
-    std::ostream& operator<<(std::ostream& os, Value const& rhs)
-    {
-        return os << rhs.str();
     }
 
     coil::Expected<ReferenceWrapper<Value const>, std::string> coil::TypeSerializer<Value>::fromString(Value const& value)

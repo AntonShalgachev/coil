@@ -37,7 +37,7 @@ namespace coil
         auto delim = "";
         for (auto const& arg : input.arguments)
         {
-            os << delim << arg;
+            os << delim << arg.str();
             delim = ", ";
         }
 
@@ -46,7 +46,7 @@ namespace coil
         delim = "";
         for (auto const& pair : input.namedArguments)
         {
-            os << delim << "'" << pair.first << "':" << pair.second << "";
+            os << delim << "'" << pair.first << "':" << pair.second.str() << "";
             delim = ", ";
         }
 

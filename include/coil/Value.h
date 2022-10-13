@@ -32,8 +32,6 @@ namespace coil
         std::vector<std::string_view> subvalues;
     };
 
-    std::ostream& operator<<(std::ostream& os, Value const& rhs);
-
     template<>
     struct TypeSerializer<Value, void>
     {
