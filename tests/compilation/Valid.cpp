@@ -61,8 +61,8 @@ int main()
     cmd["foo.bar"] = &funcWithType<std::int64_t>;
     cmd["foo.bar"] = &funcWithType<ScopedEnum>;
     cmd["foo.bar"] = &funcWithType<UnscopedEnum>;
-    cmd["foo.bar"] = &funcWithType<std::string>;
-    cmd["foo.bar"] = &funcWithType<std::string_view>;
+    cmd["foo.bar"] = &funcWithType<coil::String>;
+    cmd["foo.bar"] = &funcWithType<coil::StringView>;
     cmd["foo.bar"] = &funcWithType<std::optional<float>>;
     cmd["foo.bar"] = &funcWithType<Object>;
 

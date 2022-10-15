@@ -91,17 +91,17 @@ namespace
 
     [[maybe_unused]] void freeFuncWithoutArgsWithContext(coil::Context) {}
 
-    [[maybe_unused]] std::size_t funcVariadicVector(float, std::string const&, std::vector<coil::Value> const& args)
+    [[maybe_unused]] std::size_t funcVariadicVector(float, coil::String const&, std::vector<coil::Value> const& args)
     {
         return args.size();
     }
 
-    [[maybe_unused]] std::size_t funcFloatVector(float, std::string const&, std::vector<float> const& args)
+    [[maybe_unused]] std::size_t funcFloatVector(float, coil::String const&, std::vector<float> const& args)
     {
         return args.size();
     }
 
-    [[maybe_unused]] float funcOptional(float, std::string const&, std::optional<float> arg)
+    [[maybe_unused]] float funcOptional(float, coil::String const&, std::optional<float> arg)
     {
         return arg.value_or(0.0f);
     }
