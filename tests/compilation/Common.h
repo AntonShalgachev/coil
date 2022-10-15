@@ -1,6 +1,6 @@
 #include "coil/Coil.h"
 
-#include <cstddef>
+#include <cstdint>
 
 namespace
 {
