@@ -108,16 +108,16 @@ namespace coil
     template<typename T>
     struct TypeSerializer<Tracker<T>>
     {
-        static Expected<Tracker<T>, std::string> fromString(Value const& input)
+        static Expected<Tracker<T>, coil::String> fromString(Value const& input)
         {
-            Expected<T, std::string> innerValue = TypeSerializer<T>::fromString(input);
+            Expected<T, coil::String> innerValue = TypeSerializer<T>::fromString(input);
             if (innerValue)
                 return Tracker<T>{*innerValue};
 
             return errors::createGenericError<Tracker<T>>(input, innerValue.error());
         }
 
-        static std::string toString(Tracker<T> const& value)
+        static coil::String toString(Tracker<T> const& value)
         {
             return TypeSerializer<T>::toString(value.m_payload);
         }
@@ -126,7 +126,7 @@ namespace coil
     template<>
     struct TypeSerializer<CompoundType>
     {
-        static Expected<CompoundType, std::string> fromString(Value const& input)
+        static Expected<CompoundType, coil::String> fromString(Value const& input)
         {
             if (input.subvalues.size() != 2)
                 return errors::createMismatchedSubvaluesError<CompoundType>(input, 2);
@@ -142,21 +142,18 @@ namespace coil
             return CompoundType{*field1, *field2};
         }
 
-        static std::string toString(CompoundType const& value)
+        static coil::String toString(CompoundType const& value)
         {
-            std::stringstream ss;
-            ss << "CompoundType{" << value.field1 << ',' << value.field2 << '}';
-            return ss.str();
+            return coil::sprintf("CompoundType{%d,%d}", value.field1, value.field2);
         }
     };
 
     template<typename T>
     struct TypeName<Tracker<T>>
     {
-        static std::string_view name()
+        static StringView name()
         {
-            using namespace std::literals::string_literals;
-            static std::string const typeName = "Tracker<"s + std::string(TypeName<T>::name()) + ">"s;
+            static String const typeName = "Tracker<" + String(TypeName<T>::name()) + ">";
             return typeName;
         }
     };
@@ -164,7 +161,7 @@ namespace coil
     template<>
     struct TypeName<CompoundType>
     {
-        static std::string_view name()
+        static StringView name()
         {
             return "CompoundType";
         }
@@ -306,7 +303,7 @@ TEST(BindingsTests, TestVoidFunctionCall)
 TEST(BindingsTests, TestFunctionWithStringArgument)
 {
     coil::Bindings bindings;
-    bindings["func"] = [](std::string arg) { return arg; };
+    bindings["func"] = [](coil::String arg) { return arg; };
 
     {
         auto result = bindings.execute("func foo");
@@ -443,7 +440,7 @@ TEST(BindingsTests, TestCompoundSyntax)
     coil::Bindings bindings;
     bindings["get_compound"] = [](CompoundType const& val) { return val; };
 
-    auto testCompound = [&bindings](std::string_view command, std::string_view expectedResult) {
+    auto testCompound = [&bindings](coil::StringView command, coil::StringView expectedResult) {
         auto result = bindings.execute(command);
 
         EXPECT_EQ(result.errors.size(), 0u);
@@ -574,10 +571,10 @@ TEST(BindingsTests, TestFunctionReturnValue)
 TEST(BindingsTests, TestOutput)
 {
     coil::Bindings bindings;
-    bindings["func_log"] = [](coil::Context context, std::string value) { context.log(value); };
-    bindings["func_logf"] = [](coil::Context context, std::string value) { context.logf("%s", value.c_str()); };
-    bindings["func_logline"] = [](coil::Context context, std::string value) { context.logline(value); };
-    bindings["func_loglinef"] = [](coil::Context context, std::string value) { context.loglinef("%s", value.c_str()); };
+    bindings["func_log"] = [](coil::Context context, coil::String value) { context.log(value); };
+    bindings["func_logf"] = [](coil::Context context, coil::String value) { context.logf("%s", value.cStr()); };
+    bindings["func_logline"] = [](coil::Context context, coil::String value) { context.logline(value); };
+    bindings["func_loglinef"] = [](coil::Context context, coil::String value) { context.loglinef("%s", value.cStr()); };
 
     {
         auto result = bindings.execute("func_log value");
@@ -604,7 +601,7 @@ TEST(BindingsTests, TestOutput)
 TEST(BindingsTests, TestContextError)
 {
     coil::Bindings bindings;
-    bindings["func"] = [](coil::Context context, std::string value) { context.reportError("Custom error: " + std::move(value)); };
+    bindings["func"] = [](coil::Context context, coil::String value) { context.reportError("Custom error: " + std::move(value)); };
     auto result = bindings.execute("func Test");
 
     EXPECT_EQ(result.errors.size(), 1u);
@@ -741,8 +738,6 @@ TEST(BindingsTests, TestNamedArgsGet)
 
 TEST(BindingsTests, TestNamedArgsGetOrReport)
 {
-    using namespace std::literals;
-
     coil::Bindings bindings;
     bindings["func"] = [](coil::Context context) {
         coil::NamedArgs namedArgs = context.namedArgs();
@@ -771,7 +766,7 @@ TEST(BindingsTests, TestNamedArgsGetOrReport)
         {
             auto o = namedArgs.getOrReport("arg1", coil::NamedArgs::ArgType::Required);
             ASSERT_TRUE(o);
-            EXPECT_EQ(o->str(), "str"sv);
+            EXPECT_EQ(o->str(), "str");
             EXPECT_FALSE(context.hasErrors());
         }
 
@@ -855,27 +850,23 @@ TEST(BindingsTests, TestBind)
 
 TEST(BindingsTests, TestTypeNames)
 {
-    using namespace std::literals;
-
-    EXPECT_EQ(coil::TypeName<bool>::name(), "bool"sv);
+    EXPECT_EQ(coil::TypeName<bool>::name(), "bool");
 
 #if COIL_CONFIG_BASIC_TYPENAME
-    EXPECT_EQ(coil::TypeName<char>::name(), "char"sv);
-    EXPECT_EQ(coil::TypeName<signed char>::name(), "schar"sv);
-    EXPECT_EQ(coil::TypeName<unsigned char>::name(), "uchar"sv);
-    EXPECT_EQ(coil::TypeName<short>::name(), "short"sv);
-    EXPECT_EQ(coil::TypeName<unsigned short>::name(), "ushort"sv);
-    EXPECT_EQ(coil::TypeName<int>::name(), "int"sv);
-    EXPECT_EQ(coil::TypeName<unsigned int>::name(), "uint"sv);
-    EXPECT_EQ(coil::TypeName<long>::name(), "long"sv);
-    EXPECT_EQ(coil::TypeName<unsigned long>::name(), "ulong"sv);
-    EXPECT_EQ(coil::TypeName<long long>::name(), "llong"sv);
-    EXPECT_EQ(coil::TypeName<unsigned long long>::name(), "ullong"sv);
-    EXPECT_EQ(coil::TypeName<float>::name(), "float"sv);
-    EXPECT_EQ(coil::TypeName<double>::name(), "double"sv);
-    EXPECT_EQ(coil::TypeName<long double>::name(), "ldouble"sv);
-    EXPECT_EQ(coil::TypeName<std::string_view>::name(), "std::string_view"sv);
-    EXPECT_EQ(coil::TypeName<std::string>::name(), "std::string"sv);
+    EXPECT_EQ(coil::TypeName<char>::name(), "char");
+    EXPECT_EQ(coil::TypeName<signed char>::name(), "schar");
+    EXPECT_EQ(coil::TypeName<unsigned char>::name(), "uchar");
+    EXPECT_EQ(coil::TypeName<short>::name(), "short");
+    EXPECT_EQ(coil::TypeName<unsigned short>::name(), "ushort");
+    EXPECT_EQ(coil::TypeName<int>::name(), "int");
+    EXPECT_EQ(coil::TypeName<unsigned int>::name(), "uint");
+    EXPECT_EQ(coil::TypeName<long>::name(), "long");
+    EXPECT_EQ(coil::TypeName<unsigned long>::name(), "ulong");
+    EXPECT_EQ(coil::TypeName<long long>::name(), "llong");
+    EXPECT_EQ(coil::TypeName<unsigned long long>::name(), "ullong");
+    EXPECT_EQ(coil::TypeName<float>::name(), "float");
+    EXPECT_EQ(coil::TypeName<double>::name(), "double");
+    EXPECT_EQ(coil::TypeName<long double>::name(), "ldouble");
 #endif // COIL_CONFIG_BASIC_TYPENAME
 }
 
@@ -922,7 +913,7 @@ TEST(BindingsTests, TestCustomLexer)
 
     struct CustomLexer : public coil::Lexer
     {
-        coil::Expected<coil::ExecutionInput, std::string> parse(std::string_view input) const override
+        coil::Expected<coil::ExecutionInput, coil::String> parse(coil::StringView input) const override
         {
             coil::ExecutionInput result;
             result.name = input;
@@ -950,7 +941,7 @@ TEST(BindingsTests, TestFunctorMetadata)
 
     coil::AnyFunctor const& functor = command.functors[0];
 
-    std::vector<std::string_view> const& parameterTypes = functor.parameterTypes();
+    std::vector<coil::StringView> const& parameterTypes = functor.parameterTypes();
     ASSERT_EQ(parameterTypes.size(), 2u);
     EXPECT_EQ(parameterTypes[0], "int");
     EXPECT_EQ(parameterTypes[1], "float");

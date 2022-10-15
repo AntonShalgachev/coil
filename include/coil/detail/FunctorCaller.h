@@ -4,8 +4,7 @@
 #include "../Types.h"
 #include "CallContext.h"
 #include "Utility.h"
-
-#include <string>
+#include "../String.h"
 
 namespace coil::detail
 {
@@ -15,7 +14,7 @@ namespace coil::detail
     Context createContext<0>(CallContext& context);
 
     template<typename T>
-    void reportError(CallContext& context, Expected<T, std::string> const& result)
+    void reportError(CallContext& context, Expected<T, coil::String> const& result)
     {
         if (!result)
             context.reportError(result.error());
@@ -30,7 +29,7 @@ namespace coil::detail
             return;
         }
 
-        std::optional<std::string> returnValue = func.invoke(createContext<NonUserIndices>(context)..., *Move(expectedArgs)...);
+        std::optional<String> returnValue = func.invoke(createContext<NonUserIndices>(context)..., *Move(expectedArgs)...);
         if (!context.hasErrors())
             context.result.returnValue = returnValue;
     }

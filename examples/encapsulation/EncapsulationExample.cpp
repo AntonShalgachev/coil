@@ -41,13 +41,13 @@ namespace utils
         }
 
         template<typename Functor>
-        void add(std::string_view name, Functor&& functor)
+        void add(coil::StringView name, Functor&& functor)
         {
             getGlobalBindings().add(name, std::forward<Functor>(functor));
-            m_names.push_back(std::string{name});
+            m_names.push_back(coil::String{name});
         }
 
-        coil::BindingProxy<ScopedDebugCommands> operator[](std::string_view name)
+        coil::BindingProxy<ScopedDebugCommands> operator[](coil::StringView name)
         {
             return coil::BindingProxy<ScopedDebugCommands>{*this, name};
         }
@@ -57,9 +57,10 @@ namespace utils
         {
             for (auto const& name : m_names)
                 getGlobalBindings().remove(name);
+            m_names.clear();
         }
 
-        std::vector<std::string> m_names;
+        std::vector<coil::String> m_names;
     };
 }
 

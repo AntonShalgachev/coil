@@ -1,12 +1,11 @@
 #pragma once
 
 #include "coil/TypeName.h"
+#include "coil/String.h"
 
 #include "magic_enum.hpp"
 
 #include <optional>
-#include <string>
-#include <string_view>
 #include <typeinfo>
 #include <vector>
 
@@ -22,7 +21,7 @@ namespace coil
     template<typename T, typename>
     struct TypeName
     {
-        static std::string_view name()
+        static StringView name()
         {
             return typeid(T).name();
         }
@@ -31,9 +30,9 @@ namespace coil
     template<typename T>
     struct TypeName<T&>
     {
-        static std::string_view name()
+        static StringView name()
         {
-            static std::string name = std::string{TypeName<T>::name()} + "&";
+            static String name = String{TypeName<T>::name()} + "&";
             return name;
         }
     };
@@ -41,9 +40,9 @@ namespace coil
     template<typename T>
     struct TypeName<T const>
     {
-        static std::string_view name()
+        static StringView name()
         {
-            static std::string name = std::string{TypeName<T>::name()} + " const";
+            static String name = String{TypeName<T>::name()} + " const";
             return name;
         }
     };
@@ -51,10 +50,9 @@ namespace coil
     template<typename T>
     struct TypeName<std::vector<T>>
     {
-        static std::string_view name()
+        static StringView name()
         {
-            using namespace std::literals::string_literals;
-            static std::string typeName = "std::vector<"s + std::string{TypeName<T>::name()} + ">"s;
+            static String typeName = "std::vector<" + String{TypeName<T>::name()} + ">";
             return typeName;
         }
     };
@@ -62,10 +60,9 @@ namespace coil
     template<typename T>
     struct TypeName<std::optional<T>>
     {
-        static std::string_view name()
+        static StringView name()
         {
-            using namespace std::literals::string_literals;
-            static std::string typeName = "std::optional<"s + std::string{TypeName<T>::name()} + ">"s;
+            static String typeName = "std::optional<" + String{TypeName<T>::name()} + ">";
             return typeName;
         }
     };
@@ -73,9 +70,10 @@ namespace coil
     template<typename E>
     struct TypeName<E, std::enable_if_t<std::is_enum_v<E>>>
     {
-        static std::string_view name()
+        static StringView name()
         {
-            return magic_enum::enum_type_name<E>();
+            std::string_view res = magic_enum::enum_type_name<E>();
+            return { res.data(), res.size() };
         }
     };
 }

@@ -4,8 +4,6 @@
 #include "detail/TypeTraits.h"
 #include "detail/Utility.h"
 
-#include <string_view>
-
 namespace coil
 {
     template<typename Func, typename Arg, typename... RestArgs>
@@ -36,7 +34,7 @@ namespace coil
     {
         auto get = [getter]() -> decltype(auto) { return getter(); };
 
-        auto set = [getter](Context context, std::string_view) -> decltype(auto) {
+        auto set = [getter](Context context, coil::Value) -> decltype(auto) {
             context.reportError("This property is read-only");
             return getter();
         };

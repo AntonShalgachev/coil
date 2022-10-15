@@ -25,15 +25,15 @@ namespace
         context.loglinef("loglinef: automatic line break and formatted");
     }
 
-    void printRepeated(coil::Context context, std::string const& val, std::size_t repetitions)
+    void printRepeated(coil::Context context, coil::String const& val, std::size_t repetitions)
     {
         for (std::size_t i = 0; i < repetitions; i++)
             context.log(val);
     }
 
-    void printQuoted(coil::Context context, std::string_view val)
+    void printQuoted(coil::Context context, coil::StringView val)
     {
-        context.loglinef("'%.*s'", val.size(), val.data());
+        context.loglinef("'%.*s'", val.length(), val.data());
     }
 
     bool invert(bool val)

@@ -2,6 +2,7 @@
 
 #include "TypeName.h"
 #include "detail/Utility.h"
+#include "StringView.h"
 
 #include <vector>
 
@@ -13,9 +14,9 @@ namespace coil
         static std::size_t constexpr size = sizeof...(Args);
         using IndicesType = MakeIndexSequence<size>;
 
-        static std::vector<std::string_view> const& names()
+        static std::vector<StringView> const& names()
         {
-            static std::vector<std::string_view> data = {TypeName<Args>::name()...};
+            static std::vector<StringView> data = {TypeName<Args>::name()...};
             return data;
         }
     };

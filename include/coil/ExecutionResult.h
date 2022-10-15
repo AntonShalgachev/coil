@@ -1,9 +1,9 @@
 #pragma once
 
 #include "ExecutionInput.h"
+#include "coil/String.h"
 
 #include <optional>
-#include <string>
 #include <vector>
 
 namespace coil
@@ -11,8 +11,8 @@ namespace coil
     struct ExecutionResult
     {
         ExecutionInput input;
-        std::vector<std::string> errors;
-        std::optional<std::string> returnValue;
-        std::string output;
+        std::vector<String> errors;
+        std::optional<String> returnValue;
+        String output; // TODO use a custom string class to avoid reallocations when appending
     };
 }

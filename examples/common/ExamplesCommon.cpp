@@ -22,7 +22,7 @@ void common::printSectionHeader(std::string_view header)
     std::cout << termcolor::reset;
 }
 
-void common::executeCommand(coil::Bindings& bindings, std::string_view command)
+void common::executeCommand(coil::Bindings& bindings, coil::StringView command)
 {
     std::cout << "Executing [" << commandColor << command << termcolor::reset << "]" << std::endl;
     auto result = bindings.execute(command);
@@ -38,4 +38,14 @@ void common::executeCommand(coil::Bindings& bindings, std::string_view command)
         std::cout << "\tReturned '" << returnColor << *result.returnValue << termcolor::reset << "'" << std::endl;
 
     std::cout << std::endl;
+}
+
+std::ostream& operator<<(std::ostream& os, coil::String const& str)
+{
+    return os << coil::StringView{ str };
+}
+
+std::ostream& operator<<(std::ostream& os, coil::StringView const& str)
+{
+    return os << std::string_view{ str.data(), str.length() };
 }

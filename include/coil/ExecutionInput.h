@@ -1,16 +1,16 @@
 #pragma once
 
 #include "Value.h"
+#include "StringView.h"
 
-#include <string>
 #include <vector>
 
 namespace coil
 {
     struct ExecutionInput
     {
-        std::string_view name;
+        StringView name;
         std::vector<Value> arguments;
-        std::vector<std::pair<std::string_view, Value>> namedArguments;
+        std::vector<std::pair<StringView, Value>> namedArguments;
     };
 }

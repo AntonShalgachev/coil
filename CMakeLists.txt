@@ -40,6 +40,8 @@ add_library(coil
     "include/coil/NamedArgs.h"
     "include/coil/Overloaded.h"
     "include/coil/Property.h"
+    "include/coil/String.h"
+    "include/coil/StringView.h"
     "include/coil/TypeName.h"
     "include/coil/Types.h"
     "include/coil/TypeSerializer.h"
@@ -48,6 +50,8 @@ add_library(coil
     "include/coil/Variable.h"
 
     "src/Coil.cpp"
+    "src/String.cpp"
+    "src/StringView.cpp"
 )
 add_library(coil::coil ALIAS coil)
 

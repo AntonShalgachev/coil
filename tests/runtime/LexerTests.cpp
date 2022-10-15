@@ -3,13 +3,14 @@
 #include "gtest/gtest.h"
 
 #include "coil/DefaultLexer.h"
+#include "coil/String.h"
 
 #include <list>
 #include <random>
 
 namespace
 {
-    coil::Value createValue(std::string_view input)
+    coil::Value createValue(coil::StringView input)
     {
         return coil::Value{input};
     }
@@ -20,7 +21,7 @@ namespace
         return std::vector<coil::Value>{coil::Value{std::forward<Args>(args)}...};
     }
 
-    coil::ExecutionInput createInput(std::string_view name, std::vector<coil::Value> args, std::vector<std::pair<std::string_view, coil::Value>> namedArgs)
+    coil::ExecutionInput createInput(coil::StringView name, std::vector<coil::Value> args, std::vector<std::pair<coil::StringView, coil::Value>> namedArgs)
     {
         coil::ExecutionInput input;
         input.name = name;
@@ -31,7 +32,7 @@ namespace
     }
 
     template<typename RandomEngine>
-    std::string generateRandomString(RandomEngine& engine, std::size_t generation, bool allowEmpty, bool allowNumber, bool allowSpaces)
+    coil::String generateRandomString(RandomEngine& engine, std::size_t generation, bool allowEmpty, bool allowNumber, bool allowSpaces)
     {
         std::bernoulli_distribution isEmptyDist{allowEmpty ? 0.5f : 0.0f};
 
@@ -44,9 +45,9 @@ namespace
         if (isNumberDist(engine))
             return "3.14";
 
-        std::string base = containsSpacesDist(engine) ? "str with spaces" : "str";
+        coil::String base = containsSpacesDist(engine) ? "str with spaces" : "str";
 
-        return std::move(base) + std::to_string(generation);
+        return base + coil::toString(generation);
     }
 
     template<typename RandomEngine>
@@ -61,7 +62,7 @@ namespace
     template<typename RandomEngine>
     coil::ExecutionInput generateRandomInput(RandomEngine& engine)
     {
-        static std::list<std::string> storage;
+        static std::list<coil::String> storage;
         std::size_t generation = 0;
 
         coil::ExecutionInput input;
@@ -78,9 +79,9 @@ namespace
 
         storage.clear();
 
-        auto addToStorage = [](std::string str) {
+        auto addToStorage = [](coil::String str) {
             storage.push_back(std::move(str));
-            return std::string_view{storage.back()};
+            return coil::StringView{storage.back()};
         };
 
         auto generateNewString = [&addToStorage, &engine, &generation](bool allowEmpty, bool allowNumber, bool allowSpaces) {
@@ -91,7 +92,7 @@ namespace
         auto generateValueString = [&generateNewString]() { return generateNewString(true, true, true); };
 
         auto generateCompoundArgs = [&generateValueString](std::size_t count) {
-            std::vector<std::string_view> subvalues;
+            std::vector<coil::StringView> subvalues;
 
             for (std::size_t i = 0; i < count; i++)
                 subvalues.push_back(generateValueString());
@@ -115,14 +116,14 @@ namespace
     }
 
     template<typename RandomEngine>
-    std::string generateRandomInputString(RandomEngine& engine, coil::ExecutionInput const& input)
+    coil::String generateRandomInputString(RandomEngine& engine, coil::ExecutionInput const& input)
     {
         std::stringstream ss;
 
         auto randomSpaces = [&ss, &engine]() { addRandomSpaces(ss, engine); };
 
-        auto subvalueToStream = [&ss](std::string_view subvalue) {
-            bool hasSpaces = subvalue.find(' ') != std::string_view::npos;
+        auto subvalueToStream = [&ss](coil::StringView subvalue) {
+            bool hasSpaces = std::find(subvalue.begin(), subvalue.end(), ' ') != subvalue.end();
             bool isEmpty = subvalue.empty();
             if (hasSpaces || isEmpty)
                 ss << '"' << subvalue << '"';
@@ -143,7 +144,7 @@ namespace
             ss << '(';
             randomSpaces();
 
-            for (std::string_view subvalue : value.subvalues)
+            for (coil::StringView subvalue : value.subvalues)
             {
                 subvalueToStream(subvalue);
                 ss << ' ';
@@ -180,7 +181,8 @@ namespace
 
         randomSpaces();
 
-        return ss.str();
+        std::string res = ss.str();
+        return coil::String{ res.data(), res.size() };
     }
 }
 
@@ -431,7 +433,7 @@ TEST(LexerTests, TestGenerated)
     std::size_t const generationsCount = 10000;
     coil::DefaultLexer lexer;
 
-    auto test = [](std::string const&, auto actualInput, coil::ExecutionInput const& expectedInput) { return actualInput == expectedInput; };
+    auto test = [](auto const&, auto actualInput, coil::ExecutionInput const& expectedInput) { return actualInput == expectedInput; };
 
     for (std::size_t i = 0; i < generationsCount; i++)
     {

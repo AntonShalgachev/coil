@@ -5,13 +5,14 @@
 #include "Expected.h"
 #include "Lexer.h"
 #include "Utils.h"
+#include "String.h"
+#include "StringView.h"
 #include "detail/FuncTraits.h"
 #include "detail/FunctorCaller.h"
 #include "detail/StringWrapper.h"
 #include "detail/Utility.h"
 
 #include <memory>
-#include <string>
 #include <unordered_map>
 
 namespace coil
@@ -24,36 +25,36 @@ namespace coil
     public:
         struct Command
         {
-            std::string_view name;
+            StringView name;
             std::vector<AnyFunctor> functors;
         };
 
-        using StringWrapper = BasicStringWrapper<std::string>;
+        using StringWrapper = BasicStringWrapper<String>;
 
         Bindings();
 
         void setLexer(std::unique_ptr<Lexer> lexer);
 
-        BindingProxy<Bindings> operator[](std::string_view name);
+        BindingProxy<Bindings> operator[](StringView name);
 
         template<typename Func>
-        Bindings::Command const& add(std::string_view name, Func func)
+        Bindings::Command const& add(StringView name, Func func)
         {
             static_assert(detail::FuncTraits<Func>::isFunc, "Func should be a functor object");
             using FunctionWrapper = typename detail::FuncTraits<Func>::FunctionWrapperType;
             return add(name, AnyFunctor{FunctionWrapper{Move(func)}});
         }
 
-        Bindings::Command const& add(std::string_view name, AnyFunctor anyFunctor);
-        Bindings::Command const& add(std::string_view name, std::vector<AnyFunctor> anyFunctors);
+        Bindings::Command const& add(StringView name, AnyFunctor anyFunctor);
+        Bindings::Command const& add(StringView name, std::vector<AnyFunctor> anyFunctors);
 
-        void remove(std::string_view name);
+        void remove(StringView name);
 
-        Command const* get(std::string_view name) const;
+        Command const* get(StringView name) const;
 
         void clear();
 
-        ExecutionResult execute(std::string_view command);
+        ExecutionResult execute(StringView command);
         ExecutionResult execute(ExecutionInput input);
 
     private:
@@ -64,11 +65,12 @@ namespace coil
         std::unordered_map<StringWrapper, Command> m_commands;
     };
 
+    // TODO remove
     template<typename BindingsT>
     class BindingProxy
     {
     public:
-        BindingProxy(BindingsT& bindings, std::string_view name) : m_bindings(bindings), m_name(name) {}
+        BindingProxy(BindingsT& bindings, StringView name) : m_bindings(bindings), m_name(name) {}
 
         template<typename Func>
         BindingProxy& operator=(Func func)
@@ -95,6 +97,6 @@ namespace coil
 
     private:
         BindingsT& m_bindings;
-        std::string_view m_name;
+        StringView m_name;
     };
 }

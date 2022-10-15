@@ -99,14 +99,14 @@ namespace
     void printArgs(coil::Context context)
     {
         for (coil::NamedValue const& arg : context.namedArgs())
-            context.loglinef("%.*s: %s", arg.key().size(), arg.key().data(), arg.value().str().c_str());
+            context.loglinef("%.*s: %s", arg.key().length(), arg.key().data(), arg.value().str().cStr());
     }
 
     void printFloats(coil::Context context)
     {
         for (auto const& arg : context.namedArgs())
             if (auto val = arg.value().get<float>())
-                context.loglinef("%.*s: %f", arg.key().size(), arg.key().data(), *val);
+                context.loglinef("%.*s: %f", arg.key().length(), arg.key().data(), *val);
     }
 
     enum class SaveGameType

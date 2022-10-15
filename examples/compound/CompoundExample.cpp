@@ -86,7 +86,7 @@ namespace coil
     template<>
     struct TypeSerializer<Point>
     {
-        static Expected<Point, std::string> fromString(Value const& input)
+        static Expected<Point, coil::String> fromString(Value const& input)
         {
             if (input.subvalues.size() != 2)
                 return errors::createMismatchedSubvaluesError<Point>(input, 2);
@@ -102,9 +102,10 @@ namespace coil
             return Point{*x, *y};
         }
 
-        static auto toString(Point const& value)
+        static coil::String toString(Point const& value)
         {
-            return value.toString();
+            std::string valueString = value.toString();
+            return coil::String{ valueString.data(), valueString.size() };
         }
     };
 
@@ -112,11 +113,12 @@ namespace coil
     template<>
     struct TypeSerializer<ParticleSystem::Particle>
     {
-        static auto toString(ParticleSystem::Particle const& particle)
+        static coil::String toString(ParticleSystem::Particle const& particle)
         {
             std::stringstream ss;
             ss << "{'" << particle.id << "': p " << particle.position.toString() << ", v " << particle.velocity.toString() << "}";
-            return ss.str();
+            std::string particleString = ss.str();
+            return coil::String{ particleString.data(), particleString.size() };
         }
     };
 }

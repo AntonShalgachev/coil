@@ -4,6 +4,7 @@
 #include "NamedArgs.h"
 #include "detail/CallContext.h"
 #include "detail/Utility.h"
+#include "String.h"
 
 namespace coil
 {
@@ -12,12 +13,12 @@ namespace coil
     public:
         Context(detail::CallContext& callContext);
 
-        void log(std::string str);
-        void logline(std::string str);
+        void log(String const& str);
+        void logline(String const& str);
         void logf(char const* format, ...);
         void loglinef(char const* format, ...);
 
-        void reportError(std::string error);
+        void reportError(String error);
 
         template<typename... Ts>
         void reportErrors(Ts&&... errors)

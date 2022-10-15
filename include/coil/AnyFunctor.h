@@ -4,6 +4,7 @@
 #include "detail/FunctionWrapper.h"
 #include "detail/FunctorCaller.h"
 #include "detail/Utility.h"
+#include "StringView.h"
 
 namespace coil
 {
@@ -65,16 +66,16 @@ namespace coil
         void invokeTrampoline(detail::CallContext& context);
 
         std::size_t arity() const;
-        std::vector<std::string_view> const& parameterTypes() const;
-        std::string_view returnType() const;
+        std::vector<StringView> const& parameterTypes() const;
+        StringView returnType() const;
 
     private:
         void destroy();
 
     private:
         detail::AnyStorageBase* m_storage = nullptr;
-        std::vector<std::string_view> m_parameterTypes;
-        std::string_view m_returnType;
+        std::vector<StringView> m_parameterTypes;
+        StringView m_returnType;
     };
 
     template<typename FunctionWrapper>

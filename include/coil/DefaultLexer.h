@@ -4,12 +4,15 @@
 #include "Expected.h"
 #include "Lexer.h"
 #include "Utils.h"
+#include "String.h"
+#include "StringView.h"
 #include "detail/Algorithm.h"
 #include "detail/Utility.h"
 
 #include <cctype>
 #include <optional>
-#include <string_view>
+
+// TODO move implementation to cpp
 
 namespace coil
 {
@@ -18,12 +21,12 @@ namespace coil
     class DefaultLexer : public Lexer
     {
     public:
-        DefaultLexer(std::string_view groupParenthesis = "()", std::string_view quotes = "'\"", std::string_view groupSeparators = ",;|")
+        DefaultLexer(StringView groupParenthesis = "()", StringView quotes = "'\"", StringView groupSeparators = ",;|")
             : m_groupParentheses(groupParenthesis), m_quotes(quotes), m_groupSeparators(groupSeparators)
         {
         }
 
-        Expected<ExecutionInput, std::string> parse(std::string_view str) const override
+        Expected<ExecutionInput, String> parse(StringView str) const override
         {
             auto tokens = tokenize(str);
             if (!tokens)
@@ -51,10 +54,10 @@ namespace coil
 
         struct Token
         {
-            Token(TokenType type, std::string_view value) : type(type), value(value) {}
+            Token(TokenType type, StringView value) : type(type), value(value) {}
 
             TokenType type = TokenType::String;
-            std::string_view value;
+            StringView value;
         };
 
         static bool isSpace(unsigned char c)
@@ -109,22 +112,22 @@ namespace coil
             return {};
         }
 
-        std::vector<std::string_view> splitGroup(std::string_view str) const
+        std::vector<StringView> splitGroup(StringView str) const
         {
-            std::vector<std::string_view> result;
+            std::vector<StringView> result;
 
-            for (std::size_t i = 0; i < str.size(); i++)
+            for (std::size_t i = 0; i < str.length(); i++)
             {
-                while ((i < str.size()) && isGroupSeparator(str[i]))
+                while ((i < str.length()) && isGroupSeparator(str[i]))
                     i++;
 
-                if (i >= str.size())
+                if (i >= str.length())
                     break;
 
                 std::size_t stringBegin = i;
                 bool inQuotes = false;
                 auto shouldSkipChar = [this](unsigned char c, bool inQuotes) { return inQuotes || !isGroupSeparator(c); };
-                while ((i < str.size()) && shouldSkipChar(str[i], inQuotes))
+                while ((i < str.length()) && shouldSkipChar(str[i], inQuotes))
                 {
                     if (isQuote(str[i]))
                         inQuotes = !inQuotes;
@@ -147,21 +150,21 @@ namespace coil
         Value createValue(Token const& token) const
         {
             if (token.type == TokenType::GroupString)
-                return Value{splitGroup(token.value)};
+                return Value{ splitGroup(token.value) };
 
-            return Value{{token.value}};
+            return Value{ {token.value} };
         }
 
-        coil::Expected<std::vector<Token>, std::string> tokenize(std::string_view str) const
+        coil::Expected<std::vector<Token>, String> tokenize(StringView str) const
         {
             std::vector<Token> tokens;
 
-            for (std::size_t i = 0; i < str.size(); i++)
+            for (std::size_t i = 0; i < str.length(); i++)
             {
-                while ((i < str.size()) && getCharType(str[i]) == CharType::Space)
+                while ((i < str.length()) && getCharType(str[i]) == CharType::Space)
                     i++;
 
-                if (i >= str.size())
+                if (i >= str.length())
                     break;
 
                 std::size_t tokenBegin = i;
@@ -171,7 +174,7 @@ namespace coil
                 {
                     i++;
                     TokenType type = TokenType::String;
-                    while ((i < str.size()) && getCharType(str[i]) == CharType::String)
+                    while ((i < str.length()) && getCharType(str[i]) == CharType::String)
                     {
                         if (isGroupSeparator(str[i]))
                             type = TokenType::GroupString;
@@ -187,20 +190,20 @@ namespace coil
                     break;
                 case CharType::Quote:
                     i++;
-                    while ((i < str.size()) && getCharType(str[i]) != CharType::Quote)
+                    while ((i < str.length()) && getCharType(str[i]) != CharType::Quote)
                         i++;
 
-                    if (i >= str.size())
+                    if (i >= str.length())
                         return makeUnexpected(sprintf("Token '%c' doesn't have a corresponding opening/closing quote", str[tokenBegin]));
 
                     tokens.emplace_back(TokenType::String, str.substr(tokenBegin + 1, i - tokenBegin - 1));
                     break;
                 case CharType::Group:
                     i++;
-                    while ((i < str.size()) && getCharType(str[i]) != CharType::Group)
+                    while ((i < str.length()) && getCharType(str[i]) != CharType::Group)
                         i++;
 
-                    if (i >= str.size())
+                    if (i >= str.length())
                         return makeUnexpected(sprintf("Token '%c' doesn't have a corresponding opening/closing token", str[tokenBegin]));
 
                     tokens.emplace_back(TokenType::GroupString, str.substr(tokenBegin + 1, i - tokenBegin - 1));
@@ -213,7 +216,7 @@ namespace coil
             return {Move(tokens)};
         }
 
-        Expected<ExecutionInput, std::string> parse(std::vector<Token> tokens) const
+        Expected<ExecutionInput, String> parse(std::vector<Token> tokens) const
         {
             ExecutionInput input;
 
@@ -222,7 +225,7 @@ namespace coil
 
             Token const& firstToken = tokens.front();
             if (firstToken.type != TokenType::String)
-                return makeUnexpected(sprintf("Unexpected token '%.*s' at the beginning of the expression", static_cast<int>(firstToken.value.size()), firstToken.value.data()));
+                return makeUnexpected(sprintf("Unexpected token '%.*s' at the beginning of the expression", static_cast<int>(firstToken.value.length()), firstToken.value.data()));
 
             input.name = firstToken.value;
 
@@ -315,8 +318,8 @@ namespace coil
         }
 
     private:
-        std::string_view m_groupParentheses;
-        std::string_view m_quotes;
-        std::string_view m_groupSeparators;
+        StringView m_groupParentheses;
+        StringView m_quotes;
+        StringView m_groupSeparators;
     };
 }

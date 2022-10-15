@@ -4,13 +4,13 @@
 #include "../TypeName.h"
 #include "../TypeSerializer.h"
 #include "../Types.h"
+#include "../String.h"
+#include "../StringView.h"
 #include "FuncTraits.h"
 #include "Utility.h"
 #include "TypeTraits.h"
 
 #include <optional>
-#include <string>
-#include <string_view>
 
 namespace coil::detail
 {
@@ -51,16 +51,16 @@ namespace coil::detail
         FunctionWrapper& operator=(FunctionWrapper const& rhs) = delete;
         FunctionWrapper& operator=(FunctionWrapper&& rhs) = delete;
 
-        std::optional<std::string> invoke(Args... args);
+        std::optional<String> invoke(Args... args);
 
-        std::string_view returnType;
+        StringView returnType;
 
     private:
-        using CallFuncPtr = std::optional<std::string> (FunctionWrapper::*)(Args... args);
+        using CallFuncPtr = std::optional<String> (FunctionWrapper::*)(Args... args);
         using DestroyFuncPtr = void (FunctionWrapper::*)();
 
         template<typename Func, typename C>
-        std::optional<std::string> typedCall(Args... args)
+        std::optional<String> typedCall(Args... args)
         {
             Func& func = *static_cast<Func*>(m_func);
             [[maybe_unused]] C* obj = static_cast<C*>(m_obj);
@@ -115,7 +115,7 @@ namespace coil::detail
     }
 
     template<typename... Args>
-    std::optional<std::string> FunctionWrapper<Args...>::invoke(Args... args)
+    std::optional<String> FunctionWrapper<Args...>::invoke(Args... args)
     {
         return (this->*m_callFunc)(Move(args)...);
     }

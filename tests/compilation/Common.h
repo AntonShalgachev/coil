@@ -148,12 +148,12 @@ namespace coil
     template<typename E>
     struct TypeSerializer<E, std::enable_if_t<std::is_enum_v<E>>>
     {
-        static Expected<E, std::string> fromString(Value const& input)
+        static Expected<E, coil::String> fromString(Value const& input)
         {
             return E{};
         }
 
-        static std::string toString(E const& value)
+        static coil::String toString(E const& value)
         {
             return {};
         }
@@ -162,12 +162,12 @@ namespace coil
     template<>
     struct TypeSerializer<Object>
     {
-        static Expected<Object, std::string> fromString(Value const& input)
+        static Expected<Object, coil::String> fromString(Value const& input)
         {
             return Object{};
         }
 
-        static std::string toString(Object const& value)
+        static coil::String toString(Object const& value)
         {
             return {};
         }
@@ -176,7 +176,7 @@ namespace coil
     template<typename T, typename>
     struct TypeName
     {
-        static std::string_view name()
+        static StringView name()
         {
             return "";
         }

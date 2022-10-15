@@ -4,35 +4,32 @@
 #include <cstdarg>
 
 // Explicitly instantiate used templates here in order to avoid intantiating them in each source file
-template class std::vector<std::string>;
-template class std::optional<std::string>;
-template std::optional<std::string>::optional(std::string&&);
+template class std::vector<coil::String>;
+template class std::optional<coil::String>;
+template std::optional<coil::String>::optional(coil::String&&);
 
 template class std::vector<coil::Value>;
-template class std::vector<std::pair<std::string_view, coil::Value>>;
+template class std::vector<std::pair<coil::StringView, coil::Value>>;
 
-template class std::vector<std::string_view>;
+template class std::vector<coil::StringView>;
 
 template class std::optional<coil::Value>;
 template class coil::Expected<coil::Value, coil::NamedArgs::Error>;
 
-template class coil::BasicStringWrapper<std::string>;
-template struct std::hash<coil::BasicStringWrapper<std::string>>;
+template class coil::BasicStringWrapper<coil::String>;
+template struct std::hash<coil::BasicStringWrapper<coil::String>>;
 
 template class coil::BindingProxy<coil::Bindings>;
 template class std::unique_ptr<coil::Lexer>;
 
-template class std::basic_string_view<char>;
-template class std::basic_string<char>;
-
-template class coil::Unexpected<std::string>;
-template coil::Unexpected<std::string> coil::makeUnexpected(std::string value);
-template coil::Unexpected<std::string>&& coil::Move<coil::Unexpected<std::string>&>(coil::Unexpected<std::string>&) noexcept;
+template class coil::Unexpected<coil::String>;
+template coil::Unexpected<coil::String> coil::makeUnexpected(coil::String value);
+template coil::Unexpected<coil::String>&& coil::Move<coil::Unexpected<coil::String>&>(coil::Unexpected<coil::String>&) noexcept;
 
 template coil::detail::AnyStorageBase*&& coil::Move<coil::detail::AnyStorageBase*&>(coil::detail::AnyStorageBase*&) noexcept;
 template void std::swap<coil::detail::AnyStorageBase*>(coil::detail::AnyStorageBase*&, coil::detail::AnyStorageBase*&) noexcept;
 
-template std::string&& coil::Forward<std::string>(std::string&) noexcept;
+template coil::String&& coil::Forward<coil::String>(coil::String&) noexcept;
 
 template std::vector<coil::AnyFunctor>::~vector();
 
@@ -54,7 +51,7 @@ namespace coil
         /// CallContext.h ///
         CallContext::CallContext(ExecutionInput input) : input(coil::Move(input)) {}
 
-        void CallContext::reportError(std::string error)
+        void CallContext::reportError(String error)
         {
             result.errors.push_back(coil::Move(error));
         }
@@ -98,12 +95,12 @@ namespace coil
         return m_parameterTypes.size();
     }
 
-    std::vector<std::string_view> const& AnyFunctor::parameterTypes() const
+    std::vector<StringView> const& AnyFunctor::parameterTypes() const
     {
         return m_parameterTypes;
     }
 
-    std::string_view AnyFunctor::returnType() const
+    StringView AnyFunctor::returnType() const
     {
         return m_returnType;
     }
@@ -116,12 +113,12 @@ namespace coil
         m_lexer = coil::Move(lexer);
     }
 
-    BindingProxy<Bindings> Bindings::operator[](std::string_view name)
+    BindingProxy<Bindings> Bindings::operator[](StringView name)
     {
         return BindingProxy<Bindings>{*this, {name}};
     }
 
-    Bindings::Command const& Bindings::add(std::string_view name, AnyFunctor anyFunctor)
+    Bindings::Command const& Bindings::add(StringView name, AnyFunctor anyFunctor)
     {
         // No move list-initialization in vector? Really, C++?
         std::vector<AnyFunctor> functors;
@@ -129,20 +126,20 @@ namespace coil
         return add(name, coil::Move(functors));
     }
 
-    Bindings::Command const& Bindings::add(std::string_view name, std::vector<AnyFunctor> anyFunctors)
+    Bindings::Command const& Bindings::add(StringView name, std::vector<AnyFunctor> anyFunctors)
     {
-        auto it = m_commands.insert_or_assign(name, Command{ std::string_view{}, coil::Move(anyFunctors) }).first;
+        auto it = m_commands.insert_or_assign(name, Command{ StringView{}, coil::Move(anyFunctors) }).first;
         it->second.name = it->first;
 
         return it->second;
     }
 
-    void Bindings::remove(std::string_view name)
+    void Bindings::remove(StringView name)
     {
         m_commands.erase(name);
     }
 
-    Bindings::Command const* Bindings::get(std::string_view name) const
+    Bindings::Command const* Bindings::get(StringView name) const
     {
         auto it = m_commands.find(name);
         if (it == m_commands.end())
@@ -164,13 +161,13 @@ namespace coil
         return coil::Move(context).result;
     }
 
-    ExecutionResult Bindings::execute(std::string_view command)
+    ExecutionResult Bindings::execute(StringView command)
     {
-        Expected<ExecutionInput, std::string> input = m_lexer->parse(command);
+        Expected<ExecutionInput, String> input = m_lexer->parse(command);
         if (!input)
         {
             ExecutionResult result;
-            result.errors.push_back(std::string("Syntax error: ") + input.error());
+            result.errors.push_back("Syntax error: " + input.error());
             return result;
         }
 
@@ -188,7 +185,7 @@ namespace coil
         auto it = m_commands.find(context.input.name);
         if (it == m_commands.end())
         {
-            context.result.errors.push_back(sprintf("No function '%.*s' is registered", context.input.name.size(), context.input.name.data()));
+            context.result.errors.push_back(sprintf("No function '%.*s' is registered", context.input.name.length(), context.input.name.data()));
             return;
         }
 
@@ -216,7 +213,7 @@ namespace coil
         }
 #endif // COIL_CONFIG_CATCH_EXCEPTIONS
 
-        std::string expectedStr;
+        String expectedStr;
         expectedStr.reserve(functors.size() * 3); // N + (N-2)*2 + 4
 
         for (std::size_t i = 0; i < functors.size(); i++)
@@ -226,26 +223,26 @@ namespace coil
             if (i > 0 && i == functors.size() - 1)
                 expectedStr += " or ";
 
-            expectedStr += std::to_string(functors[i].arity());
+            expectedStr += toString(functors[i].arity());
         }
 
         std::size_t const actualArgsCount = context.input.arguments.size();
-        auto error = sprintf("Wrong number of arguments to '%.*s': expected %s, got %d", context.input.name.size(), context.input.name.data(), expectedStr.c_str(), actualArgsCount);
+        auto error = sprintf("Wrong number of arguments to '%.*s': expected %s, got %d", context.input.name.length(), context.input.name.data(), expectedStr.cStr(), actualArgsCount);
         context.reportError(coil::Move(error));
     }
 
     /// Context.h ///
     Context::Context(detail::CallContext& callContext) : m_callContext(callContext) {}
 
-    void Context::log(std::string str)
+    void Context::log(String const& str)
     {
-        m_callContext.result.output += std::move(str);
+        m_callContext.result.output += str;
     }
 
-    void Context::logline(std::string str)
+    void Context::logline(String const& str)
     {
         m_callContext.result.output.reserve(m_callContext.result.output.size() + str.size() + 1);
-        m_callContext.result.output += std::move(str);
+        m_callContext.result.output += str;
         m_callContext.result.output += '\n';
     }
 
@@ -265,7 +262,7 @@ namespace coil
         va_end(args);
     }
 
-    void Context::reportError(std::string error)
+    void Context::reportError(String error)
     {
         m_callContext.reportError(coil::Move(error));
     }
@@ -281,9 +278,9 @@ namespace coil
     }
 
     /// NamedArgs.h ///
-    NamedValue::NamedValue(std::string_view key, Value const& value) : m_key(key), m_value(value) {}
+    NamedValue::NamedValue(StringView key, Value const& value) : m_key(key), m_value(value) {}
 
-    std::string_view NamedValue::key() const
+    StringView NamedValue::key() const
     {
         return m_key;
     }
@@ -322,16 +319,16 @@ namespace coil
 
     NamedArgs::NamedArgs(detail::CallContext& context) : m_context(context) {}
 
-    Expected<ReferenceWrapper<Value const>, NamedArgs::Error> NamedArgs::get(std::string_view key) const
+    Expected<ReferenceWrapper<Value const>, NamedArgs::Error> NamedArgs::get(StringView key) const
     {
         auto it = find(key);
         if (it == end())
-            return makeUnexpected(Error(Error::Type::MissingKey, sprintf("Missing named argument '%.*s'", key.size(), key.data())));
+            return makeUnexpected(Error(Error::Type::MissingKey, sprintf("Missing named argument '%.*s'", key.length(), key.data())));
 
         return {it->value()};
     }
 
-    Value const* NamedArgs::getOrReport(std::string_view key, ArgType argType) const
+    Value const* NamedArgs::getOrReport(StringView key, ArgType argType) const
     {
         if (auto anyArg = get(key))
             return &static_cast<Value const&>(*anyArg);
@@ -356,7 +353,7 @@ namespace coil
         return m_context.input.namedArguments.cend();
     }
 
-    NamedArgsIterator NamedArgs::find(std::string_view key) const
+    NamedArgsIterator NamedArgs::find(StringView key) const
     {
         for (auto it = begin(); it != end(); ++it)
             if (it->key() == key)
@@ -366,19 +363,20 @@ namespace coil
 
     /// Value.h ///
     Value::Value() = default; // @NOCOVERAGE
-    Value::Value(std::string_view value) : subvalues({value}) {}
-    Value::Value(std::vector<std::string_view> subvalues) : subvalues(coil::Move(subvalues)) {}
+    Value::Value(StringView value) : subvalues({value}) {}
+    Value::Value(char const* value) : Value(StringView{ value }) {}
+    Value::Value(std::vector<StringView> subvalues) : subvalues(coil::Move(subvalues)) {}
 
     bool Value::operator==(Value const& rhs) const
     {
         return subvalues == rhs.subvalues;
     }
 
-    std::string Value::str() const
+    String Value::str() const
     {
-        std::string result;
-        std::string_view prefix = "";
-        for (std::string_view subvalue : subvalues)
+        String result;
+        StringView prefix = "";
+        for (StringView subvalue : subvalues)
         {
             result += prefix;
             result += subvalue;
@@ -388,20 +386,20 @@ namespace coil
         return result;
     }
 
-    coil::Expected<ReferenceWrapper<Value const>, std::string> coil::TypeSerializer<Value>::fromString(Value const& value)
+    coil::Expected<ReferenceWrapper<Value const>, String> coil::TypeSerializer<Value>::fromString(Value const& value)
     {
         return {value};
     }
 
-    std::string coil::TypeSerializer<Value>::toString(Value const& value)
+    String coil::TypeSerializer<Value>::toString(Value const& value)
     {
         return value.str();
     }
 
     /// TypeSerializer.h ///
-    coil::Expected<bool, std::string> coil::TypeSerializer<bool>::fromString(Value const& input)
+    coil::Expected<bool, String> coil::TypeSerializer<bool>::fromString(Value const& input)
     {
-        auto equalCaseInsensitive = [](std::string_view a, std::string_view b) {
+        auto equalCaseInsensitive = [](StringView a, StringView b) {
             std::size_t const length = a.length();
             if (b.length() != length)
                 return false;
@@ -431,41 +429,44 @@ namespace coil
         return errors::createGenericError<bool>(input);
     }
 
-    std::string coil::TypeSerializer<bool>::toString(bool const& value)
+    String coil::TypeSerializer<bool>::toString(bool const& value)
     {
         return value ? "true" : "false";
     }
 
-    std::string coil::TypeSerializer<char const*>::toString(char const* const& value)
+    coil::Expected<String, String> coil::TypeSerializer<String>::fromString(Value const& input)
     {
-        return std::string{value};
+        if (input.subvalues.size() != 1)
+            return errors::createMismatchedSubvaluesError<String>(input, 1);
+
+        return String{ input.subvalues[0] };
     }
 
-    /// TypeName.h ///
-    COIL_CREATE_TYPE_NAME_DEFINITION(bool, "bool");
+    String coil::TypeSerializer<String>::toString(String const& value)
+    {
+        return value;
+    }
 
-#if COIL_CONFIG_BASIC_TYPENAME
-    COIL_CREATE_TYPE_NAME_DEFINITION(void, "void");
-    COIL_CREATE_TYPE_NAME_DEFINITION(char, "char");
-    COIL_CREATE_TYPE_NAME_DEFINITION(signed char, "schar");
-    COIL_CREATE_TYPE_NAME_DEFINITION(unsigned char, "uchar");
-    COIL_CREATE_TYPE_NAME_DEFINITION(short, "short");
-    COIL_CREATE_TYPE_NAME_DEFINITION(unsigned short, "ushort");
-    COIL_CREATE_TYPE_NAME_DEFINITION(int, "int");
-    COIL_CREATE_TYPE_NAME_DEFINITION(unsigned int, "uint");
-    COIL_CREATE_TYPE_NAME_DEFINITION(long, "long");
-    COIL_CREATE_TYPE_NAME_DEFINITION(unsigned long, "ulong");
-    COIL_CREATE_TYPE_NAME_DEFINITION(long long, "llong");
-    COIL_CREATE_TYPE_NAME_DEFINITION(unsigned long long, "ullong");
-    COIL_CREATE_TYPE_NAME_DEFINITION(float, "float");
-    COIL_CREATE_TYPE_NAME_DEFINITION(double, "double");
-    COIL_CREATE_TYPE_NAME_DEFINITION(long double, "ldouble");
-    COIL_CREATE_TYPE_NAME_DEFINITION(std::string, "std::string");
-    COIL_CREATE_TYPE_NAME_DEFINITION(std::string_view, "std::string_view");
-#endif // COIL_CONFIG_BASIC_TYPENAME
+    coil::Expected<StringView, String> coil::TypeSerializer<StringView>::fromString(Value const& input)
+    {
+        if (input.subvalues.size() != 1)
+            return errors::createMismatchedSubvaluesError<StringView>(input, 1);
+
+        return input.subvalues[0];
+    }
+
+    String coil::TypeSerializer<StringView>::toString(StringView const& value)
+    {
+        return value;
+    }
+
+    String coil::TypeSerializer<char const*>::toString(char const* const& value)
+    {
+        return String{value};
+    }
 
     /// Utils.h ///
-    std::string sprintf(char const* format, ...)
+    String sprintf(char const* format, ...)
     {
         std::va_list args;
         va_start(args, format);
@@ -475,14 +476,14 @@ namespace coil
         return res;
     }
 
-    std::string vsprintf(char const* format, std::va_list args)
+    String vsprintf(char const* format, std::va_list args)
     {
         std::va_list args2;
         va_copy(args2, args);
         std::size_t stringSize = static_cast<std::size_t>(std::vsnprintf(nullptr, 0, format, args2));
         va_end(args2);
 
-        std::string str;
+        String str;
         str.resize(stringSize);
 
         [[maybe_unused]] int result = std::vsnprintf(str.data(), str.size() + 1, format, args);
@@ -492,3 +493,26 @@ namespace coil
         return str;
     }
 }
+
+/// TypeName.h ///
+COIL_CREATE_TYPE_NAME_DEFINITION(bool, "bool");
+COIL_CREATE_TYPE_NAME_DEFINITION(coil::String, "string");
+COIL_CREATE_TYPE_NAME_DEFINITION(coil::StringView, "string");
+
+#if COIL_CONFIG_BASIC_TYPENAME
+COIL_CREATE_TYPE_NAME_DEFINITION(void, "void");
+COIL_CREATE_TYPE_NAME_DEFINITION(char, "char");
+COIL_CREATE_TYPE_NAME_DEFINITION(signed char, "schar");
+COIL_CREATE_TYPE_NAME_DEFINITION(unsigned char, "uchar");
+COIL_CREATE_TYPE_NAME_DEFINITION(short, "short");
+COIL_CREATE_TYPE_NAME_DEFINITION(unsigned short, "ushort");
+COIL_CREATE_TYPE_NAME_DEFINITION(int, "int");
+COIL_CREATE_TYPE_NAME_DEFINITION(unsigned int, "uint");
+COIL_CREATE_TYPE_NAME_DEFINITION(long, "long");
+COIL_CREATE_TYPE_NAME_DEFINITION(unsigned long, "ulong");
+COIL_CREATE_TYPE_NAME_DEFINITION(long long, "llong");
+COIL_CREATE_TYPE_NAME_DEFINITION(unsigned long long, "ullong");
+COIL_CREATE_TYPE_NAME_DEFINITION(float, "float");
+COIL_CREATE_TYPE_NAME_DEFINITION(double, "double");
+COIL_CREATE_TYPE_NAME_DEFINITION(long double, "ldouble");
+#endif // COIL_CONFIG_BASIC_TYPENAME

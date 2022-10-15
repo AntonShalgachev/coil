@@ -73,7 +73,7 @@ namespace
         if (context.hasErrors())
             return;
 
-        context.logf("%s, %f", requiredAnyArg->str().c_str(), *requiredFloatArg);
+        context.logf("%s, %f", requiredAnyArg->str().cStr(), *requiredFloatArg);
         if (optionalFloatArg)
             context.logf(", %f", *optionalFloatArg);
             

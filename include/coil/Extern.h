@@ -6,43 +6,40 @@
 #include "TypeSerializer.h"
 #include "Value.h"
 #include "Variable.h"
+#include "String.h"
+#include "StringView.h"
 #include "detail/StringWrapper.h"
 #include "detail/Utility.h"
 
 #include <optional>
-#include <string>
-#include <string_view>
 #include <vector>
 
-extern template class std::vector<std::string>;
-extern template class std::optional<std::string>;
-extern template std::optional<std::string>::optional(std::string&&);
+extern template class std::vector<coil::String>;
+extern template class std::optional<coil::String>;
+extern template std::optional<coil::String>::optional(coil::String&&);
 
 extern template class std::vector<coil::Value>;
-extern template class std::vector<std::pair<std::string_view, coil::Value>>;
+extern template class std::vector<std::pair<coil::StringView, coil::Value>>;
 
-extern template class std::vector<std::string_view>;
+extern template class std::vector<coil::StringView>;
 
 extern template class std::optional<coil::Value>;
 extern template class coil::Expected<coil::Value, coil::NamedArgs::Error>;
 
-extern template class coil::BasicStringWrapper<std::string>;
-extern template struct std::hash<coil::BasicStringWrapper<std::string>>;
+extern template class coil::BasicStringWrapper<coil::String>;
+extern template struct std::hash<coil::BasicStringWrapper<coil::String>>;
 
 extern template class coil::BindingProxy<coil::Bindings>;
 extern template class std::unique_ptr<coil::Lexer>;
 
-extern template class std::basic_string_view<char>;
-extern template class std::basic_string<char>;
+extern template class coil::Unexpected<coil::String>;
+extern template coil::Unexpected<coil::String> coil::makeUnexpected(coil::String value);
+extern template coil::Unexpected<coil::String>&& coil::Move<coil::Unexpected<coil::String>&>(coil::Unexpected<coil::String>&) noexcept; // TODO remove?
 
-extern template class coil::Unexpected<std::string>;
-extern template coil::Unexpected<std::string> coil::makeUnexpected(std::string value);
-extern template coil::Unexpected<std::string>&& coil::Move<coil::Unexpected<std::string>&>(coil::Unexpected<std::string>&) noexcept;
-
-extern template coil::detail::AnyStorageBase*&& coil::Move<coil::detail::AnyStorageBase*&>(coil::detail::AnyStorageBase*&) noexcept;
+extern template coil::detail::AnyStorageBase*&& coil::Move<coil::detail::AnyStorageBase*&>(coil::detail::AnyStorageBase*&) noexcept; // TODO remove?
 extern template void std::swap<coil::detail::AnyStorageBase*>(coil::detail::AnyStorageBase*&, coil::detail::AnyStorageBase*&) noexcept;
 
-extern template std::string&& coil::Forward<std::string>(std::string&) noexcept;
+extern template coil::String&& coil::Forward<coil::String>(coil::String&) noexcept; // TODO remove?
 
 extern template std::vector<coil::AnyFunctor>::~vector();
 
@@ -56,18 +53,18 @@ extern template std::vector<coil::AnyFunctor>::~vector();
 #define COIL_VARIABLE_TEMPLATE_BASE(SPECIFIER, T) SPECIFIER template std::vector<coil::AnyFunctor> coil::variable<T>(T * var)
 
 #define COIL_ARGUMENT_TEMPLATE_BASE(SPECIFIER, T)                                                                                             \
-    SPECIFIER template class coil::Expected<T, std::string>;                                                                                  \
-    SPECIFIER template coil::Expected<T, std::string>::Expected(coil::Unexpected<std::string>);                                    \
-    SPECIFIER template void coil::detail::reportError<T>(coil::detail::CallContext & context, coil::Expected<T, std::string> const& result);  \
-    SPECIFIER template coil::Expected<T, std::string>&& coil::Move<coil::Expected<T, std::string>&>(coil::Expected<T, std::string>&) noexcept; \
+    SPECIFIER template class coil::Expected<T, coil::String>;                                                                                  \
+    SPECIFIER template coil::Expected<T, coil::String>::Expected(coil::Unexpected<coil::String>);                                    \
+    SPECIFIER template void coil::detail::reportError<T>(coil::detail::CallContext & context, coil::Expected<T, coil::String> const& result);  \
+    SPECIFIER template coil::Expected<T, coil::String>&& coil::Move<coil::Expected<T, coil::String>&>(coil::Expected<T, coil::String>&) noexcept; \
     SPECIFIER template T&& coil::Forward<T>(T&) noexcept;                                                                                      \
     SPECIFIER template T&& coil::Move<T&>(T&) noexcept
 
 #define COIL_NAMED_ARGS_TEMPLATE_BASE(SPECIFIER, T)                                                                   \
     SPECIFIER template class std::optional<T>;                                                                        \
     SPECIFIER template class coil::Expected<T, coil::NamedArgs::Error>;                                               \
-    SPECIFIER template coil::Expected<T, coil::NamedArgs::Error> coil::NamedArgs::get<T>(std::string_view key) const; \
-    SPECIFIER template std::optional<T> coil::NamedArgs::getOrReport<T>(std::string_view key, coil::NamedArgs::ArgType argType, std::optional<T> defaultValue) const
+    SPECIFIER template coil::Expected<T, coil::NamedArgs::Error> coil::NamedArgs::get<T>(coil::StringView key) const; \
+    SPECIFIER template std::optional<T> coil::NamedArgs::getOrReport<T>(coil::StringView key, coil::NamedArgs::ArgType argType, std::optional<T> defaultValue) const
 
 #define COIL_FUNCTION_ARGS_TEMPLATE_BASE(SPECIFIER, ...)                                         \
     SPECIFIER template coil::AnyFunctor::AnyFunctor(coil::detail::FunctionWrapper<__VA_ARGS__>); \

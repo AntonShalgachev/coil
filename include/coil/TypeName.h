@@ -1,9 +1,7 @@
 #pragma once
 
 #include "Config.h"
-
-#include <string>
-#include <string_view>
+#include "StringView.h"
 
 namespace coil
 {
@@ -11,7 +9,7 @@ namespace coil
     // template<typename T>
     // struct TypeName
     // {
-    //     static std::string_view name()
+    //     static coil::StringView name()
     //     {
     //         return "T";
     //     }
@@ -21,40 +19,44 @@ namespace coil
     struct TypeName;
 }
 
-namespace coil
-{
 #define COIL_CREATE_TYPE_NAME_DECLARATION(T) \
     template<>                               \
-    struct TypeName<T>                       \
+    struct coil::TypeName<T>                 \
     {                                        \
-        static std::string_view name();      \
+        static StringView name();            \
     }
 
 #define COIL_CREATE_TYPE_NAME_DEFINITION(T, str) \
-    std::string_view TypeName<T>::name()         \
+    coil::StringView coil::TypeName<T>::name()   \
     {                                            \
         return str;                              \
     }
 
-    COIL_CREATE_TYPE_NAME_DECLARATION(bool);
+namespace coil
+{
+    class String;
+    class StringView;
+}
+
+// TODO rework
+COIL_CREATE_TYPE_NAME_DECLARATION(bool);
+COIL_CREATE_TYPE_NAME_DECLARATION(coil::String);
+COIL_CREATE_TYPE_NAME_DECLARATION(coil::StringView);
 
 #if COIL_CONFIG_BASIC_TYPENAME
-    COIL_CREATE_TYPE_NAME_DECLARATION(void);
-    COIL_CREATE_TYPE_NAME_DECLARATION(char);
-    COIL_CREATE_TYPE_NAME_DECLARATION(signed char);
-    COIL_CREATE_TYPE_NAME_DECLARATION(unsigned char);
-    COIL_CREATE_TYPE_NAME_DECLARATION(short);
-    COIL_CREATE_TYPE_NAME_DECLARATION(unsigned short);
-    COIL_CREATE_TYPE_NAME_DECLARATION(int);
-    COIL_CREATE_TYPE_NAME_DECLARATION(unsigned int);
-    COIL_CREATE_TYPE_NAME_DECLARATION(long);
-    COIL_CREATE_TYPE_NAME_DECLARATION(unsigned long);
-    COIL_CREATE_TYPE_NAME_DECLARATION(long long);
-    COIL_CREATE_TYPE_NAME_DECLARATION(unsigned long long);
-    COIL_CREATE_TYPE_NAME_DECLARATION(float);
-    COIL_CREATE_TYPE_NAME_DECLARATION(double);
-    COIL_CREATE_TYPE_NAME_DECLARATION(long double);
-    COIL_CREATE_TYPE_NAME_DECLARATION(std::string);
-    COIL_CREATE_TYPE_NAME_DECLARATION(std::string_view);
+COIL_CREATE_TYPE_NAME_DECLARATION(void);
+COIL_CREATE_TYPE_NAME_DECLARATION(char);
+COIL_CREATE_TYPE_NAME_DECLARATION(signed char);
+COIL_CREATE_TYPE_NAME_DECLARATION(unsigned char);
+COIL_CREATE_TYPE_NAME_DECLARATION(short);
+COIL_CREATE_TYPE_NAME_DECLARATION(unsigned short);
+COIL_CREATE_TYPE_NAME_DECLARATION(int);
+COIL_CREATE_TYPE_NAME_DECLARATION(unsigned int);
+COIL_CREATE_TYPE_NAME_DECLARATION(long);
+COIL_CREATE_TYPE_NAME_DECLARATION(unsigned long);
+COIL_CREATE_TYPE_NAME_DECLARATION(long long);
+COIL_CREATE_TYPE_NAME_DECLARATION(unsigned long long);
+COIL_CREATE_TYPE_NAME_DECLARATION(float);
+COIL_CREATE_TYPE_NAME_DECLARATION(double);
+COIL_CREATE_TYPE_NAME_DECLARATION(long double);
 #endif // COIL_CONFIG_BASIC_TYPENAME
-}

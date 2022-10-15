@@ -2,7 +2,11 @@
 
 #include "../ExecutionInput.h"
 #include "../ExecutionResult.h"
-#include "../Expected.h"
+
+namespace coil
+{
+    class String;
+}
 
 namespace coil::detail
 {
@@ -13,7 +17,7 @@ namespace coil::detail
         ExecutionInput input;
         ExecutionResult result;
 
-        void reportError(std::string error);
+        void reportError(coil::String error);
 
         bool hasErrors() const;
     };

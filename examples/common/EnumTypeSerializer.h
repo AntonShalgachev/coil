@@ -19,12 +19,12 @@ namespace coil
     template<typename E>
     struct TypeSerializer<E, std::enable_if_t<std::is_enum_v<E>>>
     {
-        static Expected<E, std::string> fromString(Value const& input)
+        static Expected<E, coil::String> fromString(Value const& input)
         {
             if (input.subvalues.size() != 1)
                 return errors::createMismatchedSubvaluesError<E>(input, 1);
 
-            auto value = input.subvalues[0];
+            std::string_view value{ input.subvalues[0].data(), input.subvalues[0].length() };
 
             // You can also remove this block so that enums can only be deserialized using their names
             if (auto integerValue = TypeSerializer<std::underlying_type_t<E>>::fromString(input))
@@ -42,9 +42,10 @@ namespace coil
             return errors::createGenericError<E>(input, sprintf("Possible values are [%s]", names.c_str()));
         }
 
-        static std::string toString(E const& value)
+        static coil::String toString(E const& value)
         {
-            return std::string{magic_enum::enum_name(value)};
+            std::string_view res = magic_enum::enum_name(value);
+            return { res.data(), res.size() };
         }
     };
 }

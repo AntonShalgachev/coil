@@ -1,7 +1,8 @@
 #pragma once
 
+#include "../StringView.h"
+
 #include <optional>
-#include <string_view>
 
 namespace coil
 {
@@ -9,16 +10,16 @@ namespace coil
     class BasicStringWrapper
     {
     public:
-        static_assert(std::is_convertible_v<UnderlyingType, std::string_view>, "UnderlyingType should be convertible to std::string_view");
+        static_assert(std::is_convertible_v<UnderlyingType, StringView>, "UnderlyingType should be convertible to StringView");
 
-        BasicStringWrapper(std::string_view str) : m_str(str) {}
+        BasicStringWrapper(StringView str) : m_str(str) {}
 
-        std::string_view view() const
+        StringView view() const
         {
             return m_str;
         }
 
-        operator std::string_view() const
+        operator StringView() const
         {
             return view();
         }
@@ -40,7 +41,14 @@ namespace std
     {
         size_t operator()(coil::BasicStringWrapper<UnderlyingType> const& value) const noexcept
         {
-            return std::hash<std::string_view>{}(value);
+            std::size_t hash = 0;
+
+            coil::StringView str = value.view();
+
+            for (char c : value.view())
+                hash = ((hash << 5) + hash) + c; /* hash * 33 + c */
+
+            return hash;
         }
     };
 }

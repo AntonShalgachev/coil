@@ -49,11 +49,10 @@ namespace
             else
                 return context.reportErrors("Unknown type of 'entity'", std::move(id).error(), std::move(name).error());
 
-            using namespace std::literals::string_literals;
             if (target)
                 target->name = newName;
             else
-                context.reportError("Failed to find entity '"s + entity.str() + "'"s);
+                context.reportError("Failed to find entity '" + entity.str() + "'");
         }
 
         void list(coil::Context context)

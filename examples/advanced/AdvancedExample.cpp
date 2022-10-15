@@ -61,26 +61,26 @@ namespace
     auto angleVariable(float* var)
     {
         auto get = [var]() { return angleToString(*var); };
-        auto set = [var](coil::Context context, std::string_view val) {
+        auto set = [var](coil::Context context, coil::StringView val) {
             if (val.empty())
             {
                 context.reportError("Conversion error");
                 return angleToString(*var);
             }
 
-            std::string_view numberString = val;
+            coil::StringView numberString = val;
             bool numberIsRadians = false;
 
-            char lastChar = val.back();
+            char lastChar = val[val.length() - 1];
             if (lastChar == 'r')
             {
                 numberIsRadians = true;
-                numberString = val.substr(0, val.size() - 1);
+                numberString = val.substr(0, val.length() - 1);
             }
             else if (lastChar == 'd')
             {
                 numberIsRadians = false;
-                numberString = val.substr(0, val.size() - 1);
+                numberString = val.substr(0, val.length() - 1);
             }
 
             auto expectedValue = coil::TypeSerializer<float>::fromString(numberString);
@@ -106,11 +106,9 @@ namespace coil
     template<>
     struct TypeSerializer<Entity>
     {
-        static auto toString(Entity const& value)
+        static coil::String toString(Entity const& value)
         {
-            std::stringstream ss;
-            ss << "EntityId{" << value.id << "}";
-            return ss.str();
+            return coil::sprintf("EntityId{%s}", value.id.c_str());
         }
     };
 }
@@ -128,19 +126,19 @@ void AdvancedExample::run()
         Entity* entity = entities.find(id);
         if (!entity)
         {
-            context.reportError("Failed to find entity '" + std::string{id} + "'");
+            context.reportError("Failed to find entity '" + coil::String{ id.data(), id.size() } + "'");
             return;
         }
 
         renameEntity(entity, std::move(newName));
     };
 
-    bindings["entities.create_entity_variable"] = [&entities, &bindings](std::string_view variableName, std::string_view id) {
+    bindings["entities.create_entity_variable"] = [&entities, &bindings](coil::StringView variableName, std::string_view id) {
         auto get = [&entities, id]() { return entities.find(id); };
         bindings[variableName] = coil::property([get]() { return get(); });
-        bindings[std::string(variableName) + ".id"] = coil::property([get]() { return get()->id; });
-        bindings[std::string(variableName) + ".name"] = coil::property([get]() { return get()->name; }, [get](std::string const& value) { get()->name = value; });
-        bindings[std::string(variableName) + ".payload"] = coil::property([get]() { return get()->payload; }, [get](std::string const& value) { get()->payload = value; });
+        bindings[coil::String(variableName) + ".id"] = coil::property([get]() { return get()->id; });
+        bindings[coil::String(variableName) + ".name"] = coil::property([get]() { return get()->name; }, [get](std::string const& value) { get()->name = value; });
+        bindings[coil::String(variableName) + ".payload"] = coil::property([get]() { return get()->payload; }, [get](std::string const& value) { get()->payload = value; });
     };
 
     bindings["entities.list"] = [&entities](coil::Context context) {
