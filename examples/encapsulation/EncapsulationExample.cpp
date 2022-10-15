@@ -92,7 +92,7 @@ namespace
 
         float m_time = 3.14f;
         int m_counter = 7;
-        std::string m_data = "I have something";
+        std::string m_data = "Something";
 
 #ifdef DEBUG_CONSOLE_ENABLED
         utils::ScopedDebugCommands m_commands;
@@ -109,11 +109,16 @@ void EncapsulationExample::run()
     bindings["destroy_subsystem"] = [&subsystem]() { subsystem = nullptr; };
 
     // if you undefine DEBUG_CONSOLE_ENABLED then the subsystem commands won't be registered, but the object would still be alive
-    common::printSectionHeader("This is an example of encapsulating commands within an object:");
+    common::printSectionHeader("This is an example of encapsulating commands within an object (try undefining DEBUG_CONSOLE_ENABLED):");
     common::executeCommand(bindings, "create_subsystem");
     common::executeCommand(bindings, "subsystem.time");
     common::executeCommand(bindings, "subsystem.do_some_work foo 42");
+
+    common::printSectionHeader("The object is alive and can still do work even without DEBUG_CONSOLE_ENABLED:");
     subsystem->doWorkPublicly();
+    std::cout << std::endl;
+
+    common::printSectionHeader("After destroying the subsystem all relevant commands would also be removed");
     common::executeCommand(bindings, "destroy_subsystem");
     common::executeCommand(bindings, "subsystem.data");
     common::executeCommand(bindings, "subsystem.do_some_work foo 42");
