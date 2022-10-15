@@ -2,6 +2,7 @@
 #include "coil/DefaultLexer.h"
 
 #include <cstdarg>
+#include <stdio.h>
 
 // Explicitly instantiate used templates here in order to avoid intantiating them in each source file
 template class std::vector<coil::String>;
@@ -480,13 +481,13 @@ namespace coil
     {
         std::va_list args2;
         va_copy(args2, args);
-        std::size_t stringSize = static_cast<std::size_t>(std::vsnprintf(nullptr, 0, format, args2));
+        std::size_t stringSize = static_cast<std::size_t>(vsnprintf(nullptr, 0, format, args2));
         va_end(args2);
 
         String str;
         str.resize(stringSize);
 
-        [[maybe_unused]] int result = std::vsnprintf(str.data(), str.size() + 1, format, args);
+        [[maybe_unused]] int result = vsnprintf(str.data(), str.size() + 1, format, args);
 
         assert(result >= 0 && static_cast<std::size_t>(result) <= str.size());
 
