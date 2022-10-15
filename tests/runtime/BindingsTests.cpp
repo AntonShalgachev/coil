@@ -571,30 +571,30 @@ TEST(BindingsTests, TestFunctionReturnValue)
 TEST(BindingsTests, TestOutput)
 {
     coil::Bindings bindings;
-    bindings["func_log"] = [](coil::Context context, coil::String value) { context.log(value); };
-    bindings["func_logf"] = [](coil::Context context, coil::String value) { context.logf("%s", value.cStr()); };
-    bindings["func_logline"] = [](coil::Context context, coil::String value) { context.logline(value); };
-    bindings["func_loglinef"] = [](coil::Context context, coil::String value) { context.loglinef("%s", value.cStr()); };
+    bindings["func_log"] = [](coil::Context context, coil::String value1, coil::String value2) { context.log(value1); context.log(value2); };
+    bindings["func_logf"] = [](coil::Context context, coil::String value1, coil::String value2) { context.logf("%s", value1.cStr()); context.logf("%s", value2.cStr()); };
+    bindings["func_logline"] = [](coil::Context context, coil::String value1, coil::String value2) { context.logline(value1); context.logline(value2); };
+    bindings["func_loglinef"] = [](coil::Context context, coil::String value1, coil::String value2) { context.loglinef("%s", value1.cStr()); context.loglinef("%s", value2.cStr()); };
 
     {
-        auto result = bindings.execute("func_log value");
+        auto result = bindings.execute("func_log value1 value2");
         EXPECT_EQ(result.errors.size(), 0u);
-        EXPECT_EQ(result.output, "value");
+        EXPECT_EQ(result.output, "value1value2");
     }
     {
-        auto result = bindings.execute("func_logf value");
+        auto result = bindings.execute("func_logf value1 value2");
         EXPECT_EQ(result.errors.size(), 0u);
-        EXPECT_EQ(result.output, "value");
+        EXPECT_EQ(result.output, "value1value2");
     }
     {
-        auto result = bindings.execute("func_logline value");
+        auto result = bindings.execute("func_logline value1 value2");
         EXPECT_EQ(result.errors.size(), 0u);
-        EXPECT_EQ(result.output, "value\n");
+        EXPECT_EQ(result.output, "value1\nvalue2\n");
     }
     {
-        auto result = bindings.execute("func_loglinef value");
+        auto result = bindings.execute("func_loglinef value1 value2");
         EXPECT_EQ(result.errors.size(), 0u);
-        EXPECT_EQ(result.output, "value\n");
+        EXPECT_EQ(result.output, "value1\nvalue2\n");
     }
 }
 
