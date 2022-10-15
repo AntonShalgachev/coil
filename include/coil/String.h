@@ -1,5 +1,6 @@
 #pragma once
 
+#include <stddef.h>
 #include <vector>
 
 namespace coil
@@ -12,11 +13,11 @@ namespace coil
         String();
         String(char const* str);
         String(StringView str);
-        String(char const* str, std::size_t length);
+        String(char const* str, size_t length);
 
-        std::size_t size() const;
+        size_t size() const;
         bool empty() const;
-        void reserve(std::size_t capacity);
+        void reserve(size_t capacity);
         char* cStr();
         char const* cStr() const;
         char* data();
@@ -24,8 +25,8 @@ namespace coil
         char& back();
         char const& back() const;
 
-        void resize(std::size_t size);
-        void append(char const* str, std::size_t length);
+        void resize(size_t size);
+        void append(char const* str, size_t length);
 
         String& operator+=(char rhs);
         String& operator+=(char const* rhs);

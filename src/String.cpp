@@ -21,14 +21,14 @@ coil::String::String(StringView str) : String(str.data(), str.length())
 
 }
 
-coil::String::String(char const* str, std::size_t length)
+coil::String::String(char const* str, size_t length)
 {
     resize(length);
-    std::memcpy(m_chars.data(), str, length);
+    memcpy(m_chars.data(), str, length);
     assert(m_chars.back() == '\0');
 }
 
-std::size_t coil::String::size() const
+size_t coil::String::size() const
 {
     assert(!m_chars.empty());
     return m_chars.size() - 1;
@@ -39,7 +39,7 @@ bool coil::String::empty() const
     return size() == 0;
 }
 
-void coil::String::reserve(std::size_t capacity)
+void coil::String::reserve(size_t capacity)
 {
     assert(m_chars.back() == '\0');
     m_chars.reserve(capacity + 1);
@@ -72,7 +72,7 @@ char& coil::String::back()
     return m_chars[size() - 1];
 }
 
-void coil::String::resize(std::size_t size)
+void coil::String::resize(size_t size)
 {
     if (!m_chars.empty())
         assert(m_chars.back() == '\0');
@@ -87,14 +87,14 @@ char const& coil::String::back() const
     return m_chars[size() - 1];
 }
 
-void coil::String::append(char const* str, std::size_t length)
+void coil::String::append(char const* str, size_t length)
 {
     assert(m_chars.back() == '\0');
 
-    std::size_t oldSize = size();
+    size_t oldSize = size();
     resize(oldSize + length);
 
-    std::memcpy(m_chars.data() + oldSize, str, length);
+    memcpy(m_chars.data() + oldSize, str, length);
     assert(m_chars.back() == '\0');
 }
 
