@@ -1,5 +1,7 @@
 #include "coil/Coil.h"
 
+#include <cstddef>
+
 namespace
 {
     enum class ScopedEnum
