@@ -8,8 +8,8 @@
 #include <float.h>
 #include <limits.h>
 #include <math.h>
-#include <stdio.h>
 #include <stdint.h>
+#include <string.h>
 
 #if LDBL_MANT_DIG == 53 && LDBL_MAX_EXP == 1024
 
@@ -37,11 +37,11 @@
 
 #define shcnt(f) ((f)->shcnt + ((f)->rpos - (f)->buf))
 #define shlim(f, lim) __shlim((f), (lim))
-#define shgetc(f) (((f)->rpos != (f)->shend) ? *(f)->rpos++ : __shgetc(f))
+#define shgetc(f) (((f)->rpos != (f)->shend) ? checked_shgetc(f) : __shgetc(f))
 #define shunget(f) ((f)->shlim>=0 ? (void)(f)->rpos-- : (void)0)
 
-#define sh_fromstring(f, s) \
-	((f)->buf = (f)->rpos = (unsigned char *)(s), (f)->rend = (unsigned char*)-1)
+#define sh_fromstring(f, s, e) \
+	((f)->buf = (f)->rpos = (unsigned char *)(s), (f)->rend = (unsigned char*)-1, (f)->bufend=(unsigned char *)(e))
 
 using off_t = ptrdiff_t;
 
@@ -50,7 +50,7 @@ namespace
     // Struct is reduced to only necessary fields
     struct FAKE_FILE {
         unsigned char* rpos, * rend;
-        unsigned char* buf;
+        unsigned char* buf, * bufend;
         unsigned char* shend;
         off_t shlim, shcnt;
     };
@@ -71,6 +71,16 @@ namespace
         // Code removed since it should never reach this point
         assert(false);
         return 0;
+    }
+
+    int checked_shgetc(FAKE_FILE* f)
+    {
+        if (f->rpos == f->bufend)
+        {
+            f->rpos++;
+            return 0;
+        }
+        return *f->rpos++;
     }
 
     long long scanexp(FAKE_FILE* f, int pok)
@@ -631,10 +641,10 @@ namespace
         return decfloat(f, c, bits, emin, sign, pok);
     }
 
-    long double strtox(const char* s, char** p, int prec)
+    long double strtox(const char* s, const char* e, char** p, int prec)
     {
         FAKE_FILE f;
-        sh_fromstring(&f, s);
+        sh_fromstring(&f, s, e);
         shlim(&f, 0);
         long double y = __floatscan(&f, prec, 1);
         off_t cnt = shcnt(&f);
@@ -761,10 +771,10 @@ namespace
         return (y ^ neg) - neg;
     }
 
-    unsigned long long strtox(const char* s, char** p, int base, unsigned long long lim)
+    unsigned long long strtox(const char* s, const char* e, char** p, int base, unsigned long long lim)
     {
         FAKE_FILE f;
-        sh_fromstring(&f, s);
+        sh_fromstring(&f, s, e);
         shlim(&f, 0);
         unsigned long long y = __intscan(&f, base, 1, lim);
         if (p)
@@ -778,38 +788,38 @@ namespace
 
 namespace coil
 {
-    float strtof(const char* s, char** p)
+    float strtof(const char* s, const char* e, char** p)
     {
-        return strtox(s, p, 0);
+        return strtox(s, e, p, 0);
     }
 
-    double strtod(const char* s, char** p)
+    double strtod(const char* s, const char* e, char** p)
     {
-        return strtox(s, p, 1);
+        return strtox(s, e, p, 1);
     }
 
-    long double strtold(const char* s, char** p)
+    long double strtold(const char* s, const char* e, char** p)
     {
-        return strtox(s, p, 2);
+        return strtox(s, e, p, 2);
     }
 
-    long strtol(const char* s, char** p, int base)
+    long strtol(const char* s, const char* e, char** p, int base)
     {
-        return strtox(s, p, base, 0UL + LONG_MIN);
+        return strtox(s, e, p, base, 0UL + LONG_MIN);
     }
 
-    unsigned long strtoul(const char* s, char** p, int base)
+    unsigned long strtoul(const char* s, const char* e, char** p, int base)
     {
-        return strtox(s, p, base, ULONG_MAX);
+        return strtox(s, e, p, base, ULONG_MAX);
     }
 
-    long long strtoll(const char* s, char** p, int base)
+    long long strtoll(const char* s, const char* e, char** p, int base)
     {
-        return strtox(s, p, base, LLONG_MIN);
+        return strtox(s, e, p, base, LLONG_MIN);
     }
 
-    unsigned long long strtoull(const char* s, char** p, int base)
+    unsigned long long strtoull(const char* s, const char* e, char** p, int base)
     {
-        return strtox(s, p, base, ULLONG_MAX);
+        return strtox(s, e, p, base, ULLONG_MAX);
     }
 }

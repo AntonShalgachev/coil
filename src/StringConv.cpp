@@ -73,25 +73,23 @@ namespace
     template<typename T>
     bool integerFromString(coil::StringView str, T& value)
     {
-        coil::String tmp{ str }; // TODO fix
         char* end = nullptr;
         errno = 0;
-        value = strtoxfunc<T>(tmp.cStr(), &end, 10);
+        value = strtoxfunc<T>(str.begin(), str.end(), &end, 10);
         if (errno)
             return false;
-        return end == tmp.end();
+        return end == str.end();
     }
 
     template<typename T>
     bool floatFromString(coil::StringView str, T& value)
     {
-        coil::String tmp{ str }; // TODO fix
         char* end = nullptr;
         errno = 0;
-        value = strtoxfunc<T>(tmp.cStr(), &end);
+        value = strtoxfunc<T>(str.begin(), str.end(), &end);
         if (errno)
             return false;
-        return end == tmp.end();
+        return end == str.end();
     }
 
     template<typename T>
