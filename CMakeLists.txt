@@ -21,6 +21,7 @@ add_library(coil
     "include/coil/detail/FunctionWrapper.h"
     "include/coil/detail/FunctorCaller.h"
     "include/coil/detail/FuncTraits.h"
+    "include/coil/detail/StdLib.h"
     "include/coil/detail/StringWrapper.h"
     "include/coil/detail/TypeTraits.h"
     "include/coil/detail/Utility.h"
@@ -52,6 +53,7 @@ add_library(coil
     "src/Coil.cpp"
     "src/String.cpp"
     "src/StringView.cpp"
+    "src/StdLib.cpp"
 )
 add_library(coil::coil ALIAS coil)
 
