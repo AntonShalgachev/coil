@@ -6,6 +6,8 @@ function(validate_compilation SOURCE_FILE EXPECTED_RESULT)
             ${CMAKE_SOURCE_DIR}/src/Coil.cpp # TODO make prettier
             ${CMAKE_SOURCE_DIR}/src/String.cpp # TODO make prettier
             ${CMAKE_SOURCE_DIR}/src/StringView.cpp # TODO make prettier
+            ${CMAKE_SOURCE_DIR}/src/StringConv.cpp # TODO make prettier
+            ${CMAKE_SOURCE_DIR}/src/StdLib.cpp # TODO make prettier
         CMAKE_FLAGS
             "-DCMAKE_CXX_STANDARD=17"
             "-DINCLUDE_DIRECTORIES=${PROJECT_SOURCE_DIR}/include"
