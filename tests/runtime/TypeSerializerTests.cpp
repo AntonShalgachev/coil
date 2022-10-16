@@ -105,19 +105,73 @@ namespace coil
 
 TEST(TypeSerializerTests, TestIntValidInputFromString)
 {
-    EXPECT_EQ(coil::TypeSerializer<int>::fromString("42"), 42);
+    EXPECT_EQ(coil::TypeSerializer<std::int32_t>::fromString("-2147483648"), -2147483648);
+    EXPECT_EQ(coil::TypeSerializer<std::int32_t>::fromString("2147483647"), 2147483647);
+    EXPECT_EQ(coil::TypeSerializer<std::uint32_t>::fromString("0"), 0u);
+    EXPECT_EQ(coil::TypeSerializer<std::uint32_t>::fromString("4294967295"), 4294967295u);
 }
 
 TEST(TypeSerializerTests, TestIntInvalidInputFromString)
 {
+    EXPECT_EQ(coil::TypeSerializer<int>::fromString({{"42", "314"}}), coil::makeUnexpected("Unable to convert '42 314' to type 'int': Expected 1 subvalues, got 2"));
     EXPECT_EQ(coil::TypeSerializer<int>::fromString({{"foo", "bar"}}), coil::makeUnexpected("Unable to convert 'foo bar' to type 'int': Expected 1 subvalues, got 2"));
+    EXPECT_EQ(coil::TypeSerializer<int>::fromString("foo"), coil::makeUnexpected("Unable to convert 'foo' to type 'int'"));
     EXPECT_EQ(coil::TypeSerializer<int>::fromString("42foo"), coil::makeUnexpected("Unable to convert '42foo' to type 'int'"));
 }
 
 TEST(TypeSerializerTests, TestIntToString)
 {
+    EXPECT_EQ(coil::TypeSerializer<std::int32_t>::toString(-2147483648), "-2147483648");
+    EXPECT_EQ(coil::TypeSerializer<std::int32_t>::toString(2147483647), "2147483647");
+    EXPECT_EQ(coil::TypeSerializer<std::uint32_t>::toString(0u), "0");
+    EXPECT_EQ(coil::TypeSerializer<std::uint32_t>::toString(4294967295u), "4294967295");
+}
+
+TEST(TypeSerializerTests, TestFloatValidInputFromString)
+{
+    auto compareFloat = [](coil::Expected<float, coil::String> const& lhs, float rhs)
+    {
+        if (!lhs)
+            return false;
+
+        using FP = ::testing::internal::FloatingPoint<float>;
+        return FP{ *lhs }.AlmostEquals(FP{ rhs });
+    };
+
+    EXPECT_PRED2(compareFloat, coil::TypeSerializer<float>::fromString("1.0e-37"), 1.0e-37f);
+    EXPECT_PRED2(compareFloat, coil::TypeSerializer<float>::fromString("-1.0e-37"), -1.0e-37f);
+    EXPECT_PRED2(compareFloat, coil::TypeSerializer<float>::fromString("1.0e37"), 1.0e37f);
+    EXPECT_PRED2(compareFloat, coil::TypeSerializer<float>::fromString("-1.0e37"), -1.0e37f);
+
+    EXPECT_PRED2(compareFloat, coil::TypeSerializer<float>::fromString("0"), 0.0f);
+    EXPECT_PRED2(compareFloat, coil::TypeSerializer<float>::fromString("-0"), 0.0f);
+    EXPECT_PRED2(compareFloat, coil::TypeSerializer<float>::fromString("3.14"), 3.14f);
+    EXPECT_PRED2(compareFloat, coil::TypeSerializer<float>::fromString("-3.14"), -3.14f);
+
+    EXPECT_PRED2(compareFloat, coil::TypeSerializer<float>::fromString("314"), 314.0f);
+    EXPECT_PRED2(compareFloat, coil::TypeSerializer<float>::fromString("-314"), -314.0f);
+
+    EXPECT_PRED2(compareFloat, coil::TypeSerializer<float>::fromString("inf"), std::numeric_limits<float>::infinity());
+    EXPECT_PRED2(compareFloat, coil::TypeSerializer<float>::fromString("INF"), std::numeric_limits<float>::infinity());
+    EXPECT_PRED2(compareFloat, coil::TypeSerializer<float>::fromString("infinity"), std::numeric_limits<float>::infinity());
+    EXPECT_PRED2(compareFloat, coil::TypeSerializer<float>::fromString("INFINITY"), std::numeric_limits<float>::infinity());
+    EXPECT_PRED2(compareFloat, coil::TypeSerializer<float>::fromString("-inf"), -std::numeric_limits<float>::infinity());
+    EXPECT_PRED2(compareFloat, coil::TypeSerializer<float>::fromString("-INF"), -std::numeric_limits<float>::infinity());
+    EXPECT_PRED2(compareFloat, coil::TypeSerializer<float>::fromString("-infinity"), -std::numeric_limits<float>::infinity());
+    EXPECT_PRED2(compareFloat, coil::TypeSerializer<float>::fromString("-INFINITY"), -std::numeric_limits<float>::infinity());
+}
+
+TEST(TypeSerializerTests, TestFloatInvalidInputFromString)
+{
+    EXPECT_EQ(coil::TypeSerializer<float>::fromString({ {"42.0", "314.0"} }), coil::makeUnexpected("Unable to convert '42.0 314.0' to type 'float': Expected 1 subvalues, got 2"));
+    EXPECT_EQ(coil::TypeSerializer<float>::fromString({ {"foo", "bar"} }), coil::makeUnexpected("Unable to convert 'foo bar' to type 'float': Expected 1 subvalues, got 2"));
+    EXPECT_EQ(coil::TypeSerializer<float>::fromString("foo"), coil::makeUnexpected("Unable to convert 'foo' to type 'float'"));
+    EXPECT_EQ(coil::TypeSerializer<float>::fromString("42.0foo"), coil::makeUnexpected("Unable to convert '42.0foo' to type 'float'"));
+}
+
+TEST(TypeSerializerTests, TestPointersToString)
+{
     int value = 42;
-    EXPECT_EQ(coil::TypeSerializer<int>::toString(value), "42");
     EXPECT_EQ(coil::TypeSerializer<int*>::toString(&value), "42");
     EXPECT_EQ(coil::TypeSerializer<int*>::toString(nullptr), "null");
     EXPECT_EQ(coil::TypeSerializer<int const*>::toString(&value), "42");
@@ -126,7 +180,10 @@ TEST(TypeSerializerTests, TestIntToString)
 
 TEST(TypeSerializerTests, TestOutOfRangeInputFromString)
 {
-    EXPECT_EQ(coil::TypeSerializer<short>::fromString("99999999999"), coil::makeUnexpected("Unable to convert '99999999999' to type 'short': the value can't be represented in this type"));
+    EXPECT_EQ(coil::TypeSerializer<char>::fromString("-129"), coil::makeUnexpected("Unable to convert '-129' to type 'char': the value can't be represented in this type"));
+    EXPECT_EQ(coil::TypeSerializer<char>::fromString("128"), coil::makeUnexpected("Unable to convert '128' to type 'char': the value can't be represented in this type"));
+    EXPECT_EQ(coil::TypeSerializer<unsigned char>::fromString("-1"), coil::makeUnexpected("Unable to convert '-1' to type 'uchar'"));
+    EXPECT_EQ(coil::TypeSerializer<unsigned char>::fromString("256"), coil::makeUnexpected("Unable to convert '256' to type 'uchar': the value can't be represented in this type"));
 }
 
 TEST(TypeSerializerTests, TestBoolValidInputFromString)
