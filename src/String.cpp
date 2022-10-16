@@ -97,6 +97,18 @@ void coil::String::append(char const* str, size_t length)
     assert(m_chars.back() == '\0');
 }
 
+char const* coil::String::begin() const
+{
+    assert(!m_chars.empty());
+    return m_chars.data();
+}
+
+char const* coil::String::end() const
+{
+    assert(!m_chars.empty());
+    return &m_chars.back();
+}
+
 coil::String& coil::String::operator+=(char rhs)
 {
     append(&rhs, 1);

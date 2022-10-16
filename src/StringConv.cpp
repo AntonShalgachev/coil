@@ -2,6 +2,9 @@
 
 #include "coil/Utils.h"
 #include "coil/String.h"
+#include "coil/StringView.h"
+
+#include "coil/detail/StdLib.h"
 
 coil::String coil::toString(int value)
 {
@@ -46,4 +49,142 @@ coil::String coil::toString(double value)
 coil::String coil::toString(long double value)
 {
     return coil::sprintf("%Lf", value);
+}
+
+namespace
+{
+    template<typename T>
+    auto strtoxfunc = nullptr;
+    template<>
+    auto strtoxfunc<float> = &coil::strtof;
+    template<>
+    auto strtoxfunc<double> = &coil::strtod;
+    template<>
+    auto strtoxfunc<long double> = &coil::strtold;
+    template<>
+    auto strtoxfunc<long> = &coil::strtol;
+    template<>
+    auto strtoxfunc<unsigned long> = &coil::strtoul;
+    template<>
+    auto strtoxfunc<long long> = &coil::strtoll;
+    template<>
+    auto strtoxfunc<unsigned long long> = &coil::strtoull;
+
+    template<typename T>
+    bool integerFromString(coil::StringView str, T& value)
+    {
+        coil::String tmp{ str }; // TODO fix
+        char* end = nullptr;
+        errno = 0;
+        value = strtoxfunc<T>(tmp.cStr(), &end, 10);
+        if (errno)
+            return false;
+        return end == tmp.end();
+    }
+
+    template<typename T>
+    bool floatFromString(coil::StringView str, T& value)
+    {
+        coil::String tmp{ str }; // TODO fix
+        char* end = nullptr;
+        errno = 0;
+        value = strtoxfunc<T>(tmp.cStr(), &end);
+        if (errno)
+            return false;
+        return end == tmp.end();
+    }
+
+    template<typename T>
+    bool signedAliasFromString(coil::StringView str, T& value, long min, long max)
+    {
+        long result;
+        if (!fromString(str, result))
+            return false;
+        if (result < min || result > max)
+            return false;
+        value = static_cast<T>(result);
+        return true;
+    }
+
+    template<typename T>
+    bool unsignedAliasFromString(coil::StringView str, T& value, unsigned long max)
+    {
+        unsigned long result;
+        if (!fromString(str, result))
+            return false;
+        if (result > max)
+            return false;
+        value = static_cast<T>(result);
+        return true;
+    }
+}
+
+bool coil::fromString(StringView str, long& value)
+{
+    return integerFromString(str, value);
+}
+
+bool coil::fromString(StringView str, long long& value)
+{
+    return integerFromString(str, value);
+}
+
+bool coil::fromString(StringView str, unsigned long& value)
+{
+    return integerFromString(str, value);
+}
+
+bool coil::fromString(StringView str, unsigned long long& value)
+{
+    return integerFromString(str, value);
+}
+
+bool coil::fromString(StringView str, float& value)
+{
+    return floatFromString(str, value);
+}
+
+bool coil::fromString(StringView str, double& value)
+{
+    return floatFromString(str, value);
+}
+
+bool coil::fromString(StringView str, long double& value)
+{
+    return floatFromString(str, value);
+}
+
+bool coil::fromString(StringView str, char& value)
+{
+    return signedAliasFromString(str, value, CHAR_MIN, CHAR_MAX);
+}
+
+bool coil::fromString(StringView str, signed char& value)
+{
+    return signedAliasFromString(str, value, SCHAR_MIN, SCHAR_MAX);
+}
+
+bool coil::fromString(StringView str, unsigned char& value)
+{
+    return unsignedAliasFromString(str, value, UCHAR_MAX);
+}
+
+bool coil::fromString(StringView str, short& value)
+{
+    return signedAliasFromString(str, value, SHRT_MIN, SHRT_MAX);
+}
+
+bool coil::fromString(StringView str, unsigned short& value)
+{
+    return unsignedAliasFromString(str, value, USHRT_MAX);
+}
+
+bool coil::fromString(StringView str, int& value)
+{
+    return signedAliasFromString(str, value, INT_MIN, INT_MAX);
+}
+
+bool coil::fromString(StringView str, unsigned& value)
+{
+    return unsignedAliasFromString(str, value, UINT_MAX);
 }

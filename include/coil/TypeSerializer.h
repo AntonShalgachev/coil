@@ -9,7 +9,6 @@
 
 #include "detail/StringConv.h"
 
-#include <charconv>
 #include <optional>
 
 namespace coil
@@ -58,19 +57,9 @@ namespace coil
         if (input.subvalues.size() != 1)
             return errors::createMismatchedSubvaluesError<T>(input, 1);
 
-        auto inputValue = input.subvalues[0];
-        auto begin = inputValue.data();
-        auto end = inputValue.data() + inputValue.length();
-
         T value{};
-        std::from_chars_result result = std::from_chars(begin, end, value);
-
-        if (result.ec == std::errc::result_out_of_range)
-            return errors::createGenericError<T>(input, "the value can't be represented in this type");
-
-        if (result.ptr != end || result.ec != std::errc{})
+        if (!coil::fromString(input.subvalues[0], value))
             return errors::createGenericError<T>(input);
-
         return value;
     }
 

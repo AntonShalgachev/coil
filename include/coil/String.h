@@ -28,6 +28,9 @@ namespace coil
         void resize(size_t size);
         void append(char const* str, size_t length);
 
+        char const* begin() const;
+        char const* end() const;
+
         String& operator+=(char rhs);
         String& operator+=(char const* rhs);
         String& operator+=(String const& rhs);
