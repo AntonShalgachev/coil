@@ -22,6 +22,7 @@ add_library(coil
     "include/coil/detail/FunctorCaller.h"
     "include/coil/detail/FuncTraits.h"
     "include/coil/detail/StdLib.h"
+    "include/coil/detail/StringConv.h"
     "include/coil/detail/StringWrapper.h"
     "include/coil/detail/TypeTraits.h"
     "include/coil/detail/Utility.h"
@@ -52,6 +53,7 @@ add_library(coil
 
     "src/Coil.cpp"
     "src/String.cpp"
+    "src/StringConv.cpp"
     "src/StringView.cpp"
     "src/StdLib.cpp"
 )

@@ -7,6 +7,8 @@
 #include "String.h"
 #include "detail/Utility.h"
 
+#include "detail/StringConv.h"
+
 #include <charconv>
 #include <optional>
 
