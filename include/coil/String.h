@@ -1,7 +1,8 @@
 #pragma once
 
+#include "Vector.h"
+
 #include <stddef.h>
-#include <vector>
 
 namespace coil
 {
@@ -48,6 +49,6 @@ namespace coil
         operator StringView() const;
 
     private:
-        std::vector<char> m_chars;
+        Vector<char> m_chars;
     };
 }

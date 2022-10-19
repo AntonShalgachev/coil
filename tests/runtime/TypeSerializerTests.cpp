@@ -113,8 +113,8 @@ TEST(TypeSerializerTests, TestIntValidInputFromString)
 
 TEST(TypeSerializerTests, TestIntInvalidInputFromString)
 {
-    EXPECT_EQ(coil::TypeSerializer<int>::fromString({{"42", "314"}}), coil::makeUnexpected("Unable to convert '42 314' to type 'int': Expected 1 subvalues, got 2"));
-    EXPECT_EQ(coil::TypeSerializer<int>::fromString({{"foo", "bar"}}), coil::makeUnexpected("Unable to convert 'foo bar' to type 'int': Expected 1 subvalues, got 2"));
+    EXPECT_EQ(coil::TypeSerializer<int>::fromString(createVectorValue({ "42", "314" })), coil::makeUnexpected("Unable to convert '42 314' to type 'int': Expected 1 subvalues, got 2"));
+    EXPECT_EQ(coil::TypeSerializer<int>::fromString(createVectorValue({"foo", "bar"})), coil::makeUnexpected("Unable to convert 'foo bar' to type 'int': Expected 1 subvalues, got 2"));
     EXPECT_EQ(coil::TypeSerializer<int>::fromString("foo"), coil::makeUnexpected("Unable to convert 'foo' to type 'int'"));
     EXPECT_EQ(coil::TypeSerializer<int>::fromString("42foo"), coil::makeUnexpected("Unable to convert '42foo' to type 'int'"));
 }
@@ -163,8 +163,8 @@ TEST(TypeSerializerTests, TestFloatValidInputFromString)
 
 TEST(TypeSerializerTests, TestFloatInvalidInputFromString)
 {
-    EXPECT_EQ(coil::TypeSerializer<float>::fromString({ {"42.0", "314.0"} }), coil::makeUnexpected("Unable to convert '42.0 314.0' to type 'float': Expected 1 subvalues, got 2"));
-    EXPECT_EQ(coil::TypeSerializer<float>::fromString({ {"foo", "bar"} }), coil::makeUnexpected("Unable to convert 'foo bar' to type 'float': Expected 1 subvalues, got 2"));
+    EXPECT_EQ(coil::TypeSerializer<float>::fromString(createVectorValue({"42.0", "314.0"})), coil::makeUnexpected("Unable to convert '42.0 314.0' to type 'float': Expected 1 subvalues, got 2"));
+    EXPECT_EQ(coil::TypeSerializer<float>::fromString(createVectorValue({"foo", "bar"})), coil::makeUnexpected("Unable to convert 'foo bar' to type 'float': Expected 1 subvalues, got 2"));
     EXPECT_EQ(coil::TypeSerializer<float>::fromString("foo"), coil::makeUnexpected("Unable to convert 'foo' to type 'float'"));
     EXPECT_EQ(coil::TypeSerializer<float>::fromString("42.0foo"), coil::makeUnexpected("Unable to convert '42.0foo' to type 'float'"));
 }
@@ -203,7 +203,7 @@ TEST(TypeSerializerTests, TestBoolValidInputFromString)
 
 TEST(TypeSerializerTests, TestBoolInvalidInputFromString)
 {
-    EXPECT_EQ(coil::TypeSerializer<bool>::fromString({{"foo", "bar"}}), coil::makeUnexpected("Unable to convert 'foo bar' to type 'bool': Expected 1 subvalues, got 2"));
+    EXPECT_EQ(coil::TypeSerializer<bool>::fromString(createVectorValue({ "foo", "bar" })), coil::makeUnexpected("Unable to convert 'foo bar' to type 'bool': Expected 1 subvalues, got 2"));
 
     EXPECT_EQ(coil::TypeSerializer<bool>::fromString("2"), coil::makeUnexpected("Unable to convert '2' to type 'bool'"));
     EXPECT_EQ(coil::TypeSerializer<bool>::fromString("none"), coil::makeUnexpected("Unable to convert 'none' to type 'bool'"));
@@ -224,8 +224,8 @@ TEST(TypeSerializerTests, TestStringTypesValidInputFromString)
 
 TEST(TypeSerializerTests, TestStringTypesInvalidInputFromString)
 {
-    EXPECT_EQ(coil::TypeSerializer<coil::String>::fromString({{"foo", "bar"}}), coil::makeUnexpected("Unable to convert 'foo bar' to type 'string': Expected 1 subvalues, got 2"));
-    EXPECT_EQ(coil::TypeSerializer<coil::StringView>::fromString({{"foo", "bar"}}), coil::makeUnexpected("Unable to convert 'foo bar' to type 'string': Expected 1 subvalues, got 2"));
+    EXPECT_EQ(coil::TypeSerializer<coil::String>::fromString(createVectorValue({"foo", "bar"})), coil::makeUnexpected("Unable to convert 'foo bar' to type 'string': Expected 1 subvalues, got 2"));
+    EXPECT_EQ(coil::TypeSerializer<coil::StringView>::fromString(createVectorValue({"foo", "bar"})), coil::makeUnexpected("Unable to convert 'foo bar' to type 'string': Expected 1 subvalues, got 2"));
 }
 
 TEST(TypeSerializerTests, TestStringTypesToString)
@@ -252,14 +252,14 @@ TEST(TypeSerializerTests, TestUserTypeToString)
 
 TEST(TypeSerializerTests, TestCompoundUserTypeFromStringValid)
 {
-    EXPECT_EQ(coil::TypeSerializer<CompoundType>::fromString({{"6", "28"}}), (CompoundType{6, 28}));
+    EXPECT_EQ(coil::TypeSerializer<CompoundType>::fromString(createVectorValue({ "6", "28" })), (CompoundType{6, 28}));
 }
 
 TEST(TypeSerializerTests, TestCompoundUserTypeFromStringInvalid)
 {
-    EXPECT_EQ(coil::TypeSerializer<CompoundType>::fromString({{"6", "28", "496"}}), coil::makeUnexpected("Unable to convert '6 28 496' to type 'CompoundType': Expected 2 subvalues, got 3"));
-    EXPECT_EQ(coil::TypeSerializer<CompoundType>::fromString({"6"}), coil::makeUnexpected("Unable to convert '6' to type 'CompoundType': Expected 2 subvalues, got 1"));
-    EXPECT_EQ(coil::TypeSerializer<CompoundType>::fromString({{"six", "28"}}), coil::makeUnexpected("Unable to convert 'six 28' to type 'CompoundType': Unable to convert 'six' to type 'int'"));
+    EXPECT_EQ(coil::TypeSerializer<CompoundType>::fromString(createVectorValue({ "6", "28", "496" })), coil::makeUnexpected("Unable to convert '6 28 496' to type 'CompoundType': Expected 2 subvalues, got 3"));
+    EXPECT_EQ(coil::TypeSerializer<CompoundType>::fromString(createVectorValue({ "6" })), coil::makeUnexpected("Unable to convert '6' to type 'CompoundType': Expected 2 subvalues, got 1"));
+    EXPECT_EQ(coil::TypeSerializer<CompoundType>::fromString(createVectorValue({ "six", "28" })), coil::makeUnexpected("Unable to convert 'six 28' to type 'CompoundType': Unable to convert 'six' to type 'int'"));
 }
 
 TEST(TypeSerializerTests, TestCompoundUserTypeToString)

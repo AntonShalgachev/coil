@@ -22,6 +22,8 @@ coil::String::String(StringView str) : String(str.data(), str.length())
 
 coil::String::String(char const* str, size_t length)
 {
+    assert(str);
+
     resize(length);
     memcpy(m_chars.data(), str, length);
     assert(m_chars.back() == '\0');

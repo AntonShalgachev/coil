@@ -51,7 +51,7 @@ namespace coil
         delim = "";
         for (auto const& pair : input.namedArguments)
         {
-            os << delim << "'" << pair.first << "':" << pair.second.str() << "";
+            os << delim << "'" << pair.key() << "':" << pair.value().str() << "";
             delim = ", ";
         }
 
@@ -86,7 +86,22 @@ namespace coil
     }
 }
 
-inline bool containsError(std::vector<coil::String> const& errors, coil::StringView value)
+inline bool containsError(coil::Vector<coil::String> const& errors, coil::StringView value)
 {
     return std::find(errors.begin(), errors.end(), value) != errors.end();
+}
+
+template<typename T>
+coil::Vector<T> convertVector(std::vector<T> input)
+{
+    coil::Vector<T> output;
+    output.reserve(input.size());
+    for (T& value : std::move(input))
+        output.pushBack(Move(value));
+    return output;
+}
+
+inline coil::Value createVectorValue(std::vector<coil::StringView> stdSubvalues)
+{
+    return coil::Value{ convertVector(coil::Move(stdSubvalues)) };
 }

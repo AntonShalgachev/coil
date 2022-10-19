@@ -7,7 +7,7 @@
 namespace coil
 {
     template<typename T>
-    std::vector<AnyFunctor> variable(T* var)
+    Vector<AnyFunctor> variable(T* var)
     {
         auto get = [var]() -> T const& { return *var; };
         auto set = [var](T val) -> T const& {
@@ -19,7 +19,7 @@ namespace coil
     }
 
     template<typename T>
-    std::vector<AnyFunctor> variable(T const* var)
+    Vector<AnyFunctor> variable(T const* var)
     {
         auto get = [var]() -> T const& { return *var; };
         auto set = [var](Context context, T) -> T const& {

@@ -75,3 +75,8 @@ bool coil::operator==(StringView const& lhs, StringView const& rhs)
 
     return memcmp(lhs.data(), rhs.data(), size) == 0;
 }
+
+bool coil::operator!=(StringView const& lhs, StringView const& rhs)
+{
+    return !(lhs == rhs);
+}

@@ -26,7 +26,7 @@ namespace coil
         struct Command
         {
             StringView name;
-            std::vector<AnyFunctor> functors;
+            Vector<AnyFunctor> functors;
         };
 
         using StringWrapper = BasicStringWrapper<String>;
@@ -46,7 +46,7 @@ namespace coil
         }
 
         Bindings::Command const& add(StringView name, AnyFunctor anyFunctor);
-        Bindings::Command const& add(StringView name, std::vector<AnyFunctor> anyFunctors);
+        Bindings::Command const& add(StringView name, Vector<AnyFunctor> anyFunctors);
 
         void remove(StringView name);
 
@@ -84,7 +84,7 @@ namespace coil
             m_bindings.add(m_name, Move(anyFunctor));
             return *this;
         }
-        BindingProxy& operator=(std::vector<AnyFunctor> anyFunctors)
+        BindingProxy& operator=(Vector<AnyFunctor> anyFunctors)
         {
             m_bindings.add(m_name, Move(anyFunctors));
             return *this;

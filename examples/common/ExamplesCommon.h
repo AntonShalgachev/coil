@@ -54,7 +54,56 @@ namespace coil
     template<class Elem, class Traits>
     coil::String coil::TypeSerializer<std::basic_string_view<Elem, Traits>>::toString(std::basic_string_view<Elem, Traits> const& value)
     {
+        if (value.empty())
+            return String{};
+
+        assert(value.data());
         return String{ StringView{value.data(), value.size()} };
+    }
+
+    //////////////////////////////////////
+
+    template<typename T>
+    struct TypeSerializer<std::vector<T>>
+    {
+        static Expected<std::vector<T>, String> fromString(Value const& input);
+
+        static String toString(std::vector<T> const& value);
+    };
+
+    template<typename T>
+    coil::Expected<std::vector<T>, String> coil::TypeSerializer<std::vector<T>>::fromString(Value const& input)
+    {
+        std::vector<T> result;
+        result.reserve(input.subvalues.size());
+
+        for (StringView subvalue : input.subvalues)
+        {
+            auto expectedArg = TypeSerializer<T>::fromString(subvalue);
+            if (!expectedArg)
+                return errors::createGenericError<std::vector<T>>(input, Move(expectedArg).error());
+
+            result.push_back(*Move(expectedArg));
+        }
+
+        return result;
+    }
+
+    template<typename T>
+    coil::String coil::TypeSerializer<std::vector<T>>::toString(std::vector<T> const& value)
+    {
+        String result = "{";
+        StringView separator = "";
+
+        for (T const& element : value)
+        {
+            result += separator;
+            result += TypeSerializer<T>::toString(element);
+            separator = ", ";
+        }
+        result += "}";
+
+        return result;
     }
 }
 

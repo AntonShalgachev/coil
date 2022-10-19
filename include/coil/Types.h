@@ -4,8 +4,6 @@
 #include "detail/Utility.h"
 #include "StringView.h"
 
-#include <vector>
-
 namespace coil
 {
     template<typename... Args>
@@ -14,10 +12,10 @@ namespace coil
         static std::size_t constexpr size = sizeof...(Args);
         using IndicesType = MakeIndexSequence<size>;
 
-        static std::vector<StringView> const& names()
+        static Vector<StringView> names()
         {
-            static std::vector<StringView> data = {TypeName<Args>::name()...};
-            return data;
+            static StringView data[size] = {TypeName<Args>::name()...};
+            return Vector<StringView> { data, size };
         }
     };
 }

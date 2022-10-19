@@ -4,9 +4,8 @@
 #include "TypeName.h"
 #include "String.h"
 #include "StringView.h"
+#include "Vector.h"
 #include "detail/Functional.h"
-
-#include <vector>
 
 namespace coil
 {
@@ -18,9 +17,10 @@ namespace coil
         Value();
         Value(StringView value);
         Value(char const* value);
-        Value(std::vector<StringView> subvalues);
+        Value(Vector<StringView> subvalues);
 
         bool operator==(Value const& rhs) const;
+        bool operator!=(Value const& rhs) const;
 
         template<typename T>
         Expected<T, String> get() const
@@ -30,7 +30,7 @@ namespace coil
 
         String str() const;
 
-        std::vector<StringView> subvalues;
+        Vector<StringView> subvalues;
     };
 
     template<>

@@ -2,8 +2,9 @@
 
 #include "detail/TypeTraits.h"
 #include "detail/Utility.h"
+#include "detail/New.h"
 
-#include <cassert>
+#include <assert.h>
 
 namespace coil
 {
@@ -221,18 +222,18 @@ namespace coil
         {
             m_hasValue = rhs.m_hasValue;
             if (rhs.m_hasValue)
-                new (&m_expected) T(rhs.m_expected);
+                new (NewTag{}, &m_expected) T(rhs.m_expected);
             else
-                new (&m_unexpected) Unexpected<E>(rhs.m_unexpected);
+                new (NewTag{}, &m_unexpected) Unexpected<E>(rhs.m_unexpected);
         }
 
         void constructFrom(Expected<T, E>&& rhs)
         {
             m_hasValue = rhs.m_hasValue;
             if (rhs.m_hasValue)
-                new (&m_expected) T(Move(rhs.m_expected));
+                new (NewTag{}, &m_expected) T(Move(rhs.m_expected));
             else
-                new (&m_unexpected) Unexpected<E>(Move(rhs.m_unexpected));
+                new (NewTag{}, &m_unexpected) Unexpected<E>(Move(rhs.m_unexpected));
         }
 
         void destruct()

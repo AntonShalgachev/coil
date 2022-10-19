@@ -12,16 +12,15 @@
 #include "detail/Utility.h"
 
 #include <optional>
-#include <vector>
 
-extern template class std::vector<coil::String>;
+extern template class coil::Vector<coil::String>;
 extern template class std::optional<coil::String>;
 extern template std::optional<coil::String>::optional(coil::String&&);
 
-extern template class std::vector<coil::Value>;
-extern template class std::vector<std::pair<coil::StringView, coil::Value>>;
+extern template class coil::Vector<coil::Value>;
+extern template class coil::Vector<coil::NamedValue>;
 
-extern template class std::vector<coil::StringView>;
+extern template class coil::Vector<coil::StringView>;
 
 extern template class std::optional<coil::Value>;
 extern template class coil::Expected<coil::Value, coil::NamedArgs::Error>;
@@ -41,7 +40,8 @@ extern template void std::swap<coil::detail::AnyStorageBase*>(coil::detail::AnyS
 
 extern template coil::String&& coil::Forward<coil::String>(coil::String&) noexcept; // TODO remove?
 
-extern template std::vector<coil::AnyFunctor>::~vector();
+// TODO
+// extern template std::vector<coil::AnyFunctor>::~vector();
 
 #define COIL_TYPE_SERIALIZER_TEMPLATE_BASE(T, SPECIFIER) SPECIFIER template struct coil::TypeSerializer<T>
 
@@ -50,7 +50,7 @@ extern template std::vector<coil::AnyFunctor>::~vector();
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 
-#define COIL_VARIABLE_TEMPLATE_BASE(SPECIFIER, T) SPECIFIER template std::vector<coil::AnyFunctor> coil::variable<T>(T * var)
+#define COIL_VARIABLE_TEMPLATE_BASE(SPECIFIER, T) SPECIFIER template coil::Vector<coil::AnyFunctor> coil::variable<T>(T * var)
 
 #define COIL_ARGUMENT_TEMPLATE_BASE(SPECIFIER, T)                                                                                             \
     SPECIFIER template class coil::Expected<T, coil::String>;                                                                                  \

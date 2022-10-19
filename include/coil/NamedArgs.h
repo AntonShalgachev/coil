@@ -8,58 +8,11 @@
 
 namespace coil
 {
-    class NamedValue
-    {
-    public:
-        NamedValue(StringView key, Value const& value);
-
-        StringView key() const;
-        Value const& value() const;
-
-    private:
-        StringView m_key;
-        Value const& m_value;
-    };
-
-    class NamedArgsIterator
-    {
-    public:
-        using UnderlyingIteratorT = decltype(std::declval<ExecutionInput>().namedArguments)::const_iterator;
-
-        using iterator_category = std::forward_iterator_tag;
-        using value_type = NamedValue;
-        using difference_type = UnderlyingIteratorT::difference_type;
-        using pointer = NamedValue*;
-        using reference = NamedValue&;
-
-        NamedArgsIterator(UnderlyingIteratorT iterator);
-
-        NamedValue operator*();
-
-        struct NamedArgContainer
-        {
-            NamedValue arg;
-            NamedValue* operator->()
-            {
-                return std::addressof(arg);
-            }
-        };
-
-        NamedArgContainer operator->();
-
-        bool operator==(NamedArgsIterator const& rhs);
-
-        bool operator!=(NamedArgsIterator const& rhs);
-
-        NamedArgsIterator& operator++();
-
-    private:
-        UnderlyingIteratorT m_iterator;
-    };
-
     class NamedArgs
     {
     public:
+        using NamedArgsIteratorT = NamedValue*;
+
         struct Error
         {
             enum class Type
@@ -94,11 +47,11 @@ namespace coil
 
         std::size_t size() const;
 
-        NamedArgsIterator begin() const;
+        NamedArgsIteratorT begin() const;
 
-        NamedArgsIterator end() const;
+        NamedArgsIteratorT end() const;
 
-        NamedArgsIterator find(StringView key) const;
+        NamedArgsIteratorT find(StringView key) const;
 
     private:
         detail::CallContext& m_context;

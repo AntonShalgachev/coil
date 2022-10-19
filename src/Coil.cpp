@@ -1,18 +1,20 @@
 #include "coil/Coil.h"
 #include "coil/DefaultLexer.h"
 
+#include "coil/detail/Utility.h"
+
 #include <cstdarg>
 #include <stdio.h>
 
 // Explicitly instantiate used templates here in order to avoid intantiating them in each source file
-template class std::vector<coil::String>;
+template class coil::Vector<coil::String>;
 template class std::optional<coil::String>;
 template std::optional<coil::String>::optional(coil::String&&);
 
-template class std::vector<coil::Value>;
-template class std::vector<std::pair<coil::StringView, coil::Value>>;
+template class coil::Vector<coil::Value>;
+template class coil::Vector<coil::NamedValue>;
 
-template class std::vector<coil::StringView>;
+template class coil::Vector<coil::StringView>;
 
 template class std::optional<coil::Value>;
 template class coil::Expected<coil::Value, coil::NamedArgs::Error>;
@@ -32,7 +34,8 @@ template void std::swap<coil::detail::AnyStorageBase*>(coil::detail::AnyStorageB
 
 template coil::String&& coil::Forward<coil::String>(coil::String&) noexcept;
 
-template std::vector<coil::AnyFunctor>::~vector();
+// TODO
+// template std::vector<coil::AnyFunctor>::~vector();
 
 namespace coil
 {
@@ -54,7 +57,7 @@ namespace coil
 
         void CallContext::reportError(String error)
         {
-            result.errors.push_back(coil::Move(error));
+            result.errors.pushBack(coil::Move(error));
         }
 
         bool CallContext::hasErrors() const
@@ -67,6 +70,7 @@ namespace coil
 
     AnyFunctor::AnyFunctor(AnyFunctor&& rhs)
     {
+        // TODO
         using namespace std;
         swap(rhs.m_storage, m_storage);
         swap(rhs.m_parameterTypes, m_parameterTypes);
@@ -96,7 +100,7 @@ namespace coil
         return m_parameterTypes.size();
     }
 
-    std::vector<StringView> const& AnyFunctor::parameterTypes() const
+    Vector<StringView> const& AnyFunctor::parameterTypes() const
     {
         return m_parameterTypes;
     }
@@ -121,13 +125,12 @@ namespace coil
 
     Bindings::Command const& Bindings::add(StringView name, AnyFunctor anyFunctor)
     {
-        // No move list-initialization in vector? Really, C++?
-        std::vector<AnyFunctor> functors;
-        functors.push_back(coil::Move(anyFunctor));
+        Vector<AnyFunctor> functors;
+        functors.pushBack(coil::Move(anyFunctor));
         return add(name, coil::Move(functors));
     }
 
-    Bindings::Command const& Bindings::add(StringView name, std::vector<AnyFunctor> anyFunctors)
+    Bindings::Command const& Bindings::add(StringView name, Vector<AnyFunctor> anyFunctors)
     {
         auto it = m_commands.insert_or_assign(name, Command{ StringView{}, coil::Move(anyFunctors) }).first;
         it->second.name = it->first;
@@ -168,7 +171,7 @@ namespace coil
         if (!input)
         {
             ExecutionResult result;
-            result.errors.push_back("Syntax error: " + input.error());
+            result.errors.pushBack("Syntax error: " + input.error());
             return result;
         }
 
@@ -179,14 +182,14 @@ namespace coil
     {
         if (context.input.name.empty())
         {
-            context.result.errors.push_back("No function name is specified");
+            context.result.errors.pushBack("No function name is specified");
             return;
         }
 
         auto it = m_commands.find(context.input.name);
         if (it == m_commands.end())
         {
-            context.result.errors.push_back(sprintf("No function '%.*s' is registered", context.input.name.length(), context.input.name.data()));
+            context.result.errors.pushBack(sprintf("No function '%.*s' is registered", context.input.name.length(), context.input.name.data()));
             return;
         }
 
@@ -279,45 +282,6 @@ namespace coil
     }
 
     /// NamedArgs.h ///
-    NamedValue::NamedValue(StringView key, Value const& value) : m_key(key), m_value(value) {}
-
-    StringView NamedValue::key() const
-    {
-        return m_key;
-    }
-    Value const& NamedValue::value() const
-    {
-        return m_value;
-    }
-
-    NamedArgsIterator::NamedArgsIterator(UnderlyingIteratorT iterator) : m_iterator(iterator) {}
-
-    NamedValue NamedArgsIterator::operator*()
-    {
-        return NamedValue(m_iterator->first, m_iterator->second);
-    }
-
-    NamedArgsIterator::NamedArgContainer NamedArgsIterator::operator->()
-    {
-        return NamedArgContainer{**this};
-    }
-
-    bool NamedArgsIterator::operator==(NamedArgsIterator const& rhs)
-    {
-        return m_iterator == rhs.m_iterator;
-    }
-
-    bool NamedArgsIterator::operator!=(NamedArgsIterator const& rhs)
-    {
-        return !(*this == rhs);
-    }
-
-    NamedArgsIterator& NamedArgsIterator::operator++()
-    {
-        m_iterator++;
-        return *this;
-    }
-
     NamedArgs::NamedArgs(detail::CallContext& context) : m_context(context) {}
 
     Expected<ReferenceWrapper<Value const>, NamedArgs::Error> NamedArgs::get(StringView key) const
@@ -344,17 +308,17 @@ namespace coil
         return m_context.input.namedArguments.size();
     }
 
-    NamedArgsIterator NamedArgs::begin() const
+    NamedArgs::NamedArgsIteratorT NamedArgs::begin() const
     {
-        return m_context.input.namedArguments.cbegin();
+        return m_context.input.namedArguments.begin();
     }
 
-    NamedArgsIterator NamedArgs::end() const
+    NamedArgs::NamedArgsIteratorT NamedArgs::end() const
     {
-        return m_context.input.namedArguments.cend();
+        return m_context.input.namedArguments.end();
     }
 
-    NamedArgsIterator NamedArgs::find(StringView key) const
+    NamedArgs::NamedArgsIteratorT NamedArgs::find(StringView key) const
     {
         for (auto it = begin(); it != end(); ++it)
             if (it->key() == key)
@@ -364,13 +328,18 @@ namespace coil
 
     /// Value.h ///
     Value::Value() = default; // @NOCOVERAGE
-    Value::Value(StringView value) : subvalues({value}) {}
+    Value::Value(StringView value) { subvalues.pushBack(Move(value)); }
     Value::Value(char const* value) : Value(StringView{ value }) {}
-    Value::Value(std::vector<StringView> subvalues) : subvalues(coil::Move(subvalues)) {}
+    Value::Value(Vector<StringView> subvalues) : subvalues(coil::Move(subvalues)) {}
 
     bool Value::operator==(Value const& rhs) const
     {
         return subvalues == rhs.subvalues;
+    }
+
+    bool Value::operator!=(Value const& rhs) const
+    {
+        return !(*this == rhs);
     }
 
     String Value::str() const

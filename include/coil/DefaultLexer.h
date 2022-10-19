@@ -6,6 +6,7 @@
 #include "Utils.h"
 #include "String.h"
 #include "StringView.h"
+#include "Vector.h"
 #include "detail/Algorithm.h"
 #include "detail/Utility.h"
 
@@ -112,9 +113,9 @@ namespace coil
             return {};
         }
 
-        std::vector<StringView> splitGroup(StringView str) const
+        Vector<StringView> splitGroup(StringView str) const
         {
-            std::vector<StringView> result;
+            Vector<StringView> result;
 
             for (std::size_t i = 0; i < str.length(); i++)
             {
@@ -141,7 +142,7 @@ namespace coil
                     stringEnd--;
                 }
 
-                result.push_back(str.substr(stringBegin, stringEnd - stringBegin));
+                result.pushBack(str.substr(stringBegin, stringEnd - stringBegin));
             }
 
             return result;
@@ -155,9 +156,9 @@ namespace coil
             return Value{ {token.value} };
         }
 
-        coil::Expected<std::vector<Token>, String> tokenize(StringView str) const
+        coil::Expected<Vector<Token>, String> tokenize(StringView str) const
         {
-            std::vector<Token> tokens;
+            Vector<Token> tokens;
 
             for (std::size_t i = 0; i < str.length(); i++)
             {
@@ -181,12 +182,12 @@ namespace coil
                         i++;
                     }
 
-                    tokens.emplace_back(type, str.substr(tokenBegin, i - tokenBegin));
+                    tokens.pushBack(Token{ type, str.substr(tokenBegin, i - tokenBegin) });
                     i--; // return to the last 'String' char
                     break;
                 }
                 case CharType::Assignment:
-                    tokens.emplace_back(TokenType::Assignment, str.substr(i, 1));
+                    tokens.pushBack(Token{ TokenType::Assignment, str.substr(i, 1) });
                     break;
                 case CharType::Quote:
                     i++;
@@ -196,7 +197,7 @@ namespace coil
                     if (i >= str.length())
                         return makeUnexpected(sprintf("Token '%c' doesn't have a corresponding opening/closing quote", str[tokenBegin]));
 
-                    tokens.emplace_back(TokenType::String, str.substr(tokenBegin + 1, i - tokenBegin - 1));
+                    tokens.pushBack(Token{ TokenType::String, str.substr(tokenBegin + 1, i - tokenBegin - 1) });
                     break;
                 case CharType::Group:
                     i++;
@@ -206,7 +207,7 @@ namespace coil
                     if (i >= str.length())
                         return makeUnexpected(sprintf("Token '%c' doesn't have a corresponding opening/closing token", str[tokenBegin]));
 
-                    tokens.emplace_back(TokenType::GroupString, str.substr(tokenBegin + 1, i - tokenBegin - 1));
+                    tokens.pushBack(Token{ TokenType::GroupString, str.substr(tokenBegin + 1, i - tokenBegin - 1) });
                     break;
                 default:
                     return makeUnexpected("Internal error"); // @NOCOVERAGE
@@ -216,7 +217,7 @@ namespace coil
             return {Move(tokens)};
         }
 
-        Expected<ExecutionInput, String> parse(std::vector<Token> tokens) const
+        Expected<ExecutionInput, String> parse(Vector<Token> tokens) const
         {
             ExecutionInput input;
 
@@ -263,11 +264,11 @@ namespace coil
                 if (argTokens.secondaryTokenIndex)
                 {
                     Token const& secondaryToken = tokens[*argTokens.secondaryTokenIndex];
-                    input.namedArguments.emplace_back(primaryToken.value, createValue(secondaryToken));
+                    input.namedArguments.pushBack(NamedValue{ primaryToken.value, createValue(secondaryToken) });
                 }
                 else
                 {
-                    input.arguments.push_back(createValue(primaryToken));
+                    input.arguments.pushBack(createValue(primaryToken));
                 }
 
                 argTokens.reset();

@@ -66,7 +66,7 @@ namespace coil
         void invokeTrampoline(detail::CallContext& context);
 
         std::size_t arity() const;
-        std::vector<StringView> const& parameterTypes() const;
+        Vector<StringView> const& parameterTypes() const;
         StringView returnType() const;
 
     private:
@@ -74,7 +74,7 @@ namespace coil
 
     private:
         detail::AnyStorageBase* m_storage = nullptr;
-        std::vector<StringView> m_parameterTypes;
+        Vector<StringView> m_parameterTypes;
         StringView m_returnType;
     };
 

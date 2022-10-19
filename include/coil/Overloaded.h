@@ -4,8 +4,6 @@
 #include "detail/FuncTraits.h"
 #include "detail/Utility.h"
 
-#include <vector>
-
 namespace coil
 {
     namespace detail
@@ -24,11 +22,10 @@ namespace coil
     }
 
     template<typename... Funcs>
-    std::vector<AnyFunctor> overloaded(Funcs... funcs)
+    Vector<AnyFunctor> overloaded(Funcs... funcs)
     {
-        // No move list-initialization in vector? Really, C++?
-        std::vector<AnyFunctor> functors;
-        (functors.push_back(detail::createAnyFunctor(Move(funcs))), ...);
+        Vector<AnyFunctor> functors;
+        (functors.pushBack(detail::createAnyFunctor(Move(funcs))), ...);
         return functors;
     }
 }

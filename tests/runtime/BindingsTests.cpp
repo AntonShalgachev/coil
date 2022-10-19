@@ -166,6 +166,58 @@ namespace coil
             return "CompoundType";
         }
     };
+
+    template<typename T>
+    struct TypeSerializer<Vector<T>>
+    {
+        static Expected<Vector<T>, String> fromString(Value const& input);
+        static String toString(Vector<T> const& value);
+    };
+
+    template<typename T>
+    coil::Expected<Vector<T>, String> coil::TypeSerializer<Vector<T>>::fromString(Value const& input)
+    {
+        Vector<T> result;
+        result.reserve(input.subvalues.size());
+
+        for (StringView subvalue : input.subvalues)
+        {
+            auto expectedArg = TypeSerializer<T>::fromString(subvalue);
+            if (!expectedArg)
+                return errors::createGenericError<Vector<T>>(input, Move(expectedArg).error());
+
+            result.pushBack(*Move(expectedArg));
+        }
+
+        return result;
+    }
+
+    template<typename T>
+    coil::String coil::TypeSerializer<Vector<T>>::toString(Vector<T> const& value)
+    {
+        String result = "{";
+        StringView separator = "";
+
+        for (T const& element : value)
+        {
+            result += separator;
+            result += TypeSerializer<T>::toString(element);
+            separator = ", ";
+        }
+        result += "}";
+
+        return result;
+    }
+
+    template<typename T>
+    struct TypeName<coil::Vector<T>>
+    {
+        static coil::StringView name()
+        {
+            static coil::String typeName = "vector<" + coil::String{ coil::TypeName<T>::name() } + ">";
+            return typeName;
+        }
+    };
 }
 
 TEST(BindingsTests, TestVoidFunctionCallStats)
@@ -537,11 +589,11 @@ TEST(BindingsTests, TestErrorWrongArgumentTypes)
 TEST(BindingsTests, TestErrorWrongArgumentTypesVector)
 {
     coil::Bindings bindings;
-    bindings["sum"] = [](std::vector<int> const&) {};
+    bindings["sum"] = [](coil::Vector<int> const&) {};
     auto result = bindings.execute("sum (foo bar baz)");
 
     EXPECT_EQ(result.errors.size(), 1u);
-    EXPECT_PRED2(containsError, result.errors, "Unable to convert 'foo bar baz' to type 'std::vector<int>': Unable to convert 'foo' to type 'int'");
+    EXPECT_PRED2(containsError, result.errors, "Unable to convert 'foo bar baz' to type 'vector<int>': Unable to convert 'foo' to type 'int'");
 }
 
 TEST(BindingsTests, TestErrorWrongArgumentTypesVariable)
@@ -611,7 +663,7 @@ TEST(BindingsTests, TestContextError)
 TEST(BindingsTests, TestVectorFunctionReturnValue)
 {
     coil::Bindings bindings;
-    bindings["sum"] = [](std::vector<int> const& values) { return std::accumulate(values.begin(), values.end(), 0); };
+    bindings["sum"] = [](coil::Vector<int> const& values) { return std::accumulate(values.begin(), values.end(), 0); };
     auto result = bindings.execute("sum (1 1 2 3 5 8)");
 
     EXPECT_EQ(result.errors.size(), 0u);
@@ -872,7 +924,7 @@ TEST(BindingsTests, TestTypeNames)
 
 TEST(BindingsTests, TestAnyArgToString)
 {
-    coil::Value value({"foo", "bar"});
+    coil::Value value = createVectorValue({"foo", "bar"});
     EXPECT_EQ(value.str(), "foo bar");
 }
 
@@ -941,7 +993,7 @@ TEST(BindingsTests, TestFunctorMetadata)
 
     coil::AnyFunctor const& functor = command.functors[0];
 
-    std::vector<coil::StringView> const& parameterTypes = functor.parameterTypes();
+    coil::Vector<coil::StringView> const& parameterTypes = functor.parameterTypes();
     ASSERT_EQ(parameterTypes.size(), 2u);
     EXPECT_EQ(parameterTypes[0], "int");
     EXPECT_EQ(parameterTypes[1], "float");
