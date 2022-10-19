@@ -52,6 +52,7 @@ add_library(coil
     "include/coil/Value.h"
     "include/coil/Variable.h"
     "include/coil/Vector.h"
+    "include/coil/Optional.h"
 
     "src/Coil.cpp"
     "src/String.cpp"

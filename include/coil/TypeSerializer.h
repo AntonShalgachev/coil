@@ -107,38 +107,6 @@ namespace coil
     //////////////////////////////////////
 
     template<typename T>
-    struct TypeSerializer<std::optional<T>>
-    {
-        static Expected<std::optional<T>, String> fromString(Value const& input);
-
-        static String toString(std::optional<T> const& value);
-    };
-
-    template<typename T>
-    coil::Expected<std::optional<T>, String> coil::TypeSerializer<std::optional<T>>::fromString(Value const& input)
-    {
-        if (input.subvalues.empty() || input.subvalues[0].empty())
-            return std::optional<T>{};
-
-        auto innerValue = TypeSerializer<T>::fromString(input.subvalues[0]);
-        if (innerValue)
-            return std::optional<T>{*innerValue};
-
-        return errors::createGenericError<std::optional<T>>(input, Move(innerValue).error());
-    }
-
-    template<typename T>
-    coil::String coil::TypeSerializer<std::optional<T>>::toString(std::optional<T> const& value)
-    {
-        if (!value.has_value())
-            return {};
-
-        return TypeSerializer<T>::toString(value.value());
-    }
-
-    //////////////////////////////////////
-
-    template<typename T>
     struct TypeSerializer<T*>
     {
         static String toString(T* const& value);

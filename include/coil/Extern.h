@@ -14,15 +14,13 @@
 #include <optional>
 
 extern template class coil::Vector<coil::String>;
-extern template class std::optional<coil::String>;
-extern template std::optional<coil::String>::optional(coil::String&&);
+extern template class coil::Optional<coil::String>;
 
 extern template class coil::Vector<coil::Value>;
 extern template class coil::Vector<coil::NamedValue>;
 
 extern template class coil::Vector<coil::StringView>;
 
-extern template class std::optional<coil::Value>;
 extern template class coil::Expected<coil::Value, coil::NamedArgs::Error>;
 
 extern template class coil::BasicStringWrapper<coil::String>;
@@ -61,10 +59,10 @@ extern template coil::String&& coil::Forward<coil::String>(coil::String&) noexce
     SPECIFIER template T&& coil::Move<T&>(T&) noexcept
 
 #define COIL_NAMED_ARGS_TEMPLATE_BASE(SPECIFIER, T)                                                                   \
-    SPECIFIER template class std::optional<T>;                                                                        \
+    SPECIFIER template class coil::Optional<T>;                                                                        \
     SPECIFIER template class coil::Expected<T, coil::NamedArgs::Error>;                                               \
     SPECIFIER template coil::Expected<T, coil::NamedArgs::Error> coil::NamedArgs::get<T>(coil::StringView key) const; \
-    SPECIFIER template std::optional<T> coil::NamedArgs::getOrReport<T>(coil::StringView key, coil::NamedArgs::ArgType argType, std::optional<T> defaultValue) const
+    SPECIFIER template coil::Optional<T> coil::NamedArgs::getOrReport<T>(coil::StringView key, coil::NamedArgs::ArgType argType, coil::Optional<T> defaultValue) const
 
 #define COIL_FUNCTION_ARGS_TEMPLATE_BASE(SPECIFIER, ...)                                         \
     SPECIFIER template coil::AnyFunctor::AnyFunctor(coil::detail::FunctionWrapper<__VA_ARGS__>); \

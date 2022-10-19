@@ -3,8 +3,7 @@
 #include "ExecutionInput.h"
 #include "coil/String.h"
 #include "coil/Vector.h"
-
-#include <optional>
+#include "coil/Optional.h"
 
 namespace coil
 {
@@ -12,7 +11,7 @@ namespace coil
     {
         ExecutionInput input;
         Vector<String> errors;
-        std::optional<String> returnValue;
+        Optional<String> returnValue;
         String output; // TODO use a custom string class to avoid reallocations when appending
     };
 }

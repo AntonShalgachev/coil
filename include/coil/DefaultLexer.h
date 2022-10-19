@@ -6,12 +6,12 @@
 #include "Utils.h"
 #include "String.h"
 #include "StringView.h"
+#include "Optional.h"
 #include "Vector.h"
 #include "detail/Algorithm.h"
 #include "detail/Utility.h"
 
 #include <cctype>
-#include <optional>
 
 // TODO move implementation to cpp
 
@@ -98,7 +98,7 @@ namespace coil
             return CharType::String;
         }
 
-        static std::optional<TokenType> convertToTokenType(CharType type)
+        static Optional<TokenType> convertToTokenType(CharType type)
         {
             switch (type)
             {
@@ -232,8 +232,8 @@ namespace coil
 
             struct ArgTokens
             {
-                std::optional<std::size_t> primaryTokenIndex;
-                std::optional<std::size_t> secondaryTokenIndex;
+                Optional<std::size_t> primaryTokenIndex;
+                Optional<std::size_t> secondaryTokenIndex;
 
                 void reset()
                 {

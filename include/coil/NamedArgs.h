@@ -2,6 +2,7 @@
 
 #include "Value.h"
 #include "String.h"
+#include "Optional.h"
 #include "detail/CallContext.h"
 #include "detail/Functional.h"
 #include "detail/Utility.h"
@@ -43,7 +44,7 @@ namespace coil
         Value const* getOrReport(StringView key, ArgType argType = ArgType::Optional) const;
 
         template<typename T>
-        std::optional<T> getOrReport(StringView key, ArgType argType = ArgType::Optional, std::optional<T> defaultValue = {}) const;
+        Optional<T> getOrReport(StringView key, ArgType argType = ArgType::Optional, Optional<T> defaultValue = {}) const;
 
         std::size_t size() const;
 
@@ -72,7 +73,7 @@ namespace coil
     }
 
     template<typename T>
-    std::optional<T> NamedArgs::getOrReport(StringView key, ArgType argType, std::optional<T> defaultValue) const
+    Optional<T> NamedArgs::getOrReport(StringView key, ArgType argType, Optional<T> defaultValue) const
     {
         if (Expected<T, Error> value = get<T>(key))
             return *value;

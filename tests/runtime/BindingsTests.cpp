@@ -218,6 +218,46 @@ namespace coil
             return typeName;
         }
     };
+
+    template<typename T>
+    struct TypeSerializer<coil::Optional<T>>
+    {
+        static Expected<coil::Optional<T>, String> fromString(Value const& input);
+
+        static String toString(coil::Optional<T> const& value);
+    };
+
+    template<typename T>
+    coil::Expected<coil::Optional<T>, String> coil::TypeSerializer<coil::Optional<T>>::fromString(Value const& input)
+    {
+        if (input.subvalues.empty() || input.subvalues[0].empty())
+            return coil::Optional<T>{};
+
+        auto innerValue = TypeSerializer<T>::fromString(input.subvalues[0]);
+        if (innerValue)
+            return coil::Optional<T>{*innerValue};
+
+        return errors::createGenericError<coil::Optional<T>>(input, Move(innerValue).error());
+    }
+
+    template<typename T>
+    coil::String coil::TypeSerializer<coil::Optional<T>>::toString(coil::Optional<T> const& value)
+    {
+        if (!value.hasValue())
+            return {};
+
+        return TypeSerializer<T>::toString(*value);
+    }
+
+    template<typename T>
+    struct TypeName<coil::Optional<T>>
+    {
+        static coil::StringView name()
+        {
+            static coil::String typeName = "optional<" + coil::String{ coil::TypeName<T>::name() } + ">";
+            return typeName;
+        }
+    };
 }
 
 TEST(BindingsTests, TestVoidFunctionCallStats)
@@ -349,7 +389,7 @@ TEST(BindingsTests, TestVoidFunctionCall)
     auto result = bindings.execute("func");
 
     EXPECT_EQ(result.errors.size(), 0u);
-    EXPECT_FALSE(result.returnValue.has_value());
+    EXPECT_FALSE(result.returnValue.hasValue());
 }
 
 TEST(BindingsTests, TestFunctionWithStringArgument)
@@ -360,13 +400,13 @@ TEST(BindingsTests, TestFunctionWithStringArgument)
     {
         auto result = bindings.execute("func foo");
         EXPECT_EQ(result.errors.size(), 0u);
-        ASSERT_TRUE(result.returnValue.has_value());
+        ASSERT_TRUE(result.returnValue.hasValue());
         EXPECT_EQ(*result.returnValue, "foo");
     }
     {
         auto result = bindings.execute("func \"foo bar baz\"");
         EXPECT_EQ(result.errors.size(), 0u);
-        ASSERT_TRUE(result.returnValue.has_value());
+        ASSERT_TRUE(result.returnValue.hasValue());
         EXPECT_EQ(*result.returnValue, "foo bar baz");
     }
 }
@@ -380,7 +420,7 @@ TEST(BindingsTests, TestVariableRead)
     auto result = bindings.execute("var");
 
     EXPECT_EQ(result.errors.size(), 0u);
-    ASSERT_TRUE(result.returnValue.has_value());
+    ASSERT_TRUE(result.returnValue.hasValue());
     EXPECT_EQ(*result.returnValue, "42");
     EXPECT_EQ(variable, 42);
 }
@@ -394,7 +434,7 @@ TEST(BindingsTests, TestVariableWrite)
     auto result = bindings.execute("var 365");
 
     EXPECT_EQ(result.errors.size(), 0u);
-    ASSERT_TRUE(result.returnValue.has_value());
+    ASSERT_TRUE(result.returnValue.hasValue());
     EXPECT_EQ(*result.returnValue, "365");
     EXPECT_EQ(variable, 365);
 }
@@ -408,7 +448,7 @@ TEST(BindingsTests, TestReadonlyVariableRead)
     auto result = bindings.execute("var");
 
     EXPECT_EQ(result.errors.size(), 0u);
-    ASSERT_TRUE(result.returnValue.has_value());
+    ASSERT_TRUE(result.returnValue.hasValue());
     EXPECT_EQ(*result.returnValue, "42");
     EXPECT_EQ(variable, 42);
 }
@@ -440,51 +480,51 @@ TEST(BindingsTests, TestOverloaded)
     auto result3 = bindings.execute("func 42 42 42");
 
     EXPECT_EQ(result1.errors.size(), 0u);
-    ASSERT_TRUE(result1.returnValue.has_value());
+    ASSERT_TRUE(result1.returnValue.hasValue());
     EXPECT_EQ(*result1.returnValue, "func1");
 
     EXPECT_EQ(result2.errors.size(), 0u);
-    ASSERT_TRUE(result2.returnValue.has_value());
+    ASSERT_TRUE(result2.returnValue.hasValue());
     EXPECT_EQ(*result2.returnValue, "func2");
 
     EXPECT_EQ(result3.errors.size(), 0u);
-    ASSERT_TRUE(result3.returnValue.has_value());
+    ASSERT_TRUE(result3.returnValue.hasValue());
     EXPECT_EQ(*result3.returnValue, "func3");
 }
 
 TEST(BindingTests, TestOptionalEmpty)
 {
     coil::Bindings bindings;
-    bindings["func"] = [](std::optional<int> arg) { return arg; };
+    bindings["func"] = [](coil::Optional<int> arg) { return arg; };
 
     auto result = bindings.execute("func ()");
 
     EXPECT_EQ(result.errors.size(), 0u);
-    ASSERT_TRUE(result.returnValue.has_value());
+    ASSERT_TRUE(result.returnValue.hasValue());
     EXPECT_EQ(*result.returnValue, "");
 }
 
 TEST(BindingTests, TestOptionalWithValue)
 {
     coil::Bindings bindings;
-    bindings["func"] = [](std::optional<int> arg) { return arg; };
+    bindings["func"] = [](coil::Optional<int> arg) { return arg; };
 
     auto result = bindings.execute("func 42");
 
     EXPECT_EQ(result.errors.size(), 0u);
-    ASSERT_TRUE(result.returnValue.has_value());
+    ASSERT_TRUE(result.returnValue.hasValue());
     EXPECT_EQ(*result.returnValue, "42");
 }
 
 TEST(BindingTests, TestOptionalWithError)
 {
     coil::Bindings bindings;
-    bindings["func"] = [](std::optional<int> arg) { return arg; };
+    bindings["func"] = [](coil::Optional<int> arg) { return arg; };
 
     auto result = bindings.execute("func foo");
 
     EXPECT_EQ(result.errors.size(), 1u);
-    EXPECT_PRED2(containsError, result.errors, "Unable to convert 'foo' to type 'std::optional<int>': Unable to convert 'foo' to type 'int'");
+    EXPECT_PRED2(containsError, result.errors, "Unable to convert 'foo' to type 'optional<int>': Unable to convert 'foo' to type 'int'");
 }
 
 TEST(BindingsTests, TestCompoundSyntax)
@@ -496,7 +536,7 @@ TEST(BindingsTests, TestCompoundSyntax)
         auto result = bindings.execute(command);
 
         EXPECT_EQ(result.errors.size(), 0u);
-        ASSERT_TRUE(result.returnValue.has_value());
+        ASSERT_TRUE(result.returnValue.hasValue());
         EXPECT_EQ(*result.returnValue, expectedResult);
     };
 
@@ -616,7 +656,7 @@ TEST(BindingsTests, TestFunctionReturnValue)
     auto result = bindings.execute("sum 8 800");
 
     EXPECT_EQ(result.errors.size(), 0u);
-    ASSERT_TRUE(result.returnValue.has_value());
+    ASSERT_TRUE(result.returnValue.hasValue());
     EXPECT_EQ(*result.returnValue, "808");
 }
 
@@ -667,7 +707,7 @@ TEST(BindingsTests, TestVectorFunctionReturnValue)
     auto result = bindings.execute("sum (1 1 2 3 5 8)");
 
     EXPECT_EQ(result.errors.size(), 0u);
-    ASSERT_TRUE(result.returnValue.has_value());
+    ASSERT_TRUE(result.returnValue.hasValue());
     EXPECT_EQ(*result.returnValue, "20");
 }
 
@@ -810,7 +850,7 @@ TEST(BindingsTests, TestNamedArgsGetOrReport)
 
         {
             auto o = namedArgs.getOrReport<int>("non_existent_arg", coil::NamedArgs::ArgType::Optional, 18);
-            ASSERT_TRUE(o.has_value());
+            ASSERT_TRUE(o.hasValue());
             EXPECT_EQ(*o, 18);
             EXPECT_FALSE(context.hasErrors());
         }

@@ -8,15 +8,13 @@
 
 // Explicitly instantiate used templates here in order to avoid intantiating them in each source file
 template class coil::Vector<coil::String>;
-template class std::optional<coil::String>;
-template std::optional<coil::String>::optional(coil::String&&);
+template class coil::Optional<coil::String>;
 
 template class coil::Vector<coil::Value>;
 template class coil::Vector<coil::NamedValue>;
 
 template class coil::Vector<coil::StringView>;
 
-template class std::optional<coil::Value>;
 template class coil::Expected<coil::Value, coil::NamedArgs::Error>;
 
 template class coil::BasicStringWrapper<coil::String>;

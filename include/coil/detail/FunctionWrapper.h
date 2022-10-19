@@ -6,6 +6,7 @@
 #include "../Types.h"
 #include "../String.h"
 #include "../StringView.h"
+#include "../Optional.h"
 #include "FuncTraits.h"
 #include "Utility.h"
 #include "TypeTraits.h"
@@ -51,16 +52,16 @@ namespace coil::detail
         FunctionWrapper& operator=(FunctionWrapper const& rhs) = delete;
         FunctionWrapper& operator=(FunctionWrapper&& rhs) = delete;
 
-        std::optional<String> invoke(Args... args);
+        Optional<String> invoke(Args... args);
 
         StringView returnType;
 
     private:
-        using CallFuncPtr = std::optional<String> (FunctionWrapper::*)(Args... args);
+        using CallFuncPtr = Optional<String> (FunctionWrapper::*)(Args... args);
         using DestroyFuncPtr = void (FunctionWrapper::*)();
 
         template<typename Func, typename C>
-        std::optional<String> typedCall(Args... args)
+        Optional<String> typedCall(Args... args)
         {
             Func& func = *static_cast<Func*>(m_func);
             [[maybe_unused]] C* obj = static_cast<C*>(m_obj);
@@ -115,7 +116,7 @@ namespace coil::detail
     }
 
     template<typename... Args>
-    std::optional<String> FunctionWrapper<Args...>::invoke(Args... args)
+    Optional<String> FunctionWrapper<Args...>::invoke(Args... args)
     {
         return (this->*m_callFunc)(Move(args)...);
     }
