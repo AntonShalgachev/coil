@@ -6,3 +6,4 @@ namespace coil
 }
 
 void* operator new(size_t, coil::NewTag, void* p);
+void operator delete(void*, coil::NewTag, void*);

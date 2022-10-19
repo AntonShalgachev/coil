@@ -14,8 +14,15 @@ namespace coil
 
         static Vector<StringView> names()
         {
-            static StringView data[size] = {TypeName<Args>::name()...};
-            return Vector<StringView> { data, size };
+            if constexpr (size > 0)
+            {
+                static StringView data[size] = { TypeName<Args>::name()... };
+                return Vector<StringView> { data, size };
+            }
+            else
+            {
+                return Vector<StringView>{};
+            }
         }
     };
 }
