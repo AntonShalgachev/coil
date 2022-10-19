@@ -78,7 +78,7 @@ namespace coil::detail
     };
 
     template<typename Func>
-    struct FuncTraits<Func, std::void_t<decltype(&Func::operator())>> : public FuncTraitsImpl<decltype(&Func::operator())>
+    struct FuncTraits<Func, VoidT<decltype(&Func::operator())>> : public FuncTraitsImpl<decltype(&Func::operator())>
     {
     };
 }

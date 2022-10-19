@@ -2,14 +2,14 @@
 
 #include "../StringView.h"
 
+#include <functional> // TODO remove
+
 namespace coil
 {
     template<typename UnderlyingType>
     class BasicStringWrapper
     {
     public:
-        static_assert(std::is_convertible_v<UnderlyingType, StringView>, "UnderlyingType should be convertible to StringView");
-
         BasicStringWrapper(StringView str) : m_str(str) {}
 
         StringView view() const
@@ -32,6 +32,7 @@ namespace coil
     };
 }
 
+// TODO remove
 namespace std
 {
     template<typename UnderlyingType>

@@ -9,8 +9,6 @@
 
 #include "detail/StringConv.h"
 
-#include <type_traits> // TODO remove
-
 namespace coil
 {
     namespace errors
@@ -18,7 +16,6 @@ namespace coil
         template<typename T>
         Unexpected<String> createGenericError(Value const& input, StringView details = {})
         {
-            static_assert(std::is_convertible_v<decltype(TypeName<T>::name()), StringView>, "TypeName<T>::name() has to be convertible to StringView");
             StringView typeName = TypeName<T>::name();
 
             String representation = input.str();
@@ -44,7 +41,7 @@ namespace coil
     //////////////////////////////////////
 
     template<typename T>
-    struct TypeSerializer<T, std::enable_if_t<std::is_arithmetic_v<T>>>
+    struct TypeSerializer<T, EnableIfT<IsArithmetic<T>>>
     {
         static Expected<T, String> fromString(Value const& input);
 
@@ -52,7 +49,7 @@ namespace coil
     };
 
     template<typename T>
-    coil::Expected<T, String> TypeSerializer<T, std::enable_if_t<std::is_arithmetic_v<T>>>::fromString(Value const& input)
+    coil::Expected<T, String> TypeSerializer<T, EnableIfT<IsArithmetic<T>>>::fromString(Value const& input)
     {
         if (input.subvalues.size() != 1)
             return errors::createMismatchedSubvaluesError<T>(input, 1);
@@ -64,7 +61,7 @@ namespace coil
     }
 
     template<typename T>
-    coil::String TypeSerializer<T, std::enable_if_t<std::is_arithmetic_v<T>>>::toString(T const& value)
+    coil::String TypeSerializer<T, EnableIfT<IsArithmetic<T>>>::toString(T const& value)
     {
         return coil::toString(value);
     }
@@ -118,9 +115,6 @@ namespace coil
         if (!value)
             return "null";
 
-        using TS = TypeSerializer<std::remove_cv_t<std::remove_reference_t<T>>>;
-        static_assert(std::is_convertible_v<decltype(TS::toString(*value)), coil::String>, "TypeSerializer<T>::toString() should be convertible to String");
-
-        return TS::toString(*value);
+        return TypeSerializer<DecayT<T>>::toString(*value);
     }
 }
