@@ -46,7 +46,7 @@ namespace coil
         template<typename T>
         Optional<T> getOrReport(StringView key, ArgType argType = ArgType::Optional, Optional<T> defaultValue = {}) const;
 
-        std::size_t size() const;
+        size_t size() const;
 
         NamedArgsIteratorT begin() const;
 

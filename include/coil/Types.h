@@ -9,7 +9,7 @@ namespace coil
     template<typename... Args>
     struct Types
     {
-        static std::size_t constexpr size = sizeof...(Args);
+        static size_t constexpr size = sizeof...(Args);
         using IndicesType = MakeIndexSequence<size>;
 
         static Vector<StringView> names()

@@ -11,7 +11,7 @@
 #include "detail/Algorithm.h"
 #include "detail/Utility.h"
 
-#include <cctype>
+#include <ctype.h>
 
 // TODO move implementation to cpp
 
@@ -63,7 +63,7 @@ namespace coil
 
         static bool isSpace(unsigned char c)
         {
-            return std::isspace(c);
+            return isspace(c);
         }
 
         bool isGroupChar(unsigned char c) const
@@ -117,7 +117,7 @@ namespace coil
         {
             Vector<StringView> result;
 
-            for (std::size_t i = 0; i < str.length(); i++)
+            for (size_t i = 0; i < str.length(); i++)
             {
                 while ((i < str.length()) && isGroupSeparator(str[i]))
                     i++;
@@ -125,7 +125,7 @@ namespace coil
                 if (i >= str.length())
                     break;
 
-                std::size_t stringBegin = i;
+                size_t stringBegin = i;
                 bool inQuotes = false;
                 auto shouldSkipChar = [this](unsigned char c, bool inQuotes) { return inQuotes || !isGroupSeparator(c); };
                 while ((i < str.length()) && shouldSkipChar(str[i], inQuotes))
@@ -135,7 +135,7 @@ namespace coil
                     i++;
                 }
 
-                std::size_t stringEnd = i;
+                size_t stringEnd = i;
                 if (isQuote(str[stringBegin]) && isQuote(str[stringEnd - 1]))
                 {
                     stringBegin++;
@@ -160,7 +160,7 @@ namespace coil
         {
             Vector<Token> tokens;
 
-            for (std::size_t i = 0; i < str.length(); i++)
+            for (size_t i = 0; i < str.length(); i++)
             {
                 while ((i < str.length()) && getCharType(str[i]) == CharType::Space)
                     i++;
@@ -168,7 +168,7 @@ namespace coil
                 if (i >= str.length())
                     break;
 
-                std::size_t tokenBegin = i;
+                size_t tokenBegin = i;
                 switch (getCharType(str[i]))
                 {
                 case CharType::String:
@@ -232,8 +232,8 @@ namespace coil
 
             struct ArgTokens
             {
-                Optional<std::size_t> primaryTokenIndex;
-                Optional<std::size_t> secondaryTokenIndex;
+                Optional<size_t> primaryTokenIndex;
+                Optional<size_t> secondaryTokenIndex;
 
                 void reset()
                 {
@@ -274,7 +274,7 @@ namespace coil
                 argTokens.reset();
             };
 
-            for (std::size_t i = 1; i < tokens.size(); i++)
+            for (size_t i = 1; i < tokens.size(); i++)
             {
                 Token const& token = tokens[i];
 

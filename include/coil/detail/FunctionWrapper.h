@@ -11,8 +11,6 @@
 #include "Utility.h"
 #include "TypeTraits.h"
 
-#include <optional>
-
 namespace coil::detail
 {
     template<typename... Args>

@@ -3,8 +3,9 @@
 
 #include "coil/detail/Utility.h"
 
-#include <cstdarg>
+#include <stdarg.h>
 #include <stdio.h>
+#include <ctype.h>
 
 // Explicitly instantiate used templates here in order to avoid intantiating them in each source file
 template class coil::Vector<coil::String>;
@@ -91,7 +92,7 @@ namespace coil
         return m_storage->invoke(context);
     }
 
-    std::size_t AnyFunctor::arity() const
+    size_t AnyFunctor::arity() const
     {
         return m_parameterTypes.size();
     }
@@ -216,7 +217,7 @@ namespace coil
         String expectedStr;
         expectedStr.reserve(functors.size() * 3); // N + (N-2)*2 + 4
 
-        for (std::size_t i = 0; i < functors.size(); i++)
+        for (size_t i = 0; i < functors.size(); i++)
         {
             if (i > 0 && i != functors.size() - 1)
                 expectedStr += ", ";
@@ -226,7 +227,7 @@ namespace coil
             expectedStr += toString(functors[i].arity());
         }
 
-        std::size_t const actualArgsCount = context.input.arguments.size();
+        size_t const actualArgsCount = context.input.arguments.size();
         auto error = sprintf("Wrong number of arguments to '%.*s': expected %s, got %d", context.input.name.length(), context.input.name.data(), expectedStr.cStr(), actualArgsCount);
         context.reportError(coil::Move(error));
     }
@@ -248,7 +249,7 @@ namespace coil
 
     void Context::logf(char const* format, ...)
     {
-        std::va_list args;
+        va_list args;
         va_start(args, format);
         log(vsprintf(format, args));
         va_end(args);
@@ -256,7 +257,7 @@ namespace coil
 
     void Context::loglinef(char const* format, ...)
     {
-        std::va_list args;
+        va_list args;
         va_start(args, format);
         logline(vsprintf(format, args));
         va_end(args);
@@ -299,7 +300,7 @@ namespace coil
         return nullptr;
     }
 
-    std::size_t NamedArgs::size() const
+    size_t NamedArgs::size() const
     {
         return m_context.input.namedArguments.size();
     }
@@ -366,12 +367,12 @@ namespace coil
     coil::Expected<bool, String> coil::TypeSerializer<bool>::fromString(Value const& input)
     {
         auto equalCaseInsensitive = [](StringView a, StringView b) {
-            std::size_t const length = a.length();
+            size_t const length = a.length();
             if (b.length() != length)
                 return false;
 
-            for (std::size_t i = 0; i < a.length(); i++)
-                if (std::tolower(a[i]) != std::tolower(b[i]))
+            for (size_t i = 0; i < a.length(); i++)
+                if (tolower(a[i]) != tolower(b[i]))
                     return false;
 
             return true;
@@ -434,7 +435,7 @@ namespace coil
     /// Utils.h ///
     String sprintf(char const* format, ...)
     {
-        std::va_list args;
+        va_list args;
         va_start(args, format);
         auto res = vsprintf(format, args);
         va_end(args);
@@ -442,11 +443,11 @@ namespace coil
         return res;
     }
 
-    String vsprintf(char const* format, std::va_list args)
+    String vsprintf(char const* format, va_list args)
     {
-        std::va_list args2;
+        va_list args2;
         va_copy(args2, args);
-        std::size_t stringSize = static_cast<std::size_t>(vsnprintf(nullptr, 0, format, args2));
+        size_t stringSize = static_cast<size_t>(vsnprintf(nullptr, 0, format, args2));
         va_end(args2);
 
         String str;
@@ -454,7 +455,7 @@ namespace coil
 
         [[maybe_unused]] int result = vsnprintf(str.data(), str.size() + 1, format, args);
 
-        assert(result >= 0 && static_cast<std::size_t>(result) <= str.size());
+        assert(result >= 0 && static_cast<size_t>(result) <= str.size());
 
         return str;
     }

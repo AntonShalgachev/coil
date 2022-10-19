@@ -2,8 +2,6 @@
 
 #include "../StringView.h"
 
-#include <optional>
-
 namespace coil
 {
     template<typename UnderlyingType>
@@ -41,7 +39,7 @@ namespace std
     {
         size_t operator()(coil::BasicStringWrapper<UnderlyingType> const& value) const noexcept
         {
-            std::size_t hash = 0;
+            size_t hash = 0;
 
             coil::StringView str = value.view();
 

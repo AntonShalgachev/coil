@@ -9,7 +9,7 @@
 
 #include "detail/StringConv.h"
 
-#include <optional>
+#include <type_traits> // TODO remove
 
 namespace coil
 {
@@ -30,7 +30,7 @@ namespace coil
         }
 
         template<typename T>
-        Unexpected<String> createMismatchedSubvaluesError(Value const& input, std::size_t expectedSubvalues)
+        Unexpected<String> createMismatchedSubvaluesError(Value const& input, size_t expectedSubvalues)
         {
             return createGenericError<T>(input, sprintf("Expected %d subvalues, got %d", expectedSubvalues, input.subvalues.size()));
         }

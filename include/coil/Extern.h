@@ -11,8 +11,6 @@
 #include "detail/StringWrapper.h"
 #include "detail/Utility.h"
 
-#include <optional>
-
 extern template class coil::Vector<coil::String>;
 extern template class coil::Optional<coil::String>;
 

@@ -65,7 +65,7 @@ namespace coil
         ~AnyFunctor();
         void invokeTrampoline(detail::CallContext& context);
 
-        std::size_t arity() const;
+        size_t arity() const;
         Vector<StringView> const& parameterTypes() const;
         StringView returnType() const;
 
