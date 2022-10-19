@@ -24,6 +24,14 @@ namespace coil
         return static_cast<T&&>(arg);
     }
 
+    template<typename T>
+    void exchange(T& lhs, T& rhs)
+    {
+        T temp = Move(lhs);
+        lhs = Move(rhs);
+        rhs = Move(temp);
+    }
+
     template<typename Type, Type... Is>
     struct IntegerSequence {};
 

@@ -3,8 +3,6 @@
 #include "detail/Utility.h" // TODO remove
 #include "detail/New.h"
 
-#include <utility> // TODO remove
-
 #include <stddef.h>
 #include <assert.h>
 
@@ -74,7 +72,7 @@ namespace coil
             if (m_size + 1 > m_capacity)
                 grow(m_size + 1); // TODO think about grow strategy
 
-            new (NewTag{}, m_items + m_size) T(std::move(item));
+            new (NewTag{}, m_items + m_size) T(Move(item));
             m_size++;
         }
 
@@ -116,11 +114,6 @@ namespace coil
             return true;
         }
 
-        friend void swap(Vector& lhs, Vector& rhs)
-        {
-            lhs.swap(rhs);
-        }
-
     private:
         void grow(size_t capacity)
         {
@@ -130,7 +123,7 @@ namespace coil
             {
                 for (size_t i = 0; i < m_size; i++)
                 {
-                    new (NewTag{}, items + i) T(std::move(m_items[i]));
+                    new (NewTag{}, items + i) T(Move(m_items[i]));
                     m_items[i].~T();
                 }
                 operator delete(m_items);
@@ -166,10 +159,9 @@ namespace coil
 
         void swap(Vector& rhs) noexcept
         {
-            // TODO
-            std::swap(m_items, rhs.m_items);
-            std::swap(m_size, rhs.m_size);
-            std::swap(m_capacity, rhs.m_capacity);
+            coil::exchange(m_items, rhs.m_items);
+            coil::exchange(m_size, rhs.m_size);
+            coil::exchange(m_capacity, rhs.m_capacity);
         }
 
     private:

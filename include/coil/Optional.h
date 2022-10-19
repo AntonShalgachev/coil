@@ -96,11 +96,9 @@ namespace coil
 
         void swap(Optional& rhs) noexcept
         {
-            // TODO
-            using std::swap;
             if (m_hasValue && rhs.m_hasValue)
             {
-                swap(m_value, rhs.m_value);
+                coil::exchange(m_value, rhs.m_value);
             }
             else if (m_hasValue && !rhs.m_hasValue)
             {

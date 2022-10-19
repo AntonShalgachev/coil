@@ -68,11 +68,9 @@ namespace coil
 
     AnyFunctor::AnyFunctor(AnyFunctor&& rhs)
     {
-        // TODO
-        using namespace std;
-        swap(rhs.m_storage, m_storage);
-        swap(rhs.m_parameterTypes, m_parameterTypes);
-        swap(rhs.m_returnType, m_returnType);
+        coil::exchange(rhs.m_storage, m_storage);
+        coil::exchange(rhs.m_parameterTypes, m_parameterTypes);
+        coil::exchange(rhs.m_returnType, m_returnType);
     }
 
     AnyFunctor::~AnyFunctor()
