@@ -6,6 +6,9 @@
 
 #include "coil/detail/StdLib.h"
 
+#include <limits.h>
+#include <errno.h>
+
 coil::String coil::toString(int value)
 {
     return coil::sprintf("%d", value);
