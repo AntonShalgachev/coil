@@ -11,6 +11,14 @@
 #include <stdint.h>
 #include <string.h>
 
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable : 4244) // '=': conversion from '__int64' to 'int', possible loss of data
+#pragma warning(disable : 4308) // negative integral constant converted to unsigned type
+#pragma warning(disable : 4245) // 'argument': conversion from '__int64' to 'unsigned __int64', signed/unsigned mismatch
+#pragma warning(disable : 4702) // unreachable code
+#endif
+
 #if LDBL_MANT_DIG == 53 && LDBL_MAX_EXP == 1024
 
 #define LD_B1B_DIG 2
@@ -43,8 +51,6 @@
 #define sh_fromstring(f, s, e) \
 	((f)->buf = (f)->rpos = (unsigned char *)(s), (f)->rend = (unsigned char*)-1, (f)->bufend=(unsigned char *)(e))
 
-using off_t = ptrdiff_t;
-
 namespace
 {
     // Struct is reduced to only necessary fields
@@ -52,10 +58,10 @@ namespace
         unsigned char* rpos, * rend;
         unsigned char* buf, * bufend;
         unsigned char* shend;
-        off_t shlim, shcnt;
+        ptrdiff_t shlim, shcnt;
     };
 
-    void __shlim(FAKE_FILE* f, off_t lim)
+    void __shlim(FAKE_FILE* f, ptrdiff_t lim)
     {
         f->shlim = lim;
         f->shcnt = f->buf - f->rpos;
@@ -647,7 +653,7 @@ namespace
         sh_fromstring(&f, s, e);
         shlim(&f, 0);
         long double y = __floatscan(&f, prec, 1);
-        off_t cnt = shcnt(&f);
+        ptrdiff_t cnt = shcnt(&f);
         if (p) *p = cnt ? (char*)s + cnt : (char*)s;
         return y;
     }
@@ -790,12 +796,12 @@ namespace coil
 {
     float strtof(const char* s, const char* e, char** p)
     {
-        return strtox(s, e, p, 0);
+        return static_cast<float>(strtox(s, e, p, 0));
     }
 
     double strtod(const char* s, const char* e, char** p)
     {
-        return strtox(s, e, p, 1);
+        return static_cast<double>(strtox(s, e, p, 1));
     }
 
     long double strtold(const char* s, const char* e, char** p)
@@ -805,12 +811,12 @@ namespace coil
 
     long strtol(const char* s, const char* e, char** p, int base)
     {
-        return strtox(s, e, p, base, 0UL + LONG_MIN);
+        return static_cast<long>(strtox(s, e, p, base, 0UL + LONG_MIN));
     }
 
     unsigned long strtoul(const char* s, const char* e, char** p, int base)
     {
-        return strtox(s, e, p, base, ULONG_MAX);
+        return static_cast<unsigned long>(strtox(s, e, p, base, ULONG_MAX));
     }
 
     long long strtoll(const char* s, const char* e, char** p, int base)
@@ -823,3 +829,7 @@ namespace coil
         return strtox(s, e, p, base, ULLONG_MAX);
     }
 }
+
+#if defined(_MSC_VER)
+#pragma warning(pop)
+#endif
