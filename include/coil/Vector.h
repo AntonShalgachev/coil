@@ -61,6 +61,8 @@ namespace coil
                 grow(size);
             assert(size <= m_capacity);
 
+            for (size_t i = size; i < m_size; i++)
+                m_items[i].~T();
             for (size_t i = m_size; i < size; i++)
                 new (NewTag{}, m_items + i) T();
 
@@ -130,6 +132,7 @@ namespace coil
     private:
         void grow(size_t capacity)
         {
+            // TODO alignment?
             T* items = static_cast<T*>(operator new(capacity * sizeof(T)));
 
             if (m_items)
