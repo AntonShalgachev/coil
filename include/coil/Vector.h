@@ -76,6 +76,19 @@ namespace coil
             m_size++;
         }
 
+        void popBack()
+        {
+            assert(!empty());
+
+            m_items[m_size - 1].~T();
+            m_size--;
+        }
+
+        void clear()
+        {
+            deallocate();
+        }
+
         T* data() { return m_items; }
         T const* data() const { return m_items; }
         size_t size() const { return m_size; }
