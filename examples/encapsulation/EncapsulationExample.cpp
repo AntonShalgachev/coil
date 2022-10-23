@@ -4,17 +4,15 @@
 
 #include <iostream>
 
+#include "assert.h"
+
 // Try undefining this macro to remove command bindings from Subsystem
 // This might be useful to remove the commands from the Release build
 #define DEBUG_CONSOLE_ENABLED
 
 namespace utils
 {
-    coil::Bindings& getGlobalBindings()
-    {
-        static coil::Bindings bindings;
-        return bindings;
-    }
+    std::unique_ptr<coil::Bindings> g_globalBindings;
 
     // This helper class can be used to automatically remove registered commands upon destructor
     // It relies on coil::BindingProxy, but can be implemented in other ways without BindingProxy
@@ -43,7 +41,7 @@ namespace utils
         template<typename Functor>
         void add(coil::StringView name, Functor&& functor)
         {
-            getGlobalBindings().add(name, std::forward<Functor>(functor));
+            utils::g_globalBindings->add(name, std::forward<Functor>(functor));
             m_names.push_back(coil::String{name});
         }
 
@@ -56,7 +54,7 @@ namespace utils
         void clear()
         {
             for (auto const& name : m_names)
-                getGlobalBindings().remove(name);
+                utils::g_globalBindings->remove(name);
             m_names.clear();
         }
 
@@ -87,7 +85,7 @@ namespace
     private:
         std::string doSomeWork(std::string s, int i)
         {
-            return std::move(s) + std::to_string(i);
+            return m_data + ": " + std::move(s) + std::to_string(i);
         }
 
         float m_time = 3.14f;
@@ -102,7 +100,9 @@ namespace
 
 void EncapsulationExample::run()
 {
-    coil::Bindings& bindings = utils::getGlobalBindings();
+    utils::g_globalBindings = std::make_unique<coil::Bindings>();
+
+    coil::Bindings& bindings = *utils::g_globalBindings;
 
     std::unique_ptr<Subsystem> subsystem;
     bindings["create_subsystem"] = [&subsystem]() { subsystem = std::make_unique<Subsystem>(); };
@@ -122,4 +122,6 @@ void EncapsulationExample::run()
     common::executeCommand(bindings, "destroy_subsystem");
     common::executeCommand(bindings, "subsystem.data");
     common::executeCommand(bindings, "subsystem.do_some_work foo 42");
+
+    utils::g_globalBindings = nullptr;
 }
