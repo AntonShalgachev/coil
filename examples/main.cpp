@@ -16,6 +16,8 @@
 #include "variables/VariablesExample.h"
 #include "variadic/VariadicExample.h"
 
+#include <tuple>
+
 template<typename Example>
 void bindExample(coil::Bindings& bindings, Example& example)
 {
