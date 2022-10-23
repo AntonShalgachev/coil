@@ -36,9 +36,6 @@ extern template void coil::exchange<coil::detail::AnyStorageBase*>(coil::detail:
 
 extern template coil::String&& coil::Forward<coil::String>(coil::String&) noexcept; // TODO remove?
 
-// TODO
-// extern template std::vector<coil::AnyFunctor>::~vector();
-
 #define COIL_TYPE_SERIALIZER_TEMPLATE_BASE(T, SPECIFIER) SPECIFIER template struct coil::TypeSerializer<T>
 
 #define COIL_TYPE_SERIALIZER_EXTERN_TEMPLATE(T) COIL_TYPE_SERIALIZER_TEMPLATE_BASE(T, extern)

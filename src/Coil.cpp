@@ -37,9 +37,6 @@ template void coil::exchange<coil::detail::AnyStorageBase*>(coil::detail::AnySto
 
 template coil::String&& coil::Forward<coil::String>(coil::String&) noexcept;
 
-// TODO
-// template std::vector<coil::AnyFunctor>::~vector();
-
 namespace coil
 {
     namespace detail
