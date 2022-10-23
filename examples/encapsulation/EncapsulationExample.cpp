@@ -3,6 +3,7 @@
 #include "common/ExamplesCommon.h"
 
 #include <iostream>
+#include <memory>
 
 #include "assert.h"
 
