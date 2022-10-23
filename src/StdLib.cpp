@@ -10,6 +10,7 @@
 #include <math.h>
 #include <stdint.h>
 #include <string.h>
+#include <stddef.h>
 
 #ifdef _MSC_VER
 #pragma warning(push)
