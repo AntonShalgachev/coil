@@ -20,7 +20,7 @@
 #pragma warning(disable : 4702) // unreachable code
 #elif defined(__GNUC__)
 #pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wparentheses"
+#pragma GCC diagnostic ignored "-Wparentheses" // suggest parentheses around 'X' in operand of 'Y'
 #endif
 
 #if LDBL_MANT_DIG == 53 && LDBL_MAX_EXP == 1024
