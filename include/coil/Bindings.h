@@ -7,13 +7,12 @@
 #include "Utils.h"
 #include "String.h"
 #include "StringView.h"
+#include "UnorderedMap.h"
+#include "UniquePtr.h"
 #include "detail/FuncTraits.h"
 #include "detail/FunctorCaller.h"
 #include "detail/StringWrapper.h"
 #include "detail/Utility.h"
-
-#include <memory>
-#include <unordered_map>
 
 namespace coil
 {
@@ -33,7 +32,7 @@ namespace coil
 
         Bindings();
 
-        void setLexer(std::unique_ptr<Lexer> lexer);
+        void setLexer(UniquePtr<Lexer> lexer);
 
         BindingProxy<Bindings> operator[](StringView name);
 
@@ -60,9 +59,9 @@ namespace coil
     private:
         void execute(detail::CallContext& context);
 
-        std::unique_ptr<Lexer> m_lexer;
+        UniquePtr<Lexer> m_lexer;
 
-        std::unordered_map<StringWrapper, Command> m_commands;
+        UnorderedMap<StringWrapper, Command> m_commands;
     };
 
     // TODO remove
@@ -89,7 +88,7 @@ namespace coil
             m_bindings.add(m_name, Move(anyFunctors));
             return *this;
         }
-        BindingProxy& operator=(std::nullptr_t)
+        BindingProxy& operator=(nullptr_t)
         {
             m_bindings.remove(m_name);
             return *this;

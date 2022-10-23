@@ -25,7 +25,7 @@ namespace coil
     }
 
     template<typename T>
-    void exchange(T& lhs, T& rhs)
+    void exchange(T& lhs, T& rhs) noexcept
     {
         T temp = Move(lhs);
         lhs = Move(rhs);

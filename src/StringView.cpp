@@ -80,3 +80,15 @@ bool coil::operator!=(StringView const& lhs, StringView const& rhs)
 {
     return !(lhs == rhs);
 }
+
+size_t coil::Hash<coil::StringView>::operator()(StringView const& value)
+{
+    // djb2 from http://www.cse.yorku.ca/~oz/hash.html
+
+    size_t hash = 5381;
+
+    for (char c : value)
+        hash = ((hash << 5) + hash) + c; /* hash * 33 + c */
+
+    return hash;
+}

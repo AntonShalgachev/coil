@@ -174,3 +174,8 @@ coil::String::operator coil::StringView() const
 {
     return StringView{ cStr(), size() };
 }
+
+size_t coil::Hash<coil::String>::operator()(String const& value)
+{
+    return Hash<StringView>{}(value);
+}

@@ -7,6 +7,10 @@
 #include <stdio.h>
 #include <ctype.h>
 
+#if COIL_CONFIG_CATCH_EXCEPTIONS
+#include <exception>
+#endif
+
 // Explicitly instantiate used templates here in order to avoid intantiating them in each source file
 template class coil::Vector<coil::String>;
 template class coil::Optional<coil::String>;
@@ -19,17 +23,17 @@ template class coil::Vector<coil::StringView>;
 template class coil::Expected<coil::Value, coil::NamedArgs::Error>;
 
 template class coil::BasicStringWrapper<coil::String>;
-template struct std::hash<coil::BasicStringWrapper<coil::String>>;
+template struct coil::Hash<coil::BasicStringWrapper<coil::String>>;
 
 template class coil::BindingProxy<coil::Bindings>;
-template class std::unique_ptr<coil::Lexer>;
+template class coil::UniquePtr<coil::Lexer>;
 
 template class coil::Unexpected<coil::String>;
 template coil::Unexpected<coil::String> coil::makeUnexpected(coil::String value);
 template coil::Unexpected<coil::String>&& coil::Move<coil::Unexpected<coil::String>&>(coil::Unexpected<coil::String>&) noexcept;
 
 template coil::detail::AnyStorageBase*&& coil::Move<coil::detail::AnyStorageBase*&>(coil::detail::AnyStorageBase*&) noexcept;
-template void std::swap<coil::detail::AnyStorageBase*>(coil::detail::AnyStorageBase*&, coil::detail::AnyStorageBase*&) noexcept;
+template void coil::exchange<coil::detail::AnyStorageBase*>(coil::detail::AnyStorageBase*&, coil::detail::AnyStorageBase*&) noexcept;
 
 template coil::String&& coil::Forward<coil::String>(coil::String&) noexcept;
 
@@ -108,9 +112,9 @@ namespace coil
     }
 
     /// Bindings.h ///
-    Bindings::Bindings() : m_lexer(std::make_unique<DefaultLexer>()) {}
+    Bindings::Bindings() : m_lexer(makeUnique<DefaultLexer>()) {}
 
-    void Bindings::setLexer(std::unique_ptr<Lexer> lexer)
+    void Bindings::setLexer(UniquePtr<Lexer> lexer)
     {
         m_lexer = coil::Move(lexer);
     }
@@ -129,10 +133,10 @@ namespace coil
 
     Bindings::Command const& Bindings::add(StringView name, Vector<AnyFunctor> anyFunctors)
     {
-        auto it = m_commands.insert_or_assign(name, Command{ StringView{}, coil::Move(anyFunctors) }).first;
-        it->second.name = it->first;
+        auto it = m_commands.insertOrAssign(name, Command{ StringView{}, coil::Move(anyFunctors) });
+        it->value().name = it->key().view();
 
-        return it->second;
+        return it->value();
     }
 
     void Bindings::remove(StringView name)
@@ -146,7 +150,7 @@ namespace coil
         if (it == m_commands.end())
             return nullptr;
 
-        return &it->second;
+        return &it->value();
     }
 
     void Bindings::clear()
@@ -190,7 +194,7 @@ namespace coil
             return;
         }
 
-        Command& container = it->second;
+        Command& container = it->value();
         auto& functors = container.functors;
 
 #if COIL_CONFIG_CATCH_EXCEPTIONS

@@ -15,6 +15,8 @@ set(COIL_COMPILATION_TIME_BENCHMARK_WITH_COIL OFF CACHE BOOL "Use Coil library f
 set(COIL_COMPILATION_TIME_BENCHMARK_WITH_MANUAL OFF CACHE BOOL "Use manually-written bindings for compilation time benchmark")
 
 add_library(coil
+    # TODO sort
+
     "include/coil/detail/Algorithm.h"
     "include/coil/detail/CallContext.h"
     "include/coil/detail/Functional.h"
@@ -53,6 +55,9 @@ add_library(coil
     "include/coil/Variable.h"
     "include/coil/Vector.h"
     "include/coil/Optional.h"
+    "include/coil/UnorderedMap.h"
+    "include/coil/UniquePtr.h"
+    "include/coil/Hash.h"
 
     "src/Coil.cpp"
     "src/String.cpp"

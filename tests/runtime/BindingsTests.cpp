@@ -1013,7 +1013,7 @@ TEST(BindingsTests, TestCustomLexer)
         }
     };
 
-    bindings.setLexer(std::make_unique<CustomLexer>());
+    bindings.setLexer(coil::makeUnique<CustomLexer>());
 
     bindings["func with spaces"] = []() { return 42; };
 

@@ -22,17 +22,17 @@ extern template class coil::Vector<coil::StringView>;
 extern template class coil::Expected<coil::Value, coil::NamedArgs::Error>;
 
 extern template class coil::BasicStringWrapper<coil::String>;
-extern template struct std::hash<coil::BasicStringWrapper<coil::String>>;
+extern template struct coil::Hash<coil::BasicStringWrapper<coil::String>>;
 
 extern template class coil::BindingProxy<coil::Bindings>;
-extern template class std::unique_ptr<coil::Lexer>;
+extern template class coil::UniquePtr<coil::Lexer>;
 
 extern template class coil::Unexpected<coil::String>;
 extern template coil::Unexpected<coil::String> coil::makeUnexpected(coil::String value);
 extern template coil::Unexpected<coil::String>&& coil::Move<coil::Unexpected<coil::String>&>(coil::Unexpected<coil::String>&) noexcept; // TODO remove?
 
 extern template coil::detail::AnyStorageBase*&& coil::Move<coil::detail::AnyStorageBase*&>(coil::detail::AnyStorageBase*&) noexcept; // TODO remove?
-extern template void std::swap<coil::detail::AnyStorageBase*>(coil::detail::AnyStorageBase*&, coil::detail::AnyStorageBase*&) noexcept;
+extern template void coil::exchange<coil::detail::AnyStorageBase*>(coil::detail::AnyStorageBase*&, coil::detail::AnyStorageBase*&) noexcept;
 
 extern template coil::String&& coil::Forward<coil::String>(coil::String&) noexcept; // TODO remove?
 

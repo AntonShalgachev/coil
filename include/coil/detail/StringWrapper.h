@@ -1,8 +1,9 @@
 #pragma once
 
 #include "../StringView.h"
+#include "../Hash.h"
 
-#include <functional> // TODO remove
+// TODO remove
 
 namespace coil
 {
@@ -17,11 +18,6 @@ namespace coil
             return m_str;
         }
 
-        operator StringView() const
-        {
-            return view();
-        }
-
         bool operator==(BasicStringWrapper<UnderlyingType> const& rhs) const
         {
             return view() == rhs.view();
@@ -30,24 +26,13 @@ namespace coil
     private:
         UnderlyingType m_str;
     };
-}
 
-// TODO remove
-namespace std
-{
     template<typename UnderlyingType>
-    struct hash<coil::BasicStringWrapper<UnderlyingType>>
+    struct Hash<BasicStringWrapper<UnderlyingType>>
     {
-        size_t operator()(coil::BasicStringWrapper<UnderlyingType> const& value) const noexcept
+        size_t operator()(BasicStringWrapper<UnderlyingType> const& value)
         {
-            size_t hash = 0;
-
-            coil::StringView str = value.view();
-
-            for (char c : value.view())
-                hash = ((hash << 5) + hash) + c; /* hash * 33 + c */
-
-            return hash;
+            return Hash<StringView>{}(value.view());
         }
     };
 }

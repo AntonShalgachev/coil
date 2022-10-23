@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Hash.h"
+
 #include <stddef.h>
 
 namespace coil
@@ -29,5 +31,11 @@ namespace coil
     private:
         char const* m_str = nullptr;
         size_t m_length = 0;
+    };
+
+    template<>
+    struct Hash<StringView>
+    {
+        size_t operator()(StringView const& value);
     };
 }

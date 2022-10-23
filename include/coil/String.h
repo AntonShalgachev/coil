@@ -2,6 +2,8 @@
 
 #include "Vector.h"
 
+#include "Hash.h"
+
 #include <stddef.h>
 
 namespace coil
@@ -50,5 +52,11 @@ namespace coil
 
     private:
         Vector<char> m_chars;
+    };
+
+    template<>
+    struct Hash<String>
+    {
+        size_t operator()(String const& value);
     };
 }
