@@ -11,10 +11,19 @@ namespace coil
     class Optional
     {
     public:
+
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable : 4702) // unreachable code
+#endif
         Optional() : m_hasValue(false), m_empty({})
         {
 
         }
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
+
         Optional(T const& value) : Optional()
         {
             construct(value);
