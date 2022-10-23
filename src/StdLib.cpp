@@ -12,12 +12,15 @@
 #include <string.h>
 #include <stddef.h>
 
-#ifdef _MSC_VER
+#if defined(_MSC_VER)
 #pragma warning(push)
 #pragma warning(disable : 4244) // '=': conversion from '__int64' to 'int', possible loss of data
 #pragma warning(disable : 4308) // negative integral constant converted to unsigned type
 #pragma warning(disable : 4245) // 'argument': conversion from '__int64' to 'unsigned __int64', signed/unsigned mismatch
 #pragma warning(disable : 4702) // unreachable code
+#elif defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wparentheses"
 #endif
 
 #if LDBL_MANT_DIG == 53 && LDBL_MAX_EXP == 1024
@@ -833,4 +836,6 @@ namespace coil
 
 #if defined(_MSC_VER)
 #pragma warning(pop)
+#elif defined(__GNUC__)
+#pragma GCC diagnostic pop
 #endif
