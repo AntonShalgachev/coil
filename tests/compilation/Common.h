@@ -1,9 +1,13 @@
 #include "coil/Coil.h"
 
-#include <cstdint>
+#include <stdint.h>
+#include <stddef.h>
 
 namespace
 {
+    template <class T>
+    inline constexpr bool IsEnumV = __is_enum(T);
+
     enum class ScopedEnum
     {
         One,
@@ -93,21 +97,6 @@ namespace
 
     [[maybe_unused]] void freeFuncWithoutArgsWithContext(coil::Context) {}
 
-    [[maybe_unused]] std::size_t funcVariadicVector(float, coil::String const&, std::vector<coil::Value> const& args)
-    {
-        return args.size();
-    }
-
-    [[maybe_unused]] std::size_t funcFloatVector(float, coil::String const&, std::vector<float> const& args)
-    {
-        return args.size();
-    }
-
-    [[maybe_unused]] float funcOptional(float, coil::String const&, std::optional<float> arg)
-    {
-        return arg.value_or(0.0f);
-    }
-
     [[maybe_unused]] ScopedEnum funcScopedEnum(ScopedEnum val)
     {
         return val;
@@ -148,7 +137,7 @@ namespace
 namespace coil
 {
     template<typename E>
-    struct TypeSerializer<E, std::enable_if_t<std::is_enum_v<E>>>
+    struct TypeSerializer<E, coil::EnableIfT<IsEnumV<E>>>
     {
         static Expected<E, coil::String> fromString(Value const& input)
         {
