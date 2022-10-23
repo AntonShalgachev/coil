@@ -118,14 +118,17 @@ namespace coil
             return m_items[index];
         }
 
-        friend bool operator==(Vector const& lhs, Vector const& rhs)
+        bool operator==(Vector const& rhs) const
         {
+            Vector const& lhs = *this;
             if (lhs.m_size != rhs.m_size)
                 return false;
+
             size_t size = lhs.m_size;
             for (size_t i = 0; i < size; i++)
                 if (lhs[i] != rhs[i])
                     return false;
+
             return true;
         }
 

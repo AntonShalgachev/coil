@@ -45,14 +45,14 @@ namespace coil
             KeyValuePair<K, V>& operator*() { return m_node->pair; }
             KeyValuePair<K, V>* operator->() { return &m_node->pair; }
 
-            friend bool operator==(Iterator const& lhs, Iterator const& rhs)
+            bool operator==(Iterator const& rhs) const
             {
-                return lhs.m_node == rhs.m_node;
+                return m_node == rhs.m_node;
             }
 
-            friend bool operator!=(Iterator const& lhs, Iterator const& rhs)
+            bool operator!=(Iterator const& rhs) const
             {
-                return !(lhs == rhs);
+                return !(*this == rhs);
             }
 
             Iterator& operator++()
@@ -73,14 +73,14 @@ namespace coil
             KeyValuePair<K, V> const& operator*() const { return m_node->pair; }
             KeyValuePair<K, V> const* operator->() const { return &m_node->pair; }
 
-            friend bool operator==(ConstIterator const& lhs, ConstIterator const& rhs)
+            bool operator==(ConstIterator const& rhs) const
             {
-                return lhs.m_node == rhs.m_node;
+                return m_node == rhs.m_node;
             }
 
-            friend bool operator!=(ConstIterator const& lhs, ConstIterator const& rhs)
+            bool operator!=(ConstIterator const& rhs) const
             {
-                return !(lhs == rhs);
+                return !(*this == rhs);
             }
 
             Iterator& operator++()

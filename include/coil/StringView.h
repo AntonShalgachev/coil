@@ -25,13 +25,13 @@ namespace coil
 
         char const& operator[](size_t index) const;
 
-        friend bool operator==(StringView const& lhs, StringView const& rhs);
-        friend bool operator!=(StringView const& lhs, StringView const& rhs);
-
     private:
         char const* m_str = nullptr;
         size_t m_length = 0;
     };
+
+    bool operator==(StringView const& lhs, StringView const& rhs);
+    bool operator!=(StringView const& lhs, StringView const& rhs);
 
     template<>
     struct Hash<StringView>

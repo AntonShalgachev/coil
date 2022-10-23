@@ -16,14 +16,14 @@ namespace coil
         StringView const& key() const { return m_key; }
         Value const& value() const { return m_value; }
 
-        friend bool operator==(NamedValue const& lhs, NamedValue const& rhs)
+        bool operator==(NamedValue const& rhs) const
         {
-            return lhs.m_key == rhs.m_key && lhs.m_value == rhs.m_value;
+            return m_key == rhs.m_key && m_value == rhs.m_value;
         }
 
-        friend bool operator!=(NamedValue const& lhs, NamedValue const& rhs)
+        bool operator!=(NamedValue const& rhs) const
         {
-            return !(lhs == rhs);
+            return !(*this == rhs);
         }
 
     private:

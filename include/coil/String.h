@@ -39,11 +39,6 @@ namespace coil
         String& operator+=(String const& rhs);
         String& operator+=(StringView const& rhs);
 
-        friend String operator+(String lhs, char rhs);
-        friend String operator+(String lhs, char const* rhs);
-        friend String operator+(String lhs, String const& rhs);
-        friend String operator+(String lhs, StringView const& rhs);
-
         bool operator==(String const& rhs) const;
         bool operator==(StringView const& rhs) const;
         bool operator==(char const* rhs) const;
@@ -53,6 +48,11 @@ namespace coil
     private:
         Vector<char> m_chars;
     };
+
+    String operator+(String lhs, char rhs);
+    String operator+(String lhs, char const* rhs);
+    String operator+(String lhs, String const& rhs);
+    String operator+(String lhs, StringView const& rhs);
 
     template<>
     struct Hash<String>

@@ -56,20 +56,21 @@ namespace coil
             return m_value;
         }
 
-        friend bool operator==(Optional const& lhs, Optional const& rhs)
+        bool operator==(Optional const& rhs) const
         {
-            if (lhs.m_hasValue != rhs.m_hasValue)
+            if (m_hasValue != rhs.m_hasValue)
                 return false;
 
-            if (lhs.m_hasValue && rhs.m_hasValue)
-                return lhs.m_value == rhs.m_value;
+            if (m_hasValue && rhs.m_hasValue)
+                return m_value == rhs.m_value;
 
             return true;
         }
 
-        friend bool operator==(Optional const& lhs, T const& rhs)
+        template<typename T2>
+        bool operator==(T2 const& rhs) const
         {
-            return lhs.m_hasValue && lhs.m_value == rhs;
+            return m_hasValue && m_value == rhs;
         }
 
     private:
