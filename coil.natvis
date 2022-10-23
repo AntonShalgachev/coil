@@ -13,4 +13,29 @@
     </Expand>
   </Type>
 
+  <Type Name="coil::String">
+    <DisplayString>{m_chars.m_items,[m_chars.m_size-1]na}</DisplayString>
+    <StringView>m_chars.m_items,[m_chars.m_size-1]na</StringView>
+    <Expand>
+      <Item Name="[size]]">m_chars.m_size-1</Item>
+      <Item Name="[capacity]">m_chars.m_capacity-1</Item>
+      <ArrayItems>
+        <Size>m_chars.m_size-1</Size>
+        <ValuePointer>m_chars.m_items</ValuePointer>
+      </ArrayItems>
+    </Expand>
+  </Type>
+
+  <Type Name="coil::StringView">
+    <DisplayString>{m_str,[m_length]na}</DisplayString>
+    <StringView>m_str,[m_length]na</StringView>
+    <Expand>
+      <Item Name="[size]]">m_length</Item>
+      <ArrayItems>
+        <Size>m_length</Size>
+        <ValuePointer>m_str</ValuePointer>
+      </ArrayItems>
+    </Expand>
+  </Type>
+
 </AutoVisualizer>
