@@ -15,7 +15,6 @@
 
 namespace coil
 {
-    template<typename BindingsT>
     class BindingProxy;
 
     class Bindings
@@ -31,7 +30,7 @@ namespace coil
 
         void setLexer(UniquePtr<Lexer> lexer);
 
-        BindingProxy<Bindings> operator[](StringView name);
+        BindingProxy operator[](StringView name);
 
         template<typename Func>
         Bindings::Command const& add(StringView name, Func func)
@@ -61,12 +60,10 @@ namespace coil
         UnorderedMap<String, Command> m_commands;
     };
 
-    // TODO remove
-    template<typename BindingsT>
     class BindingProxy
     {
     public:
-        BindingProxy(BindingsT& bindings, StringView name) : m_bindings(bindings), m_name(name) {}
+        BindingProxy(Bindings& bindings, StringView name);
 
         template<typename Func>
         BindingProxy& operator=(Func func)
@@ -75,24 +72,12 @@ namespace coil
             using FunctionWrapper = typename detail::FuncTraits<Func>::FunctionWrapperType;
             return operator=(AnyFunctor{FunctionWrapper{Move(func)}});
         }
-        BindingProxy& operator=(AnyFunctor anyFunctor)
-        {
-            m_bindings.add(m_name, Move(anyFunctor));
-            return *this;
-        }
-        BindingProxy& operator=(Vector<AnyFunctor> anyFunctors)
-        {
-            m_bindings.add(m_name, Move(anyFunctors));
-            return *this;
-        }
-        BindingProxy& operator=(nullptr_t)
-        {
-            m_bindings.remove(m_name);
-            return *this;
-        }
+        BindingProxy& operator=(AnyFunctor anyFunctor);
+        BindingProxy& operator=(Vector<AnyFunctor> anyFunctors);
+        BindingProxy& operator=(nullptr_t);
 
     private:
-        BindingsT& m_bindings;
+        Bindings& m_bindings;
         StringView m_name;
     };
 }

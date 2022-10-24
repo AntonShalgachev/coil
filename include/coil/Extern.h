@@ -22,7 +22,6 @@ extern template class coil::Vector<coil::StringView>;
 
 extern template class coil::Expected<coil::Value, coil::NamedArgs::Error>;
 
-extern template class coil::BindingProxy<coil::Bindings>;
 extern template class coil::UniquePtr<coil::Lexer>;
 
 extern template class coil::Unexpected<coil::String>;

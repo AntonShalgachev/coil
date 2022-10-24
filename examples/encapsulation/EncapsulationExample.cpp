@@ -15,8 +15,9 @@ namespace utils
 {
     std::unique_ptr<coil::Bindings> g_globalBindings;
 
+    class CommandsProxy;
+
     // This helper class can be used to automatically remove registered commands upon destructor
-    // It relies on coil::BindingProxy, but can be implemented in other ways without BindingProxy
     class ScopedDebugCommands
     {
     public:
@@ -46,10 +47,7 @@ namespace utils
             m_names.push_back(coil::String{name});
         }
 
-        coil::BindingProxy<ScopedDebugCommands> operator[](coil::StringView name)
-        {
-            return coil::BindingProxy<ScopedDebugCommands>{*this, name};
-        }
+        CommandsProxy operator[](coil::StringView name);
 
     private:
         void clear()
@@ -61,6 +59,38 @@ namespace utils
 
         std::vector<coil::String> m_names;
     };
+
+    class CommandsProxy
+    {
+    public:
+        CommandsProxy(ScopedDebugCommands& commands, coil::StringView name) : m_commands(commands), m_name(name) {}
+
+        template<typename Func>
+        CommandsProxy& operator=(Func&& func)
+        {
+            m_commands.add(m_name, std::forward<Func>(func));
+            return *this;
+        }
+        CommandsProxy& operator=(coil::AnyFunctor anyFunctor)
+        {
+            m_commands.add(m_name, std::move(anyFunctor));
+            return *this;
+        }
+        CommandsProxy& operator=(coil::Vector<coil::AnyFunctor> anyFunctors)
+        {
+            m_commands.add(m_name, std::move(anyFunctors));
+            return *this;
+        }
+
+    private:
+        ScopedDebugCommands& m_commands;
+        coil::StringView m_name;
+    };
+
+    utils::CommandsProxy ScopedDebugCommands::operator[](coil::StringView name)
+    {
+        return CommandsProxy{ *this, name };
+    }
 }
 
 namespace

@@ -24,7 +24,6 @@ template class coil::Vector<coil::StringView>;
 
 template class coil::Expected<coil::Value, coil::NamedArgs::Error>;
 
-template class coil::BindingProxy<coil::Bindings>;
 template class coil::UniquePtr<coil::Lexer>;
 
 template class coil::Unexpected<coil::String>;
@@ -35,6 +34,11 @@ template coil::detail::AnyStorageBase*&& coil::Move<coil::detail::AnyStorageBase
 template void coil::exchange<coil::detail::AnyStorageBase*>(coil::detail::AnyStorageBase*&, coil::detail::AnyStorageBase*&) noexcept;
 
 template coil::String&& coil::Forward<coil::String>(coil::String&) noexcept;
+
+extern "C"
+{
+    int vsnprintf(char* s, size_t n, const char* format, va_list arg);
+}
 
 namespace coil
 {
@@ -115,9 +119,9 @@ namespace coil
         m_lexer = coil::Move(lexer);
     }
 
-    BindingProxy<Bindings> Bindings::operator[](StringView name)
+    BindingProxy Bindings::operator[](StringView name)
     {
-        return BindingProxy<Bindings>{*this, {name}};
+        return BindingProxy{*this, {name}};
     }
 
     Bindings::Command const& Bindings::add(StringView name, AnyFunctor anyFunctor)
@@ -230,6 +234,24 @@ namespace coil
         size_t const actualArgsCount = context.input.arguments.size();
         auto error = sprintf("Wrong number of arguments to '%.*s': expected %s, got %d", context.input.name.length(), context.input.name.data(), expectedStr.cStr(), actualArgsCount);
         context.reportError(coil::Move(error));
+    }
+
+    BindingProxy::BindingProxy(Bindings& bindings, StringView name) : m_bindings(bindings), m_name(name) {}
+
+    BindingProxy& BindingProxy::operator=(AnyFunctor anyFunctor)
+    {
+        m_bindings.add(m_name, Move(anyFunctor));
+        return *this;
+    }
+    BindingProxy& BindingProxy::operator=(Vector<AnyFunctor> anyFunctors)
+    {
+        m_bindings.add(m_name, Move(anyFunctors));
+        return *this;
+    }
+    BindingProxy& BindingProxy::operator=(nullptr_t)
+    {
+        m_bindings.remove(m_name);
+        return *this;
     }
 
     /// Context.h ///
