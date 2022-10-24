@@ -11,6 +11,8 @@
 #include <exception>
 #endif
 
+// TODO review these template instantiations
+
 // Explicitly instantiate used templates here in order to avoid intantiating them in each source file
 template class coil::Vector<coil::String>;
 template class coil::Optional<coil::String>;
@@ -21,9 +23,6 @@ template class coil::Vector<coil::NamedValue>;
 template class coil::Vector<coil::StringView>;
 
 template class coil::Expected<coil::Value, coil::NamedArgs::Error>;
-
-template class coil::BasicStringWrapper<coil::String>;
-template struct coil::Hash<coil::BasicStringWrapper<coil::String>>;
 
 template class coil::BindingProxy<coil::Bindings>;
 template class coil::UniquePtr<coil::Lexer>;
@@ -131,7 +130,7 @@ namespace coil
     Bindings::Command const& Bindings::add(StringView name, Vector<AnyFunctor> anyFunctors)
     {
         auto it = m_commands.insertOrAssign(name, Command{ StringView{}, coil::Move(anyFunctors) });
-        it->value().name = it->key().view();
+        it->value().name = it->key();
 
         return it->value();
     }

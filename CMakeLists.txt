@@ -25,7 +25,6 @@ add_library(coil
     "include/coil/detail/FuncTraits.h"
     "include/coil/detail/StdLib.h"
     "include/coil/detail/StringConv.h"
-    "include/coil/detail/StringWrapper.h"
     "include/coil/detail/TypeTraits.h"
     "include/coil/detail/Utility.h"
     "include/coil/detail/New.h"

@@ -11,7 +11,6 @@
 #include "UniquePtr.h"
 #include "detail/FuncTraits.h"
 #include "detail/FunctorCaller.h"
-#include "detail/StringWrapper.h"
 #include "detail/Utility.h"
 
 namespace coil
@@ -27,8 +26,6 @@ namespace coil
             StringView name;
             Vector<AnyFunctor> functors;
         };
-
-        using StringWrapper = BasicStringWrapper<String>;
 
         Bindings();
 
@@ -61,7 +58,7 @@ namespace coil
 
         UniquePtr<Lexer> m_lexer;
 
-        UnorderedMap<StringWrapper, Command> m_commands;
+        UnorderedMap<String, Command> m_commands;
     };
 
     // TODO remove

@@ -8,8 +8,9 @@
 #include "Variable.h"
 #include "String.h"
 #include "StringView.h"
-#include "detail/StringWrapper.h"
 #include "detail/Utility.h"
+
+// TODO review these extern templates
 
 extern template class coil::Vector<coil::String>;
 extern template class coil::Optional<coil::String>;
@@ -20,9 +21,6 @@ extern template class coil::Vector<coil::NamedValue>;
 extern template class coil::Vector<coil::StringView>;
 
 extern template class coil::Expected<coil::Value, coil::NamedArgs::Error>;
-
-extern template class coil::BasicStringWrapper<coil::String>;
-extern template struct coil::Hash<coil::BasicStringWrapper<coil::String>>;
 
 extern template class coil::BindingProxy<coil::Bindings>;
 extern template class coil::UniquePtr<coil::Lexer>;
