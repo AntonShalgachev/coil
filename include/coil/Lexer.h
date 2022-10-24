@@ -1,12 +1,14 @@
 #pragma once
 
-#include "ExecutionInput.h"
-#include "Expected.h"
-#include "String.h"
-#include "StringView.h"
-
 namespace coil
 {
+    struct ExecutionInput;
+    class String;
+    class StringView;
+
+    template<typename T, typename E>
+    class Expected;
+
     class Lexer
     {
     public:

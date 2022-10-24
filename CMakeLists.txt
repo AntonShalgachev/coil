@@ -65,6 +65,7 @@ add_library(coil
     "src/StringView.cpp"
     "src/StdLib.cpp"
     "src/New.cpp"
+    "src/DefaultLexer.cpp"
 )
 add_library(coil::coil ALIAS coil)
 
