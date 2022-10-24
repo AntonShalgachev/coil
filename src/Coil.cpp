@@ -1,7 +1,13 @@
 #include "coil/Coil.h"
+
 #include "coil/DefaultLexer.h"
+#include "coil/Utils.h"
+#include "coil/ExecutionResult.h"
+#include "coil/Expected.h"
+#include "coil/Lexer.h"
 
 #include "coil/detail/Utility.h"
+#include "coil/detail/FunctorCaller.h"
 
 #include <stdarg.h>
 #include <stdio.h>
@@ -113,6 +119,10 @@ namespace coil
 
     /// Bindings.h ///
     Bindings::Bindings() : m_lexer(makeUnique<DefaultLexer>()) {}
+    Bindings::Bindings(Bindings&& rhs) = default;
+    Bindings::~Bindings() = default;
+
+    Bindings& Bindings::operator=(Bindings&& rhs) = default;
 
     void Bindings::setLexer(UniquePtr<Lexer> lexer)
     {

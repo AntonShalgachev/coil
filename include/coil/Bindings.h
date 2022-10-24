@@ -1,21 +1,18 @@
 #pragma once
 
 #include "AnyFunctor.h"
-#include "ExecutionResult.h"
-#include "Expected.h"
-#include "Lexer.h"
-#include "Utils.h"
 #include "String.h"
 #include "StringView.h"
 #include "UnorderedMap.h"
 #include "UniquePtr.h"
 #include "detail/FuncTraits.h"
-#include "detail/FunctorCaller.h"
 #include "detail/Utility.h"
 
 namespace coil
 {
     class BindingProxy;
+    struct ExecutionResult;
+    class Lexer;
 
     class Bindings
     {
@@ -27,6 +24,10 @@ namespace coil
         };
 
         Bindings();
+        Bindings(Bindings&& rhs);
+        ~Bindings();
+
+        Bindings& operator=(Bindings&& rhs);
 
         void setLexer(UniquePtr<Lexer> lexer);
 

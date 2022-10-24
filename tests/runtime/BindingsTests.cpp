@@ -1,5 +1,7 @@
 #include "Common.h"
 
+#include "coil/Lexer.h"
+
 #include "gtest/gtest.h"
 
 #include <numeric>
