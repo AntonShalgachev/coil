@@ -421,6 +421,8 @@ namespace coil
         if (value == "0")
             return false;
 
+        // TODO also handle yes/no
+
         if (equalCaseInsensitive(value, "true"))
             return true;
         if (equalCaseInsensitive(value, "false"))
