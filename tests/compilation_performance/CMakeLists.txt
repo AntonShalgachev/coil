@@ -20,11 +20,13 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_EXTENSIONS OFF)
 
-target_precompile_headers(${PROJECT_NAME} PRIVATE "pch.h")
+if(${COIL_COMPILATION_TIME_BENCHMARK_PCH})
+    target_precompile_headers(${PROJECT_NAME} PRIVATE "pch.h")
+endif()
 
 set(COMPILE_OPTIONS ${BASE_COMPILE_OPTIONS})
 if(MSVC)
-    set(COMPILE_OPTIONS /W4 /FC /permissive-)
+    list(APPEND COMPILE_OPTIONS /W4 /FC /permissive-)
 endif()
 
 target_compile_options(${PROJECT_NAME} PRIVATE
@@ -37,6 +39,12 @@ endif()
 
 if(${COIL_COMPILATION_TIME_BENCHMARK_WITH_COIL})
     target_compile_definitions(${PROJECT_NAME} PRIVATE USE_COIL=1)
+endif()
+
+if(${COIL_COMPILATION_TIME_BENCHMARK_EXTERN_TEMPLATES})
+    target_compile_definitions(${PROJECT_NAME} PRIVATE HAS_EXTERN_TEMPLATES=1)
+else()
+    target_compile_definitions(${PROJECT_NAME} PRIVATE HAS_EXTERN_TEMPLATES=0)
 endif()
 
 set_target_properties(${PROJECT_NAME} PROPERTIES

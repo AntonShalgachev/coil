@@ -2,6 +2,8 @@
     "compiler_options": ["msvc", "clang"],
     "bindings_options": ["none", "manual", "coil"],
     "unity_options": [false, true],
+    "pch_options": [false, true],
+    "extern_options": [false, true],
 
     "count": 10,
     "full_build_count": 4,

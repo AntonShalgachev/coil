@@ -2,6 +2,8 @@
     "compiler_options": ["clang"],
     "bindings_options": ["coil"],
     "unity_options": [false],
+    "pch_options": [false],
+    "extern_options": [false],
 
     "count": 1,
     "full_build_count": 1,
