@@ -76,7 +76,10 @@ char& coil::String::back()
 void coil::String::resize(size_t size)
 {
     if (!m_chars.empty())
+    {
         COIL_ASSERT(m_chars.back() == '\0');
+    }
+
     m_chars.resize(size + 1);
     m_chars[size] = '\0';
     COIL_ASSERT(m_chars.back() == '\0');
