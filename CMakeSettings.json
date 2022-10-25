@@ -176,6 +176,39 @@
           "type": "BOOL"
         }
       ]
+    },
+    {
+      "name": "Debug-Compilation-Perf-Trace",
+      "generator": "Ninja",
+      "configurationType": "Debug",
+      "buildRoot": "${projectDir}\\out\\build\\${name}",
+      "installRoot": "${projectDir}\\out\\install\\${name}",
+      "cmakeCommandArgs": "",
+      "buildCommandArgs": "",
+      "ctestCommandArgs": "",
+      "inheritEnvironments": [ "clang_cl_x64_x64" ],
+      "variables": [
+        {
+          "name": "COIL_COMPILATION_TIME_BENCHMARK",
+          "value": "True",
+          "type": "BOOL"
+        },
+        {
+          "name": "COIL_COMPILATION_TIME_BENCHMARK_WITH_COIL",
+          "value": "True",
+          "type": "BOOL"
+        },
+        {
+          "name": "COIL_COMPILATION_TIME_BENCHMARK_PCH",
+          "value": "True",
+          "type": "BOOL"
+        },
+        {
+          "name": "COIL_COMPILATION_TIME_BENCHMARK_TRACE",
+          "value": "True",
+          "type": "BOOL"
+        }
+      ]
     }
   ]
 }
