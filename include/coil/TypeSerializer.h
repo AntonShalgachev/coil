@@ -48,6 +48,7 @@ namespace coil
         static String toString(T const& value);
     };
 
+    // TODO make it extern and implement in cpp file for all arithmetic types
     template<typename T>
     coil::Expected<T, String> TypeSerializer<T, EnableIfT<IsArithmetic<T>>>::fromString(Value const& input)
     {
