@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Assert.h"
 #include "Hash.h"
 #include "Vector.h"
 #include "detail/Utility.h"
@@ -131,36 +132,36 @@ namespace coil
             if (nodeIndex == invalidIndex)
                 return;
 
-            assert(nodeIndex < m_nodes.size());
+            COIL_ASSERT(nodeIndex < m_nodes.size());
             Node& node = m_nodes[nodeIndex];
 
-            assert(node.bucket < m_buckets.size());
+            COIL_ASSERT(node.bucket < m_buckets.size());
 
             if (node.prev != invalidIndex)
             {
-                assert(m_buckets[node.bucket] != nodeIndex);
-                assert(node.prev < m_nodes.size());
+                COIL_ASSERT(m_buckets[node.bucket] != nodeIndex);
+                COIL_ASSERT(node.prev < m_nodes.size());
                 m_nodes[node.prev].next = node.next;
             }
             else
             {
-                assert(m_buckets[node.bucket] == nodeIndex);
+                COIL_ASSERT(m_buckets[node.bucket] == nodeIndex);
                 m_buckets[node.bucket] = node.next;
             }
 
             if (node.next != invalidIndex)
             {
-                assert(node.next < m_nodes.size());
+                COIL_ASSERT(node.next < m_nodes.size());
                 m_nodes[node.next].prev = node.prev;
             }
 
             node.prev = invalidIndex;
             node.next = invalidIndex;
 
-            assert(nodeIndex < m_nodes.size());
+            COIL_ASSERT(nodeIndex < m_nodes.size());
             Node& erasedNode = m_nodes[nodeIndex];
 
-            assert(!m_nodes.empty());
+            COIL_ASSERT(!m_nodes.empty());
 
             if (nodeIndex != m_nodes.size() - 1)
             {
@@ -168,20 +169,20 @@ namespace coil
 
                 if (lastNode.prev != invalidIndex)
                 {
-                    assert(lastNode.prev < m_nodes.size());
+                    COIL_ASSERT(lastNode.prev < m_nodes.size());
                     m_nodes[lastNode.prev].next = nodeIndex;
                 }
                 else
                 {
-                    assert(lastNode.bucket < m_buckets.size());
+                    COIL_ASSERT(lastNode.bucket < m_buckets.size());
                     m_buckets[lastNode.bucket] = nodeIndex;
                 }
 
                 coil::exchange(erasedNode, lastNode);
             }
 
-            assert(m_nodes.back().prev == invalidIndex);
-            assert(m_nodes.back().next == invalidIndex);
+            COIL_ASSERT(m_nodes.back().prev == invalidIndex);
+            COIL_ASSERT(m_nodes.back().next == invalidIndex);
 
             m_nodes.popBack();
         }
@@ -222,11 +223,11 @@ namespace coil
 
         void insertNode(size_t newNodeIndex)
         {
-            assert(newNodeIndex < m_nodes.size());
+            COIL_ASSERT(newNodeIndex < m_nodes.size());
             Node& newNode = m_nodes[newNodeIndex];
 
             size_t bucketIndex = computeBucketIndex(newNode.pair.m_key);
-            assert(bucketIndex < m_buckets.size());
+            COIL_ASSERT(bucketIndex < m_buckets.size());
 
             newNode.bucket = bucketIndex;
             newNode.next = invalidIndex;
@@ -242,7 +243,7 @@ namespace coil
             size_t nodeIndex = firstNodeIndex;
             while (nodeIndex != invalidIndex)
             {
-                assert(nodeIndex < m_nodes.size());
+                COIL_ASSERT(nodeIndex < m_nodes.size());
                 Node& node = m_nodes[nodeIndex];
 
                 if (node.next == invalidIndex)
@@ -275,12 +276,12 @@ namespace coil
         size_t findNodeIndex(T const& key) const
         {
             size_t bucketIndex = computeBucketIndex(key);
-            assert(bucketIndex < m_buckets.size());
+            COIL_ASSERT(bucketIndex < m_buckets.size());
 
             size_t nodeIndex = m_buckets[bucketIndex];
             while (nodeIndex != invalidIndex)
             {
-                assert(nodeIndex < m_nodes.size());
+                COIL_ASSERT(nodeIndex < m_nodes.size());
                 Node const& node = m_nodes[nodeIndex];
 
                 if (node.pair.m_key == key)

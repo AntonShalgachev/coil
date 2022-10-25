@@ -3,8 +3,7 @@
 #include "detail/TypeTraits.h"
 #include "detail/Utility.h"
 #include "detail/New.h"
-
-#include <assert.h>
+#include "Assert.h"
 
 namespace coil
 {
@@ -137,17 +136,17 @@ namespace coil
 
         E const& error() const&
         {
-            assert(!hasValue());
+            COIL_ASSERT(!hasValue());
             return m_unexpected.value();
         }
         E& error() &
         {
-            assert(!hasValue());
+            COIL_ASSERT(!hasValue());
             return m_unexpected.value();
         }
         E&& error() &&
         {
-            assert(!hasValue());
+            COIL_ASSERT(!hasValue());
             return Move(m_unexpected).value();
         }
 
@@ -173,19 +172,19 @@ namespace coil
 
         T const& value() const&
         {
-            assert(hasValue());
+            COIL_ASSERT(hasValue());
             return m_expected;
         }
 
         T& value()&
         {
-            assert(hasValue());
+            COIL_ASSERT(hasValue());
             return m_expected;
         }
 
         T&& value()&&
         {
-            assert(hasValue());
+            COIL_ASSERT(hasValue());
             return Move(*this).m_expected;
         }
 

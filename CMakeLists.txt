@@ -4,6 +4,7 @@ project(coil LANGUAGES C CXX VERSION 1.0)
 
 set(COIL_CATCH_EXCEPTIONS OFF CACHE BOOL "Configure Coil to catch exceptions in commands")
 set(COIL_BASIC_TYPENAME ON CACHE BOOL "Configure Coil to implement coil::TypeName for basic types")
+set(COIL_ENABLE_ASSERTS OFF CACHE BOOL "Configure Coil to enable asserts")
 
 set(COIL_EXAMPLES OFF CACHE BOOL "Coil examples")
 set(COIL_RUNTIME_TESTS OFF CACHE BOOL "Coil runtime tests")
@@ -29,6 +30,7 @@ add_library(coil
     "include/coil/detail/Utility.h"
     "include/coil/detail/New.h"
 
+    "include/coil/Assert.h"
     "include/coil/AnyFunctor.h"
     "include/coil/Bind.h"
     "include/coil/Bindings.h"
@@ -86,6 +88,10 @@ endif()
 
 if (${COIL_BASIC_TYPENAME})
     target_compile_definitions(coil PUBLIC COIL_CONFIG_BASIC_TYPENAME=1)
+endif()
+
+if (${COIL_ENABLE_ASSERTS})
+    target_compile_definitions(coil PUBLIC COIL_CONFIG_ENABLE_ASSERTS=1)
 endif()
 
 if (${COIL_EXAMPLES})

@@ -2,7 +2,6 @@
 
 // This implementation is an adaptation of "musl" C standard library
 
-#include <assert.h>
 #include <errno.h>
 #include <ctype.h>
 #include <float.h>
@@ -79,7 +78,6 @@ namespace
     int __shgetc(FAKE_FILE*)
     {
         // Code removed since it should never reach this point
-        assert(false);
         return 0;
     }
 

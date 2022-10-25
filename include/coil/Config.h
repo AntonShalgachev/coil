@@ -11,3 +11,9 @@
 #ifndef COIL_CONFIG_BASIC_TYPENAME
     #define COIL_CONFIG_BASIC_TYPENAME 0
 #endif
+
+// Description: If this option is set, asserts would be enabled
+// CMake option: COIL_ENABLE_ASSERTS
+#ifndef COIL_CONFIG_ENABLE_ASSERTS
+    #define COIL_CONFIG_ENABLE_ASSERTS 0
+#endif

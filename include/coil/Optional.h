@@ -2,8 +2,7 @@
 
 #include "detail/Utility.h"
 #include "detail/New.h"
-
-#include "assert.h"
+#include "Assert.h"
 
 namespace coil
 {
@@ -55,13 +54,13 @@ namespace coil
 
         T const& operator*() const
         {
-            assert(m_hasValue);
+            COIL_ASSERT(m_hasValue);
             return m_value;
         }
 
         T& operator*()
         {
-            assert(m_hasValue);
+            COIL_ASSERT(m_hasValue);
             return m_value;
         }
 

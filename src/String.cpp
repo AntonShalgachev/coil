@@ -1,9 +1,9 @@
 #include "coil/String.h"
 
 #include "coil/StringView.h"
+#include "coil/Assert.h"
 
 #include <string.h>
-#include <assert.h>
 
 coil::String::String() : String("")
 {
@@ -22,16 +22,16 @@ coil::String::String(StringView str) : String(str.data(), str.length())
 
 coil::String::String(char const* str, size_t length)
 {
-    assert(str);
+    COIL_ASSERT(str);
 
     resize(length);
     memcpy(m_chars.data(), str, length);
-    assert(m_chars.back() == '\0');
+    COIL_ASSERT(m_chars.back() == '\0');
 }
 
 size_t coil::String::size() const
 {
-    assert(!m_chars.empty());
+    COIL_ASSERT(!m_chars.empty());
     return m_chars.size() - 1;
 }
 
@@ -42,9 +42,9 @@ bool coil::String::empty() const
 
 void coil::String::reserve(size_t capacity)
 {
-    assert(m_chars.back() == '\0');
+    COIL_ASSERT(m_chars.back() == '\0');
     m_chars.reserve(capacity + 1);
-    assert(m_chars.back() == '\0');
+    COIL_ASSERT(m_chars.back() == '\0');
 }
 
 char* coil::String::cStr()
@@ -69,45 +69,45 @@ char const* coil::String::data() const
 
 char& coil::String::back()
 {
-    assert(!empty());
+    COIL_ASSERT(!empty());
     return m_chars[size() - 1];
 }
 
 void coil::String::resize(size_t size)
 {
     if (!m_chars.empty())
-        assert(m_chars.back() == '\0');
+        COIL_ASSERT(m_chars.back() == '\0');
     m_chars.resize(size + 1);
     m_chars[size] = '\0';
-    assert(m_chars.back() == '\0');
+    COIL_ASSERT(m_chars.back() == '\0');
 }
 
 char const& coil::String::back() const
 {
-    assert(!empty());
+    COIL_ASSERT(!empty());
     return m_chars[size() - 1];
 }
 
 void coil::String::append(char const* str, size_t length)
 {
-    assert(m_chars.back() == '\0');
+    COIL_ASSERT(m_chars.back() == '\0');
 
     size_t oldSize = size();
     resize(oldSize + length);
 
     memcpy(m_chars.data() + oldSize, str, length);
-    assert(m_chars.back() == '\0');
+    COIL_ASSERT(m_chars.back() == '\0');
 }
 
 char const* coil::String::begin() const
 {
-    assert(!m_chars.empty());
+    COIL_ASSERT(!m_chars.empty());
     return m_chars.data();
 }
 
 char const* coil::String::end() const
 {
-    assert(!m_chars.empty());
+    COIL_ASSERT(!m_chars.empty());
     return &m_chars.back();
 }
 

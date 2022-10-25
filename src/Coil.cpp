@@ -5,6 +5,7 @@
 #include "coil/ExecutionResult.h"
 #include "coil/Expected.h"
 #include "coil/Lexer.h"
+#include "coil/Assert.h"
 
 #include "coil/detail/Utility.h"
 #include "coil/detail/FunctorCaller.h"
@@ -487,7 +488,7 @@ namespace coil
 
         [[maybe_unused]] int result = vsnprintf(str.data(), str.size() + 1, format, args);
 
-        assert(result >= 0 && static_cast<size_t>(result) <= str.size());
+        COIL_ASSERT(result >= 0 && static_cast<size_t>(result) <= str.size());
 
         return str;
     }

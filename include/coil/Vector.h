@@ -2,9 +2,9 @@
 
 #include "detail/Utility.h" // TODO remove
 #include "detail/New.h"
+#include "Assert.h"
 
 #include <stddef.h>
-#include <assert.h>
 
 namespace coil
 {
@@ -59,7 +59,7 @@ namespace coil
         {
             if (size > m_capacity)
                 grow(size);
-            assert(size <= m_capacity);
+            COIL_ASSERT(size <= m_capacity);
 
             for (size_t i = size; i < m_size; i++)
                 m_items[i].~T();
@@ -80,7 +80,7 @@ namespace coil
 
         void popBack()
         {
-            assert(!empty());
+            COIL_ASSERT(!empty());
 
             m_items[m_size - 1].~T();
             m_size--;
@@ -102,19 +102,19 @@ namespace coil
         T* end() { return m_items + m_size; }
         T const* end() const { return m_items + m_size; }
 
-        T& front() { assert(!empty()); return m_items[0]; }
-        T const& front() const { assert(!empty()); return m_items[0]; }
-        T& back() { assert(!empty()); return m_items[m_size - 1]; }
-        T const& back() const { assert(!empty()); return m_items[m_size - 1]; }
+        T& front() { COIL_ASSERT(!empty()); return m_items[0]; }
+        T const& front() const { COIL_ASSERT(!empty()); return m_items[0]; }
+        T& back() { COIL_ASSERT(!empty()); return m_items[m_size - 1]; }
+        T const& back() const { COIL_ASSERT(!empty()); return m_items[m_size - 1]; }
 
         T const& operator[](size_t index) const
         {
-            assert(index < m_size);
+            COIL_ASSERT(index < m_size);
             return m_items[index];
         }
         T& operator[](size_t index)
         {
-            assert(index < m_size);
+            COIL_ASSERT(index < m_size);
             return m_items[index];
         }
 
@@ -157,8 +157,8 @@ namespace coil
             deallocate();
             grow(size);
 
-            assert(m_items);
-            assert(m_capacity >= size);
+            COIL_ASSERT(m_items);
+            COIL_ASSERT(m_capacity >= size);
             for (size_t i = 0; i < size; i++)
                 new (NewTag{}, m_items + i) T(items[i]);
             m_size = size;
