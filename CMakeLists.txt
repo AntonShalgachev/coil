@@ -13,6 +13,8 @@ set(COIL_COMPILATION_TIME_BENCHMARK OFF CACHE BOOL "Coil compilation time benchm
 set(COIL_COMPILATION_TIME_BENCHMARK_TRACE OFF CACHE BOOL "Generate Clang trace files for Coil compilation time benchmark")
 set(COIL_COMPILATION_TIME_BENCHMARK_WITH_COIL OFF CACHE BOOL "Use Coil library for compilation time benchmark")
 set(COIL_COMPILATION_TIME_BENCHMARK_WITH_MANUAL OFF CACHE BOOL "Use manually-written bindings for compilation time benchmark")
+set(COIL_COMPILATION_TIME_BENCHMARK_PCH OFF CACHE BOOL "Enable PCH for the compilation time benchmark")
+set(COIL_COMPILATION_TIME_BENCHMARK_EXTERN_TEMPLATES OFF CACHE BOOL "Implement frequently-instantiated templates in a single cpp file (Common.cpp)")
 
 add_library(coil
     "include/coil/detail/CallContext.h"

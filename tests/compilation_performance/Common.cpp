@@ -2,6 +2,7 @@
 
 #if USE_COIL
 
+#if HAS_ARGS_EXTERN_TEMPLATES
 COIL_TYPE_SERIALIZER_TEMPLATE(short);
 COIL_TYPE_SERIALIZER_TEMPLATE(int);
 COIL_TYPE_SERIALIZER_TEMPLATE(unsigned);
@@ -101,6 +102,7 @@ COIL_FUNCTION_ARGS_TEMPLATE(coil::Context, double, bool);
 COIL_FUNCTION_ARGS_TEMPLATE(coil::Context, double, unsigned);
 COIL_FUNCTION_ARGS_TEMPLATE(coil::Context, double, float);
 COIL_FUNCTION_ARGS_TEMPLATE(coil::Context, double, double);
+#endif
 
 #endif
 

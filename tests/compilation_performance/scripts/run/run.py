@@ -35,14 +35,16 @@ class Bindings(Enum):
 
 
 class BuildConfiguration:
-    def __init__(self, compiler, bindings, unity):
+    def __init__(self, compiler, bindings, unity, pch, extern):
         self.compiler = compiler
         self.bindings = bindings
         self.unity = unity
+        self.pch = pch
+        self.extern = extern
 
     @property
     def name(self):
-        return '{}-{}{}'.format(self.compiler.name, self.bindings.name, '-Unity' if self.unity else '')
+        return '{}-{}{}{}{}'.format(self.compiler.name, self.bindings.name, '-Unity' if self.unity else '', '-PCH' if self.pch else '', '-Extern' if self.extern else '')
 
 
 class Options:
@@ -55,7 +57,7 @@ class Options:
 
 class Settings:
     def __init__(self, options: Options, compiler_options: List[str], bindings_options: List[str],
-                 unity_options: List[bool], count: int, full_build_count: int, cmake_root: str, build_directory: str,
+                 unity_options: List[bool], pch_options: List[bool], extern_options: List[bool], count: int, full_build_count: int, cmake_root: str, build_directory: str,
                  report_root_directory: str, report_filename: str, merged_trace_filename: str,
                  symbols_filename: str, compilation_object: str):
         self.options = options
@@ -71,11 +73,13 @@ class Settings:
 
         self.configurations: List[BuildConfiguration] = []
         for unity in unity_options:
-            for compiler_str in compiler_options:
-                for bindings_str in bindings_options:
-                    compiler = Compiler[compiler_str.upper()]
-                    bindings = Bindings[bindings_str.upper()]
-                    self.configurations.append(BuildConfiguration(compiler, bindings, unity))
+            for pch in pch_options:
+                for extern in extern_options:
+                    for compiler_str in compiler_options:
+                        for bindings_str in bindings_options:
+                            compiler = Compiler[compiler_str.upper()]
+                            bindings = Bindings[bindings_str.upper()]
+                            self.configurations.append(BuildConfiguration(compiler, bindings, unity, pch, extern))
 
 
 class DurationStats:
@@ -154,11 +158,13 @@ def run_cmake(configuration: BuildConfiguration, clean: bool, trace: bool):
         'root': settings.cmake_root,
         'build_dir': build_dir,
         'unity': '-DCMAKE_UNITY_BUILD=ON' if configuration.unity else '',
+        'pch': '-DCOIL_COMPILATION_TIME_BENCHMARK_PCH=ON' if configuration.pch else '',
+        'extern': '-DCOIL_COMPILATION_TIME_BENCHMARK_EXTERN_TEMPLATES=ON' if configuration.extern else '',
         'bindings': BINDINGS_CMD_ARGUMENTS[configuration.bindings],
         'trace': '-DCOIL_COMPILATION_TIME_BENCHMARK_TRACE=ON' if trace else '-DCOIL_COMPILATION_TIME_BENCHMARK_TRACE=OFF'
     }
 
-    cmake_command = 'cmake -B "{build_dir}" -DCOIL_COMPILATION_TIME_BENCHMARK=ON {trace} {bindings} {unity} -GNinja "{root}"'.format(**params)
+    cmake_command = 'cmake -B "{build_dir}" -DCOIL_COMPILATION_TIME_BENCHMARK=ON {trace} {bindings} {unity} {pch} {extern} -GNinja "{root}"'.format(**params)
 
     COMPILER_IDS = {
         Compiler.MSVC: '',
@@ -257,11 +263,12 @@ def find_symbols(compilation_commands):
     return symbols
 
 
-def profile_compilation_command(compilation_commands):
+def profile_compilation_command(compilation_commands, configuration: BuildConfiguration):
     durations = []
     traces = []
 
-    execute_db_command(find_db_entry(compilation_commands, 'cmake_pch.cxx.obj'))
+    if configuration.pch:
+        execute_db_command(find_db_entry(compilation_commands, 'cmake_pch.cxx.obj'))
 
     entry = find_db_entry(compilation_commands, settings.compilation_object)
     
@@ -316,7 +323,7 @@ def run_configuration(configuration: BuildConfiguration):
     symbols = None
     if settings.options.compilation:
         logger.info('    Profiling compilation...')
-        compilation_stats, merged_trace, trace_stats = profile_compilation_command(compilation_commands)
+        compilation_stats, merged_trace, trace_stats = profile_compilation_command(compilation_commands, configuration)
         
         logger.info('    Finding symbols...')
         symbols = find_symbols(compilation_commands)
