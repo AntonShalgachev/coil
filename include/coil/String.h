@@ -13,8 +13,7 @@ namespace coil
     class String
     {
     public:
-        String();
-        String(char const* str);
+        String(char const* str = "");
         String(StringView str);
         String(char const* str, size_t length);
 

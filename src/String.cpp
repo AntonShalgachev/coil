@@ -5,11 +5,6 @@
 
 #include <string.h>
 
-coil::String::String() : String("")
-{
-
-}
-
 coil::String::String(char const* str) : String(str, strlen(str))
 {
 
