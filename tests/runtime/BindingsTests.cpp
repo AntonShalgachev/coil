@@ -946,7 +946,6 @@ TEST(BindingsTests, TestTypeNames)
 {
     EXPECT_EQ(coil::TypeName<bool>::name(), "bool");
 
-#if COIL_CONFIG_BASIC_TYPENAME
     EXPECT_EQ(coil::TypeName<char>::name(), "char");
     EXPECT_EQ(coil::TypeName<signed char>::name(), "schar");
     EXPECT_EQ(coil::TypeName<unsigned char>::name(), "uchar");
@@ -961,7 +960,6 @@ TEST(BindingsTests, TestTypeNames)
     EXPECT_EQ(coil::TypeName<float>::name(), "float");
     EXPECT_EQ(coil::TypeName<double>::name(), "double");
     EXPECT_EQ(coil::TypeName<long double>::name(), "ldouble");
-#endif // COIL_CONFIG_BASIC_TYPENAME
 }
 
 TEST(BindingsTests, TestAnyArgToString)

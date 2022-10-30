@@ -6,12 +6,6 @@
     #define COIL_CONFIG_CATCH_EXCEPTIONS 0
 #endif
 
-// Description: If this option is set, the implementation of coil::TypeName for the basic types would be included
-// CMake option: COIL_BASIC_TYPENAME
-#ifndef COIL_CONFIG_BASIC_TYPENAME
-    #define COIL_CONFIG_BASIC_TYPENAME 0
-#endif
-
 // Description: If this option is set, asserts would be enabled
 // CMake option: COIL_ENABLE_ASSERTS
 #ifndef COIL_CONFIG_ENABLE_ASSERTS
