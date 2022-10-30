@@ -17,13 +17,13 @@ namespace coil
 
     // TODO fix case
     template <typename T>
-    constexpr T&& Forward(RemoveReferenceT<T>& arg) noexcept
+    constexpr T&& forward(RemoveReferenceT<T>& arg) noexcept
     {
         return static_cast<T&&>(arg);
     }
 
     template <typename T>
-    constexpr T&& Forward(RemoveReferenceT<T>&& arg) noexcept
+    constexpr T&& forward(RemoveReferenceT<T>&& arg) noexcept
     {
         return static_cast<T&&>(arg);
     }

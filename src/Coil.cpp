@@ -40,7 +40,7 @@ template coil::Unexpected<coil::String>&& coil::move<coil::Unexpected<coil::Stri
 template coil::detail::AnyStorageBase*&& coil::move<coil::detail::AnyStorageBase*&>(coil::detail::AnyStorageBase*&) noexcept;
 template void coil::exchange<coil::detail::AnyStorageBase*>(coil::detail::AnyStorageBase*&, coil::detail::AnyStorageBase*&) noexcept;
 
-template coil::String&& coil::Forward<coil::String>(coil::String&) noexcept;
+template coil::String&& coil::forward<coil::String>(coil::String&) noexcept;
 
 namespace
 {

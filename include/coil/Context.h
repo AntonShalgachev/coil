@@ -23,7 +23,7 @@ namespace coil
         template<typename... Ts>
         void reportErrors(Ts&&... errors)
         {
-            (reportError(Forward<Ts>(errors)), ...);
+            (reportError(coil::forward<Ts>(errors)), ...);
         }
 
         bool hasErrors() const;

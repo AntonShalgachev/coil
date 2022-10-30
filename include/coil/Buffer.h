@@ -40,7 +40,7 @@ namespace coil
             COIL_ASSERT(m_ptr);
             COIL_ASSERT(m_size < m_count);
 
-            T* obj = new (NewTag{}, m_ptr + m_size * sizeof(T)) T(Forward<Args>(args)...);
+            T* obj = new (NewTag{}, m_ptr + m_size * sizeof(T)) T(coil::forward<Args>(args)...);
             m_size++;
 
 #if COIL_CONFIG_ENABLE_ASSERTS

@@ -31,7 +31,7 @@ extern template coil::Unexpected<coil::String>&& coil::move<coil::Unexpected<coi
 extern template coil::detail::AnyStorageBase*&& coil::move<coil::detail::AnyStorageBase*&>(coil::detail::AnyStorageBase*&) noexcept; // TODO remove?
 extern template void coil::exchange<coil::detail::AnyStorageBase*>(coil::detail::AnyStorageBase*&, coil::detail::AnyStorageBase*&) noexcept;
 
-extern template coil::String&& coil::Forward<coil::String>(coil::String&) noexcept; // TODO remove?
+extern template coil::String&& coil::forward<coil::String>(coil::String&) noexcept; // TODO remove?
 
 #define COIL_TYPE_SERIALIZER_TEMPLATE_BASE(T, SPECIFIER) SPECIFIER template struct coil::TypeSerializer<T>
 
@@ -47,7 +47,7 @@ extern template coil::String&& coil::Forward<coil::String>(coil::String&) noexce
     SPECIFIER template coil::Expected<T, coil::String>::Expected(coil::Unexpected<coil::String>);                                    \
     SPECIFIER template void coil::detail::reportError<T>(coil::detail::CallContext & context, coil::Expected<T, coil::String> const& result);  \
     SPECIFIER template coil::Expected<T, coil::String>&& coil::move<coil::Expected<T, coil::String>&>(coil::Expected<T, coil::String>&) noexcept; \
-    SPECIFIER template T&& coil::Forward<T>(T&) noexcept;                                                                                      \
+    SPECIFIER template T&& coil::forward<T>(T&) noexcept;                                                                                      \
     SPECIFIER template T&& coil::move<T&>(T&) noexcept
 
 #define COIL_NAMED_ARGS_TEMPLATE_BASE(SPECIFIER, T)                                                                   \

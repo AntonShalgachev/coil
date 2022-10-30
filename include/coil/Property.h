@@ -10,9 +10,9 @@ namespace coil
     decltype(auto) simpleInvoke(Func&& func, Arg&& arg0, RestArgs&&... args)
     {
         if constexpr (IsMemberPointerV<DecayT<Func>>)
-            return (Forward<Arg>(arg0)->*Forward<Func>(func))(Forward<RestArgs>(args)...);
+            return (coil::forward<Arg>(arg0)->*coil::forward<Func>(func))(coil::forward<RestArgs>(args)...);
         else
-            return Forward<Func>(func)(Forward<Arg>(arg0), Forward<RestArgs>(args)...);
+            return coil::forward<Func>(func)(coil::forward<Arg>(arg0), coil::forward<RestArgs>(args)...);
     }
 
     template<typename G, typename S>

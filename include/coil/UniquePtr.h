@@ -47,6 +47,6 @@ namespace coil
     template<typename T, typename... Args>
     UniquePtr<T> makeUnique(Args&&... args)
     {
-        return UniquePtr<T>(new T(Forward<Args>(args)...));
+        return UniquePtr<T>(new T(coil::forward<Args>(args)...));
     }
 }
