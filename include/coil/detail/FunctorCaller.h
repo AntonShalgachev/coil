@@ -1,10 +1,12 @@
 #pragma once
 
+// TODO don't use ".." (everywhere)
 #include "../TypeSerializer.h"
 #include "../Types.h"
 #include "CallContext.h"
 #include "Utility.h"
 #include "../String.h"
+#include "../Assert.h"
 
 namespace coil::detail
 {
@@ -16,8 +18,8 @@ namespace coil::detail
     template<typename T>
     void reportError(CallContext& context, Expected<T, coil::String> const& result)
     {
-        if (!result)
-            context.reportError(result.error());
+        COIL_ASSERT(!result);
+        context.reportError(result.error());
     }
 
     template<typename FuncWrapper, size_t... NonUserIndices, typename... Es>
