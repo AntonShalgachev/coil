@@ -11,11 +11,11 @@ namespace coil
     {
         auto get = [var]() -> T const& { return *var; };
         auto set = [var](T val) -> T const& {
-            *var = Move(val);
+            *var = coil::move(val);
             return *var;
         };
 
-        return overloaded(Move(get), Move(set));
+        return overloaded(coil::move(get), coil::move(set));
     }
 
     template<typename T>
@@ -27,6 +27,6 @@ namespace coil
             return *var;
         };
 
-        return overloaded(Move(get), Move(set));
+        return overloaded(coil::move(get), coil::move(set));
     }
 }

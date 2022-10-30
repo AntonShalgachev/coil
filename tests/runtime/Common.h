@@ -97,11 +97,11 @@ coil::Vector<T> convertVector(std::vector<T> input)
     coil::Vector<T> output;
     output.reserve(input.size());
     for (T& value : std::move(input))
-        output.pushBack(Move(value));
+        output.pushBack(coil::move(value));
     return output;
 }
 
 inline coil::Value createVectorValue(std::vector<coil::StringView> stdSubvalues)
 {
-    return coil::Value{ convertVector(coil::Move(stdSubvalues)) };
+    return coil::Value{ convertVector(coil::move(stdSubvalues)) };
 }

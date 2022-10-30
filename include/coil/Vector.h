@@ -77,7 +77,7 @@ namespace coil
             if (size() + 1 > capacity())
                 grow(size() + 1); // TODO think about grow strategy
 
-            m_buffer.constructNext<T>(Move(item));
+            m_buffer.constructNext<T>(coil::move(item));
         }
 
         void popBack()
@@ -139,13 +139,13 @@ namespace coil
             Buffer buffer{ newCapacity, sizeof(T) };
 
             for (size_t i = 0; i < m_buffer.size(); i++)
-                buffer.constructNext<T>(Move(*m_buffer.get<T>(i)));
+                buffer.constructNext<T>(coil::move(*m_buffer.get<T>(i)));
 
             COIL_ASSERT(m_buffer.size() == buffer.size());
 
             m_buffer.destructAll<T>();
 
-            m_buffer = Move(buffer);
+            m_buffer = coil::move(buffer);
 
             COIL_ASSERT(m_buffer.count() == newCapacity);
         }

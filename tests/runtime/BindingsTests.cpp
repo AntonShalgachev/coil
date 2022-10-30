@@ -186,9 +186,9 @@ namespace coil
         {
             auto expectedArg = TypeSerializer<T>::fromString(subvalue);
             if (!expectedArg)
-                return errors::createGenericError<Vector<T>>(input, Move(expectedArg).error());
+                return errors::createGenericError<Vector<T>>(input, coil::move(expectedArg).error());
 
-            result.pushBack(*Move(expectedArg));
+            result.pushBack(*coil::move(expectedArg));
         }
 
         return result;
@@ -239,7 +239,7 @@ namespace coil
         if (innerValue)
             return coil::Optional<T>{*innerValue};
 
-        return errors::createGenericError<coil::Optional<T>>(input, Move(innerValue).error());
+        return errors::createGenericError<coil::Optional<T>>(input, coil::move(innerValue).error());
     }
 
     template<typename T>

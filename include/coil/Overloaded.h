@@ -12,7 +12,7 @@ namespace coil
         AnyFunctor createAnyFunctor(Func func)
         {
             static_assert((detail::FuncTraits<Func>::isFunc), "Funcs should be functor objects");
-            return AnyFunctor{ typename detail::FuncTraits<Func>::FunctionWrapperType{Move(func)} };
+            return AnyFunctor{ typename detail::FuncTraits<Func>::FunctionWrapperType{coil::move(func)} };
         }
 
         inline AnyFunctor createAnyFunctor(AnyFunctor anyFunctor)
@@ -25,7 +25,7 @@ namespace coil
     Vector<AnyFunctor> overloaded(Funcs... funcs)
     {
         Vector<AnyFunctor> functors;
-        (functors.pushBack(detail::createAnyFunctor(Move(funcs))), ...);
+        (functors.pushBack(detail::createAnyFunctor(coil::move(funcs))), ...);
         return functors;
     }
 }

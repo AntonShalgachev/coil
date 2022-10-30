@@ -49,7 +49,7 @@ void coil::String::reserve(size_t capacity)
         buffer.copy(m_buffer.data(), size());
         *buffer.get(size()) = '\0';
         buffer.resize(m_buffer.size());
-        m_buffer = Move(buffer);
+        m_buffer = coil::move(buffer);
     }
 
     validateIsNullTerminated();

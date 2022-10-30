@@ -11,7 +11,7 @@ namespace coil
     {
     public:
         NamedValue() = default;
-        NamedValue(StringView key, Value value) : m_key(Move(key)), m_value(Move(value)) {}
+        NamedValue(StringView key, Value value) : m_key(coil::move(key)), m_value(coil::move(value)) {}
 
         StringView const& key() const { return m_key; }
         Value const& value() const { return m_value; }

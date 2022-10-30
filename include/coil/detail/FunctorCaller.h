@@ -31,9 +31,9 @@ namespace coil::detail
             return;
         }
 
-        Optional<String> returnValue = func.invoke(createContext<NonUserIndices>(context)..., *Move(expectedArgs)...);
+        Optional<String> returnValue = func.invoke(createContext<NonUserIndices>(context)..., *coil::move(expectedArgs)...);
         if (!context.hasErrors())
-            context.result.returnValue = Move(returnValue);
+            context.result.returnValue = coil::move(returnValue);
     }
 
     template<typename FuncWrapper, size_t... NonUserIndices, typename... UserArgs, size_t... UserIndices>

@@ -45,9 +45,9 @@ coil::Expected<coil::ExecutionInput, coil::String> coil::DefaultLexer::parse(Str
 {
     auto tokens = tokenize(str);
     if (!tokens)
-        return makeUnexpected(Move(tokens).error());
+        return makeUnexpected(coil::move(tokens).error());
 
-    return parse(*Move(tokens));
+    return parse(*coil::move(tokens));
 }
 
 bool coil::DefaultLexer::isGroupChar(unsigned char c) const
@@ -188,7 +188,7 @@ coil::Expected<coil::Vector<coil::DefaultLexer::Token>, coil::String> coil::Defa
         }
     }
 
-    return { Move(tokens) };
+    return { coil::move(tokens) };
 }
 
 coil::Expected<coil::ExecutionInput, coil::String> coil::DefaultLexer::parse(Vector<Token> tokens) const
@@ -196,7 +196,7 @@ coil::Expected<coil::ExecutionInput, coil::String> coil::DefaultLexer::parse(Vec
     ExecutionInput input;
 
     if (tokens.empty())
-        return { Move(input) };
+        return { coil::move(input) };
 
     Token const& firstToken = tokens.front();
     if (firstToken.type != TokenType::String)
@@ -290,5 +290,5 @@ coil::Expected<coil::ExecutionInput, coil::String> coil::DefaultLexer::parse(Vec
 
     addCurrentTokens();
 
-    return { Move(input) };
+    return { coil::move(input) };
 }

@@ -13,7 +13,7 @@ namespace coil
         static_assert(!IsVoidV<T>, "T shouldn't be void");
 
     public:
-        Unexpected(T value) : m_value(Move(value)) {}
+        Unexpected(T value) : m_value(coil::move(value)) {}
 
         T const& value() const&
         {
@@ -25,7 +25,7 @@ namespace coil
         }
         T&& value() &&
         {
-            return Move(m_value);
+            return coil::move(m_value);
         }
 
         template<typename U>
@@ -43,7 +43,7 @@ namespace coil
         template<typename U>
         operator Unexpected<U>() &&
         {
-            return Unexpected<U>{Move(m_value)};
+            return Unexpected<U>{coil::move(m_value)};
         }
 
     private:
@@ -53,7 +53,7 @@ namespace coil
     template<typename T>
     Unexpected<T> makeUnexpected(T value)
     {
-        return Unexpected<RemoveCvT<RemoveReferenceT<T>>>(Move(value));
+        return Unexpected<RemoveCvT<RemoveReferenceT<T>>>(coil::move(value));
     }
 
     template<typename T, typename E>
@@ -63,10 +63,10 @@ namespace coil
         static_assert(!IsVoidV<E>, "E can't be void");
 
     public:
-        Expected(T value) : m_expected(Move(value)), m_hasValue(true) {}
+        Expected(T value) : m_expected(coil::move(value)), m_hasValue(true) {}
 
         template<typename U>
-        Expected(Unexpected<U> error) : m_unexpected(Move(error)), m_hasValue(false)
+        Expected(Unexpected<U> error) : m_unexpected(coil::move(error)), m_hasValue(false)
         {
             
         }
@@ -78,7 +78,7 @@ namespace coil
 
         Expected(Expected<T, E>&& rhs) noexcept
         {
-            constructFrom(Move(rhs));
+            constructFrom(coil::move(rhs));
         }
 
         ~Expected() // not virtual
@@ -109,16 +109,16 @@ namespace coil
         {
             if (m_hasValue && rhs.m_hasValue)
             {
-                m_expected = Move(rhs).m_expected;
+                m_expected = coil::move(rhs).m_expected;
             }
             else if (!m_hasValue && !rhs.m_hasValue)
             {
-                m_unexpected = Move(rhs).m_unexpected;
+                m_unexpected = coil::move(rhs).m_unexpected;
             }
             else
             {
                 destruct();
-                constructFrom(Move(rhs));
+                constructFrom(coil::move(rhs));
             }
 
             return *this;
@@ -147,7 +147,7 @@ namespace coil
         E&& error() &&
         {
             COIL_ASSERT(!hasValue());
-            return Move(m_unexpected).value();
+            return coil::move(m_unexpected).value();
         }
 
         template<typename T2, typename E2>
@@ -185,7 +185,7 @@ namespace coil
         T&& value()&&
         {
             COIL_ASSERT(hasValue());
-            return Move(*this).m_expected;
+            return coil::move(*this).m_expected;
         }
 
         T const& operator*() const&
@@ -198,7 +198,7 @@ namespace coil
         }
         T&& operator*()&&
         {
-            return Move(*this).value();
+            return coil::move(*this).value();
         }
 
         T const* operator->() const
@@ -230,9 +230,9 @@ namespace coil
         {
             m_hasValue = rhs.m_hasValue;
             if (rhs.m_hasValue)
-                new (NewTag{}, &m_expected) T(Move(rhs.m_expected));
+                new (NewTag{}, &m_expected) T(coil::move(rhs.m_expected));
             else
-                new (NewTag{}, &m_unexpected) Unexpected<E>(Move(rhs.m_unexpected));
+                new (NewTag{}, &m_unexpected) Unexpected<E>(coil::move(rhs.m_unexpected));
         }
 
         void destruct()

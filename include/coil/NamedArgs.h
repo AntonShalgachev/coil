@@ -22,7 +22,7 @@ namespace coil
                 TypeMismatch,
             };
 
-            Error(Type type, String message) : type(type), message(Move(message)) {}
+            Error(Type type, String message) : type(type), message(coil::move(message)) {}
 
             Type type = Type::MissingKey;
             String message;
@@ -63,13 +63,13 @@ namespace coil
     {
         auto typelessValue = get(key);
         if (!typelessValue)
-            return makeUnexpected(Move(typelessValue).error());
+            return makeUnexpected(coil::move(typelessValue).error());
 
         Expected<T, String> value = static_cast<Value const&>(*typelessValue).get<T>();
         if (!value)
-            return makeUnexpected(Error(Error::Type::TypeMismatch, Move(value).error()));
+            return makeUnexpected(Error(Error::Type::TypeMismatch, coil::move(value).error()));
 
-        return *Move(value);
+        return *coil::move(value);
     }
 
     template<typename T>
@@ -80,7 +80,7 @@ namespace coil
         else if (argType == ArgType::Optional && value.error().type == Error::Type::MissingKey)
             return defaultValue;
         else
-            m_context.reportError(Move(value).error().message);
+            m_context.reportError(coil::move(value).error().message);
 
         return {};
     }

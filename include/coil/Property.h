@@ -21,12 +21,12 @@ namespace coil
         auto get = [getter]() -> decltype(auto) { return getter(); };
 
         using T = DecayT<decltype(getter())>;
-        auto set = [getter, setter = Move(setter)](T const& value) -> decltype(auto) {
+        auto set = [getter, setter = coil::move(setter)](T const& value) -> decltype(auto) {
             setter(value);
             return getter();
         };
 
-        return coil::overloaded(Move(get), Move(set));
+        return coil::overloaded(coil::move(get), coil::move(set));
     }
 
     template<typename G>
@@ -39,7 +39,7 @@ namespace coil
             return getter();
         };
 
-        return coil::overloaded(Move(get), Move(set));
+        return coil::overloaded(coil::move(get), coil::move(set));
     }
 
     template<typename C, typename G, typename S>
@@ -48,12 +48,12 @@ namespace coil
         auto get = [getter, object]() -> decltype(auto) { return simpleInvoke(getter, object); };
 
         using T = DecayT<decltype(simpleInvoke(getter, object))>;
-        auto set = [getter, setter = Move(setter), object](T const& value) -> decltype(auto) {
+        auto set = [getter, setter = coil::move(setter), object](T const& value) -> decltype(auto) {
             simpleInvoke(setter, object, value);
             return simpleInvoke(getter, object);
         };
 
-        return coil::overloaded(Move(get), Move(set));
+        return coil::overloaded(coil::move(get), coil::move(set));
     }
 
     template<typename C, typename G>
@@ -67,6 +67,6 @@ namespace coil
             return simpleInvoke(getter, object);
         };
 
-        return coil::overloaded(Move(get), Move(set));
+        return coil::overloaded(coil::move(get), coil::move(set));
     }
 }

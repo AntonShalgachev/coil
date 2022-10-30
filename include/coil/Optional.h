@@ -29,7 +29,7 @@ namespace coil
         }
         Optional(T&& value) : Optional()
         {
-            construct(Move(value));
+            construct(coil::move(value));
         }
 
         Optional(Optional&& rhs) : Optional()
@@ -90,7 +90,7 @@ namespace coil
 
         void construct(T&& value)
         {
-            new (coil::NewTag{}, &m_value) T(Move(value));
+            new (coil::NewTag{}, &m_value) T(coil::move(value));
             m_hasValue = true;
         }
 
@@ -111,12 +111,12 @@ namespace coil
             }
             else if (m_hasValue && !rhs.m_hasValue)
             {
-                rhs.construct(Move(m_value));
+                rhs.construct(coil::move(m_value));
                 destroy();
             }
             else if (!m_hasValue && rhs.m_hasValue)
             {
-                construct(Move(rhs.m_value));
+                construct(coil::move(rhs.m_value));
                 rhs.destroy();
             }
         }

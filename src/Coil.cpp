@@ -35,9 +35,9 @@ template class coil::UniquePtr<coil::Lexer>;
 
 template class coil::Unexpected<coil::String>;
 template coil::Unexpected<coil::String> coil::makeUnexpected(coil::String value);
-template coil::Unexpected<coil::String>&& coil::Move<coil::Unexpected<coil::String>&>(coil::Unexpected<coil::String>&) noexcept;
+template coil::Unexpected<coil::String>&& coil::move<coil::Unexpected<coil::String>&>(coil::Unexpected<coil::String>&) noexcept;
 
-template coil::detail::AnyStorageBase*&& coil::Move<coil::detail::AnyStorageBase*&>(coil::detail::AnyStorageBase*&) noexcept;
+template coil::detail::AnyStorageBase*&& coil::move<coil::detail::AnyStorageBase*&>(coil::detail::AnyStorageBase*&) noexcept;
 template void coil::exchange<coil::detail::AnyStorageBase*>(coil::detail::AnyStorageBase*&, coil::detail::AnyStorageBase*&) noexcept;
 
 template coil::String&& coil::Forward<coil::String>(coil::String&) noexcept;
@@ -73,11 +73,11 @@ namespace coil
         }
 
         /// CallContext.h ///
-        CallContext::CallContext(ExecutionInput input) : input(coil::Move(input)) {}
+        CallContext::CallContext(ExecutionInput input) : input(coil::move(input)) {}
 
         void CallContext::reportError(String error)
         {
-            result.errors.pushBack(coil::Move(error));
+            result.errors.pushBack(coil::move(error));
         }
 
         bool CallContext::hasErrors() const
@@ -137,7 +137,7 @@ namespace coil
 
     void Bindings::setLexer(UniquePtr<Lexer> lexer)
     {
-        m_lexer = coil::Move(lexer);
+        m_lexer = coil::move(lexer);
     }
 
     BindingProxy Bindings::operator[](StringView name)
@@ -148,13 +148,13 @@ namespace coil
     Bindings::Command const& Bindings::add(StringView name, AnyFunctor anyFunctor)
     {
         Vector<AnyFunctor> functors;
-        functors.pushBack(coil::Move(anyFunctor));
-        return add(name, coil::Move(functors));
+        functors.pushBack(coil::move(anyFunctor));
+        return add(name, coil::move(functors));
     }
 
     Bindings::Command const& Bindings::add(StringView name, Vector<AnyFunctor> anyFunctors)
     {
-        auto it = m_commands.insertOrAssign(name, Command{ StringView{}, coil::Move(anyFunctors) });
+        auto it = m_commands.insertOrAssign(name, Command{ StringView{}, coil::move(anyFunctors) });
         it->value().name = it->key();
 
         return it->value();
@@ -181,10 +181,10 @@ namespace coil
 
     ExecutionResult Bindings::execute(ExecutionInput input)
     {
-        detail::CallContext context{coil::Move(input)};
+        detail::CallContext context{coil::move(input)};
         execute(context);
-        context.result.input = coil::Move(context.input);
-        return coil::Move(context).result;
+        context.result.input = coil::move(context.input);
+        return coil::move(context).result;
     }
 
     ExecutionResult Bindings::execute(StringView command)
@@ -197,7 +197,7 @@ namespace coil
             return result;
         }
 
-        return execute(*coil::Move(input));
+        return execute(*coil::move(input));
     }
 
     void Bindings::execute(detail::CallContext& context)
@@ -254,19 +254,19 @@ namespace coil
 
         size_t const actualArgsCount = context.input.arguments.size();
         auto error = sprintf("Wrong number of arguments to '%.*s': expected %s, got %d", context.input.name.length(), context.input.name.data(), expectedStr.cStr(), actualArgsCount);
-        context.reportError(coil::Move(error));
+        context.reportError(coil::move(error));
     }
 
     BindingProxy::BindingProxy(Bindings& bindings, StringView name) : m_bindings(bindings), m_name(name) {}
 
     BindingProxy& BindingProxy::operator=(AnyFunctor anyFunctor)
     {
-        m_bindings.add(m_name, Move(anyFunctor));
+        m_bindings.add(m_name, coil::move(anyFunctor));
         return *this;
     }
     BindingProxy& BindingProxy::operator=(Vector<AnyFunctor> anyFunctors)
     {
-        m_bindings.add(m_name, Move(anyFunctors));
+        m_bindings.add(m_name, coil::move(anyFunctors));
         return *this;
     }
     BindingProxy& BindingProxy::operator=(nullptr_t)
@@ -308,7 +308,7 @@ namespace coil
 
     void Context::reportError(String error)
     {
-        m_callContext.reportError(coil::Move(error));
+        m_callContext.reportError(coil::move(error));
     }
 
     bool Context::hasErrors() const
@@ -338,7 +338,7 @@ namespace coil
         if (auto anyArg = get(key))
             return &static_cast<Value const&>(*anyArg);
         else if (argType == ArgType::Required)
-            m_context.reportError(coil::Move(anyArg).error().message);
+            m_context.reportError(coil::move(anyArg).error().message);
 
         return nullptr;
     }
@@ -368,9 +368,9 @@ namespace coil
 
     /// Value.h ///
     Value::Value() = default; // @NOCOVERAGE
-    Value::Value(StringView value) { subvalues.pushBack(Move(value)); }
+    Value::Value(StringView value) { subvalues.pushBack(coil::move(value)); }
     Value::Value(char const* value) : Value(StringView{ value }) {}
-    Value::Value(Vector<StringView> subvalues) : subvalues(coil::Move(subvalues)) {}
+    Value::Value(Vector<StringView> subvalues) : subvalues(coil::move(subvalues)) {}
 
     bool Value::operator==(Value const& rhs) const
     {

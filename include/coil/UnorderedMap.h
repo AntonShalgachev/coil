@@ -19,7 +19,7 @@ namespace coil
         V& value() { return m_value; }
 
     private:
-        KeyValuePair(K key, V value) : m_key(Move(key)), m_value(Move(value)) {}
+        KeyValuePair(K key, V value) : m_key(coil::move(key)), m_value(coil::move(value)) {}
 
         K m_key;
         V m_value;
@@ -108,7 +108,7 @@ namespace coil
         {
             if (Iterator it = find(key); it != end())
             {
-                it->m_value = Move(value);
+                it->m_value = coil::move(value);
                 return it;
             }
 
@@ -118,7 +118,7 @@ namespace coil
                 rehash(size() * 2);
 
             size_t newNodeIndex = m_nodes.size();
-            m_nodes.pushBack({ KeyValuePair<K, V>{ Move(key), Move(value) }, invalidIndex, invalidIndex, invalidIndex });
+            m_nodes.pushBack({ KeyValuePair<K, V>{ coil::move(key), coil::move(value) }, invalidIndex, invalidIndex, invalidIndex });
 
             insertNode(newNodeIndex);
 

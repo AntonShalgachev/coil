@@ -38,7 +38,7 @@ namespace coil
         {
             static_assert(detail::FuncTraits<Func>::isFunc, "Func should be a functor object");
             using FunctionWrapper = typename detail::FuncTraits<Func>::FunctionWrapperType;
-            return add(name, AnyFunctor{FunctionWrapper{Move(func)}});
+            return add(name, AnyFunctor{FunctionWrapper{coil::move(func)}});
         }
 
         Bindings::Command const& add(StringView name, AnyFunctor anyFunctor);
@@ -71,7 +71,7 @@ namespace coil
         {
             static_assert(detail::FuncTraits<Func>::isFunc, "Func should be a functor object");
             using FunctionWrapper = typename detail::FuncTraits<Func>::FunctionWrapperType;
-            return operator=(AnyFunctor{FunctionWrapper{Move(func)}});
+            return operator=(AnyFunctor{FunctionWrapper{coil::move(func)}});
         }
         BindingProxy& operator=(AnyFunctor anyFunctor);
         BindingProxy& operator=(Vector<AnyFunctor> anyFunctors);

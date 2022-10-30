@@ -10,7 +10,7 @@ namespace coil
 
     // TODO fix case
     template <typename T>
-    constexpr RemoveReferenceT<T>&& Move(T&& arg) noexcept
+    constexpr RemoveReferenceT<T>&& move(T&& arg) noexcept
     {
         return static_cast<RemoveReferenceT<T>&&>(arg);
     }
@@ -31,9 +31,9 @@ namespace coil
     template<typename T>
     void exchange(T& lhs, T& rhs) noexcept
     {
-        T temp = Move(lhs);
-        lhs = Move(rhs);
-        rhs = Move(temp);
+        T temp = coil::move(lhs);
+        lhs = coil::move(rhs);
+        rhs = coil::move(temp);
     }
 
     template<typename Type, Type... Is>

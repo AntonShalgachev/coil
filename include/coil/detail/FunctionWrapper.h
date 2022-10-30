@@ -36,7 +36,7 @@ namespace coil::detail
         template<typename Func, typename C = void>
         FunctionWrapper(Func func, C* obj = nullptr) : returnType(TypeName<DecayT<RemovePointerT<typename FuncTraits<Func>::ReturnType>>>::name())
         {
-            m_func = new Func(Move(func));
+            m_func = new Func(coil::move(func));
             m_obj = const_cast<RemoveCvT<C>*>(obj); // this pointer would be casted back to C* in typedCall
 
             m_callFunc = &FunctionWrapper<Args...>::template typedCall<Func, C>;
@@ -67,17 +67,17 @@ namespace coil::detail
             if constexpr (IsVoidV<R>)
             {
                 if constexpr (IsVoidV<C>)
-                    func(Move(args)...);
+                    func(coil::move(args)...);
                 else
-                    (obj->*func)(Move(args)...);
+                    (obj->*func)(coil::move(args)...);
                 return {};
             }
             else
             {
                 if constexpr (IsVoidV<C>)
-                    return TypeSerializer<R>::toString(func(Move(args)...));
+                    return TypeSerializer<R>::toString(func(coil::move(args)...));
                 else
-                    return TypeSerializer<R>::toString((obj->*func)(Move(args)...));
+                    return TypeSerializer<R>::toString((obj->*func)(coil::move(args)...));
             }
         }
 
@@ -116,6 +116,6 @@ namespace coil::detail
     template<typename... Args>
     Optional<String> FunctionWrapper<Args...>::invoke(Args... args)
     {
-        return (this->*m_callFunc)(Move(args)...);
+        return (this->*m_callFunc)(coil::move(args)...);
     }
 }
