@@ -40,32 +40,29 @@ namespace coil
 
     //////////////////////////////////////
 
-    template<typename T>
-    struct TypeSerializer<T, EnableIfT<IsArithmetic<T>>>
-    {
-        static Expected<T, String> fromString(Value const& input);
-
-        static String toString(T const& value);
-    };
-
-    // TODO make it extern and implement in cpp file for all arithmetic types
-    template<typename T>
-    coil::Expected<T, String> TypeSerializer<T, EnableIfT<IsArithmetic<T>>>::fromString(Value const& input)
-    {
-        if (input.subvalues.size() != 1)
-            return errors::createMismatchedSubvaluesError<T>(input, 1);
-
-        T value{};
-        if (!coil::fromString(input.subvalues[0], value))
-            return errors::createGenericError<T>(input);
-        return value;
+#define DECLARE_ARITHMETIC_TYPE_SERIALIZER(Type) \
+    template<> \
+    struct TypeSerializer<Type> \
+    { \
+        static Expected<Type, String> fromString(Value const& input); \
+        static String toString(Type const& value); \
     }
 
-    template<typename T>
-    coil::String TypeSerializer<T, EnableIfT<IsArithmetic<T>>>::toString(T const& value)
-    {
-        return coil::toString(value);
-    }
+    DECLARE_ARITHMETIC_TYPE_SERIALIZER(char);
+    DECLARE_ARITHMETIC_TYPE_SERIALIZER(signed char);
+    DECLARE_ARITHMETIC_TYPE_SERIALIZER(unsigned char);
+    DECLARE_ARITHMETIC_TYPE_SERIALIZER(short);
+    DECLARE_ARITHMETIC_TYPE_SERIALIZER(unsigned short);
+    DECLARE_ARITHMETIC_TYPE_SERIALIZER(int);
+    DECLARE_ARITHMETIC_TYPE_SERIALIZER(unsigned int);
+    DECLARE_ARITHMETIC_TYPE_SERIALIZER(long);
+    DECLARE_ARITHMETIC_TYPE_SERIALIZER(unsigned long);
+    DECLARE_ARITHMETIC_TYPE_SERIALIZER(long long);
+    DECLARE_ARITHMETIC_TYPE_SERIALIZER(unsigned long long);
+    DECLARE_ARITHMETIC_TYPE_SERIALIZER(float);
+    DECLARE_ARITHMETIC_TYPE_SERIALIZER(double);
+    DECLARE_ARITHMETIC_TYPE_SERIALIZER(long double);
+#undef DECLARE_ARITHMETIC_TYPE_SERIALIZER
 
     //////////////////////////////////////
 

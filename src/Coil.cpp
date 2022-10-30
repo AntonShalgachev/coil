@@ -42,6 +42,21 @@ template void coil::exchange<coil::detail::AnyStorageBase*>(coil::detail::AnySto
 
 template coil::String&& coil::Forward<coil::String>(coil::String&) noexcept;
 
+namespace
+{
+    template<typename T>
+    coil::Expected<T, coil::String> arithmeticFromString(coil::Value const& input)
+    {
+        if (input.subvalues.size() != 1)
+            return coil::errors::createMismatchedSubvaluesError<T>(input, 1);
+
+        T value{};
+        if (!coil::fromString(input.subvalues[0], value))
+            return coil::errors::createGenericError<T>(input);
+        return value;
+    }
+}
+
 namespace coil
 {
     namespace detail
@@ -392,6 +407,32 @@ namespace coil
     }
 
     /// TypeSerializer.h ///
+    #define DEFINE_ARITHMETIC_TYPE_SERIALIZER(Type) \
+    coil::Expected<Type, String> TypeSerializer<Type>::fromString(Value const& input) \
+    { \
+        return ::arithmeticFromString<Type>(input); \
+    } \
+    coil::String TypeSerializer<Type>::toString(Type const& value) \
+    { \
+        return coil::toString(value); \
+    }
+
+    DEFINE_ARITHMETIC_TYPE_SERIALIZER(char);
+    DEFINE_ARITHMETIC_TYPE_SERIALIZER(signed char);
+    DEFINE_ARITHMETIC_TYPE_SERIALIZER(unsigned char);
+    DEFINE_ARITHMETIC_TYPE_SERIALIZER(short);
+    DEFINE_ARITHMETIC_TYPE_SERIALIZER(unsigned short);
+    DEFINE_ARITHMETIC_TYPE_SERIALIZER(int);
+    DEFINE_ARITHMETIC_TYPE_SERIALIZER(unsigned int);
+    DEFINE_ARITHMETIC_TYPE_SERIALIZER(long);
+    DEFINE_ARITHMETIC_TYPE_SERIALIZER(unsigned long);
+    DEFINE_ARITHMETIC_TYPE_SERIALIZER(long long);
+    DEFINE_ARITHMETIC_TYPE_SERIALIZER(unsigned long long);
+    DEFINE_ARITHMETIC_TYPE_SERIALIZER(float);
+    DEFINE_ARITHMETIC_TYPE_SERIALIZER(double);
+    DEFINE_ARITHMETIC_TYPE_SERIALIZER(long double);
+#undef DEFINE_ARITHMETIC_TYPE_SERIALIZER
+
     coil::Expected<bool, String> coil::TypeSerializer<bool>::fromString(Value const& input)
     {
         auto equalCaseInsensitive = [](StringView a, StringView b) {

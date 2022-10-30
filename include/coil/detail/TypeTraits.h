@@ -70,31 +70,4 @@ namespace coil
     constexpr bool IsMemberPointerV = false;
     template< class T, class U >
     constexpr bool IsMemberPointerV<T U::*> = true;
-
-    template <typename T>
-    inline constexpr bool IsIntegralV = false;
-    template <> inline constexpr bool IsIntegralV<bool> = true;
-    template <> inline constexpr bool IsIntegralV<char> = true;
-    template <> inline constexpr bool IsIntegralV<unsigned char> = true;
-    template <> inline constexpr bool IsIntegralV<signed char> = true;
-    template <> inline constexpr bool IsIntegralV<short> = true;
-    template <> inline constexpr bool IsIntegralV<unsigned short> = true;
-    template <> inline constexpr bool IsIntegralV<int> = true;
-    template <> inline constexpr bool IsIntegralV<unsigned int> = true;
-    template <> inline constexpr bool IsIntegralV<long> = true;
-    template <> inline constexpr bool IsIntegralV<unsigned long> = true;
-    template <> inline constexpr bool IsIntegralV<long long> = true;
-    template <> inline constexpr bool IsIntegralV<unsigned long long> = true;
-
-    template <typename T>
-    inline constexpr bool IsFloatingPointV = false;
-    template <> inline constexpr bool IsFloatingPointV<float> = true;
-    template <> inline constexpr bool IsFloatingPointV<double> = true;
-    template <> inline constexpr bool IsFloatingPointV<long double> = true;
-
-    template <typename T>
-    inline constexpr bool IsArithmetic = IsIntegralV<T> || IsFloatingPointV<T>;
-    template <typename T> inline constexpr bool IsArithmetic<T const> = IsArithmetic<T>;
-    template <typename T> inline constexpr bool IsArithmetic<T volatile> = IsArithmetic<T>;
-    template <typename T> inline constexpr bool IsArithmetic<T volatile const> = IsArithmetic<T>;
 }
