@@ -19,7 +19,7 @@ namespace coil
     class DefaultLexer : public Lexer
     {
     public:
-        DefaultLexer(StringView groupParenthesis = "()", StringView quotes = "'\"", StringView groupSeparators = ",;|");
+        DefaultLexer(StringView groupParenthesis = "()", StringView quotes = "'\"", StringView groupSeparators = ",;|", StringView spaceCharacters = " \t\n\r");
 
         Expected<ExecutionInput, String> parse(StringView str) const override;
 
@@ -30,6 +30,7 @@ namespace coil
         bool isGroupChar(unsigned char c) const;
         bool isQuote(unsigned char c) const;
         bool isGroupSeparator(unsigned char c) const;
+        bool isSpace(unsigned char c) const;
         CharType getCharType(unsigned char c) const;
 
         Vector<StringView> splitGroup(StringView str) const;
@@ -42,5 +43,6 @@ namespace coil
         String m_groupParentheses;
         String m_quotes;
         String m_groupSeparators;
+        String m_spaceCharacters;
     };
 }

@@ -8,8 +8,6 @@
 #include "coil/detail/Algorithm.h"
 #include "coil/detail/Utility.h"
 
-#include <ctype.h>
-
 namespace
 {
     enum class TokenType
@@ -18,11 +16,6 @@ namespace
         GroupString,
         Assignment,
     };
-
-    bool isSpace(unsigned char c)
-    {
-        return isspace(c);
-    }
 }
 
 enum class coil::DefaultLexer::CharType
@@ -42,8 +35,8 @@ struct coil::DefaultLexer::Token
     StringView value;
 };
 
-coil::DefaultLexer::DefaultLexer(StringView groupParenthesis, StringView quotes, StringView groupSeparators)
-    : m_groupParentheses(groupParenthesis), m_quotes(quotes), m_groupSeparators(groupSeparators)
+coil::DefaultLexer::DefaultLexer(StringView groupParenthesis, StringView quotes, StringView groupSeparators, StringView spaceCharacters)
+    : m_groupParentheses(groupParenthesis), m_quotes(quotes), m_groupSeparators(groupSeparators), m_spaceCharacters(spaceCharacters)
 {
 
 }
@@ -73,6 +66,11 @@ bool coil::DefaultLexer::isGroupSeparator(unsigned char c) const
         return true;
 
     return coil::find(m_groupSeparators.begin(), m_groupSeparators.end(), c) != m_groupSeparators.end();
+}
+
+bool coil::DefaultLexer::isSpace(unsigned char c) const
+{
+    return coil::find(m_spaceCharacters.begin(), m_spaceCharacters.end(), c) != m_spaceCharacters.end();
 }
 
 coil::DefaultLexer::CharType coil::DefaultLexer::getCharType(unsigned char c) const
