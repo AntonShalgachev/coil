@@ -9,6 +9,6 @@
 
 #else
 
-#define COIL_ASSERT(...)
+#define COIL_ASSERT(...) ((void)0)
 
 #endif
