@@ -4,6 +4,8 @@
 #include "detail/New.h"
 #include "Assert.h"
 
+#include "Buffer.h"
+
 #include <stddef.h>
 
 namespace coil
@@ -23,7 +25,7 @@ namespace coil
 
         Vector(Vector const& rhs)
         {
-            assign(rhs.m_items, rhs.m_size);
+            assign(rhs.data(), rhs.size());
         }
 
         Vector(Vector&& rhs)
@@ -49,82 +51,81 @@ namespace coil
             return *this;
         }
 
-        void reserve(size_t capacity)
+        void reserve(size_t newCapacity)
         {
-            if (capacity > m_capacity)
-                grow(capacity);
+            if (newCapacity > capacity())
+                grow(newCapacity);
         }
 
-        void resize(size_t size)
+        void resize(size_t newSize)
         {
-            if (size > m_capacity)
-                grow(size);
-            COIL_ASSERT(size <= m_capacity);
+            if (newSize > capacity())
+                grow(newSize);
 
-            for (size_t i = size; i < m_size; i++)
-                m_items[i].~T();
-            for (size_t i = m_size; i < size; i++)
-                new (NewTag{}, m_items + i) T();
+            COIL_ASSERT(capacity() >= newSize);
 
-            m_size = size;
+            while (size() > newSize)
+                m_buffer.destructLast<T>();
+            while (size() < newSize)
+                m_buffer.constructNext<T>();
+
+            COIL_ASSERT(size() == newSize);
         }
 
         void pushBack(T item)
         {
-            if (m_size + 1 > m_capacity)
-                grow(m_size + 1); // TODO think about grow strategy
+            if (size() + 1 > capacity())
+                grow(size() + 1); // TODO think about grow strategy
 
-            new (NewTag{}, m_items + m_size) T(Move(item));
-            m_size++;
+            m_buffer.constructNext<T>(Move(item));
         }
 
         void popBack()
         {
             COIL_ASSERT(!empty());
 
-            m_items[m_size - 1].~T();
-            m_size--;
+            m_buffer.destructLast<T>();
         }
 
         void clear()
         {
-            deallocate();
+            m_buffer.destructAll<T>();
         }
 
-        T* data() { return m_items; }
-        T const* data() const { return m_items; }
-        size_t size() const { return m_size; }
-        size_t capacity() const { return m_capacity; }
+        T* data() { return begin(); }
+        T const* data() const { return begin(); }
+        size_t size() const { return m_buffer.size(); }
+        size_t capacity() const { return m_buffer.count(); }
         bool empty() const { return size() == 0; }
 
-        T* begin() { return m_items; }
-        T const* begin() const { return m_items; }
-        T* end() { return m_items + m_size; }
-        T const* end() const { return m_items + m_size; }
+        T* begin() { return m_buffer.get<T>(0); }
+        T const* begin() const { return m_buffer.get<T>(0); }
+        T* end() { return m_buffer.get<T>(size()); }
+        T const* end() const { return m_buffer.get<T>(size()); }
 
-        T& front() { COIL_ASSERT(!empty()); return m_items[0]; }
-        T const& front() const { COIL_ASSERT(!empty()); return m_items[0]; }
-        T& back() { COIL_ASSERT(!empty()); return m_items[m_size - 1]; }
-        T const& back() const { COIL_ASSERT(!empty()); return m_items[m_size - 1]; }
+        T& front() { COIL_ASSERT(!empty()); return (*this)[0]; }
+        T const& front() const { COIL_ASSERT(!empty()); return (*this)[0]; }
+        T& back() { COIL_ASSERT(!empty()); return (*this)[size() - 1]; }
+        T const& back() const { COIL_ASSERT(!empty()); return (*this)[size() - 1]; }
 
         T const& operator[](size_t index) const
         {
-            COIL_ASSERT(index < m_size);
-            return m_items[index];
+            COIL_ASSERT(index < m_buffer.size());
+            return *m_buffer.get<T>(index);
         }
         T& operator[](size_t index)
         {
-            COIL_ASSERT(index < m_size);
-            return m_items[index];
+            COIL_ASSERT(index < m_buffer.size());
+            return *m_buffer.get<T>(index);
         }
 
         bool operator==(Vector const& rhs) const
         {
             Vector const& lhs = *this;
-            if (lhs.m_size != rhs.m_size)
+            if (lhs.size() != rhs.size())
                 return false;
 
-            size_t size = lhs.m_size;
+            size_t size = lhs.size();
             for (size_t i = 0; i < size; i++)
                 if (lhs[i] != rhs[i])
                     return false;
@@ -133,59 +134,47 @@ namespace coil
         }
 
     private:
-        void grow(size_t capacity)
+        void grow(size_t newCapacity)
         {
-            // TODO alignment?
-            T* items = static_cast<T*>(operator new(capacity * sizeof(T)));
+            Buffer buffer{ newCapacity, sizeof(T) };
 
-            if (m_items)
-            {
-                for (size_t i = 0; i < m_size; i++)
-                {
-                    new (NewTag{}, items + i) T(Move(m_items[i]));
-                    m_items[i].~T();
-                }
-                operator delete(m_items);
-            }
+            for (size_t i = 0; i < m_buffer.size(); i++)
+                buffer.constructNext<T>(Move(*m_buffer.get<T>(i)));
 
-            m_items = items;
-            m_capacity = capacity;
+            COIL_ASSERT(m_buffer.size() == buffer.size());
+
+            m_buffer.destructAll<T>();
+
+            m_buffer = Move(buffer);
+
+            COIL_ASSERT(m_buffer.count() == newCapacity);
         }
 
         void assign(T const* items, size_t size)
         {
-            deallocate();
-            grow(size);
+            clear();
 
-            COIL_ASSERT(m_items);
-            COIL_ASSERT(m_capacity >= size);
+            if (size > capacity())
+                grow(size);
+
+            COIL_ASSERT(capacity() >= size);
+
             for (size_t i = 0; i < size; i++)
-                new (NewTag{}, m_items + i) T(items[i]);
-            m_size = size;
+                m_buffer.constructNext<T>(items[i]);
         }
 
         void deallocate()
         {
-            for (size_t i = 0; i < m_size; i++)
-                m_items[i].~T();
-            m_size = 0;
-
-            if (m_items)
-                operator delete(m_items);
-            m_items = nullptr;
-            m_capacity = 0;
+            clear();
+            m_buffer = Buffer{};
         }
 
         void swap(Vector& rhs) noexcept
         {
-            coil::exchange(m_items, rhs.m_items);
-            coil::exchange(m_size, rhs.m_size);
-            coil::exchange(m_capacity, rhs.m_capacity);
+            coil::exchange(m_buffer, rhs.m_buffer);
         }
 
     private:
-        T* m_items = nullptr;
-        size_t m_size = 0;
-        size_t m_capacity = 0;
+        Buffer m_buffer;
     };
 }

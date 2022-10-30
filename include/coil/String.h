@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Vector.h"
+#include "Buffer.h"
 
 #include "Hash.h"
 
@@ -45,7 +45,10 @@ namespace coil
         operator StringView() const;
 
     private:
-        Vector<char> m_chars;
+        void validateIsNullTerminated();
+
+    private:
+        Buffer m_buffer;
     };
 
     String operator+(String lhs, char rhs);

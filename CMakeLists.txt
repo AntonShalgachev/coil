@@ -36,6 +36,7 @@ add_library(coil
     "include/coil/AnyFunctor.h"
     "include/coil/Bind.h"
     "include/coil/Bindings.h"
+    "include/coil/Buffer.h"
     "include/coil/Coil.h"
     "include/coil/Config.h"
     "include/coil/Context.h"
@@ -69,6 +70,7 @@ add_library(coil
     "src/StdLib.cpp"
     "src/New.cpp"
     "src/DefaultLexer.cpp"
+    "src/Buffer.cpp"
 )
 add_library(coil::coil ALIAS coil)
 
