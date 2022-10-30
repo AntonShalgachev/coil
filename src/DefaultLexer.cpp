@@ -198,7 +198,7 @@ coil::Expected<coil::ExecutionInput, coil::String> coil::DefaultLexer::parse(Vec
     ExecutionInput input;
 
     if (tokens.empty())
-        return input;
+        return { Move(input) };
 
     Token const& firstToken = tokens.front();
     if (firstToken.type != TokenType::String)

@@ -187,7 +187,7 @@ namespace coil
             return result;
         }
 
-        return execute(*input);
+        return execute(*coil::Move(input));
     }
 
     void Bindings::execute(detail::CallContext& context)
