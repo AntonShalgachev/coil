@@ -42,11 +42,6 @@ template void coil::exchange<coil::detail::AnyStorageBase*>(coil::detail::AnySto
 
 template coil::String&& coil::Forward<coil::String>(coil::String&) noexcept;
 
-extern "C"
-{
-    int vsnprintf(char* s, size_t n, const char* format, va_list arg);
-}
-
 namespace coil
 {
     namespace detail
