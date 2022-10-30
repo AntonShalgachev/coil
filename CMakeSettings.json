@@ -26,6 +26,11 @@
           "name": "COIL_CATCH_EXCEPTIONS",
           "value": "True",
           "type": "BOOL"
+        },
+        {
+          "name": "COIL_ENABLE_ASSERTS",
+          "value": "True",
+          "type": "BOOL"
         }
       ]
     },
@@ -80,6 +85,11 @@
         },
         {
           "name": "COIL_CATCH_EXCEPTIONS",
+          "value": "True",
+          "type": "BOOL"
+        },
+        {
+          "name": "COIL_ENABLE_ASSERTS",
           "value": "True",
           "type": "BOOL"
         }
