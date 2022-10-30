@@ -6,12 +6,16 @@
 
 namespace coil
 {
+    // TODO split into several headers?
+
+    // TODO fix case
     template <typename T>
     constexpr RemoveReferenceT<T>&& Move(T&& arg) noexcept
     {
         return static_cast<RemoveReferenceT<T>&&>(arg);
     }
 
+    // TODO fix case
     template <typename T>
     constexpr T&& Forward(RemoveReferenceT<T>& arg) noexcept
     {
