@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Extern.h"
-
 #include "Bind.h"
 #include "Bindings.h"
 #include "Config.h"
@@ -12,3 +10,5 @@
 #include "TypeName.h"
 #include "Value.h"
 #include "Variable.h"
+
+#include "Extern.h"

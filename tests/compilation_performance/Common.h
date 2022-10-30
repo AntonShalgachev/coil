@@ -1,7 +1,5 @@
 #pragma once
 
-#include "coil/Coil.h"
-
 #include <charconv>
 #include <functional>
 #include <iostream>
@@ -13,6 +11,8 @@
 #include <string_view>
 #include <unordered_map>
 #include <vector>
+
+#include "coil/Coil.h"
 
 #if USE_COIL
     #define TEST_EXTERN_TEMPLATE(T)       \
