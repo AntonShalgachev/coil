@@ -51,7 +51,7 @@ namespace coil
         delim = "";
         for (auto const& pair : input.namedArguments)
         {
-            os << delim << "'" << pair.key() << "':" << pair.value().str() << "";
+            os << delim << "'" << pair.key << "':" << pair.value.str() << "";
             delim = ", ";
         }
 

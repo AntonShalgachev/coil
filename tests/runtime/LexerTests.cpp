@@ -167,8 +167,8 @@ namespace
 
         for (auto const& pair : input.namedArguments)
         {
-            auto const& key = pair.key();
-            auto const& arg = pair.value();
+            auto const& key = pair.key;
+            auto const& arg = pair.value;
 
             ss << key;
             randomSpaces();

@@ -33,6 +33,15 @@ namespace coil
         Vector<StringView> subvalues;
     };
 
+    struct NamedValue
+    {
+        StringView key;
+        Value value;
+
+        bool operator==(NamedValue const& rhs) const;
+        bool operator!=(NamedValue const& rhs) const;
+    };
+
     template<>
     struct TypeSerializer<Value, void>
     {

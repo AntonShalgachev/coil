@@ -371,7 +371,7 @@ namespace coil
         if (it == end())
             return makeUnexpected(Error(Error::Type::MissingKey, sprintf("Missing named argument '%.*s'", key.length(), key.data())));
 
-        return {it->value()};
+        return {it->value};
     }
 
     Value const* NamedArgs::getOrReport(StringView key, ArgType argType) const
@@ -402,7 +402,7 @@ namespace coil
     NamedArgs::NamedArgsIteratorT NamedArgs::find(StringView key) const
     {
         for (auto it = begin(); it != end(); ++it)
-            if (it->key() == key)
+            if (it->key == key)
                 return it;
         return end();
     }
@@ -445,6 +445,16 @@ namespace coil
     String coil::TypeSerializer<Value>::toString(Value const& value)
     {
         return value.str();
+    }
+
+    bool NamedValue::operator==(NamedValue const& rhs) const
+    {
+        return key == rhs.key && value == rhs.value;
+    }
+
+    bool NamedValue::operator!=(NamedValue const& rhs) const
+    {
+        return !(*this == rhs);
     }
 
     /// TypeSerializer.h ///
