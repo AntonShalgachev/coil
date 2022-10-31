@@ -36,6 +36,16 @@ namespace
     {
         return os << "CompoundType{" << value.field1 << ',' << value.field2 << '}';
     }
+
+    template<typename T>
+    bool compareFloat(coil::Expected<T, coil::String> const& lhs, T rhs)
+    {
+        if (!lhs)
+            return false;
+
+        using FP = ::testing::internal::FloatingPoint<T>;
+        return FP{ *lhs }.AlmostEquals(FP{ rhs });
+    };
 }
 
 namespace coil
@@ -129,36 +139,27 @@ TEST(TypeSerializerTests, TestIntToString)
 
 TEST(TypeSerializerTests, TestFloatValidInputFromString)
 {
-    auto compareFloat = [](coil::Expected<float, coil::String> const& lhs, float rhs)
-    {
-        if (!lhs)
-            return false;
+    EXPECT_PRED2(compareFloat<float>, coil::TypeSerializer<float>::fromString("1.0e-37"), 1.0e-37f);
+    EXPECT_PRED2(compareFloat<float>, coil::TypeSerializer<float>::fromString("-1.0e-37"), -1.0e-37f);
+    EXPECT_PRED2(compareFloat<float>, coil::TypeSerializer<float>::fromString("1.0e37"), 1.0e37f);
+    EXPECT_PRED2(compareFloat<float>, coil::TypeSerializer<float>::fromString("-1.0e37"), -1.0e37f);
 
-        using FP = ::testing::internal::FloatingPoint<float>;
-        return FP{ *lhs }.AlmostEquals(FP{ rhs });
-    };
+    EXPECT_PRED2(compareFloat<float>, coil::TypeSerializer<float>::fromString("0"), 0.0f);
+    EXPECT_PRED2(compareFloat<float>, coil::TypeSerializer<float>::fromString("-0"), 0.0f);
+    EXPECT_PRED2(compareFloat<float>, coil::TypeSerializer<float>::fromString("3.14"), 3.14f);
+    EXPECT_PRED2(compareFloat<float>, coil::TypeSerializer<float>::fromString("-3.14"), -3.14f);
 
-    EXPECT_PRED2(compareFloat, coil::TypeSerializer<float>::fromString("1.0e-37"), 1.0e-37f);
-    EXPECT_PRED2(compareFloat, coil::TypeSerializer<float>::fromString("-1.0e-37"), -1.0e-37f);
-    EXPECT_PRED2(compareFloat, coil::TypeSerializer<float>::fromString("1.0e37"), 1.0e37f);
-    EXPECT_PRED2(compareFloat, coil::TypeSerializer<float>::fromString("-1.0e37"), -1.0e37f);
+    EXPECT_PRED2(compareFloat<float>, coil::TypeSerializer<float>::fromString("314"), 314.0f);
+    EXPECT_PRED2(compareFloat<float>, coil::TypeSerializer<float>::fromString("-314"), -314.0f);
 
-    EXPECT_PRED2(compareFloat, coil::TypeSerializer<float>::fromString("0"), 0.0f);
-    EXPECT_PRED2(compareFloat, coil::TypeSerializer<float>::fromString("-0"), 0.0f);
-    EXPECT_PRED2(compareFloat, coil::TypeSerializer<float>::fromString("3.14"), 3.14f);
-    EXPECT_PRED2(compareFloat, coil::TypeSerializer<float>::fromString("-3.14"), -3.14f);
-
-    EXPECT_PRED2(compareFloat, coil::TypeSerializer<float>::fromString("314"), 314.0f);
-    EXPECT_PRED2(compareFloat, coil::TypeSerializer<float>::fromString("-314"), -314.0f);
-
-    EXPECT_PRED2(compareFloat, coil::TypeSerializer<float>::fromString("inf"), std::numeric_limits<float>::infinity());
-    EXPECT_PRED2(compareFloat, coil::TypeSerializer<float>::fromString("INF"), std::numeric_limits<float>::infinity());
-    EXPECT_PRED2(compareFloat, coil::TypeSerializer<float>::fromString("infinity"), std::numeric_limits<float>::infinity());
-    EXPECT_PRED2(compareFloat, coil::TypeSerializer<float>::fromString("INFINITY"), std::numeric_limits<float>::infinity());
-    EXPECT_PRED2(compareFloat, coil::TypeSerializer<float>::fromString("-inf"), -std::numeric_limits<float>::infinity());
-    EXPECT_PRED2(compareFloat, coil::TypeSerializer<float>::fromString("-INF"), -std::numeric_limits<float>::infinity());
-    EXPECT_PRED2(compareFloat, coil::TypeSerializer<float>::fromString("-infinity"), -std::numeric_limits<float>::infinity());
-    EXPECT_PRED2(compareFloat, coil::TypeSerializer<float>::fromString("-INFINITY"), -std::numeric_limits<float>::infinity());
+    EXPECT_PRED2(compareFloat<float>, coil::TypeSerializer<float>::fromString("inf"), std::numeric_limits<float>::infinity());
+    EXPECT_PRED2(compareFloat<float>, coil::TypeSerializer<float>::fromString("INF"), std::numeric_limits<float>::infinity());
+    EXPECT_PRED2(compareFloat<float>, coil::TypeSerializer<float>::fromString("infinity"), std::numeric_limits<float>::infinity());
+    EXPECT_PRED2(compareFloat<float>, coil::TypeSerializer<float>::fromString("INFINITY"), std::numeric_limits<float>::infinity());
+    EXPECT_PRED2(compareFloat<float>, coil::TypeSerializer<float>::fromString("-inf"), -std::numeric_limits<float>::infinity());
+    EXPECT_PRED2(compareFloat<float>, coil::TypeSerializer<float>::fromString("-INF"), -std::numeric_limits<float>::infinity());
+    EXPECT_PRED2(compareFloat<float>, coil::TypeSerializer<float>::fromString("-infinity"), -std::numeric_limits<float>::infinity());
+    EXPECT_PRED2(compareFloat<float>, coil::TypeSerializer<float>::fromString("-INFINITY"), -std::numeric_limits<float>::infinity());
 }
 
 TEST(TypeSerializerTests, TestFloatInvalidInputFromString)
@@ -270,4 +271,23 @@ TEST(TypeSerializerTests, TestCompoundUserTypeToString)
     EXPECT_EQ(coil::TypeSerializer<CompoundType*>::toString(nullptr), "null");
     EXPECT_EQ(coil::TypeSerializer<CompoundType const*>::toString(&value), "CompoundType{6,28}");
     EXPECT_EQ(coil::TypeSerializer<CompoundType const*>::toString(nullptr), "null");
+}
+
+TEST(TypeSerializerTests, TestArithmeticFromString)
+{
+    EXPECT_EQ(coil::TypeSerializer<char>::fromString("0"), 0);
+    EXPECT_EQ(coil::TypeSerializer<signed char>::fromString("0"), 0);
+    EXPECT_EQ(coil::TypeSerializer<unsigned char>::fromString("0"), 0u);
+    EXPECT_EQ(coil::TypeSerializer<short>::fromString("0"), 0);
+    EXPECT_EQ(coil::TypeSerializer<unsigned short>::fromString("0"), 0u);
+    EXPECT_EQ(coil::TypeSerializer<int>::fromString("0"), 0);
+    EXPECT_EQ(coil::TypeSerializer<unsigned int>::fromString("0"), 0u);
+    EXPECT_EQ(coil::TypeSerializer<long>::fromString("0"), 0l);
+    EXPECT_EQ(coil::TypeSerializer<unsigned long>::fromString("0"), 0ul);
+    EXPECT_EQ(coil::TypeSerializer<long long>::fromString("0"), 0ll);
+    EXPECT_EQ(coil::TypeSerializer<unsigned long long>::fromString("0"), 0ull);
+
+    EXPECT_PRED2(compareFloat<float>, coil::TypeSerializer<float>::fromString("0"), 0.0f);
+    EXPECT_PRED2(compareFloat<double>, coil::TypeSerializer<double>::fromString("0"), 0.0f);
+    EXPECT_PRED2(compareFloat<long double>, coil::TypeSerializer<long double>::fromString("0"), 0.0f);
 }

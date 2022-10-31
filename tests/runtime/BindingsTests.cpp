@@ -946,6 +946,33 @@ TEST(BindingsTests, TestBind)
     EXPECT_EQ(result.returnValue, "42");
 }
 
+TEST(BindingsTests, TestMoveConstructor)
+{
+    coil::Bindings bindings1;
+    bindings1["func"] = []() { return "I am func"; };
+
+    coil::Bindings bindings2 = coil::move(bindings1);
+
+    auto result = bindings2.execute("func");
+    EXPECT_EQ(result.errors.size(), 0u);
+    EXPECT_EQ(result.returnValue, "I am func");
+}
+
+TEST(BindingsTests, TestMoveAssignment)
+{
+    coil::Bindings bindings1;
+    bindings1["func"] = []() { return "I am func"; };
+
+    coil::Bindings bindings2;
+    bindings2["func"] = []() { return "I am nothing"; };
+
+    bindings2 = coil::move(bindings1);
+
+    auto result = bindings2.execute("func");
+    EXPECT_EQ(result.errors.size(), 0u);
+    EXPECT_EQ(result.returnValue, "I am func");
+}
+
 TEST(BindingsTests, TestTypeNames)
 {
     EXPECT_EQ(coil::TypeName<void>::name(), "void");
