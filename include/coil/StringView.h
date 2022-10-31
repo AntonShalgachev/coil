@@ -17,7 +17,6 @@ namespace coil
         bool empty() const;
         char const* data() const;
 
-        StringView substr(size_t offset) const;
         StringView substr(size_t offset, size_t length) const;
 
         char const* begin() const;

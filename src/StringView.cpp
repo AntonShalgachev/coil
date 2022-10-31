@@ -35,12 +35,6 @@ char const* coil::StringView::data() const
     return m_str;
 }
 
-coil::StringView coil::StringView::substr(size_t offset) const
-{
-    COIL_ASSERT(offset <= m_length);
-    return substr(offset, m_length - offset);
-}
-
 coil::StringView coil::StringView::substr(size_t offset, size_t length) const
 {
     COIL_ASSERT(offset <= m_length);
