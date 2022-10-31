@@ -11,3 +11,9 @@
 #ifndef COIL_CONFIG_ENABLE_ASSERTS
     #define COIL_CONFIG_ENABLE_ASSERTS 0
 #endif
+
+// Description: If this option is set, coil::TypeName would use aliases for the type names ()
+// CMake option: COIL_TYPE_NAME_USE_ALIAS
+#ifndef COIL_CONFIG_TYPE_NAME_USE_ALIAS
+    #define COIL_CONFIG_TYPE_NAME_USE_ALIAS 0
+#endif

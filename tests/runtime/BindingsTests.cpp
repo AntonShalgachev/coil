@@ -7,6 +7,10 @@
 #include <numeric>
 #include <stdexcept>
 
+#if COIL_CONFIG_TYPE_NAME_USE_ALIAS
+#error Tests shouldn't be compiled with COIL_CONFIG_TYPE_NAME_USE_ALIAS since the integer aliases are compiler-dependent
+#endif
+
 namespace stats
 {
     std::size_t functionCalls = 0;
@@ -944,22 +948,24 @@ TEST(BindingsTests, TestBind)
 
 TEST(BindingsTests, TestTypeNames)
 {
+    EXPECT_EQ(coil::TypeName<void>::name(), "void");
     EXPECT_EQ(coil::TypeName<bool>::name(), "bool");
 
     EXPECT_EQ(coil::TypeName<char>::name(), "char");
-    EXPECT_EQ(coil::TypeName<signed char>::name(), "schar");
-    EXPECT_EQ(coil::TypeName<unsigned char>::name(), "uchar");
+    EXPECT_EQ(coil::TypeName<signed char>::name(), "signed char");
+    EXPECT_EQ(coil::TypeName<unsigned char>::name(), "unsigned char");
     EXPECT_EQ(coil::TypeName<short>::name(), "short");
-    EXPECT_EQ(coil::TypeName<unsigned short>::name(), "ushort");
+    EXPECT_EQ(coil::TypeName<unsigned short>::name(), "unsigned short");
     EXPECT_EQ(coil::TypeName<int>::name(), "int");
-    EXPECT_EQ(coil::TypeName<unsigned int>::name(), "uint");
+    EXPECT_EQ(coil::TypeName<unsigned int>::name(), "unsigned int");
     EXPECT_EQ(coil::TypeName<long>::name(), "long");
-    EXPECT_EQ(coil::TypeName<unsigned long>::name(), "ulong");
-    EXPECT_EQ(coil::TypeName<long long>::name(), "llong");
-    EXPECT_EQ(coil::TypeName<unsigned long long>::name(), "ullong");
+    EXPECT_EQ(coil::TypeName<unsigned long>::name(), "unsigned long");
+    EXPECT_EQ(coil::TypeName<long long>::name(), "long long");
+    EXPECT_EQ(coil::TypeName<unsigned long long>::name(), "unsigned long long");
+
     EXPECT_EQ(coil::TypeName<float>::name(), "float");
     EXPECT_EQ(coil::TypeName<double>::name(), "double");
-    EXPECT_EQ(coil::TypeName<long double>::name(), "ldouble");
+    EXPECT_EQ(coil::TypeName<long double>::name(), "long double");
 }
 
 TEST(BindingsTests, TestAnyArgToString)

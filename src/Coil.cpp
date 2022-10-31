@@ -55,6 +55,47 @@ namespace
             return coil::errors::createGenericError<T>(input);
         return value;
     }
+
+    template<typename T>
+    constexpr char const* defaultName = nullptr;
+
+    template<> [[maybe_unused]] constexpr char const* defaultName<char> = "char";
+    template<> [[maybe_unused]] constexpr char const* defaultName<signed char> = "signed char";
+    template<> [[maybe_unused]] constexpr char const* defaultName<unsigned char> = "unsigned char";
+    template<> [[maybe_unused]] constexpr char const* defaultName<short> = "short";
+    template<> [[maybe_unused]] constexpr char const* defaultName<unsigned short> = "unsigned short";
+    template<> [[maybe_unused]] constexpr char const* defaultName<int> = "int";
+    template<> [[maybe_unused]] constexpr char const* defaultName<unsigned int> = "unsigned int";
+    template<> [[maybe_unused]] constexpr char const* defaultName<long> = "long";
+    template<> [[maybe_unused]] constexpr char const* defaultName<unsigned long> = "unsigned long";
+    template<> [[maybe_unused]] constexpr char const* defaultName<long long> = "long long";
+    template<> [[maybe_unused]] constexpr char const* defaultName<unsigned long long> = "unsigned long long";
+
+    template<typename T>
+    constexpr char const* arithmeticName()
+    {
+#if COIL_CONFIG_TYPE_NAME_USE_ALIAS
+        if constexpr (coil::IsSameV<T, int8_t>)
+            return "int8";
+        if constexpr (coil::IsSameV<T, uint8_t>)
+            return "uint8";
+        if constexpr (coil::IsSameV<T, int16_t>)
+            return "int16";
+        if constexpr (coil::IsSameV<T, uint16_t>)
+            return "uint16";
+        if constexpr (coil::IsSameV<T, int32_t>)
+            return "int32";
+        if constexpr (coil::IsSameV<T, uint32_t>)
+            return "uint32";
+        if constexpr (coil::IsSameV<T, int64_t>)
+            return "int64";
+        if constexpr (coil::IsSameV<T, uint64_t>)
+            return "uint64";
+#endif
+
+        static_assert(defaultName<T> != nullptr, "Unexpected type T");
+        return defaultName<T>;
+    }
 }
 
 namespace coil
@@ -533,22 +574,24 @@ namespace coil
 }
 
 /// TypeName.h ///
-COIL_CREATE_TYPE_NAME_DEFINITION(bool, "bool");
-COIL_CREATE_TYPE_NAME_DEFINITION(coil::String, "string");
-COIL_CREATE_TYPE_NAME_DEFINITION(coil::StringView, "string");
-
 COIL_CREATE_TYPE_NAME_DEFINITION(void, "void");
-COIL_CREATE_TYPE_NAME_DEFINITION(char, "char");
-COIL_CREATE_TYPE_NAME_DEFINITION(signed char, "schar");
-COIL_CREATE_TYPE_NAME_DEFINITION(unsigned char, "uchar");
-COIL_CREATE_TYPE_NAME_DEFINITION(short, "short");
-COIL_CREATE_TYPE_NAME_DEFINITION(unsigned short, "ushort");
-COIL_CREATE_TYPE_NAME_DEFINITION(int, "int");
-COIL_CREATE_TYPE_NAME_DEFINITION(unsigned int, "uint");
-COIL_CREATE_TYPE_NAME_DEFINITION(long, "long");
-COIL_CREATE_TYPE_NAME_DEFINITION(unsigned long, "ulong");
-COIL_CREATE_TYPE_NAME_DEFINITION(long long, "llong");
-COIL_CREATE_TYPE_NAME_DEFINITION(unsigned long long, "ullong");
+COIL_CREATE_TYPE_NAME_DEFINITION(bool, "bool");
+
+COIL_CREATE_TYPE_NAME_DEFINITION(char, arithmeticName<char>());
+COIL_CREATE_TYPE_NAME_DEFINITION(signed char, arithmeticName<signed char>());
+COIL_CREATE_TYPE_NAME_DEFINITION(unsigned char, arithmeticName<unsigned char>());
+COIL_CREATE_TYPE_NAME_DEFINITION(short, arithmeticName<short>());
+COIL_CREATE_TYPE_NAME_DEFINITION(unsigned short, arithmeticName<unsigned short>());
+COIL_CREATE_TYPE_NAME_DEFINITION(int, arithmeticName<int>());
+COIL_CREATE_TYPE_NAME_DEFINITION(unsigned int, arithmeticName<unsigned int>());
+COIL_CREATE_TYPE_NAME_DEFINITION(long, arithmeticName<long>());
+COIL_CREATE_TYPE_NAME_DEFINITION(unsigned long, arithmeticName<unsigned long>());
+COIL_CREATE_TYPE_NAME_DEFINITION(long long, arithmeticName<long long>());
+COIL_CREATE_TYPE_NAME_DEFINITION(unsigned long long, arithmeticName<unsigned long long>());
+
 COIL_CREATE_TYPE_NAME_DEFINITION(float, "float");
 COIL_CREATE_TYPE_NAME_DEFINITION(double, "double");
-COIL_CREATE_TYPE_NAME_DEFINITION(long double, "ldouble");
+COIL_CREATE_TYPE_NAME_DEFINITION(long double, "long double");
+
+COIL_CREATE_TYPE_NAME_DEFINITION(coil::String, "string");
+COIL_CREATE_TYPE_NAME_DEFINITION(coil::StringView, "string");

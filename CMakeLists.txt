@@ -5,6 +5,7 @@ project(coil LANGUAGES C CXX VERSION 1.0)
 set(COIL_CATCH_EXCEPTIONS OFF CACHE BOOL "Configure Coil to catch exceptions in commands")
 # set(COIL_BASIC_TYPENAME ON CACHE BOOL "Configure Coil to implement coil::TypeName for basic types") # TODO make sure this option isn't mentioned anywhere
 set(COIL_ENABLE_ASSERTS OFF CACHE BOOL "Configure Coil to enable asserts")
+set(COIL_TYPE_NAME_USE_ALIAS OFF CACHE BOOL "Configure Coil to use type aliases for supported type names (e.g. 'int64' instead of 'long')")
 
 set(COIL_EXAMPLES OFF CACHE BOOL "Coil examples")
 set(COIL_RUNTIME_TESTS OFF CACHE BOOL "Coil runtime tests")
@@ -92,6 +93,10 @@ endif()
 
 if (${COIL_ENABLE_ASSERTS})
     target_compile_definitions(coil PUBLIC COIL_CONFIG_ENABLE_ASSERTS=1)
+endif()
+
+if (${COIL_TYPE_NAME_USE_ALIAS})
+    target_compile_definitions(coil PUBLIC COIL_CONFIG_TYPE_NAME_USE_ALIAS=1)
 endif()
 
 if (${COIL_EXAMPLES})

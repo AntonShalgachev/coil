@@ -182,8 +182,8 @@ TEST(TypeSerializerTests, TestOutOfRangeInputFromString)
 {
     EXPECT_EQ(coil::TypeSerializer<char>::fromString("-129"), coil::makeUnexpected("Unable to convert '-129' to type 'char'"));
     EXPECT_EQ(coil::TypeSerializer<char>::fromString("128"), coil::makeUnexpected("Unable to convert '128' to type 'char'"));
-    EXPECT_EQ(coil::TypeSerializer<unsigned char>::fromString("-1"), coil::makeUnexpected("Unable to convert '-1' to type 'uchar'"));
-    EXPECT_EQ(coil::TypeSerializer<unsigned char>::fromString("256"), coil::makeUnexpected("Unable to convert '256' to type 'uchar'"));
+    EXPECT_EQ(coil::TypeSerializer<unsigned char>::fromString("-1"), coil::makeUnexpected("Unable to convert '-1' to type 'unsigned char'"));
+    EXPECT_EQ(coil::TypeSerializer<unsigned char>::fromString("256"), coil::makeUnexpected("Unable to convert '256' to type 'unsigned char'"));
 }
 
 TEST(TypeSerializerTests, TestBoolValidInputFromString)
