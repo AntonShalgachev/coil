@@ -74,8 +74,16 @@ namespace coil
 
         void pushBack(T item)
         {
-            if (size() + 1 > capacity())
-                grow(size() + 1); // TODO think about grow strategy
+            size_t nextSize = size() + 1;
+            if (nextSize > capacity())
+            {
+                size_t nextCapacity = size() * 3 / 2;
+                if (nextSize > nextCapacity)
+                    nextCapacity = nextSize;
+                grow(nextCapacity);
+            }
+
+            COIL_ASSERT(capacity() >= nextSize);
 
             m_buffer.constructNext<T>(coil::move(item));
         }
