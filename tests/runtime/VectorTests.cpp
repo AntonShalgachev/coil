@@ -13,7 +13,7 @@ namespace
             constructions++;
             defaultConstructions++;
         }
-        Dummy(T payload) : m_payload(std::move(payload))
+        Dummy(T payload) : m_payload(coil::move(payload))
         {
             constructions++;
         }
@@ -22,7 +22,7 @@ namespace
             copies++;
             copyConstructions++;
         }
-        Dummy(Dummy<T>&& rhs) : m_payload(std::move(rhs.m_payload))
+        Dummy(Dummy<T>&& rhs) : m_payload(coil::move(rhs.m_payload))
         {
             rhs.m_payload = T{};
 
@@ -40,7 +40,7 @@ namespace
         }
         Dummy<T>& operator=(Dummy<T>&& rhs)
         {
-            m_payload = std::move(rhs.m_payload);
+            m_payload = coil::move(rhs.m_payload);
             rhs.m_payload = T{};
 
             moves++;
@@ -67,15 +67,15 @@ namespace
         T m_payload;
 
     public:
-        inline static std::size_t constructions = 0;
-        inline static std::size_t defaultConstructions = 0;
-        inline static std::size_t copies = 0;
-        inline static std::size_t moves = 0;
-        inline static std::size_t copyConstructions = 0;
-        inline static std::size_t moveConstructions = 0;
-        inline static std::size_t copyAssignments = 0;
-        inline static std::size_t moveAssignments = 0;
-        inline static std::size_t destructions = 0;
+        inline static size_t constructions = 0;
+        inline static size_t defaultConstructions = 0;
+        inline static size_t copies = 0;
+        inline static size_t moves = 0;
+        inline static size_t copyConstructions = 0;
+        inline static size_t moveConstructions = 0;
+        inline static size_t copyAssignments = 0;
+        inline static size_t moveAssignments = 0;
+        inline static size_t destructions = 0;
 
         static void resetStats()
         {
@@ -236,6 +236,250 @@ TEST(VectorTests, TestResizeShrink)
     EXPECT_GE(v.capacity(), 10u);
 }
 
+TEST(VectorTests, TestDefaultConstructor)
+{
+    coil::Vector<int> v;
+
+    EXPECT_EQ(v.size(), 0u);
+    EXPECT_EQ(v.capacity(), 0u);
+}
+
+TEST(VectorTests, TestSpanConstructor)
+{
+    int data[5] = { 0,1,2,3,4 };
+    coil::Vector<int> v{ data, 5 };
+
+    ASSERT_EQ(v.size(), 5u);
+    EXPECT_EQ(v[0], 0);
+    EXPECT_EQ(v[1], 1);
+    EXPECT_EQ(v[2], 2);
+    EXPECT_EQ(v[3], 3);
+    EXPECT_EQ(v[4], 4);
+}
+
+TEST(VectorTests, TestCopyConstructor)
+{
+    coil::Vector<int> v;
+    for (auto i = 0; i < 5; i++)
+        v.pushBack(i);
+
+    ASSERT_EQ(v.size(), 5u);
+    EXPECT_EQ(v[0], 0);
+    EXPECT_EQ(v[1], 1);
+    EXPECT_EQ(v[2], 2);
+    EXPECT_EQ(v[3], 3);
+    EXPECT_EQ(v[4], 4);
+
+    coil::Vector<int> const v2 = v;
+
+    ASSERT_EQ(v.size(), 5u);
+    EXPECT_EQ(v[0], 0);
+    EXPECT_EQ(v[1], 1);
+    EXPECT_EQ(v[2], 2);
+    EXPECT_EQ(v[3], 3);
+    EXPECT_EQ(v[4], 4);
+
+    ASSERT_EQ(v2.size(), 5u);
+    EXPECT_EQ(v2[0], 0);
+    EXPECT_EQ(v2[1], 1);
+    EXPECT_EQ(v2[2], 2);
+    EXPECT_EQ(v2[3], 3);
+    EXPECT_EQ(v2[4], 4);
+}
+
+TEST(VectorTests, TestMoveConstructor)
+{
+    coil::Vector<int> v;
+    for (auto i = 0; i < 5; i++)
+        v.pushBack(i);
+
+    ASSERT_EQ(v.size(), 5u);
+    EXPECT_EQ(v[0], 0);
+    EXPECT_EQ(v[1], 1);
+    EXPECT_EQ(v[2], 2);
+    EXPECT_EQ(v[3], 3);
+    EXPECT_EQ(v[4], 4);
+
+    coil::Vector<int> const v2 = coil::move(v);
+
+    ASSERT_EQ(v2.size(), 5u);
+    EXPECT_EQ(v2[0], 0);
+    EXPECT_EQ(v2[1], 1);
+    EXPECT_EQ(v2[2], 2);
+    EXPECT_EQ(v2[3], 3);
+    EXPECT_EQ(v2[4], 4);
+
+    ASSERT_EQ(v.size(), 0u);
+}
+
+TEST(VectorTests, TestCopyAssignment)
+{
+    coil::Vector<int> v;
+    for (auto i = 0; i < 5; i++)
+        v.pushBack(i);
+
+    ASSERT_EQ(v.size(), 5u);
+    EXPECT_EQ(v[0], 0);
+    EXPECT_EQ(v[1], 1);
+    EXPECT_EQ(v[2], 2);
+    EXPECT_EQ(v[3], 3);
+    EXPECT_EQ(v[4], 4);
+
+    coil::Vector<int> v2;
+    v2 = v;
+
+    ASSERT_EQ(v.size(), 5u);
+    EXPECT_EQ(v[0], 0);
+    EXPECT_EQ(v[1], 1);
+    EXPECT_EQ(v[2], 2);
+    EXPECT_EQ(v[3], 3);
+    EXPECT_EQ(v[4], 4);
+
+    ASSERT_EQ(v2.size(), 5u);
+    EXPECT_EQ(v2[0], 0);
+    EXPECT_EQ(v2[1], 1);
+    EXPECT_EQ(v2[2], 2);
+    EXPECT_EQ(v2[3], 3);
+    EXPECT_EQ(v2[4], 4);
+}
+
+TEST(VectorTests, TestMoveAssignment)
+{
+    coil::Vector<int> v;
+    for (auto i = 0; i < 5; i++)
+        v.pushBack(i);
+
+    ASSERT_EQ(v.size(), 5u);
+    EXPECT_EQ(v[0], 0);
+    EXPECT_EQ(v[1], 1);
+    EXPECT_EQ(v[2], 2);
+    EXPECT_EQ(v[3], 3);
+    EXPECT_EQ(v[4], 4);
+
+    coil::Vector<int> v2;
+    v2 = coil::move(v);
+
+    ASSERT_EQ(v2.size(), 5u);
+    EXPECT_EQ(v2[0], 0);
+    EXPECT_EQ(v2[1], 1);
+    EXPECT_EQ(v2[2], 2);
+    EXPECT_EQ(v2[3], 3);
+    EXPECT_EQ(v2[4], 4);
+
+    ASSERT_EQ(v.size(), 0u);
+}
+
+TEST(VectorTests, TestData)
+{
+    coil::Vector<int> v;
+    for (auto i = 0; i < 5; i++)
+        v.pushBack(i);
+
+    ASSERT_EQ(v.size(), 5u);
+
+    coil::Vector<int> const& constV = v;
+
+    int* data = v.data();
+    int const* constData = constV.data();
+
+    EXPECT_EQ(data, constData);
+
+    EXPECT_EQ(constData[0], 0);
+    EXPECT_EQ(constData[1], 1);
+    EXPECT_EQ(constData[2], 2);
+    EXPECT_EQ(constData[3], 3);
+    EXPECT_EQ(constData[4], 4);
+
+    data[2] = 42;
+
+    EXPECT_EQ(constData[0], 0);
+    EXPECT_EQ(constData[1], 1);
+    EXPECT_EQ(constData[2], 42);
+    EXPECT_EQ(constData[3], 3);
+    EXPECT_EQ(constData[4], 4);
+}
+
+TEST(VectorTests, TestRange)
+{
+    coil::Vector<int> v;
+    for (auto i = 0; i < 5; i++)
+        v.pushBack(i);
+
+    coil::Vector<int> const& constV = v;
+
+    {
+        size_t index = 0;
+        for (int const& value : constV)
+        {
+            EXPECT_EQ(value, index);
+            index++;
+        }
+    }
+
+    for (int& value : v)
+        value *= 2;
+
+    {
+        size_t index = 0;
+        for (int const& value : constV)
+        {
+            EXPECT_EQ(value, index * 2);
+            index++;
+        }
+    }
+}
+
+TEST(VectorTests, TestFrontBack)
+{
+    coil::Vector<int> v;
+    for (auto i = 0; i < 5; i++)
+        v.pushBack(i);
+
+    coil::Vector<int> const& constV = v;
+
+    ASSERT_EQ(v.size(), 5);
+
+    EXPECT_EQ(constV.front(), 0);
+    EXPECT_EQ(constV.back(), 4);
+
+    v.front() = 100;
+    v.back() = 104;
+
+    EXPECT_EQ(constV.front(), 100);
+    EXPECT_EQ(constV.back(), 104);
+}
+
+TEST(VectorTests, TestEqualityComparison)
+{
+    coil::Vector<int> v1;
+    for (auto i = 0; i < 5; i++)
+        v1.pushBack(i);
+
+    {
+        coil::Vector<int> v2;
+        for (auto i = 0; i < 5; i++)
+            v2.pushBack(i);
+
+        EXPECT_TRUE(v1 == v2);
+    }
+
+    {
+        coil::Vector<int> v2;
+        for (auto i = 0; i < 5; i++)
+            v2.pushBack(100 + i);
+
+        EXPECT_FALSE(v1 == v2);
+    }
+
+    {
+        coil::Vector<int> v2;
+        for (auto i = 0; i < 10; i++)
+            v2.pushBack(i);
+
+        EXPECT_FALSE(v1 == v2);
+    }
+}
+
 TEST(VectorTests, TestPushBackStats)
 {
     coil::Vector<Integer> v;
@@ -358,6 +602,23 @@ TEST(VectorTests, TestClearStats)
     Integer::resetStats();
 
     v.clear();
+
+    EXPECT_EQ(Integer::constructions, 0u);
+    EXPECT_EQ(Integer::copies, 0u);
+    EXPECT_EQ(Integer::moves, 0u);
+    EXPECT_EQ(Integer::destructions, 10u);
+}
+
+TEST(VectorTests, TestDestructorStats)
+{
+    {
+        coil::Vector<Integer> v;
+
+        for (auto i = 0; i < 10; i++)
+            v.pushBack(i);
+
+        Integer::resetStats();
+    }
 
     EXPECT_EQ(Integer::constructions, 0u);
     EXPECT_EQ(Integer::copies, 0u);
