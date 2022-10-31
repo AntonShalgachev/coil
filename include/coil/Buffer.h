@@ -13,7 +13,7 @@ namespace coil
     class Buffer
     {
     public:
-        Buffer(size_t count = 0, size_t chunkSize = 0);
+        Buffer(size_t count = 0, size_t chunkSize = 1);
         Buffer(Buffer const& rhs);
         Buffer(Buffer&& rhs);
         ~Buffer();
@@ -39,6 +39,7 @@ namespace coil
         {
             COIL_ASSERT(m_ptr);
             COIL_ASSERT(m_size < m_count);
+            COIL_ASSERT(m_chunkSize == sizeof(T));
 
             T* obj = new (NewTag{}, m_ptr + m_size * sizeof(T)) T(coil::forward<Args>(args)...);
             m_size++;
@@ -54,6 +55,7 @@ namespace coil
         void destructLast()
         {
             COIL_ASSERT(m_size > 0);
+            COIL_ASSERT(m_chunkSize == sizeof(T));
 
             get<T>(m_size - 1)->~T();
             m_size--;
@@ -80,13 +82,13 @@ namespace coil
         template<typename T>
         T* get(size_t index)
         {
-            return reinterpret_cast<T*>(get(index * sizeof(T))); // it is legal to cast pointer to char array to any type
+            return reinterpret_cast<T*>(get(index * sizeof(T)));
         }
 
         template<typename T>
         T const* get(size_t index) const
         {
-            return reinterpret_cast<T const*>(get(index * sizeof(T))); // it is legal to cast pointer to char array to any type
+            return reinterpret_cast<T const*>(get(index * sizeof(T)));
         }
 
     private:

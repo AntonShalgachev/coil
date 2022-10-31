@@ -7,8 +7,7 @@ coil::Buffer::Buffer(size_t count, size_t chunkSize)
     , m_count(count)
     , m_chunkSize(chunkSize)
 {
-    if (count > 0)
-        COIL_ASSERT(chunkSize > 0);
+    COIL_ASSERT(chunkSize > 0);
 }
 
 coil::Buffer::Buffer(Buffer const& rhs) : Buffer(rhs.m_count, rhs.m_chunkSize)
