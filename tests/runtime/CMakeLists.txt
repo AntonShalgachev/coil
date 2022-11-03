@@ -10,6 +10,7 @@ add_executable(${PROJECT_NAME}
     "TypeSerializerTests.cpp"
     "VectorTests.cpp"
     "BufferTests.cpp"
+    "UnorderedMapTests.cpp"
 )
 
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
@@ -49,6 +50,7 @@ set(TEST_NAMES
     "PropertyTests"
     "VectorTests"
     "BufferTests"
+    "UnorderedMapTests"
 )
 
 target_link_libraries(${PROJECT_NAME}
