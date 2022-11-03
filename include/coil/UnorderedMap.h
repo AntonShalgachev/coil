@@ -84,7 +84,7 @@ namespace coil
                 return !(*this == rhs);
             }
 
-            Iterator& operator++()
+            ConstIterator& operator++()
             {
                 m_node++;
                 return *this;
