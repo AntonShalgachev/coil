@@ -14,6 +14,7 @@ add_executable(${PROJECT_NAME}
     "StringTests.cpp"
     "UniquePtrTests.cpp"
     "OptionalTests.cpp"
+    "StringConvTests.cpp"
 )
 
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
@@ -57,6 +58,7 @@ set(TEST_NAMES
     "StringTests"
     "UniquePtrTests"
     "OptionalTests"
+    "StringConvTests"
 )
 
 target_link_libraries(${PROJECT_NAME}
