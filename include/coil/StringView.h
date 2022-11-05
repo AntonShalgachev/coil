@@ -9,8 +9,7 @@ namespace coil
     class StringView
     {
     public:
-        StringView();
-        StringView(char const* str);
+        StringView(char const* str = "");
         StringView(char const* str, size_t length);
 
         size_t length() const;

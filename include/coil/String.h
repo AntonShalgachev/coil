@@ -20,7 +20,6 @@ namespace coil
         size_t size() const;
         bool empty() const;
         void reserve(size_t capacity);
-        char* cStr();
         char const* cStr() const;
         char* data();
         char const* data() const;
