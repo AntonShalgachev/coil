@@ -5,12 +5,15 @@ namespace coil
     class String;
     class StringView;
 
+    // similar to std::to_string
     String toString(int value);
     String toString(long value);
     String toString(long long value);
     String toString(unsigned value);
     String toString(unsigned long value);
     String toString(unsigned long long value);
+
+    // similar to std::to_string, but with %g specifier and with almost-zero check
     String toString(float value);
     String toString(double value);
     String toString(long double value);

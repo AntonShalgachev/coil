@@ -9,51 +9,6 @@
 #include <limits.h>
 #include <errno.h>
 
-coil::String coil::toString(int value)
-{
-    return coil::sprintf("%d", value);
-}
-
-coil::String coil::toString(long value)
-{
-    return coil::sprintf("%ld", value);
-}
-
-coil::String coil::toString(long long value)
-{
-    return coil::sprintf("%lld", value);
-}
-
-coil::String coil::toString(unsigned value)
-{
-    return coil::sprintf("%u", value);
-}
-
-coil::String coil::toString(unsigned long value)
-{
-    return coil::sprintf("%lu", value);
-}
-
-coil::String coil::toString(unsigned long long value)
-{
-    return coil::sprintf("%llu", value);
-}
-
-coil::String coil::toString(float value)
-{
-    return coil::sprintf("%f", value);
-}
-
-coil::String coil::toString(double value)
-{
-    return coil::sprintf("%f", value);
-}
-
-coil::String coil::toString(long double value)
-{
-    return coil::sprintf("%Lf", value);
-}
-
 namespace
 {
     template<typename T>
@@ -74,8 +29,22 @@ namespace
     auto strtoxfunc<unsigned long long> = &coil::strtoull;
 
     template<typename T>
-    bool integerFromString(coil::StringView str, T& value)
+    bool signedIntegerFromString(coil::StringView str, T& value)
     {
+        char* end = nullptr;
+        errno = 0;
+        value = strtoxfunc<T>(str.begin(), str.end(), &end, 10);
+        if (errno)
+            return false;
+        return end == str.end();
+    }
+
+    template<typename T>
+    bool unsignedIntegerFromString(coil::StringView str, T& value)
+    {
+        if (!str.empty() && str[0] == '-')
+            return false;
+
         char* end = nullptr;
         errno = 0;
         value = strtoxfunc<T>(str.begin(), str.end(), &end, 10);
@@ -118,26 +87,80 @@ namespace
         value = static_cast<T>(result);
         return true;
     }
+} 
+
+coil::String coil::toString(int value)
+{
+    return coil::sprintf("%d", value);
+}
+
+coil::String coil::toString(long value)
+{
+    return coil::sprintf("%ld", value);
+}
+
+coil::String coil::toString(long long value)
+{
+    return coil::sprintf("%lld", value);
+}
+
+coil::String coil::toString(unsigned value)
+{
+    return coil::sprintf("%u", value);
+}
+
+coil::String coil::toString(unsigned long value)
+{
+    return coil::sprintf("%lu", value);
+}
+
+coil::String coil::toString(unsigned long long value)
+{
+    return coil::sprintf("%llu", value);
+}
+
+coil::String coil::toString(float value)
+{
+    if (value > -1e-6 && value < 1e-6)
+        return "0";
+
+    return coil::sprintf("%g", value);
+}
+
+coil::String coil::toString(double value)
+{
+    if (value > -1e-6 && value < 1e-6)
+        return "0";
+
+    return coil::sprintf("%g", value);
+}
+
+coil::String coil::toString(long double value)
+{
+    if (value > -1e-6 && value < 1e-6)
+        return "0";
+
+    return coil::sprintf("%Lg", value);
 }
 
 bool coil::fromString(StringView str, long& value)
 {
-    return integerFromString(str, value);
+    return signedIntegerFromString(str, value);
 }
 
 bool coil::fromString(StringView str, long long& value)
 {
-    return integerFromString(str, value);
+    return signedIntegerFromString(str, value);
 }
 
 bool coil::fromString(StringView str, unsigned long& value)
 {
-    return integerFromString(str, value);
+    return unsignedIntegerFromString(str, value);
 }
 
 bool coil::fromString(StringView str, unsigned long long& value)
 {
-    return integerFromString(str, value);
+    return unsignedIntegerFromString(str, value);
 }
 
 bool coil::fromString(StringView str, float& value)
