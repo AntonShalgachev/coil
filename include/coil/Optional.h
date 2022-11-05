@@ -32,9 +32,16 @@ namespace coil
             construct(coil::move(value));
         }
 
+        Optional(Optional const& rhs) : Optional()
+        {
+            if (rhs.m_hasValue)
+                construct(rhs.m_value);
+        }
+
         Optional(Optional&& rhs) : Optional()
         {
-            rhs.swap(*this);
+            if (rhs.m_hasValue)
+                construct(coil::move(rhs.m_value));
         }
 
         ~Optional()
@@ -42,9 +49,27 @@ namespace coil
             destroy();
         }
 
+        Optional& operator=(Optional const& rhs)
+        {
+            if (m_hasValue && rhs.m_hasValue)
+                m_value = rhs.m_value;
+            else if (m_hasValue && !rhs.m_hasValue)
+                destroy();
+            else if (!m_hasValue && rhs.m_hasValue)
+                construct(rhs.m_value);
+
+            return *this;
+        }
+
         Optional& operator=(Optional&& rhs)
         {
-            rhs.swap(*this);
+            if (m_hasValue && rhs.m_hasValue)
+                m_value = coil::move(rhs.m_value);
+            else if (m_hasValue && !rhs.m_hasValue)
+                destroy();
+            else if (!m_hasValue && rhs.m_hasValue)
+                construct(coil::move(rhs.m_value));
+
             return *this;
         }
 
@@ -64,6 +89,16 @@ namespace coil
             return m_value;
         }
 
+        T const* operator->() const
+        {
+            return &m_value;
+        }
+
+        T* operator->()
+        {
+            return &m_value;
+        }
+
         bool operator==(Optional const& rhs) const
         {
             if (m_hasValue != rhs.m_hasValue)
@@ -75,10 +110,21 @@ namespace coil
             return true;
         }
 
+        bool operator!=(Optional const& rhs) const
+        {
+            return !(*this == rhs);
+        }
+
         template<typename T2>
         bool operator==(T2 const& rhs) const
         {
             return m_hasValue && m_value == rhs;
+        }
+
+        template<typename T2>
+        bool operator!=(T2 const& rhs) const
+        {
+            return !(*this == rhs);
         }
 
     private:
@@ -101,24 +147,6 @@ namespace coil
 
             m_empty = {};
             m_hasValue = false;
-        }
-
-        void swap(Optional& rhs) noexcept
-        {
-            if (m_hasValue && rhs.m_hasValue)
-            {
-                coil::exchange(m_value, rhs.m_value);
-            }
-            else if (m_hasValue && !rhs.m_hasValue)
-            {
-                rhs.construct(coil::move(m_value));
-                destroy();
-            }
-            else if (!m_hasValue && rhs.m_hasValue)
-            {
-                construct(coil::move(rhs.m_value));
-                rhs.destroy();
-            }
         }
 
     private:
