@@ -26,6 +26,11 @@ namespace coil
             return *this;
         }
 
+        T* get() { return m_ptr; }
+        T const* get() const { return m_ptr; }
+
+        operator bool() const { return m_ptr != nullptr; }
+
         T const& operator*() const { COIL_ASSERT(m_ptr); return *m_ptr; }
         T& operator*() { COIL_ASSERT(m_ptr); return *m_ptr; }
 
