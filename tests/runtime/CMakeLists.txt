@@ -11,6 +11,9 @@ add_executable(${PROJECT_NAME}
     "VectorTests.cpp"
     "BufferTests.cpp"
     "UnorderedMapTests.cpp"
+    "StringTests.cpp"
+    "UniquePtrTests.cpp"
+    "OptionalTests.cpp"
 )
 
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
@@ -51,6 +54,9 @@ set(TEST_NAMES
     "VectorTests"
     "BufferTests"
     "UnorderedMapTests"
+    "StringTests"
+    "UniquePtrTests"
+    "OptionalTests"
 )
 
 target_link_libraries(${PROJECT_NAME}
