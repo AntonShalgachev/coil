@@ -55,11 +55,6 @@ void coil::String::reserve(size_t capacity)
     validateIsNullTerminated();
 }
 
-char* coil::String::cStr()
-{
-    return m_buffer.data();
-}
-
 char const* coil::String::cStr() const
 {
     return m_buffer.data();

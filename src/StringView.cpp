@@ -4,11 +4,6 @@
 
 #include <string.h>
 
-coil::StringView::StringView() : StringView("")
-{
-
-}
-
 coil::StringView::StringView(char const* str) : StringView(str, strlen(str))
 {
 
