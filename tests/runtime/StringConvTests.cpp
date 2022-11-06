@@ -6,6 +6,7 @@
 #include "coil/StringView.h"
 
 #include <math.h>
+#include <limits.h>
 
 TEST(StringConvTests, TestIntegerToString)
 {
