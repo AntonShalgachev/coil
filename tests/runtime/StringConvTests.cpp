@@ -5,6 +5,8 @@
 #include "coil/String.h"
 #include "coil/StringView.h"
 
+#include <math.h>
+
 TEST(StringConvTests, TestIntegerToString)
 {
     EXPECT_EQ(coil::toString(314), "314");
