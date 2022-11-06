@@ -378,47 +378,47 @@ TEST(StringConvTests, TestFloatFromStringValid)
     {
         float value = 0.0f;
         ASSERT_TRUE(coil::fromString("3.14", value));
-        EXPECT_PRED_FORMAT2(::testing::internal::CmpHelperFloatingPointEQ<float>, value, 3.14f);
+        EXPECT_FLOAT_EQ(value, 3.14f);
         ASSERT_TRUE(coil::fromString("0.0000001", value));
-        EXPECT_PRED_FORMAT2(::testing::internal::CmpHelperFloatingPointEQ<float>, value, 0.0000001f);
+        EXPECT_FLOAT_EQ(value, 0.0000001f);
         ASSERT_TRUE(coil::fromString("123456789", value));
-        EXPECT_PRED_FORMAT2(::testing::internal::CmpHelperFloatingPointEQ<float>, value, 123456789.0f);
+        EXPECT_FLOAT_EQ(value, 123456789.0f);
         ASSERT_TRUE(coil::fromString("1e16", value));
-        EXPECT_PRED_FORMAT2(::testing::internal::CmpHelperFloatingPointEQ<float>, value, 1e16f);
+        EXPECT_FLOAT_EQ(value, 1e16f);
         ASSERT_TRUE(coil::fromString("1e+16", value));
-        EXPECT_PRED_FORMAT2(::testing::internal::CmpHelperFloatingPointEQ<float>, value, 1e16f);
+        EXPECT_FLOAT_EQ(value, 1e16f);
         ASSERT_TRUE(coil::fromString("1e-16", value));
-        EXPECT_PRED_FORMAT2(::testing::internal::CmpHelperFloatingPointEQ<float>, value, 1e-16f);
+        EXPECT_FLOAT_EQ(value, 1e-16f);
     }
     {
         double value = 0.0;
         ASSERT_TRUE(coil::fromString("3.14", value));
-        EXPECT_PRED_FORMAT2(::testing::internal::CmpHelperFloatingPointEQ<double>, value, 3.14);
+        EXPECT_DOUBLE_EQ(value, 3.14);
         ASSERT_TRUE(coil::fromString("0.0000001", value));
-        EXPECT_PRED_FORMAT2(::testing::internal::CmpHelperFloatingPointEQ<double>, value, 0.0000001);
+        EXPECT_DOUBLE_EQ(value, 0.0000001);
         ASSERT_TRUE(coil::fromString("123456789", value));
-        EXPECT_PRED_FORMAT2(::testing::internal::CmpHelperFloatingPointEQ<double>, value, 123456789.0);
+        EXPECT_DOUBLE_EQ(value, 123456789.0);
         ASSERT_TRUE(coil::fromString("1e16", value));
-        EXPECT_PRED_FORMAT2(::testing::internal::CmpHelperFloatingPointEQ<double>, value, 1e16);
+        EXPECT_DOUBLE_EQ(value, 1e16);
         ASSERT_TRUE(coil::fromString("1e+16", value));
-        EXPECT_PRED_FORMAT2(::testing::internal::CmpHelperFloatingPointEQ<double>, value, 1e16);
+        EXPECT_DOUBLE_EQ(value, 1e16);
         ASSERT_TRUE(coil::fromString("1e-16", value));
-        EXPECT_PRED_FORMAT2(::testing::internal::CmpHelperFloatingPointEQ<double>, value, 1e-16);
+        EXPECT_DOUBLE_EQ(value, 1e-16);
     }
     {
-        long double value = 0.0;
+        long double value = 0.0l;
         ASSERT_TRUE(coil::fromString("3.14", value));
-        EXPECT_PRED_FORMAT2(::testing::internal::CmpHelperFloatingPointEQ<long double>, value, 3.14l);
+        EXPECT_DOUBLE_EQ(static_cast<double>(value), 3.14);
         ASSERT_TRUE(coil::fromString("0.0000001", value));
-        EXPECT_PRED_FORMAT2(::testing::internal::CmpHelperFloatingPointEQ<long double>, value, 0.0000001l);
+        EXPECT_DOUBLE_EQ(static_cast<double>(value), 0.0000001);
         ASSERT_TRUE(coil::fromString("123456789", value));
-        EXPECT_PRED_FORMAT2(::testing::internal::CmpHelperFloatingPointEQ<long double>, value, 123456789.0l);
+        EXPECT_DOUBLE_EQ(static_cast<double>(value), 123456789.0);
         ASSERT_TRUE(coil::fromString("1e16", value));
-        EXPECT_PRED_FORMAT2(::testing::internal::CmpHelperFloatingPointEQ<long double>, value, 1e16l);
+        EXPECT_DOUBLE_EQ(static_cast<double>(value), 1e16);
         ASSERT_TRUE(coil::fromString("1e+16", value));
-        EXPECT_PRED_FORMAT2(::testing::internal::CmpHelperFloatingPointEQ<long double>, value, 1e16l);
+        EXPECT_DOUBLE_EQ(static_cast<double>(value), 1e16);
         ASSERT_TRUE(coil::fromString("1e-16", value));
-        EXPECT_PRED_FORMAT2(::testing::internal::CmpHelperFloatingPointEQ<long double>, value, 1e-16l);
+        EXPECT_DOUBLE_EQ(static_cast<double>(value), 1e-16);
     }
 }
 
@@ -433,7 +433,7 @@ TEST(StringConvTests, TestFloatFromStringOutOfRange)
         EXPECT_FALSE(coil::fromString(coil::toString(DBL_MAX) + "0", value));
     }
     {
-        long double value = 0.0;
+        long double value = 0.0l;
         EXPECT_FALSE(coil::fromString(coil::toString(LDBL_MAX) + "0", value));
     }
 }
@@ -449,7 +449,7 @@ TEST(StringConvTests, TestFloatFromStringNoDigits)
         EXPECT_FALSE(coil::fromString("string", value));
     }
     {
-        long double value = 0.0;
+        long double value = 0.0l;
         EXPECT_FALSE(coil::fromString("string", value));
     }
 }
@@ -465,7 +465,7 @@ TEST(StringConvTests, TestFloatFromStringPartialNumber)
         EXPECT_FALSE(coil::fromString("3.14string", value));
     }
     {
-        long double value = 0.0;
+        long double value = 0.0l;
         EXPECT_FALSE(coil::fromString("3.14string", value));
     }
 }

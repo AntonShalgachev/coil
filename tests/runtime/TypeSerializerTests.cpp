@@ -43,8 +43,20 @@ namespace
         if (!lhs)
             return false;
 
-        using FP = ::testing::internal::FloatingPoint<T>;
-        return FP{ *lhs }.AlmostEquals(FP{ rhs });
+        bool isLhsNan = isnan(*lhs);
+        bool isRhsNan = isnan(rhs);
+
+        if (isLhsNan || isRhsNan)
+            return isLhsNan && isRhsNan;
+
+        bool isLhsInf = isinf(*lhs);
+        bool isRhsInf = isinf(rhs);
+
+        if (isLhsInf || isRhsInf)
+            return isLhsInf && isRhsInf && signbit(*lhs) == signbit(rhs);
+
+        T eps = T{ 1e-6 };
+        return std::abs(*lhs - rhs) < eps;
     };
 }
 
@@ -160,6 +172,8 @@ TEST(TypeSerializerTests, TestFloatValidInputFromString)
     EXPECT_PRED2(compareFloat<float>, coil::TypeSerializer<float>::fromString("-INF"), -std::numeric_limits<float>::infinity());
     EXPECT_PRED2(compareFloat<float>, coil::TypeSerializer<float>::fromString("-infinity"), -std::numeric_limits<float>::infinity());
     EXPECT_PRED2(compareFloat<float>, coil::TypeSerializer<float>::fromString("-INFINITY"), -std::numeric_limits<float>::infinity());
+    EXPECT_PRED2(compareFloat<float>, coil::TypeSerializer<float>::fromString("nan"), std::numeric_limits<float>::quiet_NaN());
+    EXPECT_PRED2(compareFloat<float>, coil::TypeSerializer<float>::fromString("NAN"), std::numeric_limits<float>::quiet_NaN());
 }
 
 TEST(TypeSerializerTests, TestFloatInvalidInputFromString)
@@ -287,7 +301,7 @@ TEST(TypeSerializerTests, TestArithmeticFromString)
     EXPECT_EQ(coil::TypeSerializer<long long>::fromString("0"), 0ll);
     EXPECT_EQ(coil::TypeSerializer<unsigned long long>::fromString("0"), 0ull);
 
-    EXPECT_PRED2(compareFloat<float>, coil::TypeSerializer<float>::fromString("0"), 0.0f);
-    EXPECT_PRED2(compareFloat<double>, coil::TypeSerializer<double>::fromString("0"), 0.0f);
-    EXPECT_PRED2(compareFloat<long double>, coil::TypeSerializer<long double>::fromString("0"), 0.0f);
+    EXPECT_PRED2(compareFloat<float>, coil::TypeSerializer<float>::fromString("3.14"), 3.14f);
+    EXPECT_PRED2(compareFloat<double>, coil::TypeSerializer<double>::fromString("3.14"), 3.14);
+    EXPECT_PRED2(compareFloat<long double>, coil::TypeSerializer<long double>::fromString("3.14"), 3.14l);
 }
