@@ -9,4 +9,4 @@ if (-Not (Test-Path -Path $exe)) {
     return
 }
 
-OpenCppCoverage.exe --sources $workingDir\include --sources $workingDir\src --export_type html:coverage --excluded_line_regex ".*@NOCOVERAGE.*" -- $exe
+OpenCppCoverage.exe --sources $workingDir\include --sources $workingDir\src --excluded_sources $workingDir\src\StdLib.cpp --export_type html:coverage --excluded_line_regex ".*@NOCOVERAGE.*" -- $exe
