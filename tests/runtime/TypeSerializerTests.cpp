@@ -2,6 +2,8 @@
 
 #include "gtest/gtest.h"
 
+#include <math.h>
+
 namespace
 {
     struct WithoutDefaultConstructor
