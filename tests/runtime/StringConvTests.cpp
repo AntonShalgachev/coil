@@ -90,7 +90,7 @@ TEST(StringConvTests, TestIntegerFromStringValidPositive)
     {
         unsigned char value = 0;
         ASSERT_TRUE(coil::fromString("16", value));
-        EXPECT_EQ(value, 16);
+        EXPECT_EQ(value, 16u);
     }
     {
         short value = 0;
@@ -100,7 +100,7 @@ TEST(StringConvTests, TestIntegerFromStringValidPositive)
     {
         unsigned short value = 0;
         ASSERT_TRUE(coil::fromString("16", value));
-        EXPECT_EQ(value, 16);
+        EXPECT_EQ(value, 16u);
     }
     {
         int value = 0;
@@ -110,7 +110,7 @@ TEST(StringConvTests, TestIntegerFromStringValidPositive)
     {
         unsigned int value = 0;
         ASSERT_TRUE(coil::fromString("16", value));
-        EXPECT_EQ(value, 16);
+        EXPECT_EQ(value, 16u);
     }
     {
         long value = 0;
@@ -120,7 +120,7 @@ TEST(StringConvTests, TestIntegerFromStringValidPositive)
     {
         unsigned long value = 0;
         ASSERT_TRUE(coil::fromString("16", value));
-        EXPECT_EQ(value, 16);
+        EXPECT_EQ(value, 16u);
     }
     {
         long long value = 0;
@@ -130,7 +130,7 @@ TEST(StringConvTests, TestIntegerFromStringValidPositive)
     {
         unsigned long long value = 0;
         ASSERT_TRUE(coil::fromString("16", value));
-        EXPECT_EQ(value, 16);
+        EXPECT_EQ(value, 16u);
     }
 }
 
