@@ -9,7 +9,7 @@
 [![Windows](https://github.com/AntonShalgachev/coil/actions/workflows/windows.yml/badge.svg)](https://github.com/AntonShalgachev/coil/actions/workflows/windows.yml)
 [![Ubuntu](https://github.com/AntonShalgachev/coil/actions/workflows/ubuntu.yml/badge.svg)](https://github.com/AntonShalgachev/coil/actions/workflows/ubuntu.yml)
 
-This is a C++17 library that allows you to call functions at runtime using a simple yet powerful command-like scripting language. It has no dependencies. `coil` relies on the templates, however it's optimized for compilation speed (see [Compilation time impact](#compilation-time-impact))
+This is a C++17 library that allows you to call functions at runtime using a simple yet powerful command-like scripting language. It has no dependencies (not even STL). `coil` relies on the templates, however it's optimized for compilation speed (see [Compilation time impact](#compilation-time-impact))
 
 Table of contents:
 - [Quick peek](#quick-peek)
@@ -72,7 +72,8 @@ The priorities of the library (in the order of importance):
 * Configurable use of exceptions
 * No RTTI
 * No unnecessary heap allocations (Lexer operates on `string_view`s)
-* Modern C++ without dependencies (except for STL)
+* Modern C++ without dependencies
+* No STL
 
 ## Examples
 See [examples](examples) directory and the corresponding [README.md](examples/README.md) for information about the available examples
