@@ -179,7 +179,7 @@ void CompoundExample::run()
     common::executeCommand(bindings, "pivot (1, 1, 1)");
     common::executeCommand(bindings, "pivot (1)");
 
-    common::printSectionHeader("Some STL types can be used out of the box (vector, optional):");
+    common::printSectionHeader("Some STL types can be used with StdLibCompat.h:");
     common::executeCommand(bindings, "sum_all ()");
     common::executeCommand(bindings, "sum_all (1)");
     common::executeCommand(bindings, "sum_all (1 2 3)");
