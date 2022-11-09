@@ -32,6 +32,8 @@ namespace coil
         return str;                              \
     }
 
+// TODO add a way to define typename inline
+
 namespace coil
 {
     class String;
