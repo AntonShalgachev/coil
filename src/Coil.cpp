@@ -326,7 +326,7 @@ namespace coil
 
     void Context::logline(String const& str)
     {
-        m_callContext.result.output.reserve(m_callContext.result.output.size() + str.size() + 1);
+        m_callContext.result.output.reserve(m_callContext.result.output.length() + str.length() + 1);
         m_callContext.result.output += str;
         m_callContext.result.output += '\n';
     }
@@ -575,9 +575,9 @@ namespace coil
         String str;
         str.resize(stringSize);
 
-        [[maybe_unused]] int result = vsnprintf(str.data(), str.size() + 1, format, args);
+        [[maybe_unused]] int result = vsnprintf(str.data(), str.length() + 1, format, args);
 
-        COIL_ASSERT(result >= 0 && static_cast<size_t>(result) <= str.size());
+        COIL_ASSERT(result >= 0 && static_cast<size_t>(result) <= str.length());
 
         return str;
     }

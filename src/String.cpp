@@ -25,7 +25,7 @@ coil::String::String(char const* str, size_t length)
     validateIsNullTerminated();
 }
 
-size_t coil::String::size() const
+size_t coil::String::length() const
 {
     if (m_buffer.size() > 0)
         return m_buffer.size() - 1;
@@ -34,7 +34,7 @@ size_t coil::String::size() const
 
 bool coil::String::empty() const
 {
-    return size() == 0;
+    return length() == 0;
 }
 
 void coil::String::reserve(size_t capacity)
@@ -46,8 +46,8 @@ void coil::String::reserve(size_t capacity)
     if (requiredBufferSize > m_buffer.count())
     {
         Buffer buffer{ requiredBufferSize, sizeof(char) };
-        buffer.copy(m_buffer.data(), size());
-        *buffer.get(size()) = '\0';
+        buffer.copy(m_buffer.data(), length());
+        *buffer.get(length()) = '\0';
         buffer.resize(m_buffer.size());
         m_buffer = coil::move(buffer);
     }
@@ -73,13 +73,13 @@ char const* coil::String::data() const
 char& coil::String::back()
 {
     COIL_ASSERT(!empty());
-    return *m_buffer.get(size() - 1);
+    return *m_buffer.get(length() - 1);
 }
 
 char const& coil::String::back() const
 {
     COIL_ASSERT(!empty());
-    return *m_buffer.get(size() - 1);
+    return *m_buffer.get(length() - 1);
 }
 
 void coil::String::resize(size_t newSize)
@@ -101,7 +101,7 @@ void coil::String::append(char const* str, size_t length)
 {
     validateIsNullTerminated();
 
-    size_t oldSize = size();
+    size_t oldSize = this->length();
     resize(oldSize + length);
     memcpy(m_buffer.data() + oldSize, str, length);
 
@@ -117,7 +117,7 @@ char const* coil::String::begin() const
 char const* coil::String::end() const
 {
     COIL_ASSERT(!m_buffer.empty());
-    return m_buffer.data() + size();
+    return m_buffer.data() + length();
 }
 
 coil::String& coil::String::operator+=(char rhs)
@@ -134,7 +134,7 @@ coil::String& coil::String::operator+=(char const* rhs)
 
 coil::String& coil::String::operator+=(String const& rhs)
 {
-    append(rhs.cStr(), rhs.size());
+    append(rhs.cStr(), rhs.length());
     return *this;
 }
 
@@ -161,7 +161,7 @@ bool coil::String::operator==(char const* rhs) const
 
 coil::String::operator coil::StringView() const
 {
-    return StringView{ cStr(), size()};
+    return StringView{ cStr(), length()};
 }
 
 void coil::String::validateIsNullTerminated()

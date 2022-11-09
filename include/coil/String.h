@@ -17,7 +17,7 @@ namespace coil
         String(StringView str);
         String(char const* str, size_t length);
 
-        size_t size() const;
+        size_t length() const;
         bool empty() const;
         void reserve(size_t capacity);
         char const* cStr() const;
