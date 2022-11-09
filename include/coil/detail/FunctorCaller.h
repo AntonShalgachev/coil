@@ -18,8 +18,8 @@ namespace coil::detail
     template<typename T>
     void reportError(CallContext& context, Expected<T, coil::String> const& result)
     {
-        COIL_ASSERT(!result);
-        context.reportError(result.error());
+        if (!result)
+            context.reportError(result.error());
     }
 
     template<typename FuncWrapper, size_t... NonUserIndices, typename... Es>
