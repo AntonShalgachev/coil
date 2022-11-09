@@ -63,6 +63,7 @@ add_library(coil
     "include/coil/UnorderedMap.h"
     "include/coil/UniquePtr.h"
     "include/coil/Hash.h"
+    "include/coil/StdLibCompat.h"
 
     "src/Coil.cpp"
     "src/String.cpp"
@@ -72,6 +73,7 @@ add_library(coil
     "src/New.cpp"
     "src/DefaultLexer.cpp"
     "src/Buffer.cpp"
+    "src/StdLibCompat.cpp"
 )
 add_library(coil::coil ALIAS coil)
 

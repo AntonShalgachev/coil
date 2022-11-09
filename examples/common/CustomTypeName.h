@@ -5,11 +5,9 @@
 
 #include "magic_enum.hpp"
 
-#include <optional>
 #include <typeinfo>
-#include <vector>
 
-// TypeName<T>::name should return the type name as a string. They are useful, for
+// TypeName<T>::name should return the type name as a StringView. They are useful, for
 // example, in the error messages to make them more readable
 //
 // The default implementation here uses RTTI to get the type name, but other
@@ -23,47 +21,7 @@ namespace coil
     {
         static StringView name()
         {
-            return typeid(T).name();
-        }
-    };
-
-    template<typename T>
-    struct TypeName<T&>
-    {
-        static StringView name()
-        {
-            static String name = String{TypeName<T>::name()} + "&";
-            return name;
-        }
-    };
-
-    template<typename T>
-    struct TypeName<T const>
-    {
-        static StringView name()
-        {
-            static String name = String{TypeName<T>::name()} + " const";
-            return name;
-        }
-    };
-
-    template<typename T>
-    struct TypeName<std::vector<T>>
-    {
-        static StringView name()
-        {
-            static String typeName = "std::vector<" + String{TypeName<T>::name()} + ">";
-            return typeName;
-        }
-    };
-
-    template<typename T>
-    struct TypeName<std::optional<T>>
-    {
-        static StringView name()
-        {
-            static String typeName = "std::optional<" + String{TypeName<T>::name()} + ">";
-            return typeName;
+            return typeid(std::decay_t<T>).name();
         }
     };
 

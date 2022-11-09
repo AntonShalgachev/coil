@@ -7,33 +7,10 @@
 #include <ostream>
 
 #include "coil/Coil.h"
+#include "coil/StdLibCompat.h"
 
 namespace coil
 {
-    template<typename T>
-    struct TypeName<std::optional<T>>
-    {
-        static StringView name()
-        {
-            static String result = "std::optional<" + String{TypeName<T>::name()} + ">";
-            return result;
-        }
-    };
-    template<typename T>
-    struct TypeName<std::vector<T>>
-    {
-        static StringView name()
-        {
-            static String result = "std::vector<" + String{TypeName<T>::name()} + ">";
-            return result;
-        }
-    };
-
-    inline std::ostream& operator<<(std::ostream& os, StringView const& value)
-    {
-        return os << std::string_view{ value.data(), value.length() };
-    }
-
     inline std::ostream& operator<<(std::ostream& os, coil::ExecutionInput const& input)
     {
         os << "'" << input.name << "'"

@@ -39,13 +39,3 @@ void common::executeCommand(coil::Bindings& bindings, coil::StringView command)
 
     std::cout << std::endl;
 }
-
-std::ostream& operator<<(std::ostream& os, coil::String const& str)
-{
-    return os << coil::StringView{ str };
-}
-
-std::ostream& operator<<(std::ostream& os, coil::StringView const& str)
-{
-    return os << std::string_view{ str.data(), str.length() };
-}
