@@ -24,15 +24,13 @@ namespace coil
             if (input.subvalues.size() != 1)
                 return errors::createMismatchedSubvaluesError<E>(input, 1);
 
-            std::string_view value{ input.subvalues[0].data(), input.subvalues[0].length() };
-
             // You can also remove this block so that enums can only be deserialized using their names
             if (auto integerValue = TypeSerializer<std::underlying_type_t<E>>::fromString(input))
                 return static_cast<E>(*integerValue);
 
             // This makes enum names case-insensitive
             auto pred = [](unsigned char a, unsigned char b) { return std::tolower(a) == std::tolower(b); };
-            std::optional<E> optionalValue = magic_enum::enum_cast<E>(value, std::move(pred));
+            std::optional<E> optionalValue = magic_enum::enum_cast<E>(coil::toStdStringView(input.subvalues[0]), std::move(pred));
 
             if (optionalValue.has_value())
                 return optionalValue.value();
@@ -44,8 +42,7 @@ namespace coil
 
         static coil::String toString(E const& value)
         {
-            std::string_view res = magic_enum::enum_name(value);
-            return { res.data(), res.size() };
+            return coil::fromStdStringView(magic_enum::enum_name(value));
         }
     };
 }

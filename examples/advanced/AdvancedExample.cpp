@@ -126,7 +126,7 @@ void AdvancedExample::run()
         Entity* entity = entities.find(id);
         if (!entity)
         {
-            context.reportError("Failed to find entity '" + coil::String{ id.data(), id.size() } + "'");
+            context.reportError("Failed to find entity '" + coil::fromStdString(id) + "'");
             return;
         }
 

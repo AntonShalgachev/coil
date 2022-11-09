@@ -87,14 +87,14 @@ int main()
     bindings["exit"] = [&shouldExit]() { shouldExit = true; };
     bindings["run_all"] = [&names, &bindings]() {
         for (std::string_view name : names)
-            bindings.execute(coil::StringView{ name.data(), name.size() });
+            bindings.execute(coil::fromStdStringView(name));
     };
 
     Examples examples;
     bindExamples(bindings, examples);
 
     auto execute = [&bindings](std::string_view str) {
-        auto result = bindings.execute(coil::StringView{ str.data(), str.size() });
+        auto result = bindings.execute(coil::fromStdStringView(str));
 
         for (const auto& error : result.errors)
             std::cout << "Error: " << error << std::endl;

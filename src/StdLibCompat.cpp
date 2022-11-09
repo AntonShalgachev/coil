@@ -48,3 +48,24 @@ std::ostream& coil::operator<<(std::ostream& os, coil::StringView const& str)
 {
     return os << std::string_view{ str.data(), str.length() };
 }
+
+// conversion helpers
+std::string coil::toStdString(StringView str)
+{
+    return { str.data(), str.length() };
+}
+
+std::string_view coil::toStdStringView(StringView str)
+{
+    return { str.data(), str.length() };
+}
+
+coil::String coil::fromStdString(std::string_view str)
+{
+    return { str.data(), str.length() };
+}
+
+coil::StringView coil::fromStdStringView(std::string_view str)
+{
+    return { str.data(), str.length() };
+}

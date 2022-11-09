@@ -1,7 +1,8 @@
 #pragma once
 
 #include "coil/TypeName.h"
-#include "coil/String.h"
+
+#include "coil/StdLibCompat.h" // for std->coil string conversion
 
 #include "magic_enum.hpp"
 
@@ -30,8 +31,7 @@ namespace coil
     {
         static StringView name()
         {
-            std::string_view res = magic_enum::enum_type_name<E>();
-            return { res.data(), res.size() };
+            return coil::fromStdStringView(magic_enum::enum_type_name<E>());
         }
     };
 }

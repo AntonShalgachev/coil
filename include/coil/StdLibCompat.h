@@ -11,8 +11,7 @@
 // This file contains:
 // * Serializers for some standard C++ containres: std::string, std::string_view, std::vector, std::optional
 // * stream operators for coil::String and coil::StringView
-// * helper functions to convert between std and coil containers
-// 
+// * helper functions to convert between std and coil strings
 
 // std::string
 namespace coil
@@ -131,4 +130,13 @@ namespace coil
 {
     std::ostream& operator<<(std::ostream& os, coil::String const& str);
     std::ostream& operator<<(std::ostream& os, coil::StringView const& str);
+}
+
+// conversion helpers
+namespace coil
+{
+    std::string toStdString(coil::StringView str);
+    std::string_view toStdStringView(coil::StringView str);
+    coil::String fromStdString(std::string_view str);
+    coil::StringView fromStdStringView(std::string_view str);
 }
