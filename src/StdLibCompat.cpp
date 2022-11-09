@@ -32,7 +32,6 @@ coil::String coil::TypeSerializer<std::string_view>::toString(std::string_view c
     if (value.empty())
         return coil::String{};
 
-    assert(value.data());
     return coil::String{ coil::StringView{value.data(), value.size()} };
 }
 
