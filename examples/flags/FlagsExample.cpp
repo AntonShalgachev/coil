@@ -1,7 +1,7 @@
 #include "FlagsExample.h"
 
 #include "common/ExamplesCommon.h"
-#include "common/EnumTypeSerializer.h" // user-provided TypeSerializer for enums
+#include "common/EnumSupport.h" // user-provided TypeSerializer and TypeName for enums
 
 #include "coil/StdLibCompat.h" // implementation of TypeSerializer and TypeName for some C++ Standard Library types
 
@@ -48,7 +48,7 @@ namespace
     auto flagsVariable(E* var)
     {
         // Getters and setters return the string representation of the flags variable because the
-        // TypeSerializer for enums (see examples\common\EnumTypeSerializer.h) doesn't handle flags by default
+        // TypeSerializer for enums (see examples\common\EnumSupport.h) doesn't handle flags by default
 
         auto get = [var]() { return magic_enum::flags::enum_name(*var); };
         auto set = [var](std::vector<E> const& args) {

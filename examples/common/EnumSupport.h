@@ -1,7 +1,5 @@
 #pragma once
 
-// TODO rename this file
-
 #include "Utils.h"
 #include "coil/TypeSerializer.h"
 #include "coil/StdLibCompat.h" // for std->coil string conversion
