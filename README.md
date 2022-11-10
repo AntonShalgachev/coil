@@ -84,7 +84,7 @@ The project contains the following CMake options:
 * Library configuration:
     * `COIL_CATCH_EXCEPTIONS` (`OFF` by default): catch and report exceptions thrown in the command
     * `COIL_ENABLE_ASSERTS` (`OFF` by default): enable internal asserts
-    * `COIL_TYPE_NAME_USE_ALIAS` (`OFF` by default): use integer aliases to implement coil::TypeName for some integers (e.g. "uint64" instead of "unsigned long")
+    * `COIL_TYPE_NAME_USE_INTEGER_ALIAS` (`OFF` by default): use type aliases as integer type names (e.g. "uint64" instead of "unsigned long")
 * Project options (all `OFF` by default):
     * `COIL_EXAMPLES`: adds examples
     * `COIL_RUNTIME_TESTS`: adds runtime tests
@@ -115,7 +115,7 @@ FetchContent_Declare(
 
 # Configure coil if necessary:
 # set(COIL_CATCH_EXCEPTIONS ON CACHE INTERNAL "")
-# set(COIL_TYPE_NAME_USE_ALIAS ON CACHE INTERNAL "")
+# set(COIL_TYPE_NAME_USE_INTEGER_ALIAS ON CACHE INTERNAL "")
 
 FetchContent_MakeAvailable(coil)
 ```
@@ -133,7 +133,7 @@ Copy the entire source tree into your project, then in your `CMakeLists.txt` cal
 ```cmake
 # Configure coil if necessary:
 # set(COIL_CATCH_EXCEPTIONS ON CACHE INTERNAL "")
-# set(COIL_TYPE_NAME_USE_ALIAS ON CACHE INTERNAL "")
+# set(COIL_TYPE_NAME_USE_INTEGER_ALIAS ON CACHE INTERNAL "")
 
 add_subdirectory(path/to/coil)
 target_link_libraries(app PRIVATE coil::coil)

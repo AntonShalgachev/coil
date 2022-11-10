@@ -7,8 +7,8 @@
 #include <numeric>
 #include <stdexcept>
 
-#if COIL_CONFIG_TYPE_NAME_USE_ALIAS
-#error Tests should not be compiled with COIL_CONFIG_TYPE_NAME_USE_ALIAS since the integer aliases are compiler-dependent
+#if COIL_CONFIG_TYPE_NAME_USE_INTEGER_ALIAS
+#error Tests should not be compiled with COIL_CONFIG_TYPE_NAME_USE_INTEGER_ALIAS since the integer aliases are compiler-dependent
 #endif
 
 namespace stats

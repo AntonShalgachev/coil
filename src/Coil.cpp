@@ -74,7 +74,7 @@ namespace
     template<typename T>
     constexpr char const* arithmeticName()
     {
-#if COIL_CONFIG_TYPE_NAME_USE_ALIAS
+#if COIL_CONFIG_TYPE_NAME_USE_INTEGER_ALIAS
         if constexpr (coil::IsSameV<T, int8_t>)
             return "int8";
         if constexpr (coil::IsSameV<T, uint8_t>)
