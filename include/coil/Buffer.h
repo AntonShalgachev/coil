@@ -13,7 +13,7 @@ namespace coil
     class Buffer
     {
     public:
-        Buffer(size_t count = 0, size_t chunkSize = 1);
+        Buffer(size_t capacity = 0, size_t chunkSize = 1);
         Buffer(Buffer const& rhs);
         Buffer(Buffer&& rhs);
         ~Buffer();
@@ -23,9 +23,9 @@ namespace coil
 
         char* data();
         char const* data() const;
-        size_t count() const;
+        size_t capacity() const;
+        size_t capacityBytes() const;
         size_t size() const;
-        bool empty() const;
 
         void resize(size_t newSize);
 
@@ -38,7 +38,7 @@ namespace coil
         T* constructNext(Args&&... args)
         {
             COIL_ASSERT(m_ptr);
-            COIL_ASSERT(m_size < m_count);
+            COIL_ASSERT(m_size < m_capacity);
             COIL_ASSERT(m_chunkSize == sizeof(T));
 
             T* obj = new (NewTag{}, m_ptr + m_size * sizeof(T)) T(coil::forward<Args>(args)...);
@@ -92,12 +92,11 @@ namespace coil
         }
 
     private:
-        size_t internalBufferSize() const; // TODO rename
         void swap(Buffer& rhs) noexcept;
 
     private:
         char* m_ptr = nullptr;
-        size_t m_count = 0; // TODO rename to m_capacity or m_size
+        size_t m_capacity = 0;
         size_t m_chunkSize = 0;
 
         size_t m_size = 0;

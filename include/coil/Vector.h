@@ -103,7 +103,7 @@ namespace coil
         T* data() { return begin(); }
         T const* data() const { return begin(); }
         size_t size() const { return m_buffer.size(); }
-        size_t capacity() const { return m_buffer.count(); }
+        size_t capacity() const { return m_buffer.capacity(); }
         bool empty() const { return size() == 0; }
 
         T* begin() { return m_buffer.get<T>(0); }
@@ -155,7 +155,7 @@ namespace coil
 
             m_buffer = coil::move(buffer);
 
-            COIL_ASSERT(m_buffer.count() == newCapacity);
+            COIL_ASSERT(m_buffer.capacity() == newCapacity);
         }
 
         void assign(T const* items, size_t size)

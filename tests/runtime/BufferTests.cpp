@@ -98,16 +98,14 @@ TEST(BufferTests, TestConstructor)
 {
     coil::Buffer buf{ 10, 1 };
 
-    EXPECT_EQ(buf.count(), 10);
-    EXPECT_FALSE(buf.empty());
+    EXPECT_EQ(buf.capacity(), 10);
 }
 
 TEST(BufferTests, TestDefaultConstructor)
 {
     coil::Buffer buf;
 
-    EXPECT_EQ(buf.count(), 0);
-    EXPECT_TRUE(buf.empty());
+    EXPECT_EQ(buf.capacity(), 0);
 }
 
 TEST(BufferTests, TestCopyConstructor)
@@ -115,10 +113,8 @@ TEST(BufferTests, TestCopyConstructor)
     coil::Buffer buf1{ 10, 1 };
     coil::Buffer buf2 = buf1;
 
-    EXPECT_EQ(buf1.count(), 10);
-    EXPECT_FALSE(buf1.empty());
-    EXPECT_EQ(buf2.count(), 10);
-    EXPECT_FALSE(buf2.empty());
+    EXPECT_EQ(buf1.capacity(), 10);
+    EXPECT_EQ(buf2.capacity(), 10);
 }
 
 TEST(BufferTests, TestMoveConstructor)
@@ -126,8 +122,7 @@ TEST(BufferTests, TestMoveConstructor)
     coil::Buffer buf1{ 10, 1 };
     coil::Buffer buf2 = coil::move(buf1);
 
-    EXPECT_EQ(buf2.count(), 10);
-    EXPECT_FALSE(buf2.empty());
+    EXPECT_EQ(buf2.capacity(), 10);
 }
 
 TEST(BufferTests, TestCopyAssignment)
@@ -136,10 +131,8 @@ TEST(BufferTests, TestCopyAssignment)
     coil::Buffer buf2{ 100, 8 };
     buf2 = buf1;
 
-    EXPECT_EQ(buf1.count(), 10);
-    EXPECT_FALSE(buf1.empty());
-    EXPECT_EQ(buf2.count(), 10);
-    EXPECT_FALSE(buf2.empty());
+    EXPECT_EQ(buf1.capacity(), 10);
+    EXPECT_EQ(buf2.capacity(), 10);
 }
 
 TEST(BufferTests, TestMoveAssignment)
@@ -148,8 +141,7 @@ TEST(BufferTests, TestMoveAssignment)
     coil::Buffer buf2{ 100, 8 };
     buf2 = coil::move(buf1);
 
-    EXPECT_EQ(buf2.count(), 10);
-    EXPECT_FALSE(buf2.empty());
+    EXPECT_EQ(buf2.capacity(), 10);
 }
 
 TEST(BufferTests, TestCopy)
@@ -209,7 +201,7 @@ TEST(BufferTests, TestTypedOperations)
     EXPECT_EQ(Integer::moves, 0u);
     EXPECT_EQ(Integer::destructions, 0u);
 
-    EXPECT_EQ(buf.count(), 10);
+    EXPECT_EQ(buf.capacity(), 10);
     ASSERT_EQ(buf.size(), 1);
 
     Integer* integer = buf.get<Integer>(0);

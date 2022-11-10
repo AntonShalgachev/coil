@@ -2,15 +2,15 @@
 
 #include <string.h>
 
-coil::Buffer::Buffer(size_t count, size_t chunkSize)
-    : m_ptr(count * chunkSize > 0 ? new char[count * chunkSize] : nullptr)
-    , m_count(count)
+coil::Buffer::Buffer(size_t capacity, size_t chunkSize)
+    : m_ptr(capacity * chunkSize > 0 ? new char[capacity * chunkSize] : nullptr)
+    , m_capacity(capacity)
     , m_chunkSize(chunkSize)
 {
     COIL_ASSERT(chunkSize > 0);
 }
 
-coil::Buffer::Buffer(Buffer const& rhs) : Buffer(rhs.m_count, rhs.m_chunkSize)
+coil::Buffer::Buffer(Buffer const& rhs) : Buffer(rhs.m_capacity, rhs.m_chunkSize)
 {
     COIL_ASSERT(rhs.m_constructedObjectsCount == 0);
     copy(rhs.m_ptr, rhs.m_size * m_chunkSize);
@@ -56,9 +56,14 @@ char const* coil::Buffer::data() const
     return m_ptr;
 }
 
-size_t coil::Buffer::count() const
+size_t coil::Buffer::capacity() const
 {
-    return m_count;
+    return m_capacity;
+}
+
+size_t coil::Buffer::capacityBytes() const
+{
+    return m_capacity * m_chunkSize;
 }
 
 size_t coil::Buffer::size() const
@@ -66,15 +71,9 @@ size_t coil::Buffer::size() const
     return m_size;
 }
 
-bool coil::Buffer::empty() const
-{
-    // TODO rework: empty() should be synonymous to size() == 0
-    return internalBufferSize() == 0;
-}
-
 void coil::Buffer::resize(size_t newSize)
 {
-    COIL_ASSERT(newSize <= m_count);
+    COIL_ASSERT(newSize <= m_capacity);
     m_size = newSize;
 }
 
@@ -94,20 +93,15 @@ void coil::Buffer::copy(void const* ptr, size_t size)
         return;
 
     COIL_ASSERT(ptr);
-    COIL_ASSERT(size <= internalBufferSize());
+    COIL_ASSERT(size <= capacityBytes());
 
     memcpy(m_ptr, ptr, size);
-}
-
-size_t coil::Buffer::internalBufferSize() const
-{
-    return m_count * m_chunkSize;
 }
 
 void coil::Buffer::swap(Buffer& rhs) noexcept
 {
     coil::exchange(m_ptr, rhs.m_ptr);
-    coil::exchange(m_count, rhs.m_count);
+    coil::exchange(m_capacity, rhs.m_capacity);
     coil::exchange(m_chunkSize, rhs.m_chunkSize);
 
     coil::exchange(m_size, rhs.m_size);

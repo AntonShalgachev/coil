@@ -48,7 +48,7 @@ void coil::String::reserve(size_t capacity)
 
     size_t requiredBufferSize = capacity + 1;
 
-    if (requiredBufferSize > m_buffer.count())
+    if (requiredBufferSize > m_buffer.capacity())
     {
         Buffer buffer{ requiredBufferSize, sizeof(char) };
         buffer.copy(m_buffer.data(), length());
@@ -92,7 +92,7 @@ void coil::String::resize(size_t newSize)
     validateIsNullTerminated();
 
     reserve(newSize);
-    COIL_ASSERT(m_buffer.count() >= newSize + 1);
+    COIL_ASSERT(m_buffer.capacity() >= newSize + 1);
 
     m_buffer.resize(newSize + 1);
     *m_buffer.get(newSize) = '\0';
@@ -115,14 +115,13 @@ void coil::String::append(char const* str, size_t length)
 
 char const* coil::String::begin() const
 {
-    COIL_ASSERT(!m_buffer.empty());
+    COIL_ASSERT(m_buffer.size() != 0);
     return m_buffer.data();
 }
 
 char const* coil::String::end() const
 {
-    COIL_ASSERT(!m_buffer.empty());
-    return m_buffer.data() + length();
+    return begin() + length();
 }
 
 coil::String& coil::String::operator+=(char rhs)
@@ -171,7 +170,7 @@ coil::String::operator coil::StringView() const
 
 void coil::String::validateIsNullTerminated()
 {
-    if (!m_buffer.empty())
+    if (m_buffer.size() > 0)
     {
         COIL_ASSERT(*end() == '\0');
     }
