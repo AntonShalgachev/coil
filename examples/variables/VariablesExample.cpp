@@ -52,7 +52,7 @@ void VariablesExample::run()
 
     bindings["print_variables"] = [&timeScale, &city, &type](coil::Context context) {
         auto typeName = magic_enum::enum_name(type);
-        context.loglinef("Time scale: %f, city: %s, type: %.*s", timeScale, city.c_str(), typeName.size(), typeName.data());
+        context.loglinef("Time scale: %f, city: %s, type: %.*s", timeScale, city.c_str(), static_cast<int>(typeName.size()), typeName.data());
     };
 
     common::printSectionHeader("Calling variable without arguments will return its value:");

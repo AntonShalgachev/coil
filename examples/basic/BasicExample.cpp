@@ -33,7 +33,7 @@ namespace
 
     void printQuoted(coil::Context context, coil::StringView val)
     {
-        context.loglinef("'%.*s'", val.length(), val.data());
+        context.loglinef("'%.*s'", val.slength(), val.data());
     }
 
     bool invert(bool val)

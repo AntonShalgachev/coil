@@ -65,7 +65,15 @@ namespace
                 auto sourceName = magic_enum::enum_name(item.source);
                 auto typeName = magic_enum::enum_name(item.type);
                 if (doesItemMatch(item))
-                    context.loglinef("%llu\t%.*s\t%llu\t%.*s\t%.*s", item.id, item.name.size(), item.name.data(), item.amount, sourceName.size(), sourceName.data(), typeName.size(), typeName.data());
+                {
+                    context.loglinef("%llu\t%.*s\t%llu\t%.*s\t%.*s",
+                                     item.id,
+                                     static_cast<int>(item.name.size()), item.name.data(),
+                                     item.amount,
+                                     static_cast<int>(sourceName.size()), sourceName.data(),
+                                     static_cast<int>(typeName.size()), typeName.data()
+                    );
+                }
             }
         }
 
@@ -99,14 +107,14 @@ namespace
     void printArgs(coil::Context context)
     {
         for (coil::NamedValue const& arg : context.namedArgs())
-            context.loglinef("%.*s: %s", arg.key.length(), arg.key.data(), arg.value.str().cStr());
+            context.loglinef("%.*s: %s", arg.key.slength(), arg.key.data(), arg.value.str().cStr());
     }
 
     void printFloats(coil::Context context)
     {
         for (auto const& arg : context.namedArgs())
             if (auto val = arg.value.get<float>())
-                context.loglinef("%.*s: %f", arg.key.length(), arg.key.data(), *val);
+                context.loglinef("%.*s: %f", arg.key.slength(), arg.key.data(), *val);
     }
 
     enum class SaveGameType
@@ -126,7 +134,7 @@ namespace
             return;
 
         std::string_view typeName = magic_enum::enum_name(*type);
-        context.loglinef("Saving game with type %.*s and delay %f ms", typeName.size(), typeName.data(), *delay);
+        context.loglinef("Saving game with type %.*s and delay %f ms", static_cast<int>(typeName.size()), typeName.data(), *delay);
     }
 
     void requiredAndOptional(coil::Context context)

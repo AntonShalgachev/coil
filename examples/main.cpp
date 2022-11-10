@@ -77,7 +77,7 @@ int main()
     bindings["help"] = [&names](coil::Context context) {
         context.logline("Available examples:");
         for (std::string_view name : names)
-            context.logf("    %.*s\n", name.size(), name.data());
+            context.logf("    %.*s\n", static_cast<int>(name.size()), name.data());
         context.logline("");
         context.logline("Type the example name to run it");
         context.logline("Type 'help' for this help");
