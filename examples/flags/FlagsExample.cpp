@@ -1,6 +1,11 @@
 #include "FlagsExample.h"
 
 #include "common/ExamplesCommon.h"
+#include "common/EnumTypeSerializer.h" // user-provided TypeSerializer for enums
+
+#include "coil/StdLibCompat.h" // implementation of TypeSerializer and TypeName for some C++ Standard Library types
+
+#include <vector>
 
 namespace
 {

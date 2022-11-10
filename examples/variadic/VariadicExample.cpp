@@ -2,6 +2,11 @@
 
 #include "common/ExamplesCommon.h"
 
+#include "coil/StdLibCompat.h" // implementation of TypeSerializer and TypeName for some C++ Standard Library types
+
+#include <vector>
+#include <string_view>
+
 namespace
 {
     struct Entity

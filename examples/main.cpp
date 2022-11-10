@@ -16,7 +16,10 @@
 #include "variables/VariablesExample.h"
 #include "variadic/VariadicExample.h"
 
+#include "coil/StdLibCompat.h" // implementation of TypeSerializer and TypeName for some C++ Standard Library types
+
 #include <tuple>
+#include <array>
 
 template<typename Example>
 void bindExample(coil::Bindings& bindings, Example& example)

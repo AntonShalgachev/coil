@@ -2,8 +2,11 @@
 
 #include "common/ExamplesCommon.h"
 
+#include "coil/StdLibCompat.h" // implementation of TypeSerializer and TypeName for some C++ Standard Library types
+
 #include <numeric>
 #include <vector>
+#include <sstream>
 
 namespace
 {

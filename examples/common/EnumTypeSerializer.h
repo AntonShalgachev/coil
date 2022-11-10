@@ -1,13 +1,14 @@
 #pragma once
 
+// TODO rename this file
+
 #include "Utils.h"
 #include "coil/TypeSerializer.h"
+#include "coil/StdLibCompat.h" // for std->coil string conversion
 
 #include "magic_enum.hpp"
 
-#include <istream>
 #include <optional>
-#include <ostream>
 #include <string>
 
 namespace coil
@@ -36,13 +37,21 @@ namespace coil
                 return optionalValue.value();
 
             std::string names = ::utils::flatten(magic_enum::enum_names<E>(), "'");
-
             return errors::createGenericError<E>(input, sprintf("Possible values are [%s]", names.c_str()));
         }
 
         static coil::String toString(E const& value)
         {
             return coil::fromStdStringView(magic_enum::enum_name(value));
+        }
+    };
+
+    template<typename E>
+    struct TypeName<E, std::enable_if_t<std::is_enum_v<E>>>
+    {
+        static StringView name()
+        {
+            return coil::fromStdStringView(magic_enum::enum_type_name<E>());
         }
     };
 }

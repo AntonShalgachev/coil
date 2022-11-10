@@ -2,6 +2,8 @@
 
 #include "common/ExamplesCommon.h"
 
+#include "coil/StdLibCompat.h" // implementation of TypeSerializer and TypeName for some C++ Standard Library types
+
 // Several functions can be bound to the same command as long as those functions have different amount of arguments.
 
 namespace
