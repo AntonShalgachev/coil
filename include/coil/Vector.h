@@ -1,6 +1,6 @@
 #pragma once
 
-#include "detail/Utility.h" // TODO remove
+#include "detail/Utility.h"
 #include "detail/New.h"
 #include "Assert.h"
 
@@ -10,8 +10,6 @@
 
 namespace coil
 {
-    // TODO move some non-template parts into cpp file
-
     template<typename T>
     class Vector
     {
