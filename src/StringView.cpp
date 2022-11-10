@@ -19,6 +19,11 @@ size_t coil::StringView::length() const
     return m_length;
 }
 
+int coil::StringView::slength() const
+{
+    return static_cast<int>(length());
+}
+
 bool coil::StringView::empty() const
 {
     return length() == 0;

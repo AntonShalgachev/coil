@@ -32,6 +32,11 @@ size_t coil::String::length() const
     return 0;
 }
 
+int coil::String::slength() const
+{
+    return static_cast<int>(length());
+}
+
 bool coil::String::empty() const
 {
     return length() == 0;

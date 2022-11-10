@@ -13,6 +13,7 @@ namespace coil
         StringView(char const* str, size_t length);
 
         size_t length() const;
+        int slength() const;
         bool empty() const;
         char const* data() const;
 

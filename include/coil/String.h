@@ -18,6 +18,7 @@ namespace coil
         String(char const* str, size_t length);
 
         size_t length() const;
+        int slength() const;
         bool empty() const;
         void reserve(size_t capacity);
         char const* cStr() const;

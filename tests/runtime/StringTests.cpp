@@ -26,6 +26,7 @@ TEST(StringTests, TestDefaultConstructed)
     coil::String str;
 
     EXPECT_EQ(str.length(), 0);
+    EXPECT_EQ(str.slength(), 0);
     testCommon(str);
     EXPECT_STREQ(str.cStr(), "");
 }
@@ -35,6 +36,7 @@ TEST(StringTests, TestConstructedFromCString)
     coil::String str{ "Null-terminated C string" };
 
     EXPECT_EQ(str.length(), 24);
+    EXPECT_EQ(str.slength(), 24);
     testCommon(str);
     EXPECT_STREQ(str.cStr(), "Null-terminated C string");
 }
@@ -44,6 +46,7 @@ TEST(StringTests, TestConstructedFromCStringAndLength)
     coil::String str{ "Some string", 4 };
 
     EXPECT_EQ(str.length(), 4);
+    EXPECT_EQ(str.slength(), 4);
     testCommon(str);
     EXPECT_STREQ(str.cStr(), "Some");
 }
@@ -55,7 +58,10 @@ TEST(StringTests, TestConstructedFromStringView)
 
     coil::String str{ view };
 
+    EXPECT_TRUE(str.slength() == view.slength());
+    EXPECT_TRUE(str == view);
     EXPECT_EQ(str.length(), 6);
+    EXPECT_EQ(str.slength(), 6);
     testCommon(str);
     EXPECT_STREQ(str.cStr(), "string");
 }
