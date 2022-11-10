@@ -5,6 +5,7 @@
 #include "detail/CallContext.h"
 #include "detail/Utility.h"
 #include "String.h"
+#include "Config.h"
 
 namespace coil
 {
@@ -15,8 +16,8 @@ namespace coil
 
         void log(String const& str);
         void logline(String const& str);
-        void logf(char const* format, ...);
-        void loglinef(char const* format, ...);
+        COIL_PRINTF_LIKE(2, 3) void logf(char const* format, ...);
+        COIL_PRINTF_LIKE(2, 3) void loglinef(char const* format, ...);
 
         void reportError(String error);
 
