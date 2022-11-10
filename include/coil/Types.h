@@ -1,7 +1,7 @@
 #pragma once
 
 #include "TypeName.h"
-#include "detail/Utility.h"
+#include "detail/Sequence.h"
 #include "StringView.h"
 
 namespace coil

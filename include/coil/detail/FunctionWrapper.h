@@ -9,6 +9,7 @@
 #include "../Optional.h"
 #include "FuncTraits.h"
 #include "Utility.h"
+#include "Sequence.h"
 #include "TypeTraits.h"
 
 namespace coil::detail

@@ -32,6 +32,7 @@ add_library(coil
     "include/coil/detail/TypeTraits.h"
     "include/coil/detail/Utility.h"
     "include/coil/detail/New.h"
+    "include/coil/detail/Sequence.h"
 
     "include/coil/Assert.h"
     "include/coil/AnyFunctor.h"

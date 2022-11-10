@@ -5,6 +5,7 @@
 #include "../Types.h"
 #include "CallContext.h"
 #include "Utility.h"
+#include "Sequence.h"
 #include "../String.h"
 #include "../Assert.h"
 
