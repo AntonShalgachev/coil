@@ -21,15 +21,15 @@ namespace coil
             String representation = input.str();
 
             if (details.empty())
-                return makeUnexpected(sprintf("Unable to convert '%s' to type '%.*s'", representation.cStr(), typeName.length(), typeName.data()));
+                return makeUnexpected(sprintf("Unable to convert '%s' to type '%.*s'", representation.cStr(), typeName.slength(), typeName.data()));
 
-            return makeUnexpected(sprintf("Unable to convert '%s' to type '%.*s': %.*s", representation.cStr(), typeName.length(), typeName.data(), details.length(), details.data()));
+            return makeUnexpected(sprintf("Unable to convert '%s' to type '%.*s': %.*s", representation.cStr(), typeName.slength(), typeName.data(), details.slength(), details.data()));
         }
 
         template<typename T>
         Unexpected<String> createMismatchedSubvaluesError(Value const& input, size_t expectedSubvalues)
         {
-            return createGenericError<T>(input, sprintf("Expected %d subvalues, got %d", expectedSubvalues, input.subvalues.size()));
+            return createGenericError<T>(input, sprintf("Expected %zu subvalues, got %zu", expectedSubvalues, input.subvalues.size()));
         }
     }
 

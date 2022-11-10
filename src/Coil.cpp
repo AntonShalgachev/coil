@@ -252,7 +252,7 @@ namespace coil
         auto it = m_commands.find(context.input.name);
         if (it == m_commands.end())
         {
-            context.result.errors.pushBack(sprintf("No function '%.*s' is registered", context.input.name.length(), context.input.name.data()));
+            context.result.errors.pushBack(sprintf("No function '%.*s' is registered", context.input.name.slength(), context.input.name.data()));
             return;
         }
 
@@ -294,7 +294,7 @@ namespace coil
         }
 
         size_t const actualArgsCount = context.input.arguments.size();
-        auto error = sprintf("Wrong number of arguments to '%.*s': expected %s, got %d", context.input.name.length(), context.input.name.data(), expectedStr.cStr(), actualArgsCount);
+        auto error = sprintf("Wrong number of arguments to '%.*s': expected %s, got %zu", context.input.name.slength(), context.input.name.data(), expectedStr.cStr(), actualArgsCount);
         context.reportError(coil::move(error));
     }
 
@@ -369,7 +369,7 @@ namespace coil
     {
         auto it = find(key);
         if (it == end())
-            return makeUnexpected(Error(Error::Type::MissingKey, sprintf("Missing named argument '%.*s'", key.length(), key.data())));
+            return makeUnexpected(Error(Error::Type::MissingKey, sprintf("Missing named argument '%.*s'", key.slength(), key.data())));
 
         return {it->value};
     }

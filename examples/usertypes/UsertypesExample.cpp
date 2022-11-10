@@ -112,7 +112,7 @@ namespace coil
 
         static coil::String toString(EntityId value)
         {
-            return coil::sprintf("EntityId{%d}", value.index);
+            return coil::sprintf("EntityId{%zu}", value.index);
         }
     };
 
