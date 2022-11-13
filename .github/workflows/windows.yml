@@ -57,7 +57,7 @@ jobs:
     - name: Generate code coverage report
       if: matrix.compiler == 'clang' && matrix.config == 'Debug' && matrix.exceptions == 'ON'
       shell: cmd
-      run: OpenCppCoverage.exe --sources ${{github.workspace}}\include --sources ${{github.workspace}}\src --excluded_sources ${{github.workspace}}\src\StdLib.cpp --excluded_sources ${{github.workspace}}\src\StdLibCompat.cpp --export_type cobertura:Codecov.xml --excluded_line_regex ".*@NOCOVERAGE.*" -- ${{github.workspace}}\build\tests\runtime\${{matrix.config}}\cmake_tests.exe
+      run: OpenCppCoverage.exe --sources ${{github.workspace}}\include --sources ${{github.workspace}}\src --excluded_sources ${{github.workspace}}\src\StrToX.cpp --excluded_sources ${{github.workspace}}\src\StdLibCompat.cpp --export_type cobertura:Codecov.xml --excluded_line_regex ".*@NOCOVERAGE.*" -- ${{github.workspace}}\build\tests\runtime\${{matrix.config}}\cmake_tests.exe
     - name: Upload report to Codecov
       if: matrix.compiler == 'clang' && matrix.config == 'Debug' && matrix.exceptions == 'ON'
       uses: codecov/codecov-action@v1.3.2
