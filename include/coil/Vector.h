@@ -14,16 +14,16 @@ namespace coil
     class Vector
     {
     public:
-        Vector() = default;
+        Vector(size_t capacity = 0) : m_buffer(capacity, sizeof(T)) {}
 
-        Vector(T const* items, size_t size)
+        Vector(T const* begin, T const* end) : Vector(end - begin)
         {
-            assign(items, size);
+            assign(begin, end);
         }
 
-        Vector(Vector const& rhs)
+        Vector(Vector const& rhs) : Vector(rhs.begin(), rhs.end())
         {
-            assign(rhs.data(), rhs.size());
+
         }
 
         Vector(Vector&& rhs) = default;
@@ -150,17 +150,19 @@ namespace coil
             COIL_ASSERT(m_buffer.capacity() == newCapacity);
         }
 
-        void assign(T const* items, size_t size)
+        void assign(T const* begin, T const* end)
         {
             clear();
+
+            size_t size = end - begin;
 
             if (size > capacity())
                 grow(size);
 
             COIL_ASSERT(capacity() >= size);
 
-            for (size_t i = 0; i < size; i++)
-                m_buffer.constructNext<T>(items[i]);
+            for (T const* it = begin; it != end; it++)
+                m_buffer.constructNext<T>(*it);
         }
 
         void deallocate()

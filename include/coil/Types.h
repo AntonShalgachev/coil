@@ -17,7 +17,7 @@ namespace coil
             if constexpr (size > 0)
             {
                 StringView data[size] = { TypeName<Args>::name()... };
-                return Vector<StringView> { data, size };
+                return Vector<StringView> { data, data + size };
             }
             else
             {
