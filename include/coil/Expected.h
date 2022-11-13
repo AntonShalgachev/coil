@@ -4,58 +4,10 @@
 #include "detail/Utility.h"
 #include "detail/New.h"
 #include "Assert.h"
+#include "Unexpected.h"
 
 namespace coil
 {
-    template<typename T>
-    class Unexpected
-    {
-        static_assert(!IsVoidV<T>, "T shouldn't be void");
-
-    public:
-        Unexpected(T value) : m_value(coil::move(value)) {}
-
-        T const& value() const&
-        {
-            return m_value;
-        }
-        T& value() &
-        {
-            return m_value;
-        }
-        T&& value() &&
-        {
-            return coil::move(m_value);
-        }
-
-        template<typename U>
-        operator Unexpected<U>() const&
-        {
-            return Unexpected<U>{m_value};
-        }
-
-        template<typename U>
-        operator Unexpected<U>() &
-        {
-            return Unexpected<U>{m_value};
-        }
-
-        template<typename U>
-        operator Unexpected<U>() &&
-        {
-            return Unexpected<U>{coil::move(m_value)};
-        }
-
-    private:
-        T m_value;
-    };
-
-    template<typename T>
-    Unexpected<T> makeUnexpected(T value)
-    {
-        return Unexpected<RemoveCvT<RemoveReferenceT<T>>>(coil::move(value));
-    }
-
     template<typename T, typename E>
     class Expected
     {

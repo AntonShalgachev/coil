@@ -45,6 +45,7 @@ add_library(coil
     "include/coil/ExecutionInput.h"
     "include/coil/ExecutionResult.h"
     "include/coil/Expected.h"
+    "include/coil/Unexpected.h"
     "include/coil/Extern.h"
     "include/coil/Lexer.h"
     "include/coil/NamedArgs.h"
