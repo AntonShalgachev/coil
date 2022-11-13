@@ -65,18 +65,18 @@ namespace coil
         if (!typelessValue)
             return makeUnexpected(coil::move(typelessValue).error());
 
-        Expected<T, String> value = static_cast<Value const&>(*typelessValue).get<T>();
+        Expected<T, String> value = static_cast<Value const&>(typelessValue.value()).get<T>();
         if (!value)
             return makeUnexpected(Error(Error::Type::TypeMismatch, coil::move(value).error()));
 
-        return *coil::move(value);
+        return coil::move(value).value();
     }
 
     template<typename T>
     Optional<T> NamedArgs::getOrReport(StringView key, ArgType argType, Optional<T> defaultValue) const
     {
         if (Expected<T, Error> value = get<T>(key))
-            return *value;
+            return value.value();
         else if (argType == ArgType::Optional && value.error().type == Error::Type::MissingKey)
             return defaultValue;
         else
