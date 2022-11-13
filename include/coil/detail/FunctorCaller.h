@@ -26,13 +26,13 @@ namespace coil::detail
     template<typename FuncWrapper, size_t... NonUserIndices, typename... Es>
     void invoke(FuncWrapper& func, CallContext& context, Es... expectedArgs)
     {
-        if ((!expectedArgs || ...))
+        if ((!expectedArgs.hasValue() || ...))
         {
             (reportError(context, expectedArgs), ...);
             return;
         }
 
-        Optional<String> returnValue = func.invoke(createContext<NonUserIndices>(context)..., *coil::move(expectedArgs)...);
+        Optional<String> returnValue = func.invoke(createContext<NonUserIndices>(context)..., coil::move(expectedArgs).value()...);
         if (!context.hasErrors())
             context.result.returnValue = coil::move(returnValue);
     }
