@@ -18,7 +18,11 @@ namespace coil
 
         Vector(T const* begin, T const* end) : Vector(end - begin)
         {
-            assign(begin, end);
+            COIL_ASSERT(capacity() >= static_cast<size_t>((end - begin)));
+            COIL_ASSERT(empty());
+
+            for (T const* it = begin; it != end; it++)
+                m_buffer.constructNext<T>(*it);
         }
 
         Vector(Vector const& rhs) : Vector(rhs.begin(), rhs.end())
@@ -30,7 +34,7 @@ namespace coil
 
         ~Vector()
         {
-            deallocate();
+            clear();
         }
 
         Vector& operator=(Vector const& rhs)
@@ -148,27 +152,6 @@ namespace coil
             m_buffer = coil::move(buffer);
 
             COIL_ASSERT(m_buffer.capacity() == newCapacity);
-        }
-
-        void assign(T const* begin, T const* end)
-        {
-            clear();
-
-            size_t size = end - begin;
-
-            if (size > capacity())
-                grow(size);
-
-            COIL_ASSERT(capacity() >= size);
-
-            for (T const* it = begin; it != end; it++)
-                m_buffer.constructNext<T>(*it);
-        }
-
-        void deallocate()
-        {
-            clear();
-            m_buffer = Buffer{};
         }
 
     private:
