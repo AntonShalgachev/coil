@@ -3,6 +3,7 @@
 #include "coil/TypeName.h"
 
 #include <typeinfo>
+#include <type_traits>
 
 // TypeName<T>::name should return the type name as a StringView. They are useful, for
 // example, in the error messages to make them more readable
