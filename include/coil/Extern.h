@@ -10,8 +10,6 @@
 #include "StringView.h"
 #include "detail/Utility.h"
 
-// TODO review these extern templates
-
 extern template class coil::Vector<coil::String>;
 extern template class coil::Optional<coil::String>;
 
@@ -20,7 +18,14 @@ extern template class coil::Vector<coil::NamedValue>;
 
 extern template class coil::Vector<coil::StringView>;
 
-extern template class coil::Expected<coil::Value, coil::NamedArgs::Error>;
+extern template class coil::Expected<coil::ReferenceWrapper<coil::Value const>, coil::String>;
+extern template class coil::Expected<coil::ReferenceWrapper<coil::Value const>, coil::NamedArgs::Error>;
+extern template coil::Unexpected<coil::NamedArgs::Error> coil::makeUnexpected(coil::NamedArgs::Error value);
+
+// can't fully instantiate coil::Vector<coil::AnyFunctor>
+extern template coil::Vector<coil::AnyFunctor>::Vector(size_t);
+extern template void coil::Vector<coil::AnyFunctor>::pushBack(coil::AnyFunctor);
+extern template coil::Vector<coil::AnyFunctor>::~Vector();
 
 extern template class coil::UniquePtr<coil::Lexer>;
 
