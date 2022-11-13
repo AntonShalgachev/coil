@@ -33,11 +33,6 @@ extern template void coil::exchange<coil::detail::AnyStorageBase*>(coil::detail:
 
 extern template coil::String&& coil::forward<coil::String>(coil::String&) noexcept; // TODO remove?
 
-#define COIL_TYPE_SERIALIZER_TEMPLATE_BASE(T, SPECIFIER) SPECIFIER template struct coil::TypeSerializer<T>
-
-#define COIL_TYPE_SERIALIZER_EXTERN_TEMPLATE(T) COIL_TYPE_SERIALIZER_TEMPLATE_BASE(T, extern)
-#define COIL_TYPE_SERIALIZER_TEMPLATE(T) COIL_TYPE_SERIALIZER_TEMPLATE_BASE(T, )
-
 ///////////////////////////////////////////////////////////////////////////////////////////
 
 #define COIL_VARIABLE_TEMPLATE_BASE(SPECIFIER, T) SPECIFIER template coil::Vector<coil::AnyFunctor> coil::variable<T>(T * var)
@@ -60,6 +55,8 @@ extern template coil::String&& coil::forward<coil::String>(coil::String&) noexce
     SPECIFIER template coil::AnyFunctor::AnyFunctor(coil::detail::FunctionWrapper<__VA_ARGS__>); \
     SPECIFIER template class coil::detail::FunctionWrapper<__VA_ARGS__>;                         \
     SPECIFIER template class coil::detail::AnyStorage<coil::detail::FunctionWrapper<__VA_ARGS__>>
+
+// TODO add comments explaining what do these macros do
 
 #define COIL_VARIABLE_EXTERN_TEMPLATE(T) COIL_VARIABLE_TEMPLATE_BASE(extern, T)
 #define COIL_ARGUMENT_EXTERN_TEMPLATE(T) COIL_ARGUMENT_TEMPLATE_BASE(extern, T)
