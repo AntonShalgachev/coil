@@ -62,6 +62,8 @@ namespace coil
     };
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 template<typename T>
 coil::Vector<T>::Vector(T const* begin, T const* end) : Vector(end - begin)
 {
@@ -73,7 +75,7 @@ coil::Vector<T>::Vector(T const* begin, T const* end) : Vector(end - begin)
 }
 
 template<typename T>
-coil::Vector<T>::Vector(size_t capacity /*= 0*/) : m_buffer(capacity, sizeof(T))
+coil::Vector<T>::Vector(size_t capacity) : m_buffer(capacity, sizeof(T))
 {
 
 }
