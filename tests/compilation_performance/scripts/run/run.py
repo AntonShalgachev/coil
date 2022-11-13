@@ -167,7 +167,7 @@ def run_cmake(configuration: BuildConfiguration, clean: bool, trace: bool):
     cmake_command = 'cmake -B "{build_dir}" -DCOIL_COMPILATION_TIME_BENCHMARK=ON {trace} {bindings} {unity} {pch} {extern} -GNinja "{root}"'.format(**params)
 
     COMPILER_IDS = {
-        Compiler.MSVC: '',
+        Compiler.MSVC: 'cl',
         Compiler.CLANG: 'clang-cl',
     }
 
