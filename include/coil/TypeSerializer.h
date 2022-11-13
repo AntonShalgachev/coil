@@ -101,6 +101,7 @@ namespace coil
 
     //////////////////////////////////////
 
+    // TODO remove this specialization?
     template<typename T>
     struct TypeSerializer<T*>
     {
