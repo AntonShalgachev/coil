@@ -6,8 +6,6 @@
 
 #include <stddef.h>
 
-// TODO double-check casts
-
 namespace coil
 {
     class Buffer

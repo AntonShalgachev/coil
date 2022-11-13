@@ -31,12 +31,12 @@ extern template class coil::UniquePtr<coil::Lexer>;
 
 extern template class coil::Unexpected<coil::String>;
 extern template coil::Unexpected<coil::String> coil::makeUnexpected(coil::String value);
-extern template coil::Unexpected<coil::String>&& coil::move<coil::Unexpected<coil::String>&>(coil::Unexpected<coil::String>&) noexcept; // TODO remove?
+extern template coil::Unexpected<coil::String>&& coil::move<coil::Unexpected<coil::String>&>(coil::Unexpected<coil::String>&) noexcept;
 
-extern template coil::detail::AnyStorageBase*&& coil::move<coil::detail::AnyStorageBase*&>(coil::detail::AnyStorageBase*&) noexcept; // TODO remove?
+extern template coil::detail::AnyStorageBase*&& coil::move<coil::detail::AnyStorageBase*&>(coil::detail::AnyStorageBase*&) noexcept;
 extern template void coil::exchange<coil::detail::AnyStorageBase*>(coil::detail::AnyStorageBase*&, coil::detail::AnyStorageBase*&) noexcept;
 
-extern template coil::String&& coil::forward<coil::String>(coil::String&) noexcept; // TODO remove?
+extern template coil::String&& coil::forward<coil::String>(coil::String&) noexcept;
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 
