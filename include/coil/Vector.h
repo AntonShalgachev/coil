@@ -26,10 +26,7 @@ namespace coil
             assign(rhs.data(), rhs.size());
         }
 
-        Vector(Vector&& rhs)
-        {
-            rhs.swap(*this);
-        }
+        Vector(Vector&& rhs) = default;
 
         ~Vector()
         {
@@ -39,15 +36,10 @@ namespace coil
         Vector& operator=(Vector const& rhs)
         {
             Vector temp{ rhs };
-            temp.swap(*this);
-            return *this;
+            return (*this = coil::move(temp));
         }
 
-        Vector& operator=(Vector&& rhs) noexcept
-        {
-            rhs.swap(*this);
-            return *this;
-        }
+        Vector& operator=(Vector&& rhs) noexcept = default;
 
         void reserve(size_t newCapacity)
         {
@@ -95,7 +87,8 @@ namespace coil
 
         void clear()
         {
-            m_buffer.destructAll<T>();
+            while (m_buffer.size() > 0)
+                m_buffer.destructLast<T>();
         }
 
         T* data() { return begin(); }
@@ -149,7 +142,8 @@ namespace coil
 
             COIL_ASSERT(m_buffer.size() == buffer.size());
 
-            m_buffer.destructAll<T>();
+            while (m_buffer.size() > 0)
+                m_buffer.destructLast<T>();
 
             m_buffer = coil::move(buffer);
 
@@ -173,11 +167,6 @@ namespace coil
         {
             clear();
             m_buffer = Buffer{};
-        }
-
-        void swap(Vector& rhs) noexcept
-        {
-            coil::exchange(m_buffer, rhs.m_buffer);
         }
 
     private:

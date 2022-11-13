@@ -67,19 +67,6 @@ namespace coil
         }
 
         template<typename T>
-        void destructAll()
-        {
-            for (size_t i = 0; i < m_size; i++)
-                get<T>(m_size - 1 - i)->~T();
-
-            m_size = 0;
-
-#if COIL_CONFIG_ENABLE_ASSERTS
-            m_constructedObjectsCount = 0;
-#endif
-        }
-
-        template<typename T>
         T* get(size_t index)
         {
             return reinterpret_cast<T*>(get(index * sizeof(T)));
