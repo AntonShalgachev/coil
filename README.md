@@ -219,13 +219,21 @@ For each configuration project is generated using `cmake` (Ninja generator), the
 
 ### Results
 
-These are the numbers I've got on my machine:
+These are the numbers I've got on my machine (median):
 
-| Configuration | Clang (seconds)    | MSVC (seconds)     |
-| ------------- | ------------------ | ------------------ |
-| Base          | 13.738365411758423 | 7.671312928199768  |
-| Coil          | 16.172605514526367 | 12.114667296409607 |
-| Naive         | 20.63681662082672  | 17.464430809020996 |
+With Unity build:
+| Configuration | Clang (seconds) | MSVC (seconds) |
+| ------------- | --------------- | -------------- |
+| Base          | 4.11            | 2.49           |
+| Coil          | 7.18            | 4.42           |
+| Naive         | 10.25           | 7.03           |
+
+Without Unity build:
+| Configuration | Clang (seconds) | MSVC (seconds) |
+| ------------- | --------------- | -------------- |
+| Base          | 12.7            | 6.44           |
+| Coil          | 15.24           | 8.15           |
+| Naive         | 19.33           | 11.14          |
 
 ## Roadmap
 - [ ] Do more research on the compilation time
