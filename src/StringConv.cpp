@@ -4,7 +4,7 @@
 #include "coil/String.h"
 #include "coil/StringView.h"
 
-#include "coil/detail/StdLib.h"
+#include "coil/detail/StrToX.h"
 
 #include <limits.h>
 #include <errno.h>

@@ -1,4 +1,4 @@
-#include "coil/detail/StdLib.h"
+#include "coil/detail/StrToX.h"
 
 // This implementation is an adaptation of "musl" C standard library
 

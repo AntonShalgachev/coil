@@ -7,7 +7,7 @@ function(validate_compilation SOURCE_FILE EXPECTED_RESULT)
             ${CMAKE_SOURCE_DIR}/src/String.cpp # TODO make prettier
             ${CMAKE_SOURCE_DIR}/src/StringView.cpp # TODO make prettier
             ${CMAKE_SOURCE_DIR}/src/StringConv.cpp # TODO make prettier
-            ${CMAKE_SOURCE_DIR}/src/StdLib.cpp # TODO make prettier
+            ${CMAKE_SOURCE_DIR}/src/StrToX.cpp # TODO make prettier
             ${CMAKE_SOURCE_DIR}/src/New.cpp # TODO make prettier
             ${CMAKE_SOURCE_DIR}/src/DefaultLexer.cpp # TODO make prettier
             ${CMAKE_SOURCE_DIR}/src/Buffer.cpp # TODO make prettier
