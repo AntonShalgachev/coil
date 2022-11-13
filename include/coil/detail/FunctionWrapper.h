@@ -59,6 +59,10 @@ namespace coil::detail
         using CallFuncPtr = Optional<String> (FunctionWrapper::*)(Args... args);
         using DestroyFuncPtr = void (FunctionWrapper::*)();
 
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable : 4702) // unreachable code
+#endif
         template<typename Func, typename C>
         Optional<String> typedCall(Args... args)
         {
@@ -81,6 +85,9 @@ namespace coil::detail
                     return TypeSerializer<R>::toString((obj->*func)(coil::move(args)...));
             }
         }
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
 
         template<typename Func>
         void typedDestroy()
