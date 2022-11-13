@@ -4,10 +4,7 @@
 
 #include <string.h>
 
-coil::StringView::StringView(char const* str) : StringView(str, strlen(str))
-{
-
-}
+coil::StringView::StringView(char const* str) : StringView(str, strlen(str)) {}
 
 coil::StringView::StringView(char const* str, size_t length) : m_str(str), m_length(length)
 {
@@ -40,7 +37,7 @@ coil::StringView coil::StringView::substr(size_t offset, size_t length) const
     COIL_ASSERT(offset <= m_length);
     COIL_ASSERT(length <= m_length);
     COIL_ASSERT(offset + length <= m_length);
-    return StringView{ m_str + offset, length };
+    return StringView{m_str + offset, length};
 }
 
 char const* coil::StringView::begin() const

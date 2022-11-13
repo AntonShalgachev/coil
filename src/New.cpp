@@ -5,4 +5,4 @@ void* operator new(size_t, coil::NewTag, void* p)
     return p;
 }
 
-void operator delete(void*, coil::NewTag, void*) { } // @NOCOVERAGE
+void operator delete(void*, coil::NewTag, void*) {} // @NOCOVERAGE

@@ -1,16 +1,16 @@
 #pragma once
 
 #include "../Context.h"
+#include "../Optional.h"
+#include "../String.h"
+#include "../StringView.h"
 #include "../TypeName.h"
 #include "../TypeSerializer.h"
 #include "../Types.h"
-#include "../String.h"
-#include "../StringView.h"
-#include "../Optional.h"
 #include "FuncTraits.h"
-#include "Utility.h"
 #include "Sequence.h"
 #include "TypeTraits.h"
+#include "Utility.h"
 
 namespace coil::detail
 {
@@ -60,8 +60,8 @@ namespace coil::detail
         using DestroyFuncPtr = void (FunctionWrapper::*)();
 
 #ifdef _MSC_VER
-#pragma warning(push)
-#pragma warning(disable : 4702) // unreachable code
+    #pragma warning(push)
+    #pragma warning(disable : 4702) // unreachable code
 #endif
         template<typename Func, typename C>
         Optional<String> typedCall(Args... args)
@@ -86,7 +86,7 @@ namespace coil::detail
             }
         }
 #ifdef _MSC_VER
-#pragma warning(pop)
+    #pragma warning(pop)
 #endif
 
         template<typename Func>

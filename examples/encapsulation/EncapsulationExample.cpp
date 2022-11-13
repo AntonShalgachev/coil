@@ -92,7 +92,7 @@ namespace utils
 
     utils::CommandsProxy ScopedDebugCommands::operator[](coil::StringView name)
     {
-        return CommandsProxy{ *this, name };
+        return CommandsProxy{*this, name};
     }
 }
 

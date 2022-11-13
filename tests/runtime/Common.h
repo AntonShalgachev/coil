@@ -3,8 +3,8 @@
 #include <algorithm>
 #include <functional>
 #include <optional>
-#include <vector>
 #include <ostream>
+#include <vector>
 
 #include "coil/Coil.h"
 #include "coil/StdLibCompat.h"
@@ -54,10 +54,7 @@ namespace coil
 
     inline bool operator==(ExecutionInput const& lhs, ExecutionInput const& rhs)
     {
-        auto tie = [](ExecutionInput const& value)
-        {
-            return std::tie(value.name, value.arguments, value.namedArguments);
-        };
+        auto tie = [](ExecutionInput const& value) { return std::tie(value.name, value.arguments, value.namedArguments); };
 
         return tie(lhs) == tie(rhs);
     }
@@ -80,5 +77,5 @@ coil::Vector<T> convertVector(std::vector<T> input)
 
 inline coil::Value createVectorValue(std::vector<coil::StringView> stdSubvalues)
 {
-    return coil::Value{ convertVector(coil::move(stdSubvalues)) };
+    return coil::Value{convertVector(coil::move(stdSubvalues))};
 }

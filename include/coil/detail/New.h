@@ -4,7 +4,9 @@
 
 namespace coil
 {
-    struct NewTag {};
+    struct NewTag
+    {
+    };
 }
 
 void* operator new(size_t, coil::NewTag, void* p);

@@ -18,8 +18,8 @@
 
 #include "coil/StdLibCompat.h" // implementation of TypeSerializer and TypeName for some C++ Standard Library types
 
-#include <tuple>
 #include <array>
+#include <tuple>
 
 template<typename Example>
 void bindExample(coil::Bindings& bindings, Example& example)

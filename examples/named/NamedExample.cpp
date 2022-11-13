@@ -1,7 +1,7 @@
 #include "NamedExample.h"
 
-#include "common/ExamplesCommon.h"
 #include "common/EnumSupport.h" // user-provided TypeSerializer and TypeName for enums
+#include "common/ExamplesCommon.h"
 
 #include "coil/StdLibCompat.h" // implementation of TypeSerializer and TypeName for some C++ Standard Library types
 
@@ -72,11 +72,13 @@ namespace
                 {
                     context.loglinef("%llu\t%.*s\t%llu\t%.*s\t%.*s",
                                      item.id,
-                                     static_cast<int>(item.name.size()), item.name.data(),
+                                     static_cast<int>(item.name.size()),
+                                     item.name.data(),
                                      item.amount,
-                                     static_cast<int>(sourceName.size()), sourceName.data(),
-                                     static_cast<int>(typeName.size()), typeName.data()
-                    );
+                                     static_cast<int>(sourceName.size()),
+                                     sourceName.data(),
+                                     static_cast<int>(typeName.size()),
+                                     typeName.data());
                 }
             }
         }

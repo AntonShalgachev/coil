@@ -1,13 +1,13 @@
 #pragma once
 
 // TODO don't use ".." (everywhere)
+#include "../Assert.h"
+#include "../String.h"
 #include "../TypeSerializer.h"
 #include "../Types.h"
 #include "CallContext.h"
-#include "Utility.h"
 #include "Sequence.h"
-#include "../String.h"
-#include "../Assert.h"
+#include "Utility.h"
 
 namespace coil::detail
 {

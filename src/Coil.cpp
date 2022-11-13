@@ -1,21 +1,21 @@
 #include "coil/Coil.h"
 
+#include "coil/Assert.h"
 #include "coil/DefaultLexer.h"
-#include "coil/Utils.h"
 #include "coil/ExecutionResult.h"
 #include "coil/Expected.h"
 #include "coil/Lexer.h"
-#include "coil/Assert.h"
+#include "coil/Utils.h"
 
-#include "coil/detail/Utility.h"
 #include "coil/detail/FunctorCaller.h"
+#include "coil/detail/Utility.h"
 
+#include <ctype.h>
 #include <stdarg.h>
 #include <stdio.h>
-#include <ctype.h>
 
 #if COIL_CONFIG_CATCH_EXCEPTIONS
-#include <exception>
+    #include <exception>
 #endif
 
 // Explicitly instantiate used templates here in order to avoid intantiating them in each source file
@@ -63,17 +63,28 @@ namespace
     template<typename T>
     constexpr char const* defaultName = nullptr;
 
-    template<> [[maybe_unused]] constexpr char const* defaultName<char> = "char";
-    template<> [[maybe_unused]] constexpr char const* defaultName<signed char> = "signed char";
-    template<> [[maybe_unused]] constexpr char const* defaultName<unsigned char> = "unsigned char";
-    template<> [[maybe_unused]] constexpr char const* defaultName<short> = "short";
-    template<> [[maybe_unused]] constexpr char const* defaultName<unsigned short> = "unsigned short";
-    template<> [[maybe_unused]] constexpr char const* defaultName<int> = "int";
-    template<> [[maybe_unused]] constexpr char const* defaultName<unsigned int> = "unsigned int";
-    template<> [[maybe_unused]] constexpr char const* defaultName<long> = "long";
-    template<> [[maybe_unused]] constexpr char const* defaultName<unsigned long> = "unsigned long";
-    template<> [[maybe_unused]] constexpr char const* defaultName<long long> = "long long";
-    template<> [[maybe_unused]] constexpr char const* defaultName<unsigned long long> = "unsigned long long";
+    template<>
+    [[maybe_unused]] constexpr char const* defaultName<char> = "char";
+    template<>
+    [[maybe_unused]] constexpr char const* defaultName<signed char> = "signed char";
+    template<>
+    [[maybe_unused]] constexpr char const* defaultName<unsigned char> = "unsigned char";
+    template<>
+    [[maybe_unused]] constexpr char const* defaultName<short> = "short";
+    template<>
+    [[maybe_unused]] constexpr char const* defaultName<unsigned short> = "unsigned short";
+    template<>
+    [[maybe_unused]] constexpr char const* defaultName<int> = "int";
+    template<>
+    [[maybe_unused]] constexpr char const* defaultName<unsigned int> = "unsigned int";
+    template<>
+    [[maybe_unused]] constexpr char const* defaultName<long> = "long";
+    template<>
+    [[maybe_unused]] constexpr char const* defaultName<unsigned long> = "unsigned long";
+    template<>
+    [[maybe_unused]] constexpr char const* defaultName<long long> = "long long";
+    template<>
+    [[maybe_unused]] constexpr char const* defaultName<unsigned long long> = "unsigned long long";
 
     template<typename T>
     constexpr char const* arithmeticName()
@@ -199,7 +210,7 @@ namespace coil
 
     Bindings::Command const& Bindings::add(StringView name, Vector<AnyFunctor> anyFunctors)
     {
-        auto it = m_commands.insertOrAssign(name, Command{ StringView{}, coil::move(anyFunctors) });
+        auto it = m_commands.insertOrAssign(name, Command{StringView{}, coil::move(anyFunctors)});
         it->value().name = it->key();
 
         return it->value();
@@ -413,8 +424,11 @@ namespace coil
 
     /// Value.h ///
     Value::Value() = default; // @NOCOVERAGE
-    Value::Value(StringView value) { subvalues.pushBack(coil::move(value)); }
-    Value::Value(char const* value) : Value(StringView{ value }) {}
+    Value::Value(StringView value)
+    {
+        subvalues.pushBack(coil::move(value));
+    }
+    Value::Value(char const* value) : Value(StringView{value}) {}
     Value::Value(Vector<StringView> subvalues) : subvalues(coil::move(subvalues)) {}
 
     bool Value::operator==(Value const& rhs) const
@@ -461,15 +475,15 @@ namespace coil
         return !(*this == rhs);
     }
 
-    /// TypeSerializer.h ///
-    #define DEFINE_ARITHMETIC_TYPE_SERIALIZER(Type) \
+/// TypeSerializer.h ///
+#define DEFINE_ARITHMETIC_TYPE_SERIALIZER(Type)                                       \
     coil::Expected<Type, String> TypeSerializer<Type>::fromString(Value const& input) \
-    { \
-        return ::arithmeticFromString<Type>(input); \
-    } \
-    coil::String TypeSerializer<Type>::toString(Type const& value) \
-    { \
-        return coil::toString(value); \
+    {                                                                                 \
+        return ::arithmeticFromString<Type>(input);                                   \
+    }                                                                                 \
+    coil::String TypeSerializer<Type>::toString(Type const& value)                    \
+    {                                                                                 \
+        return coil::toString(value);                                                 \
     }
 
     DEFINE_ARITHMETIC_TYPE_SERIALIZER(char);
@@ -532,7 +546,7 @@ namespace coil
         if (input.subvalues.size() != 1)
             return errors::createMismatchedSubvaluesError<String>(input, 1);
 
-        return String{ input.subvalues[0] };
+        return String{input.subvalues[0]};
     }
 
     String coil::TypeSerializer<String>::toString(String const& value)

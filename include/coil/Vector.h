@@ -1,8 +1,8 @@
 #pragma once
 
-#include "detail/Utility.h"
-#include "detail/New.h"
 #include "Assert.h"
+#include "detail/New.h"
+#include "detail/Utility.h"
 
 #include "Buffer.h"
 
@@ -77,13 +77,11 @@ coil::Vector<T>::Vector(T const* begin, T const* end) : Vector(end - begin)
 template<typename T>
 coil::Vector<T>::Vector(size_t capacity) : m_buffer(capacity, sizeof(T))
 {
-
 }
 
 template<typename T>
 coil::Vector<T>::Vector(Vector const& rhs) : Vector(rhs.begin(), rhs.end())
 {
-
 }
 
 template<typename T>
@@ -98,7 +96,7 @@ coil::Vector<T>::~Vector()
 template<typename T>
 coil::Vector<T>& coil::Vector<T>::operator=(Vector const& rhs)
 {
-    Vector temp{ rhs };
+    Vector temp{rhs};
     return (*this = coil::move(temp));
 }
 
@@ -161,33 +159,76 @@ void coil::Vector<T>::clear()
 }
 
 template<typename T>
-T* coil::Vector<T>::data() { return begin(); }
+T* coil::Vector<T>::data()
+{
+    return begin();
+}
 template<typename T>
-T const* coil::Vector<T>::data() const { return begin(); }
+T const* coil::Vector<T>::data() const
+{
+    return begin();
+}
 template<typename T>
-size_t coil::Vector<T>::size() const { return m_buffer.size(); }
+size_t coil::Vector<T>::size() const
+{
+    return m_buffer.size();
+}
 template<typename T>
-size_t coil::Vector<T>::capacity() const { return m_buffer.capacity(); }
+size_t coil::Vector<T>::capacity() const
+{
+    return m_buffer.capacity();
+}
 template<typename T>
-bool coil::Vector<T>::empty() const { return size() == 0; }
+bool coil::Vector<T>::empty() const
+{
+    return size() == 0;
+}
 
 template<typename T>
-T* coil::Vector<T>::begin() { return m_buffer.get<T>(0); }
+T* coil::Vector<T>::begin()
+{
+    return m_buffer.get<T>(0);
+}
 template<typename T>
-T const* coil::Vector<T>::begin() const { return m_buffer.get<T>(0); }
+T const* coil::Vector<T>::begin() const
+{
+    return m_buffer.get<T>(0);
+}
 template<typename T>
-T* coil::Vector<T>::end() { return m_buffer.get<T>(size()); }
+T* coil::Vector<T>::end()
+{
+    return m_buffer.get<T>(size());
+}
 template<typename T>
-T const* coil::Vector<T>::end() const { return m_buffer.get<T>(size()); }
+T const* coil::Vector<T>::end() const
+{
+    return m_buffer.get<T>(size());
+}
 
 template<typename T>
-T& coil::Vector<T>::front() { COIL_ASSERT(!empty()); return (*this)[0]; }
+T& coil::Vector<T>::front()
+{
+    COIL_ASSERT(!empty());
+    return (*this)[0];
+}
 template<typename T>
-T const& coil::Vector<T>::front() const { COIL_ASSERT(!empty()); return (*this)[0]; }
+T const& coil::Vector<T>::front() const
+{
+    COIL_ASSERT(!empty());
+    return (*this)[0];
+}
 template<typename T>
-T& coil::Vector<T>::back() { COIL_ASSERT(!empty()); return (*this)[size() - 1]; }
+T& coil::Vector<T>::back()
+{
+    COIL_ASSERT(!empty());
+    return (*this)[size() - 1];
+}
 template<typename T>
-T const& coil::Vector<T>::back() const { COIL_ASSERT(!empty()); return (*this)[size() - 1]; }
+T const& coil::Vector<T>::back() const
+{
+    COIL_ASSERT(!empty());
+    return (*this)[size() - 1];
+}
 
 template<typename T>
 T const& coil::Vector<T>::operator[](size_t index) const
@@ -221,7 +262,7 @@ bool coil::Vector<T>::operator==(Vector const& rhs) const
 template<typename T>
 void coil::Vector<T>::grow(size_t newCapacity)
 {
-    Buffer buffer{ newCapacity, sizeof(T) };
+    Buffer buffer{newCapacity, sizeof(T)};
 
     for (size_t i = 0; i < m_buffer.size(); i++)
         buffer.constructNext<T>(coil::move(*m_buffer.get<T>(i)));

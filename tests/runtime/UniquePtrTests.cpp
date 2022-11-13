@@ -193,12 +193,18 @@ TEST(UniquePtrTests, TestCastToRelatedType)
     struct Base
     {
         virtual ~Base() = default;
-        virtual int func() { return 42; }
+        virtual int func()
+        {
+            return 42;
+        }
     };
 
     struct Child : public Base
     {
-        int func() override { return 314; }
+        int func() override
+        {
+            return 314;
+        }
     };
 
     coil::UniquePtr<Base> ptr = coil::makeUnique<Child>();

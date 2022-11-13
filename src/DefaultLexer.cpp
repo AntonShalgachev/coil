@@ -1,10 +1,10 @@
 #include "coil/DefaultLexer.h"
 
-#include "coil/Expected.h"
-#include "coil/Vector.h"
-#include "coil/Optional.h"
 #include "coil/ExecutionInput.h"
+#include "coil/Expected.h"
+#include "coil/Optional.h"
 #include "coil/Utils.h"
+#include "coil/Vector.h"
 #include "coil/detail/Algorithm.h"
 #include "coil/detail/Utility.h"
 
@@ -38,7 +38,6 @@ struct coil::DefaultLexer::Token
 coil::DefaultLexer::DefaultLexer(StringView groupParenthesis, StringView quotes, StringView groupSeparators, StringView spaceCharacters)
     : m_groupParentheses(groupParenthesis), m_quotes(quotes), m_groupSeparators(groupSeparators), m_spaceCharacters(spaceCharacters)
 {
-
 }
 
 coil::Expected<coil::ExecutionInput, coil::String> coil::DefaultLexer::parse(StringView str) const
@@ -125,9 +124,9 @@ coil::Vector<coil::StringView> coil::DefaultLexer::splitGroup(StringView str) co
 coil::Value coil::DefaultLexer::createValue(Token const& token) const
 {
     if (token.type == TokenType::GroupString)
-        return Value{ splitGroup(token.value) };
+        return Value{splitGroup(token.value)};
 
-    return Value{ {token.value} };
+    return Value{{token.value}};
 }
 
 coil::Expected<coil::Vector<coil::DefaultLexer::Token>, coil::String> coil::DefaultLexer::tokenize(StringView str) const
@@ -156,12 +155,12 @@ coil::Expected<coil::Vector<coil::DefaultLexer::Token>, coil::String> coil::Defa
                 i++;
             }
 
-            tokens.pushBack(Token{ type, str.substr(tokenBegin, i - tokenBegin) });
+            tokens.pushBack(Token{type, str.substr(tokenBegin, i - tokenBegin)});
             i--; // return to the last 'String' char
             break;
         }
         case CharType::Assignment:
-            tokens.pushBack(Token{ TokenType::Assignment, str.substr(i, 1) });
+            tokens.pushBack(Token{TokenType::Assignment, str.substr(i, 1)});
             break;
         case CharType::Quote:
             i++;
@@ -171,7 +170,7 @@ coil::Expected<coil::Vector<coil::DefaultLexer::Token>, coil::String> coil::Defa
             if (i >= str.length())
                 return makeUnexpected(sprintf("Token '%c' doesn't have a corresponding opening/closing quote", str[tokenBegin]));
 
-            tokens.pushBack(Token{ TokenType::String, str.substr(tokenBegin + 1, i - tokenBegin - 1) });
+            tokens.pushBack(Token{TokenType::String, str.substr(tokenBegin + 1, i - tokenBegin - 1)});
             break;
         case CharType::Group:
             i++;
@@ -181,14 +180,14 @@ coil::Expected<coil::Vector<coil::DefaultLexer::Token>, coil::String> coil::Defa
             if (i >= str.length())
                 return makeUnexpected(sprintf("Token '%c' doesn't have a corresponding opening/closing token", str[tokenBegin]));
 
-            tokens.pushBack(Token{ TokenType::GroupString, str.substr(tokenBegin + 1, i - tokenBegin - 1) });
+            tokens.pushBack(Token{TokenType::GroupString, str.substr(tokenBegin + 1, i - tokenBegin - 1)});
             break;
         default:
             return makeUnexpected("Internal error"); // @NOCOVERAGE
         }
     }
 
-    return { coil::move(tokens) };
+    return {coil::move(tokens)};
 }
 
 coil::Expected<coil::ExecutionInput, coil::String> coil::DefaultLexer::parse(Vector<Token> tokens) const
@@ -196,7 +195,7 @@ coil::Expected<coil::ExecutionInput, coil::String> coil::DefaultLexer::parse(Vec
     ExecutionInput input;
 
     if (tokens.empty())
-        return { coil::move(input) };
+        return {coil::move(input)};
 
     Token const& firstToken = tokens.front();
     if (firstToken.type != TokenType::String)
@@ -230,8 +229,7 @@ coil::Expected<coil::ExecutionInput, coil::String> coil::DefaultLexer::parse(Vec
     ArgTokens argTokens;
     StringTokenType nextTokenType = StringTokenType::PrimaryToken;
 
-    auto addCurrentTokens = [this, &tokens, &input, &argTokens]()
-    {
+    auto addCurrentTokens = [this, &tokens, &input, &argTokens]() {
         if (!argTokens.primaryTokenIndex)
             return;
 
@@ -239,7 +237,7 @@ coil::Expected<coil::ExecutionInput, coil::String> coil::DefaultLexer::parse(Vec
         if (argTokens.secondaryTokenIndex)
         {
             Token const& secondaryToken = tokens[*argTokens.secondaryTokenIndex];
-            input.namedArguments.pushBack(NamedValue{ primaryToken.value, createValue(secondaryToken) });
+            input.namedArguments.pushBack(NamedValue{primaryToken.value, createValue(secondaryToken)});
         }
         else
         {
@@ -290,5 +288,5 @@ coil::Expected<coil::ExecutionInput, coil::String> coil::DefaultLexer::parse(Vec
 
     addCurrentTokens();
 
-    return { coil::move(input) };
+    return {coil::move(input)};
 }

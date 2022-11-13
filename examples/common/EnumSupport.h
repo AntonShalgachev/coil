@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Utils.h"
-#include "coil/TypeSerializer.h"
 #include "coil/StdLibCompat.h" // for std->coil string conversion
+#include "coil/TypeSerializer.h"
 
 #include "magic_enum.hpp"
 

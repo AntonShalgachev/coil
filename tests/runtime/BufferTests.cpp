@@ -96,7 +96,7 @@ namespace
 
 TEST(BufferTests, TestConstructor)
 {
-    coil::Buffer buf{ 10, 1 };
+    coil::Buffer buf{10, 1};
 
     EXPECT_EQ(buf.capacity(), 10);
 }
@@ -110,7 +110,7 @@ TEST(BufferTests, TestDefaultConstructor)
 
 TEST(BufferTests, TestCopyConstructor)
 {
-    coil::Buffer buf1{ 10, 1 };
+    coil::Buffer buf1{10, 1};
     coil::Buffer buf2 = buf1;
 
     EXPECT_EQ(buf1.capacity(), 10);
@@ -119,7 +119,7 @@ TEST(BufferTests, TestCopyConstructor)
 
 TEST(BufferTests, TestMoveConstructor)
 {
-    coil::Buffer buf1{ 10, 1 };
+    coil::Buffer buf1{10, 1};
     coil::Buffer buf2 = coil::move(buf1);
 
     EXPECT_EQ(buf2.capacity(), 10);
@@ -127,8 +127,8 @@ TEST(BufferTests, TestMoveConstructor)
 
 TEST(BufferTests, TestCopyAssignment)
 {
-    coil::Buffer buf1{ 10, 1 };
-    coil::Buffer buf2{ 100, 8 };
+    coil::Buffer buf1{10, 1};
+    coil::Buffer buf2{100, 8};
     buf2 = buf1;
 
     EXPECT_EQ(buf1.capacity(), 10);
@@ -137,8 +137,8 @@ TEST(BufferTests, TestCopyAssignment)
 
 TEST(BufferTests, TestMoveAssignment)
 {
-    coil::Buffer buf1{ 10, 1 };
-    coil::Buffer buf2{ 100, 8 };
+    coil::Buffer buf1{10, 1};
+    coil::Buffer buf2{100, 8};
     buf2 = coil::move(buf1);
 
     EXPECT_EQ(buf2.capacity(), 10);
@@ -146,7 +146,7 @@ TEST(BufferTests, TestMoveAssignment)
 
 TEST(BufferTests, TestCopy)
 {
-    coil::Buffer buf{ 10, 1 };
+    coil::Buffer buf{10, 1};
 
     char const* str = "hello";
     buf.copy(str, strlen(str) + 1);
@@ -158,7 +158,7 @@ TEST(BufferTests, TestCopy)
 
 TEST(BufferTests, TestAccessors)
 {
-    coil::Buffer buf{ 10, 1 };
+    coil::Buffer buf{10, 1};
     coil::Buffer const& constBuf = buf;
 
     char* at0 = buf.get(0);
@@ -180,7 +180,7 @@ TEST(BufferTests, TestAccessors)
 
 TEST(BufferTests, TestResize)
 {
-    coil::Buffer buf{ 10, 1 };
+    coil::Buffer buf{10, 1};
     char const* str = "hello";
     buf.copy(str, strlen(str) + 1);
     buf.resize(strlen(str) + 1);
@@ -190,7 +190,7 @@ TEST(BufferTests, TestResize)
 
 TEST(BufferTests, TestTypedOperations)
 {
-    coil::Buffer buf{ 10, sizeof(Integer) };
+    coil::Buffer buf{10, sizeof(Integer)};
     coil::Buffer const& constBuf = buf;
 
     Integer::resetStats();

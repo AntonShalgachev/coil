@@ -2,8 +2,8 @@
 
 #include "common/ExamplesCommon.h"
 
-#include <vector>
 #include <cmath>
+#include <vector>
 
 namespace
 {

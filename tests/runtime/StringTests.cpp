@@ -33,7 +33,7 @@ TEST(StringTests, TestDefaultConstructed)
 
 TEST(StringTests, TestConstructedFromCString)
 {
-    coil::String str{ "Null-terminated C string" };
+    coil::String str{"Null-terminated C string"};
 
     EXPECT_EQ(str.length(), 24);
     EXPECT_EQ(str.slength(), 24);
@@ -43,7 +43,7 @@ TEST(StringTests, TestConstructedFromCString)
 
 TEST(StringTests, TestConstructedFromCStringAndLength)
 {
-    coil::String str{ "Some string", 4 };
+    coil::String str{"Some string", 4};
 
     EXPECT_EQ(str.length(), 4);
     EXPECT_EQ(str.slength(), 4);
@@ -53,10 +53,10 @@ TEST(StringTests, TestConstructedFromCStringAndLength)
 
 TEST(StringTests, TestConstructedFromStringView)
 {
-    coil::StringView view{ "A string literal" };
+    coil::StringView view{"A string literal"};
     view = view.substr(2, 6);
 
-    coil::String str{ view };
+    coil::String str{view};
 
     EXPECT_TRUE(str.slength() == view.slength());
     EXPECT_TRUE(str == view);
@@ -130,12 +130,12 @@ TEST(StringTests, TestAppendOperators)
     EXPECT_EQ(str.length(), 10);
     EXPECT_STREQ(str.cStr(), "c c-string");
 
-    str += coil::String{ " string" };
+    str += coil::String{" string"};
     testCommon(str);
     EXPECT_EQ(str.length(), 17);
     EXPECT_STREQ(str.cStr(), "c c-string string");
 
-    str += coil::StringView{ " string-view" };
+    str += coil::StringView{" string-view"};
     testCommon(str);
     EXPECT_EQ(str.length(), 29);
     EXPECT_STREQ(str.cStr(), "c c-string string string-view");
@@ -146,8 +146,8 @@ TEST(StringTests, TestEquality)
     coil::String str = "Test";
 
     EXPECT_TRUE(str == "Test");
-    EXPECT_TRUE(str == coil::StringView{ "Test" });
-    EXPECT_TRUE(str == coil::String{ "Test" });
+    EXPECT_TRUE(str == coil::StringView{"Test"});
+    EXPECT_TRUE(str == coil::String{"Test"});
 }
 
 TEST(StringTests, TestConcatenation)
@@ -169,14 +169,14 @@ TEST(StringTests, TestConcatenation)
     }
 
     {
-        coil::String result = str + coil::String{ " string" };
+        coil::String result = str + coil::String{" string"};
         testCommon(result);
         EXPECT_EQ(result.length(), 13);
         EXPECT_STREQ(result.cStr(), "String string");
     }
 
     {
-        coil::String result = str + coil::StringView{ " string-view" };
+        coil::String result = str + coil::StringView{" string-view"};
         testCommon(result);
         EXPECT_EQ(result.length(), 18);
         EXPECT_STREQ(result.cStr(), "String string-view");

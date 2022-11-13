@@ -19,7 +19,7 @@
 #endif
 
 #if defined(__clang__) && defined(__GNUC__)
-#define COIL_PRINTF_LIKE(formatIndex, firstArgIndex) __attribute__((__format__(__printf__, formatIndex, firstArgIndex)))
+    #define COIL_PRINTF_LIKE(formatIndex, firstArgIndex) __attribute__((__format__(__printf__, formatIndex, firstArgIndex)))
 #else
-#define COIL_PRINTF_LIKE(formatIndex, firstArgIndex)
+    #define COIL_PRINTF_LIKE(formatIndex, firstArgIndex)
 #endif

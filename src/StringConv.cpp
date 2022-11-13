@@ -1,13 +1,13 @@
 #include "coil/detail/StringConv.h"
 
-#include "coil/Utils.h"
 #include "coil/String.h"
 #include "coil/StringView.h"
+#include "coil/Utils.h"
 
 #include "coil/detail/StrToX.h"
 
-#include <limits.h>
 #include <errno.h>
+#include <limits.h>
 
 namespace
 {
@@ -87,7 +87,7 @@ namespace
         value = static_cast<T>(result);
         return true;
     }
-} 
+}
 
 coil::String coil::toString(int value)
 {

@@ -14,9 +14,18 @@ namespace coil
         friend class UnorderedMap;
 
     public:
-        K const& key() const { return m_key; }
-        V const& value() const { return m_value; }
-        V& value() { return m_value; }
+        K const& key() const
+        {
+            return m_key;
+        }
+        V const& value() const
+        {
+            return m_value;
+        }
+        V& value()
+        {
+            return m_value;
+        }
 
     private:
         KeyValuePair(K key, V value) : m_key(coil::move(key)), m_value(coil::move(value)) {}
@@ -43,8 +52,14 @@ namespace coil
         public:
             Iterator(Node* node) : m_node(node) {}
 
-            KeyValuePair<K, V>& operator*() { return m_node->pair; }
-            KeyValuePair<K, V>* operator->() { return &m_node->pair; }
+            KeyValuePair<K, V>& operator*()
+            {
+                return m_node->pair;
+            }
+            KeyValuePair<K, V>* operator->()
+            {
+                return &m_node->pair;
+            }
 
             bool operator==(Iterator const& rhs) const
             {
@@ -71,8 +86,14 @@ namespace coil
         public:
             ConstIterator(Node const* node) : m_node(node) {}
 
-            KeyValuePair<K, V> const& operator*() const { return m_node->pair; }
-            KeyValuePair<K, V> const* operator->() const { return &m_node->pair; }
+            KeyValuePair<K, V> const& operator*() const
+            {
+                return m_node->pair;
+            }
+            KeyValuePair<K, V> const* operator->() const
+            {
+                return &m_node->pair;
+            }
 
             bool operator==(ConstIterator const& rhs) const
             {
@@ -99,10 +120,22 @@ namespace coil
             rehash(bucketsCount);
         }
 
-        ConstIterator begin() const { return { m_nodes.begin() }; }
-        ConstIterator end() const { return { m_nodes.end() }; }
-        Iterator begin() { return { m_nodes.begin() }; }
-        Iterator end() { return { m_nodes.end() }; }
+        ConstIterator begin() const
+        {
+            return {m_nodes.begin()};
+        }
+        ConstIterator end() const
+        {
+            return {m_nodes.end()};
+        }
+        Iterator begin()
+        {
+            return {m_nodes.begin()};
+        }
+        Iterator end()
+        {
+            return {m_nodes.end()};
+        }
 
         Iterator insertOrAssign(K key, V value)
         {
@@ -118,11 +151,11 @@ namespace coil
                 rehash(size() * 2);
 
             size_t newNodeIndex = m_nodes.size();
-            m_nodes.pushBack({ KeyValuePair<K, V>{ coil::move(key), coil::move(value) }, invalidIndex, invalidIndex, invalidIndex });
+            m_nodes.pushBack({KeyValuePair<K, V>{coil::move(key), coil::move(value)}, invalidIndex, invalidIndex, invalidIndex});
 
             insertNode(newNodeIndex);
 
-            return Iterator{ &m_nodes[newNodeIndex] };
+            return Iterator{&m_nodes[newNodeIndex]};
         }
 
         template<typename T>
@@ -198,7 +231,7 @@ namespace coil
         {
             size_t index = findNodeIndex(key);
             if (index != invalidIndex)
-                return Iterator{ &m_nodes[index] };
+                return Iterator{&m_nodes[index]};
             return end();
         }
 
@@ -207,11 +240,14 @@ namespace coil
         {
             size_t index = findNodeIndex(key);
             if (index != invalidIndex)
-                return ConstIterator{ &m_nodes[index] };
+                return ConstIterator{&m_nodes[index]};
             return end();
         }
 
-        size_t size() const { return m_nodes.size(); }
+        size_t size() const
+        {
+            return m_nodes.size();
+        }
 
     private:
         template<typename T>

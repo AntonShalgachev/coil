@@ -1,9 +1,9 @@
 #pragma once
 
 #include "ExecutionInput.h"
+#include "coil/Optional.h"
 #include "coil/String.h"
 #include "coil/Vector.h"
-#include "coil/Optional.h"
 
 namespace coil
 {

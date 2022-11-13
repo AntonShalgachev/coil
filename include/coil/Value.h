@@ -1,9 +1,9 @@
 #pragma once
 
 #include "Expected.h"
-#include "TypeName.h"
 #include "String.h"
 #include "StringView.h"
+#include "TypeName.h"
 #include "Vector.h"
 #include "detail/Functional.h"
 

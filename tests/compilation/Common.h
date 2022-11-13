@@ -1,11 +1,11 @@
 #include "coil/Coil.h"
 
-#include <stdint.h>
 #include <stddef.h>
+#include <stdint.h>
 
 namespace
 {
-    template <class T>
+    template<class T>
     inline constexpr bool IsEnumV = __is_enum(T);
 
     enum class ScopedEnum

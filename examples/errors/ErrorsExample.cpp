@@ -78,7 +78,6 @@ namespace
         context.logf("%s, %g", requiredAnyArg->str().cStr(), *requiredFloatArg);
         if (optionalIntArg)
             context.logf(", %d", *optionalIntArg);
-            
     }
 }
 

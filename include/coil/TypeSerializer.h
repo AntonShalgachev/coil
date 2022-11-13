@@ -1,10 +1,10 @@
 #pragma once
 
 #include "Expected.h"
+#include "String.h"
 #include "TypeName.h"
 #include "Utils.h"
 #include "Value.h"
-#include "String.h"
 #include "detail/Utility.h"
 
 #include "detail/StringConv.h"
@@ -40,12 +40,12 @@ namespace coil
 
     //////////////////////////////////////
 
-#define DECLARE_ARITHMETIC_TYPE_SERIALIZER(Type) \
-    template<> \
-    struct TypeSerializer<Type> \
-    { \
+#define DECLARE_ARITHMETIC_TYPE_SERIALIZER(Type)                      \
+    template<>                                                        \
+    struct TypeSerializer<Type>                                       \
+    {                                                                 \
         static Expected<Type, String> fromString(Value const& input); \
-        static String toString(Type const& value); \
+        static String toString(Type const& value);                    \
     }
 
     DECLARE_ARITHMETIC_TYPE_SERIALIZER(char);

@@ -4,8 +4,8 @@
 
 #include "coil/StdLibCompat.h" // implementation of TypeSerializer and TypeName for some C++ Standard Library types
 
-#include <iostream>
 #include <functional>
+#include <iostream>
 
 namespace
 {

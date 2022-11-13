@@ -246,8 +246,8 @@ TEST(VectorTests, TestDefaultConstructor)
 
 TEST(VectorTests, TestSpanConstructor)
 {
-    int data[5] = { 0,1,2,3,4 };
-    coil::Vector<int> v{ data, data + 5 };
+    int data[5] = {0, 1, 2, 3, 4};
+    coil::Vector<int> v{data, data + 5};
 
     ASSERT_EQ(v.size(), 5u);
     EXPECT_EQ(v[0], 0);
@@ -486,7 +486,7 @@ TEST(VectorTests, TestPushBackStats)
 
     Integer::resetStats();
 
-    v.pushBack(Integer{ 42 });
+    v.pushBack(Integer{42});
 
     EXPECT_EQ(Integer::constructions, 1u);
     EXPECT_EQ(Integer::copies, 0u);
@@ -495,7 +495,7 @@ TEST(VectorTests, TestPushBackStats)
 TEST(VectorTests, TestPopBackStats)
 {
     coil::Vector<Integer> v;
-    v.pushBack(Integer{ 42 });
+    v.pushBack(Integer{42});
 
     Integer::resetStats();
 

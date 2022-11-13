@@ -5,8 +5,8 @@
 #include "coil/StdLibCompat.h" // implementation of TypeSerializer and TypeName for some C++ Standard Library types
 
 #include <numeric>
-#include <vector>
 #include <sstream>
+#include <vector>
 
 namespace
 {
@@ -56,7 +56,7 @@ namespace
 
         void add(std::string_view id, Point position, Point velocity)
         {
-            m_particles.push_back(Particle{ std::string{id}, std::move(position), std::move(velocity) });
+            m_particles.push_back(Particle{std::string{id}, std::move(position), std::move(velocity)});
         }
 
         Particle* get(std::string_view id)

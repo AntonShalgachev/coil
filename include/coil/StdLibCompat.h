@@ -2,11 +2,11 @@
 
 #include "coil/TypeSerializer.h"
 
+#include <optional>
+#include <ostream>
 #include <string>
 #include <string_view>
 #include <vector>
-#include <optional>
-#include <ostream>
 
 // This file contains:
 // * Serializers for some standard C++ containres: std::string, std::string_view, std::vector, std::optional
@@ -81,7 +81,7 @@ namespace coil
     {
         static StringView name()
         {
-            static String typeName = "vector<" + String{ TypeName<T>::name() } + ">";
+            static String typeName = "vector<" + String{TypeName<T>::name()} + ">";
             return typeName;
         }
     };
@@ -119,7 +119,7 @@ namespace coil
     {
         static StringView name()
         {
-            static String typeName = "optional<" + String{ TypeName<T>::name() } + ">";
+            static String typeName = "optional<" + String{TypeName<T>::name()} + ">";
             return typeName;
         }
     };

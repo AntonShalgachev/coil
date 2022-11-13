@@ -3,11 +3,11 @@
 #include "Bindings.h"
 #include "Expected.h"
 #include "NamedArgs.h"
+#include "String.h"
+#include "StringView.h"
 #include "TypeSerializer.h"
 #include "Value.h"
 #include "Variable.h"
-#include "String.h"
-#include "StringView.h"
 #include "detail/Utility.h"
 
 extern template class coil::Vector<coil::String>;
@@ -42,16 +42,16 @@ extern template coil::String&& coil::forward<coil::String>(coil::String&) noexce
 
 #define COIL_VARIABLE_TEMPLATE_BASE(SPECIFIER, T) SPECIFIER template coil::Vector<coil::AnyFunctor> coil::variable<T>(T * var)
 
-#define COIL_ARGUMENT_TEMPLATE_BASE(SPECIFIER, T)                                                                                             \
-    SPECIFIER template class coil::Expected<T, coil::String>;                                                                                  \
-    SPECIFIER template coil::Expected<T, coil::String>::Expected(coil::Unexpected<coil::String>);                                    \
-    SPECIFIER template void coil::detail::reportError<T>(coil::detail::CallContext & context, coil::Expected<T, coil::String> const& result);  \
+#define COIL_ARGUMENT_TEMPLATE_BASE(SPECIFIER, T)                                                                                                 \
+    SPECIFIER template class coil::Expected<T, coil::String>;                                                                                     \
+    SPECIFIER template coil::Expected<T, coil::String>::Expected(coil::Unexpected<coil::String>);                                                 \
+    SPECIFIER template void coil::detail::reportError<T>(coil::detail::CallContext & context, coil::Expected<T, coil::String> const& result);     \
     SPECIFIER template coil::Expected<T, coil::String>&& coil::move<coil::Expected<T, coil::String>&>(coil::Expected<T, coil::String>&) noexcept; \
-    SPECIFIER template T&& coil::forward<T>(T&) noexcept;                                                                                      \
+    SPECIFIER template T&& coil::forward<T>(T&) noexcept;                                                                                         \
     SPECIFIER template T&& coil::move<T&>(T&) noexcept
 
 #define COIL_NAMED_ARGS_TEMPLATE_BASE(SPECIFIER, T)                                                                   \
-    SPECIFIER template class coil::Optional<T>;                                                                        \
+    SPECIFIER template class coil::Optional<T>;                                                                       \
     SPECIFIER template class coil::Expected<T, coil::NamedArgs::Error>;                                               \
     SPECIFIER template coil::Expected<T, coil::NamedArgs::Error> coil::NamedArgs::get<T>(coil::StringView key) const; \
     SPECIFIER template coil::Optional<T> coil::NamedArgs::getOrReport<T>(coil::StringView key, coil::NamedArgs::ArgType argType, coil::Optional<T> defaultValue) const

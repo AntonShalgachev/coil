@@ -1,8 +1,8 @@
 #pragma once
 
-#include "detail/Utility.h"
-#include "detail/New.h"
 #include "Assert.h"
+#include "detail/New.h"
+#include "detail/Utility.h"
 
 namespace coil
 {
@@ -10,7 +10,6 @@ namespace coil
     class Optional
     {
     public:
-
         Optional();
         Optional(T const& value);
         Optional(T&& value);
@@ -46,7 +45,9 @@ namespace coil
         void destroy();
 
     private:
-        struct Dummy {};
+        struct Dummy
+        {
+        };
 
         bool m_hasValue = false;
         union
@@ -60,16 +61,15 @@ namespace coil
 //////////////////////////////////////////////////////////////////////////
 
 #ifdef _MSC_VER
-#pragma warning(push)
-#pragma warning(disable : 4702) // unreachable code
+    #pragma warning(push)
+    #pragma warning(disable : 4702) // unreachable code
 #endif
 template<typename T>
 coil::Optional<T>::Optional() : m_hasValue(false), m_empty({})
 {
-
 }
 #ifdef _MSC_VER
-#pragma warning(pop)
+    #pragma warning(pop)
 #endif
 
 template<typename T>

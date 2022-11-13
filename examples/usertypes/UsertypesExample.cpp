@@ -4,8 +4,8 @@
 
 #include "coil/StdLibCompat.h" // implementation of TypeSerializer and TypeName for some C++ Standard Library types
 
-#include <numeric>
 #include <algorithm>
+#include <numeric>
 #include <vector>
 
 // In most cases you'll have to provide 2 specializations per user type:
@@ -172,7 +172,7 @@ namespace coil
     {
         static StringView name()
         {
-            static String result = "DynamicArray<" + String{ TypeName<T>::name() } + ">";
+            static String result = "DynamicArray<" + String{TypeName<T>::name()} + ">";
             return result;
         }
     };

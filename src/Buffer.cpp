@@ -2,10 +2,7 @@
 
 #include <string.h>
 
-coil::Buffer::Buffer(size_t capacity, size_t chunkSize)
-    : m_ptr(capacity * chunkSize > 0 ? new char[capacity * chunkSize] : nullptr)
-    , m_capacity(capacity)
-    , m_chunkSize(chunkSize)
+coil::Buffer::Buffer(size_t capacity, size_t chunkSize) : m_ptr(capacity * chunkSize > 0 ? new char[capacity * chunkSize] : nullptr), m_capacity(capacity), m_chunkSize(chunkSize)
 {
     COIL_ASSERT(chunkSize > 0);
 }
@@ -35,7 +32,7 @@ coil::Buffer& coil::Buffer::operator=(Buffer const& rhs)
 {
     COIL_ASSERT(rhs.m_constructedObjectsCount == 0);
 
-    Buffer temp{ rhs };
+    Buffer temp{rhs};
     temp.swap(*this);
     return *this;
 }

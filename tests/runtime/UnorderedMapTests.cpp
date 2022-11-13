@@ -76,76 +76,70 @@ TEST(UnorderedMapTests, TestAccessors)
     EXPECT_EQ(map.size(), 2);
     EXPECT_EQ(constMap.size(), 2);
 
-    {
-        {
-            auto it = map.find(1);
-            ASSERT_TRUE(it != map.end());
-            EXPECT_EQ(it->key(), 1);
-            EXPECT_EQ(it->value(), 42);
-        }
-        {
-            auto it = constMap.find(1);
-            ASSERT_TRUE(it != constMap.end());
-            EXPECT_EQ(it->key(), 1);
-            EXPECT_EQ(it->value(), 42);
-        }
-    }
-    {
-        {
-            auto it = map.find(2);
-            ASSERT_TRUE(it != map.end());
-            EXPECT_EQ(it->key(), 2);
-            EXPECT_EQ(it->value(), 314);
-        }
-        {
-            auto it = constMap.find(2);
-            ASSERT_TRUE(it != constMap.end());
-            EXPECT_EQ(it->key(), 2);
-            EXPECT_EQ(it->value(), 314);
-        }
-    }
-    {
-        {
-            auto it = map.find(3);
-            EXPECT_TRUE(it == map.end());
-        }
-        {
-            auto it = constMap.find(3);
-            EXPECT_TRUE(it == constMap.end());
-        }
-    }
+    {{auto it = map.find(1);
+    ASSERT_TRUE(it != map.end());
+    EXPECT_EQ(it->key(), 1);
+    EXPECT_EQ(it->value(), 42);
+}
+{
+    auto it = constMap.find(1);
+    ASSERT_TRUE(it != constMap.end());
+    EXPECT_EQ(it->key(), 1);
+    EXPECT_EQ(it->value(), 42);
+}
+}
+{{auto it = map.find(2);
+ASSERT_TRUE(it != map.end());
+EXPECT_EQ(it->key(), 2);
+EXPECT_EQ(it->value(), 314);
+}
+{
+    auto it = constMap.find(2);
+    ASSERT_TRUE(it != constMap.end());
+    EXPECT_EQ(it->key(), 2);
+    EXPECT_EQ(it->value(), 314);
+}
+}
+{{auto it = map.find(3);
+EXPECT_TRUE(it == map.end());
+}
+{
+    auto it = constMap.find(3);
+    EXPECT_TRUE(it == constMap.end());
+}
+}
 
+{
+    size_t items = 0;
+    for (auto const& pair : map)
     {
-        size_t items = 0;
-        for (auto const& pair : map)
-        {
-            if (pair.key() == 1)
-                EXPECT_EQ(pair.value(), 42);
-            else if (pair.key() == 2)
-                EXPECT_EQ(pair.value(), 314);
-            else
-                FAIL();
+        if (pair.key() == 1)
+            EXPECT_EQ(pair.value(), 42);
+        else if (pair.key() == 2)
+            EXPECT_EQ(pair.value(), 314);
+        else
+            FAIL();
 
-            items++;
-        }
-        EXPECT_EQ(items, 2);
+        items++;
     }
+    EXPECT_EQ(items, 2);
+}
 
+{
+    size_t items = 0;
+    for (auto const& pair : constMap)
     {
-        size_t items = 0;
-        for (auto const& pair : constMap)
-        {
-            if (pair.key() == 1)
-                EXPECT_EQ(pair.value(), 42);
-            else if (pair.key() == 2)
-                EXPECT_EQ(pair.value(), 314);
-            else
-                FAIL();
+        if (pair.key() == 1)
+            EXPECT_EQ(pair.value(), 42);
+        else if (pair.key() == 2)
+            EXPECT_EQ(pair.value(), 314);
+        else
+            FAIL();
 
-            items++;
-        }
-        EXPECT_EQ(items, 2);
+        items++;
     }
+    EXPECT_EQ(items, 2);
+}
 }
 
 TEST(UnorderedMapTests, TestErase)

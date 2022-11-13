@@ -1,7 +1,7 @@
 #pragma once
 
-#include "detail/Utility.h"
 #include "Assert.h"
+#include "detail/Utility.h"
 
 namespace coil
 {
@@ -26,21 +26,46 @@ namespace coil
             return *this;
         }
 
-        T* get() { return m_ptr; }
-        T const* get() const { return m_ptr; }
+        T* get()
+        {
+            return m_ptr;
+        }
+        T const* get() const
+        {
+            return m_ptr;
+        }
 
-        operator bool() const { return m_ptr != nullptr; }
+        operator bool() const
+        {
+            return m_ptr != nullptr;
+        }
 
-        T const& operator*() const { COIL_ASSERT(m_ptr); return *m_ptr; }
-        T& operator*() { COIL_ASSERT(m_ptr); return *m_ptr; }
+        T const& operator*() const
+        {
+            COIL_ASSERT(m_ptr);
+            return *m_ptr;
+        }
+        T& operator*()
+        {
+            COIL_ASSERT(m_ptr);
+            return *m_ptr;
+        }
 
-        T const* operator->() const { COIL_ASSERT(m_ptr); return m_ptr; }
-        T* operator->() { COIL_ASSERT(m_ptr); return m_ptr; }
+        T const* operator->() const
+        {
+            COIL_ASSERT(m_ptr);
+            return m_ptr;
+        }
+        T* operator->()
+        {
+            COIL_ASSERT(m_ptr);
+            return m_ptr;
+        }
 
         template<typename T2>
-        operator UniquePtr<T2>()&&
+        operator UniquePtr<T2>() &&
         {
-            UniquePtr<T2> result{ m_ptr };
+            UniquePtr<T2> result{m_ptr};
             m_ptr = nullptr;
             return result;
         }

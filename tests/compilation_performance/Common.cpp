@@ -2,7 +2,7 @@
 
 #if USE_COIL
 
-#if HAS_EXTERN_TEMPLATES
+    #if HAS_EXTERN_TEMPLATES
 TEST_TEMPLATE(int);
 TEST_TEMPLATE(short);
 TEST_TEMPLATE(bool);
@@ -96,7 +96,7 @@ COIL_FUNCTION_ARGS_TEMPLATE(coil::Context, double, bool);
 COIL_FUNCTION_ARGS_TEMPLATE(coil::Context, double, unsigned);
 COIL_FUNCTION_ARGS_TEMPLATE(coil::Context, double, float);
 COIL_FUNCTION_ARGS_TEMPLATE(coil::Context, double, double);
-#endif // HAS_EXTERN_TEMPLATES
+    #endif // HAS_EXTERN_TEMPLATES
 
 #endif
 

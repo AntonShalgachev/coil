@@ -1,19 +1,13 @@
 #include "coil/String.h"
 
-#include "coil/StringView.h"
 #include "coil/Assert.h"
+#include "coil/StringView.h"
 
 #include <string.h>
 
-coil::String::String(char const* str) : String(str, strlen(str))
-{
+coil::String::String(char const* str) : String(str, strlen(str)) {}
 
-}
-
-coil::String::String(StringView str) : String(str.data(), str.length())
-{
-
-}
+coil::String::String(StringView str) : String(str.data(), str.length()) {}
 
 coil::String::String(char const* str, size_t length)
 {
@@ -50,7 +44,7 @@ void coil::String::reserve(size_t capacity)
 
     if (requiredBufferSize > m_buffer.capacity())
     {
-        Buffer buffer{ requiredBufferSize, sizeof(char) };
+        Buffer buffer{requiredBufferSize, sizeof(char)};
         buffer.copy(m_buffer.data(), length());
         *buffer.get(length()) = '\0';
         buffer.resize(m_buffer.size());
@@ -150,22 +144,22 @@ coil::String& coil::String::operator+=(StringView const& rhs)
 
 bool coil::String::operator==(String const& rhs) const
 {
-    return StringView{ *this } == StringView{ rhs };
+    return StringView{*this} == StringView{rhs};
 }
 
 bool coil::String::operator==(StringView const& rhs) const
 {
-    return StringView{ *this } == rhs;
+    return StringView{*this} == rhs;
 }
 
 bool coil::String::operator==(char const* rhs) const
 {
-    return StringView{ *this } == StringView{ rhs };
+    return StringView{*this} == StringView{rhs};
 }
 
 coil::String::operator coil::StringView() const
 {
-    return StringView{ cStr(), length()};
+    return StringView{cStr(), length()};
 }
 
 void coil::String::validateIsNullTerminated()

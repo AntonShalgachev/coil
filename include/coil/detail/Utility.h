@@ -4,19 +4,19 @@
 
 namespace coil
 {
-    template <typename T>
+    template<typename T>
     constexpr RemoveReferenceT<T>&& move(T&& arg) noexcept
     {
         return static_cast<RemoveReferenceT<T>&&>(arg);
     }
 
-    template <typename T>
+    template<typename T>
     constexpr T&& forward(RemoveReferenceT<T>& arg) noexcept
     {
         return static_cast<T&&>(arg);
     }
 
-    template <typename T>
+    template<typename T>
     constexpr T&& forward(RemoveReferenceT<T>&& arg) noexcept
     {
         return static_cast<T&&>(arg);

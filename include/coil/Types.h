@@ -1,8 +1,8 @@
 #pragma once
 
+#include "StringView.h"
 #include "TypeName.h"
 #include "detail/Sequence.h"
-#include "StringView.h"
 
 namespace coil
 {
@@ -16,8 +16,8 @@ namespace coil
         {
             if constexpr (size > 0)
             {
-                StringView data[size] = { TypeName<Args>::name()... };
-                return Vector<StringView> { data, data + size };
+                StringView data[size] = {TypeName<Args>::name()...};
+                return Vector<StringView>{data, data + size};
             }
             else
             {

@@ -8,7 +8,7 @@
 #include <stdexcept>
 
 #if COIL_CONFIG_TYPE_NAME_USE_INTEGER_ALIAS
-#error Tests should not be compiled with COIL_CONFIG_TYPE_NAME_USE_INTEGER_ALIAS since the integer aliases are compiler-dependent
+    #error Tests should not be compiled with COIL_CONFIG_TYPE_NAME_USE_INTEGER_ALIAS since the integer aliases are compiler-dependent
 #endif
 
 namespace stats
@@ -220,7 +220,7 @@ namespace coil
     {
         static coil::StringView name()
         {
-            static coil::String typeName = "vector<" + coil::String{ coil::TypeName<T>::name() } + ">";
+            static coil::String typeName = "vector<" + coil::String{coil::TypeName<T>::name()} + ">";
             return typeName;
         }
     };
@@ -260,7 +260,7 @@ namespace coil
     {
         static coil::StringView name()
         {
-            static coil::String typeName = "optional<" + coil::String{ coil::TypeName<T>::name() } + ">";
+            static coil::String typeName = "optional<" + coil::String{coil::TypeName<T>::name()} + ">";
             return typeName;
         }
     };
@@ -669,10 +669,22 @@ TEST(BindingsTests, TestFunctionReturnValue)
 TEST(BindingsTests, TestOutput)
 {
     coil::Bindings bindings;
-    bindings["func_log"] = [](coil::Context context, coil::String value1, coil::String value2) { context.log(value1); context.log(value2); };
-    bindings["func_logf"] = [](coil::Context context, coil::String value1, coil::String value2) { context.logf("%s", value1.cStr()); context.logf("%s", value2.cStr()); };
-    bindings["func_logline"] = [](coil::Context context, coil::String value1, coil::String value2) { context.logline(value1); context.logline(value2); };
-    bindings["func_loglinef"] = [](coil::Context context, coil::String value1, coil::String value2) { context.loglinef("%s", value1.cStr()); context.loglinef("%s", value2.cStr()); };
+    bindings["func_log"] = [](coil::Context context, coil::String value1, coil::String value2) {
+        context.log(value1);
+        context.log(value2);
+    };
+    bindings["func_logf"] = [](coil::Context context, coil::String value1, coil::String value2) {
+        context.logf("%s", value1.cStr());
+        context.logf("%s", value2.cStr());
+    };
+    bindings["func_logline"] = [](coil::Context context, coil::String value1, coil::String value2) {
+        context.logline(value1);
+        context.logline(value2);
+    };
+    bindings["func_loglinef"] = [](coil::Context context, coil::String value1, coil::String value2) {
+        context.loglinef("%s", value1.cStr());
+        context.loglinef("%s", value2.cStr());
+    };
 
     {
         auto result = bindings.execute("func_log value1 value2");

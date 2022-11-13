@@ -1,12 +1,12 @@
 #include "Common.h"
 #include "gtest/gtest.h"
 
-#include "coil/detail/StringConv.h"
 #include "coil/String.h"
 #include "coil/StringView.h"
+#include "coil/detail/StringConv.h"
 
-#include <math.h>
 #include <limits.h>
+#include <math.h>
 
 TEST(StringConvTests, TestIntegerToString)
 {
@@ -68,10 +68,7 @@ TEST(StringConvTests, TestFloatToStringZero)
 
 TEST(StringConvTests, TestFloatToStringSpecial)
 {
-    auto startsWith = [](coil::StringView lhs, coil::StringView rhs)
-    {
-        return lhs.substr(0, rhs.length()) == rhs;
-    };
+    auto startsWith = [](coil::StringView lhs, coil::StringView rhs) { return lhs.substr(0, rhs.length()) == rhs; };
 
     EXPECT_PRED2(startsWith, coil::toString(nanf("")), "nan");
     EXPECT_PRED2(startsWith, coil::toString(HUGE_VALF), "inf");

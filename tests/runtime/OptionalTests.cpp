@@ -114,15 +114,15 @@ TEST(OptionalTests, TestDefaultConstructor)
 
 TEST(OptionalTests, TestValueConstructor)
 {
-    coil::Optional<Integer> opt = Integer{ 42 };
+    coil::Optional<Integer> opt = Integer{42};
     coil::Optional<Integer> const& constOpt = opt;
 
     ASSERT_TRUE(opt.hasValue());
     ASSERT_TRUE(constOpt.hasValue());
     ASSERT_TRUE(opt);
     ASSERT_TRUE(constOpt);
-    EXPECT_EQ(*opt, Integer{ 42 });
-    EXPECT_EQ(*constOpt, Integer{ 42 });
+    EXPECT_EQ(*opt, Integer{42});
+    EXPECT_EQ(*constOpt, Integer{42});
     EXPECT_EQ(opt->payload(), 42);
     EXPECT_EQ(constOpt->payload(), 42);
 
@@ -136,13 +136,13 @@ TEST(OptionalTests, TestValueConstructor)
 
 TEST(OptionalTests, TestCopyConstructorFromValue)
 {
-    coil::Optional<Integer> sourceOpt = Integer{ 42 };
+    coil::Optional<Integer> sourceOpt = Integer{42};
     coil::Optional<Integer> opt = sourceOpt;
 
     ASSERT_TRUE(sourceOpt);
-    EXPECT_EQ(*sourceOpt, Integer{ 42 });
+    EXPECT_EQ(*sourceOpt, Integer{42});
     ASSERT_TRUE(opt);
-    EXPECT_EQ(*opt, Integer{ 42 });
+    EXPECT_EQ(*opt, Integer{42});
     EXPECT_TRUE(sourceOpt == opt);
 }
 
@@ -158,11 +158,11 @@ TEST(OptionalTests, TestCopyConstructorFromEmpty)
 
 TEST(OptionalTests, TestMoveConstructorFromValue)
 {
-    coil::Optional<Integer> sourceOpt = Integer{ 42 };
+    coil::Optional<Integer> sourceOpt = Integer{42};
     coil::Optional<Integer> opt = coil::move(sourceOpt);
 
     ASSERT_TRUE(opt);
-    EXPECT_EQ(*opt, Integer{ 42 });
+    EXPECT_EQ(*opt, Integer{42});
 }
 
 TEST(OptionalTests, TestMoveConstructorFromEmpty)
@@ -175,25 +175,25 @@ TEST(OptionalTests, TestMoveConstructorFromEmpty)
 
 TEST(OptionalTests, TestCopyAssignment)
 {
-    coil::Optional<Integer> sourceOpt = Integer{ 42 };
-    coil::Optional<Integer> opt = Integer{ 0 };
+    coil::Optional<Integer> sourceOpt = Integer{42};
+    coil::Optional<Integer> opt = Integer{0};
     opt = sourceOpt;
 
     ASSERT_TRUE(sourceOpt);
-    EXPECT_EQ(*sourceOpt, Integer{ 42 });
+    EXPECT_EQ(*sourceOpt, Integer{42});
     ASSERT_TRUE(opt);
-    EXPECT_EQ(*opt, Integer{ 42 });
+    EXPECT_EQ(*opt, Integer{42});
     EXPECT_TRUE(sourceOpt == opt);
 }
 
 TEST(OptionalTests, TestMoveAssignment)
 {
-    coil::Optional<Integer> sourceOpt = Integer{ 42 };
-    coil::Optional<Integer> opt = Integer{ 0 };
+    coil::Optional<Integer> sourceOpt = Integer{42};
+    coil::Optional<Integer> opt = Integer{0};
     opt = coil::move(sourceOpt);
 
     ASSERT_TRUE(opt);
-    EXPECT_EQ(*opt, Integer{ 42 });
+    EXPECT_EQ(*opt, Integer{42});
 }
 
 TEST(OptionalTests, TestDefaultConstructorStats)
@@ -212,7 +212,7 @@ TEST(OptionalTests, TestDefaultConstructorStats)
 
 TEST(OptionalTests, TestCopyValueConstructorStats)
 {
-    Integer source{ 42 };
+    Integer source{42};
 
     {
         Integer::resetStats();
@@ -233,7 +233,7 @@ TEST(OptionalTests, TestCopyValueConstructorStats)
 
 TEST(OptionalTests, TestMoveValueConstructorStats)
 {
-    Integer source{ 42 };
+    Integer source{42};
 
     {
         Integer::resetStats();
@@ -256,7 +256,7 @@ TEST(OptionalTests, TestMoveValueConstructorStats)
 
 TEST(OptionalTests, TestCopyConstructorStats)
 {
-    coil::Optional<Integer> source = Integer{ 42 };
+    coil::Optional<Integer> source = Integer{42};
 
     {
         Integer::resetStats();
@@ -277,7 +277,7 @@ TEST(OptionalTests, TestCopyConstructorStats)
 
 TEST(OptionalTests, TestMoveConstructorStats)
 {
-    coil::Optional<Integer> source = Integer{ 42 };
+    coil::Optional<Integer> source = Integer{42};
 
     {
         Integer::resetStats();
@@ -299,7 +299,7 @@ TEST(OptionalTests, TestMoveConstructorStats)
 TEST(OptionalTests, TestMoveAssignmentValueFromEmptyStats)
 {
     coil::Optional<Integer> opt;
-    coil::Optional<Integer> source = Integer{ 42 };
+    coil::Optional<Integer> source = Integer{42};
 
     {
         Integer::resetStats();
@@ -313,8 +313,8 @@ TEST(OptionalTests, TestMoveAssignmentValueFromEmptyStats)
 
 TEST(OptionalTests, TestMoveAssignmentValueFromValueCall)
 {
-    coil::Optional<Integer> opt = Integer{ 314 };
-    coil::Optional<Integer> source = Integer{ 42 };
+    coil::Optional<Integer> opt = Integer{314};
+    coil::Optional<Integer> source = Integer{42};
 
     {
         Integer::resetStats();
@@ -328,7 +328,7 @@ TEST(OptionalTests, TestMoveAssignmentValueFromValueCall)
 
 TEST(OptionalTests, TestMoveAssignmentEmptyFromValueCall)
 {
-    coil::Optional<Integer> opt = Integer{ 314 };
+    coil::Optional<Integer> opt = Integer{314};
     coil::Optional<Integer> source;
 
     {
@@ -345,7 +345,7 @@ TEST(OptionalTests, TestMoveAssignmentEmptyFromValueCall)
 TEST(OptionalTests, TestCopyAssignmentValueFromEmptyStats)
 {
     coil::Optional<Integer> opt;
-    coil::Optional<Integer> source = Integer{ 42 };
+    coil::Optional<Integer> source = Integer{42};
 
     {
         Integer::resetStats();
@@ -359,8 +359,8 @@ TEST(OptionalTests, TestCopyAssignmentValueFromEmptyStats)
 
 TEST(OptionalTests, TestCopyAssignmentValueFromValueCall)
 {
-    coil::Optional<Integer> opt = Integer{ 314 };
-    coil::Optional<Integer> source = Integer{ 42 };
+    coil::Optional<Integer> opt = Integer{314};
+    coil::Optional<Integer> source = Integer{42};
 
     {
         Integer::resetStats();
@@ -374,7 +374,7 @@ TEST(OptionalTests, TestCopyAssignmentValueFromValueCall)
 
 TEST(OptionalTests, TestCopyAssignmentEmptyFromValueCall)
 {
-    coil::Optional<Integer> opt = Integer{ 314 };
+    coil::Optional<Integer> opt = Integer{314};
     coil::Optional<Integer> source;
 
     {

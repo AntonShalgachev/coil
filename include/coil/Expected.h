@@ -1,10 +1,10 @@
 #pragma once
 
-#include "detail/TypeTraits.h"
-#include "detail/Utility.h"
-#include "detail/New.h"
 #include "Assert.h"
 #include "Unexpected.h"
+#include "detail/New.h"
+#include "detail/TypeTraits.h"
+#include "detail/Utility.h"
 
 namespace coil
 {
@@ -31,7 +31,7 @@ namespace coil
 
         E const& error() const&;
         E& error() &;
-        E&& error()&&;
+        E&& error() &&;
 
         template<typename T2, typename E2>
         bool operator==(Expected<T2, E2> const& rhs) const;
@@ -40,12 +40,12 @@ namespace coil
         bool operator==(T2 const& rhs) const;
 
         T const& value() const&;
-        T& value()&;
-        T&& value()&&;
+        T& value() &;
+        T&& value() &&;
 
         T const& operator*() const&;
-        T& operator*()&;
-        T&& operator*()&&;
+        T& operator*() &;
+        T&& operator*() &&;
 
         T const* operator->() const;
         T* operator->();
@@ -72,14 +72,12 @@ namespace coil
 template<typename T, typename E>
 coil::Expected<T, E>::Expected(T value) : m_expected(coil::move(value)), m_hasValue(true)
 {
-
 }
 
 template<typename T, typename E>
 template<typename U>
 coil::Expected<T, E>::Expected(Unexpected<U> error) : m_unexpected(coil::move(error)), m_hasValue(false)
 {
-
 }
 
 template<typename T, typename E>
@@ -161,14 +159,14 @@ E const& coil::Expected<T, E>::error() const&
 }
 
 template<typename T, typename E>
-E& coil::Expected<T, E>::error()&
+E& coil::Expected<T, E>::error() &
 {
     COIL_ASSERT(!hasValue());
     return m_unexpected.value();
 }
 
 template<typename T, typename E>
-E&& coil::Expected<T, E>::error()&&
+E&& coil::Expected<T, E>::error() &&
 {
     COIL_ASSERT(!hasValue());
     return coil::move(m_unexpected).value();
@@ -204,14 +202,14 @@ T const& coil::Expected<T, E>::value() const&
 }
 
 template<typename T, typename E>
-T& coil::Expected<T, E>::value()&
+T& coil::Expected<T, E>::value() &
 {
     COIL_ASSERT(hasValue());
     return m_expected;
 }
 
 template<typename T, typename E>
-T&& coil::Expected<T, E>::value()&&
+T&& coil::Expected<T, E>::value() &&
 {
     COIL_ASSERT(hasValue());
     return coil::move(*this).m_expected;
@@ -224,13 +222,13 @@ T const& coil::Expected<T, E>::operator*() const&
 }
 
 template<typename T, typename E>
-T& coil::Expected<T, E>::operator*()&
+T& coil::Expected<T, E>::operator*() &
 {
     return value();
 }
 
 template<typename T, typename E>
-T&& coil::Expected<T, E>::operator*()&&
+T&& coil::Expected<T, E>::operator*() &&
 {
     return coil::move(*this).value();
 }

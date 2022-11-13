@@ -109,7 +109,7 @@ namespace
         {
             auto key = generateIdentifierString();
             auto value = generateCompoundArgs(compoundArgsCount);
-            input.namedArguments.pushBack(coil::NamedValue{ key, value });
+            input.namedArguments.pushBack(coil::NamedValue{key, value});
         }
 
         return input;
@@ -182,7 +182,7 @@ namespace
         randomSpaces();
 
         std::string res = ss.str();
-        return coil::String{ res.data(), res.size() };
+        return coil::String{res.data(), res.size()};
     }
 }
 
