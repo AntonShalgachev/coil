@@ -27,9 +27,6 @@ int main()
     cmd["foo.bar"] = [](coil::Context) {};
 
     // Functors with variadic arguments
-    cmd["foo.bar"] = &funcVariadicVector;
-    cmd["foo.bar"] = &funcFloatVector;
-    cmd["foo.bar"] = &funcOptional;
     cmd["foo.bar"] = [](coil::Value) {};
     cmd["foo.bar"] = [](coil::Value const) {};
     cmd["foo.bar"] = [](coil::Value const&) {};
@@ -51,19 +48,18 @@ int main()
     cmd["foo.bar"] = &funcWithType<char>;
     cmd["foo.bar"] = &funcWithType<unsigned char>;
     cmd["foo.bar"] = &funcWithType<bool>;
-    cmd["foo.bar"] = &funcWithType<std::uint8_t>;
-    cmd["foo.bar"] = &funcWithType<std::uint16_t>;
-    cmd["foo.bar"] = &funcWithType<std::uint32_t>;
-    cmd["foo.bar"] = &funcWithType<std::uint64_t>;
-    cmd["foo.bar"] = &funcWithType<std::int8_t>;
-    cmd["foo.bar"] = &funcWithType<std::int16_t>;
-    cmd["foo.bar"] = &funcWithType<std::int32_t>;
-    cmd["foo.bar"] = &funcWithType<std::int64_t>;
+    cmd["foo.bar"] = &funcWithType<uint8_t>;
+    cmd["foo.bar"] = &funcWithType<uint16_t>;
+    cmd["foo.bar"] = &funcWithType<uint32_t>;
+    cmd["foo.bar"] = &funcWithType<uint64_t>;
+    cmd["foo.bar"] = &funcWithType<int8_t>;
+    cmd["foo.bar"] = &funcWithType<int16_t>;
+    cmd["foo.bar"] = &funcWithType<int32_t>;
+    cmd["foo.bar"] = &funcWithType<int64_t>;
     cmd["foo.bar"] = &funcWithType<ScopedEnum>;
     cmd["foo.bar"] = &funcWithType<UnscopedEnum>;
-    cmd["foo.bar"] = &funcWithType<std::string>;
-    cmd["foo.bar"] = &funcWithType<std::string_view>;
-    cmd["foo.bar"] = &funcWithType<std::optional<float>>;
+    cmd["foo.bar"] = &funcWithType<coil::String>;
+    cmd["foo.bar"] = &funcWithType<coil::StringView>;
     cmd["foo.bar"] = &funcWithType<Object>;
 
     // Pointers

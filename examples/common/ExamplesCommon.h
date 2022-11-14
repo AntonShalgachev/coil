@@ -1,13 +1,13 @@
 #pragma once
 
-#include "CustomTypeName.h"
-#include "EnumTypeSerializer.h"
 #include "coil/Coil.h"
+
+#include "CustomTypeName.h"
 
 #include <string_view>
 
 namespace common
 {
     void printSectionHeader(std::string_view header);
-    void executeCommand(coil::Bindings& bindings, std::string_view command);
+    void executeCommand(coil::Bindings& bindings, coil::StringView command);
 }

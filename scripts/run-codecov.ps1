@@ -8,5 +8,5 @@ if (-Not (Test-Path -Path $exe)) {
     Write-Error "'$exe' doesn't exist. Build the `Clang-Debug` configuration first"
     return
 }
+OpenCppCoverage.exe --sources $workingDir\include --sources $workingDir\src --excluded_sources StrToX.cpp --excluded_sources StdLibCompat.h --export_type html:coverage --excluded_line_regex ".*@NOCOVERAGE.*" -- $exe
 
-OpenCppCoverage.exe --sources $workingDir\include --sources $workingDir\src --export_type html:coverage --excluded_line_regex ".*@NOCOVERAGE.*" -- $exe

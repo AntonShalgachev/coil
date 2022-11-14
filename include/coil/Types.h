@@ -1,21 +1,28 @@
 #pragma once
 
+#include "StringView.h"
 #include "TypeName.h"
-
-#include <vector>
+#include "detail/Sequence.h"
 
 namespace coil
 {
     template<typename... Args>
     struct Types
     {
-        static std::size_t constexpr size = sizeof...(Args);
-        using IndicesType = std::make_index_sequence<size>;
+        static size_t constexpr size = sizeof...(Args);
+        using IndicesType = MakeIndexSequence<size>;
 
-        static std::vector<std::string_view> const& names()
+        static Vector<StringView> names()
         {
-            static std::vector<std::string_view> data = {TypeName<Args>::name()...};
-            return data;
+            if constexpr (size > 0)
+            {
+                StringView data[size] = {TypeName<Args>::name()...};
+                return Vector<StringView>{data, data + size};
+            }
+            else
+            {
+                return Vector<StringView>{};
+            }
         }
     };
 }

@@ -2,23 +2,24 @@
 
 #include "Context.h"
 #include "Overloaded.h"
+#include "detail/Utility.h"
 
 namespace coil
 {
     template<typename T>
-    std::vector<AnyFunctor> variable(T* var)
+    Vector<AnyFunctor> variable(T* var)
     {
         auto get = [var]() -> T const& { return *var; };
         auto set = [var](T val) -> T const& {
-            *var = std::move(val);
+            *var = coil::move(val);
             return *var;
         };
 
-        return overloaded(std::move(get), std::move(set));
+        return overloaded(coil::move(get), coil::move(set));
     }
 
     template<typename T>
-    std::vector<AnyFunctor> variable(T const* var)
+    Vector<AnyFunctor> variable(T const* var)
     {
         auto get = [var]() -> T const& { return *var; };
         auto set = [var](Context context, T) -> T const& {
@@ -26,6 +27,6 @@ namespace coil
             return *var;
         };
 
-        return overloaded(std::move(get), std::move(set));
+        return overloaded(coil::move(get), coil::move(set));
     }
 }

@@ -1,5 +1,7 @@
 #include "ExamplesCommon.h"
 
+#include "coil/StdLibCompat.h" // implementation of TypeSerializer and TypeName for some C++ Standard Library types
+
 #include "termcolor.hpp"
 
 #include <iostream>
@@ -22,7 +24,7 @@ void common::printSectionHeader(std::string_view header)
     std::cout << termcolor::reset;
 }
 
-void common::executeCommand(coil::Bindings& bindings, std::string_view command)
+void common::executeCommand(coil::Bindings& bindings, coil::StringView command)
 {
     std::cout << "Executing [" << commandColor << command << termcolor::reset << "]" << std::endl;
     auto result = bindings.execute(command);
@@ -30,7 +32,9 @@ void common::executeCommand(coil::Bindings& bindings, std::string_view command)
     for (const auto& error : result.errors)
         std::cout << errorColor << "\tError: " << error << termcolor::reset << std::endl;
 
-    std::cout << outputColor << result.output.str() << termcolor::reset;
+    std::cout << outputColor << result.output << termcolor::reset;
+    if (!result.output.empty() && result.output.back() != '\n')
+        std::cout << std::endl;
 
     if (result.returnValue)
         std::cout << "\tReturned '" << returnColor << *result.returnValue << termcolor::reset << "'" << std::endl;

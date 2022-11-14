@@ -2,6 +2,11 @@
 
 #include "common/ExamplesCommon.h"
 
+#include "coil/StdLibCompat.h" // implementation of TypeSerializer and TypeName for some C++ Standard Library types
+
+#include <string_view>
+#include <vector>
+
 namespace
 {
     struct Entity
@@ -49,18 +54,17 @@ namespace
             else
                 return context.reportErrors("Unknown type of 'entity'", std::move(id).error(), std::move(name).error());
 
-            using namespace std::literals::string_literals;
             if (target)
                 target->name = newName;
             else
-                context.reportError("Failed to find entity '"s + entity.str() + "'"s);
+                context.reportError("Failed to find entity '" + entity.str() + "'");
         }
 
         void list(coil::Context context)
         {
-            context.log() << "Entities:" << std::endl;
+            context.logline("Entities:");
             for (Entity const& entity : m_entities)
-                context.log() << entity.id << ": " << entity.name << std::endl;
+                context.loglinef("%llu: %s", entity.id, entity.name.c_str());
         }
 
         void add(std::size_t id, std::string name)

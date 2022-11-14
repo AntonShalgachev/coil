@@ -1,7 +1,5 @@
 #pragma once
 
-#include "coil/Coil.h"
-
 #include <charconv>
 #include <functional>
 #include <iostream>
@@ -13,6 +11,8 @@
 #include <string_view>
 #include <unordered_map>
 #include <vector>
+
+#include "coil/Coil.h"
 
 #if USE_COIL
     #define TEST_EXTERN_TEMPLATE(T)       \
@@ -28,13 +28,7 @@
 
 #if USE_COIL
 
-#if HAS_EXTERN_TEMPLATES
-COIL_TYPE_SERIALIZER_EXTERN_TEMPLATE(short);
-COIL_TYPE_SERIALIZER_EXTERN_TEMPLATE(int);
-COIL_TYPE_SERIALIZER_EXTERN_TEMPLATE(unsigned);
-COIL_TYPE_SERIALIZER_EXTERN_TEMPLATE(float);
-COIL_TYPE_SERIALIZER_EXTERN_TEMPLATE(double);
-
+    #if HAS_EXTERN_TEMPLATES
 TEST_EXTERN_TEMPLATE(int);
 TEST_EXTERN_TEMPLATE(short);
 TEST_EXTERN_TEMPLATE(bool);
@@ -128,7 +122,7 @@ COIL_FUNCTION_ARGS_EXTERN_TEMPLATE(coil::Context, double, bool);
 COIL_FUNCTION_ARGS_EXTERN_TEMPLATE(coil::Context, double, unsigned);
 COIL_FUNCTION_ARGS_EXTERN_TEMPLATE(coil::Context, double, float);
 COIL_FUNCTION_ARGS_EXTERN_TEMPLATE(coil::Context, double, double);
-#endif
+    #endif // HAS_EXTERN_TEMPLATES
 
 #endif
 

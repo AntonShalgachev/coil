@@ -9,7 +9,7 @@
 [![Windows](https://github.com/AntonShalgachev/coil/actions/workflows/windows.yml/badge.svg)](https://github.com/AntonShalgachev/coil/actions/workflows/windows.yml)
 [![Ubuntu](https://github.com/AntonShalgachev/coil/actions/workflows/ubuntu.yml/badge.svg)](https://github.com/AntonShalgachev/coil/actions/workflows/ubuntu.yml)
 
-This is a C++17 library that allows you to call functions at runtime using a simple yet powerful command-like scripting language. It has no dependencies. `coil` relies on the templates, however it's optimized for compilation speed (see [Compilation time impact](#compilation-time-impact))
+This is a C++17 library that allows you to call functions at runtime using a simple yet powerful command-like scripting language. It has no dependencies (not even STL). `coil` relies on the templates, however it's optimized for compilation speed (see [Compilation time impact](#compilation-time-impact))
 
 Table of contents:
 - [Quick peek](#quick-peek)
@@ -72,7 +72,8 @@ The priorities of the library (in the order of importance):
 * Configurable use of exceptions
 * No RTTI
 * No unnecessary heap allocations (Lexer operates on `string_view`s)
-* Modern C++ without dependencies (except for STL)
+* Modern C++ without dependencies
+* No STL
 
 ## Examples
 See [examples](examples) directory and the corresponding [README.md](examples/README.md) for information about the available examples
@@ -82,7 +83,8 @@ See [examples](examples) directory and the corresponding [README.md](examples/RE
 The project contains the following CMake options:
 * Library configuration:
     * `COIL_CATCH_EXCEPTIONS` (`OFF` by default): catch and report exceptions thrown in the command
-    * `COIL_BASIC_TYPENAME` (`ON` by default): include the implementation of `coil::TypeName` for the basic types
+    * `COIL_ENABLE_ASSERTS` (`OFF` by default): enable internal asserts
+    * `COIL_TYPE_NAME_USE_INTEGER_ALIAS` (`OFF` by default): use type aliases as integer type names (e.g. "uint64" instead of "unsigned long")
 * Project options (all `OFF` by default):
     * `COIL_EXAMPLES`: adds examples
     * `COIL_RUNTIME_TESTS`: adds runtime tests
@@ -113,7 +115,7 @@ FetchContent_Declare(
 
 # Configure coil if necessary:
 # set(COIL_CATCH_EXCEPTIONS ON CACHE INTERNAL "")
-# set(COIL_BASIC_TYPENAME OFF CACHE INTERNAL "")
+# set(COIL_TYPE_NAME_USE_INTEGER_ALIAS ON CACHE INTERNAL "")
 
 FetchContent_MakeAvailable(coil)
 ```
@@ -131,7 +133,7 @@ Copy the entire source tree into your project, then in your `CMakeLists.txt` cal
 ```cmake
 # Configure coil if necessary:
 # set(COIL_CATCH_EXCEPTIONS ON CACHE INTERNAL "")
-# set(COIL_BASIC_TYPENAME OFF CACHE INTERNAL "")
+# set(COIL_TYPE_NAME_USE_INTEGER_ALIAS ON CACHE INTERNAL "")
 
 add_subdirectory(path/to/coil)
 target_link_libraries(app PRIVATE coil::coil)
@@ -217,13 +219,21 @@ For each configuration project is generated using `cmake` (Ninja generator), the
 
 ### Results
 
-These are the numbers I've got on my machine:
+These are the numbers I've got on my machine (median):
 
-| Configuration | Clang (seconds)    | MSVC (seconds)     |
-| ------------- | ------------------ | ------------------ |
-| Base          | 13.738365411758423 | 7.671312928199768  |
-| Coil          | 16.172605514526367 | 12.114667296409607 |
-| Naive         | 20.63681662082672  | 17.464430809020996 |
+With Unity build:
+| Configuration | Clang (seconds) | MSVC (seconds) |
+| ------------- | --------------- | -------------- |
+| Base          | 4.11            | 2.49           |
+| Coil          | 7.18            | 4.42           |
+| Naive         | 10.25           | 7.03           |
+
+Without Unity build:
+| Configuration | Clang (seconds) | MSVC (seconds) |
+| ------------- | --------------- | -------------- |
+| Base          | 12.7            | 6.44           |
+| Coil          | 15.24           | 8.15           |
+| Naive         | 19.33           | 11.14          |
 
 ## Roadmap
 - [ ] Do more research on the compilation time

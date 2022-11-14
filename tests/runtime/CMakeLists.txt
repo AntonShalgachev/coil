@@ -8,6 +8,13 @@ add_executable(${PROJECT_NAME}
     "LexerTests.cpp"
     "PropertyTests.cpp"
     "TypeSerializerTests.cpp"
+    "VectorTests.cpp"
+    "BufferTests.cpp"
+    "UnorderedMapTests.cpp"
+    "StringTests.cpp"
+    "UniquePtrTests.cpp"
+    "OptionalTests.cpp"
+    "StringConvTests.cpp"
 )
 
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
@@ -45,6 +52,13 @@ set(TEST_NAMES
     "BindingsTests"
     "TypeSerializerTests"
     "PropertyTests"
+    "VectorTests"
+    "BufferTests"
+    "UnorderedMapTests"
+    "StringTests"
+    "UniquePtrTests"
+    "OptionalTests"
+    "StringConvTests"
 )
 
 target_link_libraries(${PROJECT_NAME}

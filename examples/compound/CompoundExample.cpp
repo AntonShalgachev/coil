@@ -2,7 +2,10 @@
 
 #include "common/ExamplesCommon.h"
 
+#include "coil/StdLibCompat.h" // implementation of TypeSerializer and TypeName for some C++ Standard Library types
+
 #include <numeric>
+#include <sstream>
 #include <vector>
 
 namespace
@@ -33,9 +36,11 @@ namespace
             return result;
         }
 
-        friend std::ostream& operator<<(std::ostream& os, Point const& rhs)
+        std::string toString() const
         {
-            return os << "(" << rhs.x << "," << rhs.y << ")";
+            std::stringstream ss;
+            ss << "(" << x << "," << y << ")";
+            return ss.str();
         }
     };
 
@@ -44,14 +49,14 @@ namespace
     public:
         struct Particle
         {
-            std::string_view id;
+            std::string id;
             Point position;
             Point velocity;
         };
 
         void add(std::string_view id, Point position, Point velocity)
         {
-            m_particles.push_back(Particle{id, std::move(position), std::move(velocity)});
+            m_particles.push_back(Particle{std::string{id}, std::move(position), std::move(velocity)});
         }
 
         Particle* get(std::string_view id)
@@ -84,7 +89,7 @@ namespace coil
     template<>
     struct TypeSerializer<Point>
     {
-        static Expected<Point, std::string> fromString(Value const& input)
+        static Expected<Point, coil::String> fromString(Value const& input)
         {
             if (input.subvalues.size() != 2)
                 return errors::createMismatchedSubvaluesError<Point>(input, 2);
@@ -100,11 +105,9 @@ namespace coil
             return Point{*x, *y};
         }
 
-        static auto toString(Point const& value)
+        static coil::String toString(Point const& value)
         {
-            std::stringstream ss;
-            ss << value;
-            return ss.str();
+            return coil::fromStdString(value.toString());
         }
     };
 
@@ -112,11 +115,11 @@ namespace coil
     template<>
     struct TypeSerializer<ParticleSystem::Particle>
     {
-        static auto toString(ParticleSystem::Particle const& particle)
+        static coil::String toString(ParticleSystem::Particle const& particle)
         {
             std::stringstream ss;
-            ss << "{'" << particle.id << "': p " << particle.position << ", v " << particle.velocity << "}";
-            return ss.str();
+            ss << "{'" << particle.id << "': p " << particle.position.toString() << ", v " << particle.velocity.toString() << "}";
+            return coil::fromStdString(ss.str());
         }
     };
 }
@@ -131,9 +134,10 @@ void CompoundExample::run()
     bindings["particles.get"] = coil::bind(&ParticleSystem::get, &system);
     bindings["particles.update"] = coil::bind(&ParticleSystem::update, &system);
     bindings["particles.list"] = [&system](coil::Context context) {
-        context.log() << "ID\tPos\tVel" << std::endl;
+        context.logline("ID\tPos\tVel");
+        context.logline("--\t---\t---");
         for (ParticleSystem::Particle const& particle : system.getParticles())
-            context.log() << particle.id << '\t' << particle.position << '\t' << particle.velocity << std::endl;
+            context.loglinef("%s\t%s\t%s", particle.id.c_str(), particle.position.toString().c_str(), particle.velocity.toString().c_str());
     };
 
     Point pivot;
@@ -176,7 +180,7 @@ void CompoundExample::run()
     common::executeCommand(bindings, "pivot (1, 1, 1)");
     common::executeCommand(bindings, "pivot (1)");
 
-    common::printSectionHeader("Some STL types can be used out of the box (vector, optional):");
+    common::printSectionHeader("Some STL types can be used with StdLibCompat.h:");
     common::executeCommand(bindings, "sum_all ()");
     common::executeCommand(bindings, "sum_all (1)");
     common::executeCommand(bindings, "sum_all (1 2 3)");

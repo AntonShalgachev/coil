@@ -1,8 +1,10 @@
 #pragma once
 
+#include "StringView.h"
 #include "detail/CallContext.h"
 #include "detail/FunctionWrapper.h"
 #include "detail/FunctorCaller.h"
+#include "detail/Utility.h"
 
 namespace coil
 {
@@ -31,7 +33,7 @@ namespace coil
         };
 
         template<typename FuncWrapper>
-        coil::detail::AnyStorage<FuncWrapper>::AnyStorage(FuncWrapper func) : m_funcWrapper(std::move(func))
+        coil::detail::AnyStorage<FuncWrapper>::AnyStorage(FuncWrapper func) : m_funcWrapper(coil::move(func))
         {
         }
 
@@ -63,22 +65,22 @@ namespace coil
         ~AnyFunctor();
         void invokeTrampoline(detail::CallContext& context);
 
-        std::size_t arity() const;
-        std::vector<std::string_view> const& parameterTypes() const;
-        std::string_view returnType() const;
+        size_t arity() const;
+        Vector<StringView> const& parameterTypes() const;
+        StringView returnType() const;
 
     private:
         void destroy();
 
     private:
         detail::AnyStorageBase* m_storage = nullptr;
-        std::vector<std::string_view> m_parameterTypes;
-        std::string_view m_returnType;
+        Vector<StringView> m_parameterTypes;
+        StringView m_returnType;
     };
 
     template<typename FunctionWrapper>
     coil::AnyFunctor::AnyFunctor(FunctionWrapper func) : m_parameterTypes(FunctionWrapper::ArgsTraits::UserArgumentTypes::names()), m_returnType(func.returnType)
     {
-        m_storage = new detail::AnyStorage<FunctionWrapper>(std::move(func));
+        m_storage = new detail::AnyStorage<FunctionWrapper>(coil::move(func));
     }
 }

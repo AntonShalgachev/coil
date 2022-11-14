@@ -2,6 +2,8 @@
 
 #include "common/ExamplesCommon.h"
 
+#include "coil/StdLibCompat.h" // implementation of TypeSerializer and TypeName for some C++ Standard Library types
+
 // Several functions can be bound to the same command as long as those functions have different amount of arguments.
 
 namespace
@@ -41,12 +43,12 @@ namespace
 
     void createExplosion(coil::Context context, std::string_view id)
     {
-        context.log() << "Creating an explosion '" << id << "' with the default radius" << std::endl;
+        context.loglinef("Creating an explosion '%.*s' with the default radius", static_cast<int>(id.size()), id.data());
     }
 
     void createExplosion(coil::Context context, std::string_view id, float radius)
     {
-        context.log() << "Creating an explosion '" << id << "' with the radius " << radius << std::endl;
+        context.loglinef("Creating an explosion '%.*s' with the radius %f", static_cast<int>(id.size()), id.data(), radius);
     }
 
     // A small helper function template which returns the pointer to the specific overloaded function

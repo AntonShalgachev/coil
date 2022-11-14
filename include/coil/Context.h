@@ -1,8 +1,11 @@
 #pragma once
 
+#include "Config.h"
 #include "Expected.h"
 #include "NamedArgs.h"
+#include "String.h"
 #include "detail/CallContext.h"
+#include "detail/Utility.h"
 
 namespace coil
 {
@@ -11,15 +14,17 @@ namespace coil
     public:
         Context(detail::CallContext& callContext);
 
-        std::ostream& log();
-        void log(std::string_view str);
+        void log(String const& str);
+        void logline(String const& str);
+        COIL_PRINTF_LIKE(2, 3) void logf(char const* format, ...);
+        COIL_PRINTF_LIKE(2, 3) void loglinef(char const* format, ...);
 
-        void reportError(std::string error);
+        void reportError(String error);
 
         template<typename... Ts>
         void reportErrors(Ts&&... errors)
         {
-            (reportError(std::forward<Ts>(errors)), ...);
+            (reportError(coil::forward<Ts>(errors)), ...);
         }
 
         bool hasErrors() const;

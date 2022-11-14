@@ -1,17 +1,18 @@
 #pragma once
 
-#include "ExecutionInput.h"
-#include "Expected.h"
-
-#include <string>
-#include <string_view>
-
 namespace coil
 {
+    struct ExecutionInput;
+    class String;
+    class StringView;
+
+    template<typename T, typename E>
+    class Expected;
+
     class Lexer
     {
     public:
-        virtual Expected<ExecutionInput, std::string> parse(std::string_view str) const = 0;
+        virtual Expected<ExecutionInput, String> parse(StringView str) const = 0;
         virtual ~Lexer() = default;
     };
 }

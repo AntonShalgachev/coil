@@ -1,6 +1,9 @@
 #include "VariablesExample.h"
 
+#include "common/EnumSupport.h" // user-provided TypeSerializer and TypeName for enums
 #include "common/ExamplesCommon.h"
+
+#include "coil/StdLibCompat.h" // implementation of TypeSerializer and TypeName for some C++ Standard Library types
 
 #include <iostream>
 
@@ -51,7 +54,8 @@ void VariablesExample::run()
     bindings["god_toggle"] = ::toggle(&godMode);
 
     bindings["print_variables"] = [&timeScale, &city, &type](coil::Context context) {
-        context.log() << "Time scale: " << timeScale << "; city: " << city << "; type: " << magic_enum::enum_name(type) << std::endl;
+        auto typeName = magic_enum::enum_name(type);
+        context.loglinef("Time scale: %f, city: %s, type: %.*s", timeScale, city.c_str(), static_cast<int>(typeName.size()), typeName.data());
     };
 
     common::printSectionHeader("Calling variable without arguments will return its value:");

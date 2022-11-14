@@ -1,13 +1,12 @@
 #pragma once
 
 #include "Utils.h"
+#include "coil/StdLibCompat.h" // for std->coil string conversion
 #include "coil/TypeSerializer.h"
 
 #include "magic_enum.hpp"
 
-#include <istream>
 #include <optional>
-#include <ostream>
 #include <string>
 
 namespace coil
@@ -19,12 +18,10 @@ namespace coil
     template<typename E>
     struct TypeSerializer<E, std::enable_if_t<std::is_enum_v<E>>>
     {
-        static Expected<E, std::string> fromString(Value const& input)
+        static Expected<E, coil::String> fromString(Value const& input)
         {
             if (input.subvalues.size() != 1)
                 return errors::createMismatchedSubvaluesError<E>(input, 1);
-
-            auto value = input.subvalues[0];
 
             // You can also remove this block so that enums can only be deserialized using their names
             if (auto integerValue = TypeSerializer<std::underlying_type_t<E>>::fromString(input))
@@ -32,19 +29,27 @@ namespace coil
 
             // This makes enum names case-insensitive
             auto pred = [](unsigned char a, unsigned char b) { return std::tolower(a) == std::tolower(b); };
-            std::optional<E> optionalValue = magic_enum::enum_cast<E>(value, std::move(pred));
+            std::optional<E> optionalValue = magic_enum::enum_cast<E>(coil::toStdStringView(input.subvalues[0]), std::move(pred));
 
             if (optionalValue.has_value())
                 return optionalValue.value();
 
             std::string names = ::utils::flatten(magic_enum::enum_names<E>(), "'");
-
-            return errors::createGenericError<E>(input, formatString("Possible values are [%s]", names.c_str()));
+            return errors::createGenericError<E>(input, sprintf("Possible values are [%s]", names.c_str()));
         }
 
-        static std::string toString(E const& value)
+        static coil::String toString(E const& value)
         {
-            return std::string{magic_enum::enum_name(value)};
+            return coil::fromStdStringView(magic_enum::enum_name(value));
+        }
+    };
+
+    template<typename E>
+    struct TypeName<E, std::enable_if_t<std::is_enum_v<E>>>
+    {
+        static StringView name()
+        {
+            return coil::fromStdStringView(magic_enum::enum_type_name<E>());
         }
     };
 }

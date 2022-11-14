@@ -2,6 +2,9 @@
 
 #include "common/ExamplesCommon.h"
 
+#include "coil/StdLibCompat.h" // implementation of TypeSerializer and TypeName for some C++ Standard Library types
+
+#include <functional>
 #include <iostream>
 
 namespace
@@ -13,19 +16,26 @@ namespace
 
     void helloWithContext(coil::Context context)
     {
-        context.log() << "Hello, world!" << std::endl;
+        context.log("log: no automatic");
+        context.log(" line break\n");
+
+        context.logline("logline: line break is added automatically");
+
+        context.logf("logf: %s automatic", "no");
+        context.logf(" line break, but %s", "formatted\n");
+
+        context.loglinef("loglinef: automatic line break and formatted");
     }
 
-    void printRepeated(coil::Context context, std::string const& val, std::size_t repetitions)
+    void printRepeated(coil::Context context, coil::String const& val, std::size_t repetitions)
     {
         for (std::size_t i = 0; i < repetitions; i++)
-            context.log() << val;
-        context.log() << std::endl;
+            context.log(val);
     }
 
-    void printQuoted(coil::Context context, std::string_view val)
+    void printQuoted(coil::Context context, coil::StringView val)
     {
-        context.log() << "'" << val << "'" << std::endl;
+        context.loglinef("'%.*s'", val.slength(), val.data());
     }
 
     bool invert(bool val)
@@ -91,7 +101,7 @@ void BasicExample::run()
     bindings["plain_function"] = &plainFunction;
     bindings["lambda"] = [](int arg) { return "I am a lambda: " + std::to_string(arg); };
     bindings["custom_functor"] = CustomFunctor{};
-    std::function<std::string(int)> stdFunction = [](int arg) { return "I am a std::function:" + std::to_string(arg); };
+    std::function<std::string(int)> stdFunction = [](int arg) { return "I am a std::function: " + std::to_string(arg); };
     bindings["std_function"] = std::move(stdFunction);
 
     Object scaler1{2};

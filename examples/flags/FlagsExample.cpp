@@ -1,6 +1,11 @@
 #include "FlagsExample.h"
 
+#include "common/EnumSupport.h" // user-provided TypeSerializer and TypeName for enums
 #include "common/ExamplesCommon.h"
+
+#include "coil/StdLibCompat.h" // implementation of TypeSerializer and TypeName for some C++ Standard Library types
+
+#include <vector>
 
 namespace
 {
@@ -43,7 +48,7 @@ namespace
     auto flagsVariable(E* var)
     {
         // Getters and setters return the string representation of the flags variable because the
-        // TypeSerializer for enums (see examples\common\EnumTypeSerializer.h) doesn't handle flags by default
+        // TypeSerializer for enums (see examples\common\EnumSupport.h) doesn't handle flags by default
 
         auto get = [var]() { return magic_enum::flags::enum_name(*var); };
         auto set = [var](std::vector<E> const& args) {
@@ -70,13 +75,13 @@ void FlagsExample::run()
     bindings["entity.flags"] = ::flagsVariable(&flags);
     bindings["entity.draw"] = [&flags](coil::Context context) {
         if ((flags & EntityDebugDrawFlags::DrawBoundingBox) == EntityDebugDrawFlags::DrawBoundingBox)
-            context.log() << "Drawing bounding box" << std::endl;
+            context.logline("Drawing bounding box");
         if ((flags & EntityDebugDrawFlags::DrawOrigin) == EntityDebugDrawFlags::DrawOrigin)
-            context.log() << "Drawing origin" << std::endl;
+            context.logline("Drawing origin");
         if ((flags & EntityDebugDrawFlags::DrawWireframe) == EntityDebugDrawFlags::DrawWireframe)
-            context.log() << "Drawing wireframe" << std::endl;
+            context.logline("Drawing wireframe");
         if ((flags & EntityDebugDrawFlags::DrawName) == EntityDebugDrawFlags::DrawName)
-            context.log() << "Drawing name" << std::endl;
+            context.logline("Drawing name");
     };
 
     common::printSectionHeader("Getting the value of a flag variable returns a string represenation of it:");

@@ -2,6 +2,8 @@
 
 #include "common/ExamplesCommon.h"
 
+#include "coil/StdLibCompat.h" // implementation of TypeSerializer and TypeName for some C++ Standard Library types
+
 #include <cmath>
 #include <iostream>
 
@@ -66,17 +68,16 @@ namespace
             return;
 
         // This version will automatically report error only if the value of 'int_arg' couldn't be converted to int
-        auto optionalFloatArg = namedArgs.getOrReport<int>("int_arg", coil::NamedArgs::ArgType::Optional);
+        auto optionalIntArg = namedArgs.getOrReport<int>("int_arg", coil::NamedArgs::ArgType::Optional);
 
         // If the type of 'int_arg' is wrong, the error would be reported and the default value would be
         // returned (by default it's an empty std::optional)
         if (context.hasErrors())
             return;
 
-        context.log() << *requiredAnyArg << ", " << *requiredFloatArg;
-        if (optionalFloatArg)
-            context.log() << ", " << *optionalFloatArg;
-        context.log() << std::endl;
+        context.logf("%s, %g", requiredAnyArg->str().cStr(), *requiredFloatArg);
+        if (optionalIntArg)
+            context.logf(", %d", *optionalIntArg);
     }
 }
 

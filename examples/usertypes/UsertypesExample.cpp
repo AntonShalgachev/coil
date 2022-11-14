@@ -2,7 +2,11 @@
 
 #include "common/ExamplesCommon.h"
 
+#include "coil/StdLibCompat.h" // implementation of TypeSerializer and TypeName for some C++ Standard Library types
+
+#include <algorithm>
 #include <numeric>
+#include <vector>
 
 // In most cases you'll have to provide 2 specializations per user type:
 // * TypeSerializer to be able to convert your type to/from string
@@ -95,7 +99,7 @@ namespace coil
     template<>
     struct TypeSerializer<EntityId>
     {
-        static Expected<EntityId, std::string> fromString(Value const& input)
+        static Expected<EntityId, coil::String> fromString(Value const& input)
         {
             auto index = TypeSerializer<std::size_t>::fromString(input);
             if (!index)
@@ -109,18 +113,16 @@ namespace coil
             return EntityId{*index};
         }
 
-        static auto toString(EntityId value)
+        static coil::String toString(EntityId value)
         {
-            std::stringstream ss;
-            ss << "EntityId{" << value.index << "}";
-            return ss.str();
+            return coil::sprintf("EntityId{%zu}", value.index);
         }
     };
 
     template<>
     struct TypeSerializer<Vec2>
     {
-        static Expected<Vec2, std::string> fromString(Value const& input)
+        static Expected<Vec2, coil::String> fromString(Value const& input)
         {
             if (input.subvalues.size() != 2)
                 return errors::createMismatchedSubvaluesError<Vec2>(input, 2);
@@ -138,22 +140,20 @@ namespace coil
 
         static auto toString(Vec2 const& value)
         {
-            std::stringstream ss;
-            ss << "(" << value.x << ", " << value.x << ")";
-            return ss.str();
+            return coil::sprintf("(%f, %f)", value.x, value.y);
         }
     };
 
     template<typename T>
     struct TypeSerializer<DynamicArray<T>>
     {
-        static Expected<DynamicArray<T>, std::string> fromString(Value const& input)
+        static Expected<DynamicArray<T>, coil::String> fromString(Value const& input)
         {
             DynamicArray<T> result;
 
-            for (std::string_view subvalue : input.subvalues)
+            for (coil::StringView subvalue : input.subvalues)
             {
-                Expected<T, std::string> expectedArg = TypeSerializer<T>::fromString(subvalue);
+                Expected<T, coil::String> expectedArg = TypeSerializer<T>::fromString(subvalue);
                 if (!expectedArg)
                     return errors::createGenericError<DynamicArray<T>>(input, std::move(expectedArg).error());
 
@@ -170,9 +170,9 @@ namespace coil
     template<typename T>
     struct TypeName<DynamicArray<T>>
     {
-        static std::string_view name()
+        static StringView name()
         {
-            static std::string result = "DynamicArray<" + std::string{TypeName<T>::name()} + ">";
+            static String result = "DynamicArray<" + String{TypeName<T>::name()} + ">";
             return result;
         }
     };
@@ -180,7 +180,7 @@ namespace coil
     template<>
     struct TypeName<Vec2>
     {
-        static std::string_view name()
+        static StringView name()
         {
             return "Vec2";
         }
@@ -189,7 +189,7 @@ namespace coil
     template<>
     struct TypeName<EntityId>
     {
-        static std::string_view name()
+        static StringView name()
         {
             return "EntityId";
         }

@@ -1,101 +1,84 @@
 #pragma once
 
 #include "AnyFunctor.h"
-#include "ExecutionResult.h"
-#include "Expected.h"
-#include "Lexer.h"
-#include "Utils.h"
+#include "String.h"
+#include "StringView.h"
+#include "UniquePtr.h"
+#include "UnorderedMap.h"
 #include "detail/FuncTraits.h"
-#include "detail/FunctorCaller.h"
-#include "detail/StringWrapper.h"
-
-#include <functional>
-#include <string>
-#include <unordered_map>
+#include "detail/Utility.h"
 
 namespace coil
 {
-    template<typename BindingsT>
     class BindingProxy;
+    struct ExecutionResult;
+    class Lexer;
 
     class Bindings
     {
     public:
         struct Command
         {
-            std::vector<AnyFunctor> functors;
+            StringView name;
+            Vector<AnyFunctor> functors;
         };
 
-        using StringWrapper = BasicStringWrapper<std::string>;
-
         Bindings();
+        Bindings(Bindings&& rhs);
+        ~Bindings();
 
-        void setLexer(std::unique_ptr<Lexer> lexer);
+        Bindings& operator=(Bindings&& rhs);
 
-        BindingProxy<Bindings> operator[](std::string_view name);
+        void setLexer(UniquePtr<Lexer> lexer);
+
+        BindingProxy operator[](StringView name);
 
         template<typename Func>
-        Bindings::Command const& add(std::string_view name, Func func)
+        Bindings::Command const& add(StringView name, Func func)
         {
             static_assert(detail::FuncTraits<Func>::isFunc, "Func should be a functor object");
             using FunctionWrapper = typename detail::FuncTraits<Func>::FunctionWrapperType;
-            return add(name, AnyFunctor{FunctionWrapper{std::move(func)}});
+            return add(name, AnyFunctor{FunctionWrapper{coil::move(func)}});
         }
 
-        Bindings::Command const& add(std::string_view name, AnyFunctor anyFunctor);
-        Bindings::Command const& add(std::string_view name, std::vector<AnyFunctor> anyFunctors);
+        Bindings::Command const& add(StringView name, AnyFunctor anyFunctor);
+        Bindings::Command const& add(StringView name, Vector<AnyFunctor> anyFunctors);
 
-        void remove(std::string_view name);
+        void remove(StringView name);
 
-        Command const* get(std::string_view name) const;
+        Command const* get(StringView name) const;
 
         void clear();
 
-        std::vector<std::string_view> const& commands() const;
-
-        ExecutionResult execute(std::string_view command);
+        ExecutionResult execute(StringView command);
         ExecutionResult execute(ExecutionInput input);
 
     private:
         void execute(detail::CallContext& context);
 
-        std::unique_ptr<Lexer> m_lexer;
+        UniquePtr<Lexer> m_lexer;
 
-        std::unordered_map<StringWrapper, Command> m_commands;
-        std::vector<std::string_view> m_commandNames;
+        UnorderedMap<String, Command> m_commands;
     };
 
-    template<typename BindingsT>
     class BindingProxy
     {
     public:
-        BindingProxy(BindingsT& bindings, std::string_view name) : m_bindings(bindings), m_name(name) {}
+        BindingProxy(Bindings& bindings, StringView name);
 
         template<typename Func>
         BindingProxy& operator=(Func func)
         {
             static_assert(detail::FuncTraits<Func>::isFunc, "Func should be a functor object");
             using FunctionWrapper = typename detail::FuncTraits<Func>::FunctionWrapperType;
-            return operator=(AnyFunctor{FunctionWrapper{std::move(func)}});
+            return operator=(AnyFunctor{FunctionWrapper{coil::move(func)}});
         }
-        BindingProxy& operator=(AnyFunctor anyFunctor)
-        {
-            m_bindings.add(m_name, std::move(anyFunctor));
-            return *this;
-        }
-        BindingProxy& operator=(std::vector<AnyFunctor> anyFunctors)
-        {
-            m_bindings.add(m_name, std::move(anyFunctors));
-            return *this;
-        }
-        BindingProxy& operator=(std::nullptr_t)
-        {
-            m_bindings.remove(m_name);
-            return *this;
-        }
+        BindingProxy& operator=(AnyFunctor anyFunctor);
+        BindingProxy& operator=(Vector<AnyFunctor> anyFunctors);
+        BindingProxy& operator=(nullptr_t);
 
     private:
-        BindingsT& m_bindings;
-        std::string_view m_name;
+        Bindings& m_bindings;
+        StringView m_name;
     };
 }

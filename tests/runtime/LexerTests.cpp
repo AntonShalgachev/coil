@@ -3,13 +3,14 @@
 #include "gtest/gtest.h"
 
 #include "coil/DefaultLexer.h"
+#include "coil/String.h"
 
 #include <list>
 #include <random>
 
 namespace
 {
-    coil::Value createValue(std::string_view input)
+    coil::Value createValue(coil::StringView input)
     {
         return coil::Value{input};
     }
@@ -20,18 +21,18 @@ namespace
         return std::vector<coil::Value>{coil::Value{std::forward<Args>(args)}...};
     }
 
-    coil::ExecutionInput createInput(std::string_view name, std::vector<coil::Value> args, std::vector<std::pair<std::string_view, coil::Value>> namedArgs)
+    coil::ExecutionInput createInput(coil::StringView name, std::vector<coil::Value> args, std::vector<coil::NamedValue> namedArgs)
     {
         coil::ExecutionInput input;
         input.name = name;
-        input.arguments = std::move(args);
-        input.namedArguments = std::move(namedArgs);
+        input.arguments = convertVector(std::move(args));
+        input.namedArguments = convertVector(std::move(namedArgs));
 
         return input;
     }
 
     template<typename RandomEngine>
-    std::string generateRandomString(RandomEngine& engine, std::size_t generation, bool allowEmpty, bool allowNumber, bool allowSpaces)
+    coil::String generateRandomString(RandomEngine& engine, std::size_t generation, bool allowEmpty, bool allowNumber, bool allowSpaces)
     {
         std::bernoulli_distribution isEmptyDist{allowEmpty ? 0.5f : 0.0f};
 
@@ -44,9 +45,9 @@ namespace
         if (isNumberDist(engine))
             return "3.14";
 
-        std::string base = containsSpacesDist(engine) ? "str with spaces" : "str";
+        coil::String base = containsSpacesDist(engine) ? "str with spaces" : "str";
 
-        return std::move(base) + std::to_string(generation);
+        return base + coil::toString(generation);
     }
 
     template<typename RandomEngine>
@@ -61,7 +62,7 @@ namespace
     template<typename RandomEngine>
     coil::ExecutionInput generateRandomInput(RandomEngine& engine)
     {
-        static std::list<std::string> storage;
+        static std::list<coil::String> storage;
         std::size_t generation = 0;
 
         coil::ExecutionInput input;
@@ -78,9 +79,9 @@ namespace
 
         storage.clear();
 
-        auto addToStorage = [](std::string str) {
+        auto addToStorage = [](coil::String str) {
             storage.push_back(std::move(str));
-            return std::string_view{storage.back()};
+            return coil::StringView{storage.back()};
         };
 
         auto generateNewString = [&addToStorage, &engine, &generation](bool allowEmpty, bool allowNumber, bool allowSpaces) {
@@ -91,10 +92,10 @@ namespace
         auto generateValueString = [&generateNewString]() { return generateNewString(true, true, true); };
 
         auto generateCompoundArgs = [&generateValueString](std::size_t count) {
-            std::vector<std::string_view> subvalues;
+            coil::Vector<coil::StringView> subvalues;
 
             for (std::size_t i = 0; i < count; i++)
-                subvalues.push_back(generateValueString());
+                subvalues.pushBack(generateValueString());
 
             return coil::Value(std::move(subvalues));
         };
@@ -102,27 +103,27 @@ namespace
         input.name = generateIdentifierString();
 
         for (std::size_t i = 0; i < argsCount; i++)
-            input.arguments.push_back(generateCompoundArgs(compoundArgsCount));
+            input.arguments.pushBack(generateCompoundArgs(compoundArgsCount));
 
         for (std::size_t i = 0; i < namedArgsCount; i++)
         {
             auto key = generateIdentifierString();
             auto value = generateCompoundArgs(compoundArgsCount);
-            input.namedArguments.emplace_back(key, value);
+            input.namedArguments.pushBack(coil::NamedValue{key, value});
         }
 
         return input;
     }
 
     template<typename RandomEngine>
-    std::string generateRandomInputString(RandomEngine& engine, coil::ExecutionInput const& input)
+    coil::String generateRandomInputString(RandomEngine& engine, coil::ExecutionInput const& input)
     {
         std::stringstream ss;
 
         auto randomSpaces = [&ss, &engine]() { addRandomSpaces(ss, engine); };
 
-        auto subvalueToStream = [&ss](std::string_view subvalue) {
-            bool hasSpaces = subvalue.find(' ') != std::string_view::npos;
+        auto subvalueToStream = [&ss](coil::StringView subvalue) {
+            bool hasSpaces = std::find(subvalue.begin(), subvalue.end(), ' ') != subvalue.end();
             bool isEmpty = subvalue.empty();
             if (hasSpaces || isEmpty)
                 ss << '"' << subvalue << '"';
@@ -143,7 +144,7 @@ namespace
             ss << '(';
             randomSpaces();
 
-            for (std::string_view subvalue : value.subvalues)
+            for (coil::StringView subvalue : value.subvalues)
             {
                 subvalueToStream(subvalue);
                 ss << ' ';
@@ -166,8 +167,8 @@ namespace
 
         for (auto const& pair : input.namedArguments)
         {
-            auto const& key = pair.first;
-            auto const& arg = pair.second;
+            auto const& key = pair.key;
+            auto const& arg = pair.value;
 
             ss << key;
             randomSpaces();
@@ -180,7 +181,8 @@ namespace
 
         randomSpaces();
 
-        return ss.str();
+        std::string res = ss.str();
+        return coil::String{res.data(), res.size()};
     }
 }
 
@@ -236,26 +238,26 @@ TEST(LexerTests, TestCompoundArgs)
 {
     coil::DefaultLexer lexer;
 
-    EXPECT_EQ(lexer.parse("func arg1,arg2"), createInput("func", {coil::Value{{"arg1", "arg2"}}}, {}));
-    EXPECT_EQ(lexer.parse("func (arg1 arg2)"), createInput("func", {coil::Value{{"arg1", "arg2"}}}, {}));
-    EXPECT_EQ(lexer.parse("func (arg1,arg2)"), createInput("func", {coil::Value{{"arg1", "arg2"}}}, {}));
-    EXPECT_EQ(lexer.parse("func (arg1, arg2)"), createInput("func", {coil::Value{{"arg1", "arg2"}}}, {}));
-    EXPECT_EQ(lexer.parse("func (arg1 , arg2)"), createInput("func", {coil::Value{{"arg1", "arg2"}}}, {}));
-    EXPECT_EQ(lexer.parse("func ( arg1 , arg2 )"), createInput("func", {coil::Value{{"arg1", "arg2"}}}, {}));
-    EXPECT_EQ(lexer.parse("func ( arg1 arg2 )"), createInput("func", {coil::Value{{"arg1", "arg2"}}}, {}));
+    EXPECT_EQ(lexer.parse("func arg1,arg2"), createInput("func", {createVectorValue({"arg1", "arg2"})}, {}));
+    EXPECT_EQ(lexer.parse("func (arg1 arg2)"), createInput("func", {createVectorValue({"arg1", "arg2"})}, {}));
+    EXPECT_EQ(lexer.parse("func (arg1,arg2)"), createInput("func", {createVectorValue({"arg1", "arg2"})}, {}));
+    EXPECT_EQ(lexer.parse("func (arg1, arg2)"), createInput("func", {createVectorValue({"arg1", "arg2"})}, {}));
+    EXPECT_EQ(lexer.parse("func (arg1 , arg2)"), createInput("func", {createVectorValue({"arg1", "arg2"})}, {}));
+    EXPECT_EQ(lexer.parse("func ( arg1 , arg2 )"), createInput("func", {createVectorValue({"arg1", "arg2"})}, {}));
+    EXPECT_EQ(lexer.parse("func ( arg1 arg2 )"), createInput("func", {createVectorValue({"arg1", "arg2"})}, {}));
 }
 
 TEST(LexerTests, TestCompoundNamedArgs)
 {
     coil::DefaultLexer lexer;
 
-    EXPECT_EQ(lexer.parse("func arg=arg1,arg2"), createInput("func", args(), {{"arg", coil::Value{{"arg1", "arg2"}}}}));
-    EXPECT_EQ(lexer.parse("func arg=(arg1 arg2)"), createInput("func", args(), {{"arg", coil::Value{{"arg1", "arg2"}}}}));
-    EXPECT_EQ(lexer.parse("func arg=(arg1,arg2)"), createInput("func", args(), {{"arg", coil::Value{{"arg1", "arg2"}}}}));
-    EXPECT_EQ(lexer.parse("func arg=(arg1, arg2)"), createInput("func", args(), {{"arg", coil::Value{{"arg1", "arg2"}}}}));
-    EXPECT_EQ(lexer.parse("func arg=(arg1 , arg2)"), createInput("func", args(), {{"arg", coil::Value{{"arg1", "arg2"}}}}));
-    EXPECT_EQ(lexer.parse("func arg=( arg1 , arg2 )"), createInput("func", args(), {{"arg", coil::Value{{"arg1", "arg2"}}}}));
-    EXPECT_EQ(lexer.parse("func arg=( arg1 arg2 )"), createInput("func", args(), {{"arg", coil::Value{{"arg1", "arg2"}}}}));
+    EXPECT_EQ(lexer.parse("func arg=arg1,arg2"), createInput("func", args(), {{"arg", createVectorValue({"arg1", "arg2"})}}));
+    EXPECT_EQ(lexer.parse("func arg=(arg1 arg2)"), createInput("func", args(), {{"arg", createVectorValue({"arg1", "arg2"})}}));
+    EXPECT_EQ(lexer.parse("func arg=(arg1,arg2)"), createInput("func", args(), {{"arg", createVectorValue({"arg1", "arg2"})}}));
+    EXPECT_EQ(lexer.parse("func arg=(arg1, arg2)"), createInput("func", args(), {{"arg", createVectorValue({"arg1", "arg2"})}}));
+    EXPECT_EQ(lexer.parse("func arg=(arg1 , arg2)"), createInput("func", args(), {{"arg", createVectorValue({"arg1", "arg2"})}}));
+    EXPECT_EQ(lexer.parse("func arg=( arg1 , arg2 )"), createInput("func", args(), {{"arg", createVectorValue({"arg1", "arg2"})}}));
+    EXPECT_EQ(lexer.parse("func arg=( arg1 arg2 )"), createInput("func", args(), {{"arg", createVectorValue({"arg1", "arg2"})}}));
 }
 
 TEST(LexerTests, TestCompoundNamedArgsEdgeCases)
@@ -371,7 +373,7 @@ TEST(LexerTests, TestStrings)
     EXPECT_EQ(lexer.parse("foo.bar.func 'foo|bar|baz'"), createInput("foo.bar.func", args("foo|bar|baz"), {}));
     EXPECT_EQ(lexer.parse("foo.bar.func 'foo=bar=baz'"), createInput("foo.bar.func", args("foo=bar=baz"), {}));
     EXPECT_EQ(lexer.parse("foo.bar.func '(foo bar baz)'"), createInput("foo.bar.func", args("(foo bar baz)"), {}));
-    EXPECT_EQ(lexer.parse("foo.bar.func ('foo   bar' baz)"), createInput("foo.bar.func", {coil::Value{{"foo   bar", "baz"}}}, {}));
+    EXPECT_EQ(lexer.parse("foo.bar.func ('foo   bar' baz)"), createInput("foo.bar.func", {createVectorValue({"foo   bar", "baz"})}, {}));
 
     EXPECT_EQ(lexer.parse("foo.bar.func foo \"bar\" baz"), createInput("foo.bar.func", args("foo", "bar", "baz"), {}));
     EXPECT_EQ(lexer.parse("foo.bar.func foo \" bar \" baz"), createInput("foo.bar.func", args("foo", " bar ", "baz"), {}));
@@ -381,7 +383,7 @@ TEST(LexerTests, TestStrings)
     EXPECT_EQ(lexer.parse("foo.bar.func \"foo|bar|baz\""), createInput("foo.bar.func", args("foo|bar|baz"), {}));
     EXPECT_EQ(lexer.parse("foo.bar.func \"foo=bar=baz\""), createInput("foo.bar.func", args("foo=bar=baz"), {}));
     EXPECT_EQ(lexer.parse("foo.bar.func \"(foo bar baz)\""), createInput("foo.bar.func", args("(foo bar baz)"), {}));
-    EXPECT_EQ(lexer.parse("foo.bar.func (\"foo   bar\" baz)"), createInput("foo.bar.func", {coil::Value{{"foo   bar", "baz"}}}, {}));
+    EXPECT_EQ(lexer.parse("foo.bar.func (\"foo   bar\" baz)"), createInput("foo.bar.func", {createVectorValue({"foo   bar", "baz"})}, {}));
 }
 
 TEST(LexerTests, TestErrors)
@@ -431,7 +433,7 @@ TEST(LexerTests, TestGenerated)
     std::size_t const generationsCount = 10000;
     coil::DefaultLexer lexer;
 
-    auto test = [](std::string const&, auto actualInput, coil::ExecutionInput const& expectedInput) { return actualInput == expectedInput; };
+    auto test = [](auto const&, auto actualInput, coil::ExecutionInput const& expectedInput) { return actualInput == expectedInput; };
 
     for (std::size_t i = 0; i < generationsCount; i++)
     {

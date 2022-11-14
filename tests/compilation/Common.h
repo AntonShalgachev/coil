@@ -1,7 +1,13 @@
 #include "coil/Coil.h"
 
+#include <stddef.h>
+#include <stdint.h>
+
 namespace
 {
+    template<class T>
+    inline constexpr bool IsEnumV = __is_enum(T);
+
     enum class ScopedEnum
     {
         One,
@@ -91,21 +97,6 @@ namespace
 
     [[maybe_unused]] void freeFuncWithoutArgsWithContext(coil::Context) {}
 
-    [[maybe_unused]] std::size_t funcVariadicVector(float, std::string const&, std::vector<coil::Value> const& args)
-    {
-        return args.size();
-    }
-
-    [[maybe_unused]] std::size_t funcFloatVector(float, std::string const&, std::vector<float> const& args)
-    {
-        return args.size();
-    }
-
-    [[maybe_unused]] float funcOptional(float, std::string const&, std::optional<float> arg)
-    {
-        return arg.value_or(0.0f);
-    }
-
     [[maybe_unused]] ScopedEnum funcScopedEnum(ScopedEnum val)
     {
         return val;
@@ -146,14 +137,14 @@ namespace
 namespace coil
 {
     template<typename E>
-    struct TypeSerializer<E, std::enable_if_t<std::is_enum_v<E>>>
+    struct TypeSerializer<E, coil::EnableIfT<IsEnumV<E>>>
     {
-        static Expected<E, std::string> fromString(Value const& input)
+        static Expected<E, coil::String> fromString(Value const& input)
         {
             return E{};
         }
 
-        static std::string toString(E const& value)
+        static coil::String toString(E const& value)
         {
             return {};
         }
@@ -162,12 +153,12 @@ namespace coil
     template<>
     struct TypeSerializer<Object>
     {
-        static Expected<Object, std::string> fromString(Value const& input)
+        static Expected<Object, coil::String> fromString(Value const& input)
         {
             return Object{};
         }
 
-        static std::string toString(Object const& value)
+        static coil::String toString(Object const& value)
         {
             return {};
         }
@@ -176,7 +167,7 @@ namespace coil
     template<typename T, typename>
     struct TypeName
     {
-        static std::string_view name()
+        static StringView name()
         {
             return "";
         }

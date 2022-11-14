@@ -1,41 +1,44 @@
 #pragma once
 
+// TODO don't use ".." (everywhere)
+#include "../Assert.h"
+#include "../String.h"
 #include "../TypeSerializer.h"
 #include "../Types.h"
 #include "CallContext.h"
-
-#include <string>
+#include "Sequence.h"
+#include "Utility.h"
 
 namespace coil::detail
 {
-    template<std::size_t i>
+    template<size_t i>
     Context createContext(CallContext& context);
     template<>
     Context createContext<0>(CallContext& context);
 
     template<typename T>
-    void reportError(CallContext& context, Expected<T, std::string> const& result)
+    void reportError(CallContext& context, Expected<T, coil::String> const& result)
     {
         if (!result)
             context.reportError(result.error());
     }
 
-    template<typename FuncWrapper, std::size_t... NonUserIndices, typename... Es>
+    template<typename FuncWrapper, size_t... NonUserIndices, typename... Es>
     void invoke(FuncWrapper& func, CallContext& context, Es... expectedArgs)
     {
-        if ((!expectedArgs || ...))
+        if ((!expectedArgs.hasValue() || ...))
         {
             (reportError(context, expectedArgs), ...);
             return;
         }
 
-        std::optional<std::string> returnValue = func.invoke(createContext<NonUserIndices>(context)..., *std::move(expectedArgs)...);
+        Optional<String> returnValue = func.invoke(createContext<NonUserIndices>(context)..., coil::move(expectedArgs).value()...);
         if (!context.hasErrors())
-            context.result.returnValue = returnValue;
+            context.result.returnValue = coil::move(returnValue);
     }
 
-    template<typename FuncWrapper, std::size_t... NonUserIndices, typename... UserArgs, std::size_t... UserIndices>
-    void unpackAndInvoke(FuncWrapper& func, CallContext& context, std::index_sequence<NonUserIndices...>, Types<UserArgs...>, std::index_sequence<UserIndices...>)
+    template<typename FuncWrapper, size_t... NonUserIndices, typename... UserArgs, size_t... UserIndices>
+    void unpackAndInvoke(FuncWrapper& func, CallContext& context, IndexSequence<NonUserIndices...>, Types<UserArgs...>, IndexSequence<UserIndices...>)
     {
         invoke<FuncWrapper, NonUserIndices...>(func, context, TypeSerializer<UserArgs>::fromString(context.input.arguments[UserIndices])...);
     }

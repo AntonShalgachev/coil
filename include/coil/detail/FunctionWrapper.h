@@ -1,15 +1,16 @@
 #pragma once
 
 #include "../Context.h"
+#include "../Optional.h"
+#include "../String.h"
+#include "../StringView.h"
 #include "../TypeName.h"
 #include "../TypeSerializer.h"
 #include "../Types.h"
 #include "FuncTraits.h"
-
-#include <memory>
-#include <optional>
-#include <string>
-#include <string_view>
+#include "Sequence.h"
+#include "TypeTraits.h"
+#include "Utility.h"
 
 namespace coil::detail
 {
@@ -17,31 +18,27 @@ namespace coil::detail
     struct ArgsTraitsImpl
     {
         using UserArgumentTypes = Types<Args...>;
-        using NonUserArgsIndices = std::index_sequence<>;
+        using NonUserArgsIndices = IndexSequence<>;
     };
 
     template<typename... Tail>
     struct ArgsTraitsImpl<Context, Tail...>
     {
         using UserArgumentTypes = Types<Tail...>;
-        using NonUserArgsIndices = std::index_sequence<0>;
+        using NonUserArgsIndices = IndexSequence<0>;
     };
 
     template<typename... Args>
     class FunctionWrapper final
     {
     public:
-        template<typename T>
-        using SimpleDecay = std::remove_cv_t<std::remove_reference_t<T>>;
-        using ArgsTraits = ArgsTraitsImpl<SimpleDecay<Args>...>;
+        using ArgsTraits = ArgsTraitsImpl<DecayT<Args>...>;
 
         template<typename Func, typename C = void>
-        FunctionWrapper(Func func, C* obj = nullptr) : returnType(TypeName<SimpleDecay<std::remove_pointer_t<typename FuncTraits<Func>::ReturnType>>>::name())
+        FunctionWrapper(Func func, C* obj = nullptr) : returnType(TypeName<DecayT<RemovePointerT<typename FuncTraits<Func>::ReturnType>>>::name())
         {
-            static_assert(!std::is_member_function_pointer_v<Func> || !std::is_void_v<C>, "Func can only be a member function if C isn't void");
-
-            m_func = new Func(std::move(func));
-            m_obj = const_cast<std::remove_const_t<C>*>(obj); // this pointer would be casted back to C* in typedCall
+            m_func = new Func(coil::move(func));
+            m_obj = const_cast<RemoveCvT<C>*>(obj); // this pointer would be casted back to C* in typedCall
 
             m_callFunc = &FunctionWrapper<Args...>::template typedCall<Func, C>;
             m_destroyFunc = &FunctionWrapper<Args...>::template typedDestroy<Func>;
@@ -54,36 +51,43 @@ namespace coil::detail
         FunctionWrapper& operator=(FunctionWrapper const& rhs) = delete;
         FunctionWrapper& operator=(FunctionWrapper&& rhs) = delete;
 
-        std::optional<std::string> invoke(Args... args);
+        Optional<String> invoke(Args... args);
 
-        std::string_view returnType;
+        StringView returnType;
 
     private:
-        using CallFuncPtr = std::optional<std::string> (FunctionWrapper::*)(Args... args);
+        using CallFuncPtr = Optional<String> (FunctionWrapper::*)(Args... args);
         using DestroyFuncPtr = void (FunctionWrapper::*)();
 
+#ifdef _MSC_VER
+    #pragma warning(push)
+    #pragma warning(disable : 4702) // unreachable code
+#endif
         template<typename Func, typename C>
-        std::optional<std::string> typedCall(Args... args)
+        Optional<String> typedCall(Args... args)
         {
             Func& func = *static_cast<Func*>(m_func);
             [[maybe_unused]] C* obj = static_cast<C*>(m_obj);
             using R = typename FuncTraits<Func>::ReturnType;
-            if constexpr (std::is_void_v<R>)
+            if constexpr (IsVoidV<R>)
             {
-                if constexpr (std::is_void_v<C>)
-                    func(std::move(args)...);
+                if constexpr (IsVoidV<C>)
+                    func(coil::move(args)...);
                 else
-                    (obj->*func)(std::move(args)...);
+                    (obj->*func)(coil::move(args)...);
                 return {};
             }
             else
             {
-                if constexpr (std::is_void_v<C>)
-                    return TypeSerializer<R>::toString(func(std::move(args)...));
+                if constexpr (IsVoidV<C>)
+                    return TypeSerializer<R>::toString(func(coil::move(args)...));
                 else
-                    return TypeSerializer<R>::toString((obj->*func)(std::move(args)...));
+                    return TypeSerializer<R>::toString((obj->*func)(coil::move(args)...));
             }
         }
+#ifdef _MSC_VER
+    #pragma warning(pop)
+#endif
 
         template<typename Func>
         void typedDestroy()
@@ -118,8 +122,8 @@ namespace coil::detail
     }
 
     template<typename... Args>
-    std::optional<std::string> FunctionWrapper<Args...>::invoke(Args... args)
+    Optional<String> FunctionWrapper<Args...>::invoke(Args... args)
     {
-        return (this->*m_callFunc)(std::move(args)...);
+        return (this->*m_callFunc)(coil::move(args)...);
     }
 }
