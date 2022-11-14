@@ -32,6 +32,13 @@ namespace coil
         return str;                              \
     }
 
+#define COIL_CREATE_TYPE_NAME(T, str) \
+    template<>                               \
+    struct coil::TypeName<T>                 \
+    {                                        \
+        static StringView name() { return str; }            \
+    }
+
 // TODO add a way to define typename inline
 
 namespace coil

@@ -23,7 +23,7 @@ namespace coil
         static String toString(std::string const& value);
     };
 }
-COIL_CREATE_TYPE_NAME_DECLARATION(std::string); // shorthand for types without additional template parameters
+COIL_CREATE_TYPE_NAME(std::string, "string"); // shorthand for types without additional template parameters
 
 // std::string_view
 namespace coil
@@ -35,7 +35,7 @@ namespace coil
         static String toString(std::string_view const& value);
     };
 }
-COIL_CREATE_TYPE_NAME_DECLARATION(std::string_view); // shorthand for types without additional template parameters
+COIL_CREATE_TYPE_NAME(std::string_view, "string"); // shorthand for types without additional template parameters
 
 // std::vector
 namespace coil
@@ -139,4 +139,69 @@ namespace coil
     std::string_view toStdStringView(coil::StringView str);
     coil::String fromStdString(std::string_view str);
     coil::StringView fromStdStringView(std::string_view str);
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+// std::string
+inline coil::Expected<std::string, coil::String> coil::TypeSerializer<std::string>::fromString(coil::Value const& input)
+{
+    if (input.subvalues.size() != 1)
+        return errors::createMismatchedSubvaluesError<std::string>(input, 1);
+
+    return toStdString(input.subvalues[0]);
+}
+
+inline coil::String coil::TypeSerializer<std::string>::toString(std::string const& value)
+{
+    return fromStdString(value);
+}
+
+// std::string_view
+inline coil::Expected<std::string_view, coil::String> coil::TypeSerializer<std::string_view>::fromString(coil::Value const& input)
+{
+    if (input.subvalues.size() != 1)
+        return errors::createMismatchedSubvaluesError<std::string_view>(input, 1);
+
+    return toStdStringView(input.subvalues[0]);
+}
+
+inline coil::String coil::TypeSerializer<std::string_view>::toString(std::string_view const& value)
+{
+    if (value.empty())
+        return coil::String{};
+
+    return fromStdString(value);
+}
+
+// stream operators
+inline std::ostream& coil::operator<<(std::ostream& os, coil::String const& str)
+{
+    return os << coil::StringView{ str };
+}
+
+inline std::ostream& coil::operator<<(std::ostream& os, coil::StringView const& str)
+{
+    return os << toStdStringView(str);
+}
+
+// conversion helpers
+inline std::string coil::toStdString(StringView str)
+{
+    return { str.data(), str.length() };
+}
+
+inline std::string_view coil::toStdStringView(StringView str)
+{
+    return { str.data(), str.length() };
+}
+
+inline coil::String coil::fromStdString(std::string_view str)
+{
+    return { str.data(), str.length() };
+}
+
+inline coil::StringView coil::fromStdStringView(std::string_view str)
+{
+    return { str.data(), str.length() };
 }

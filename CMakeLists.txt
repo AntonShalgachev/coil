@@ -74,7 +74,6 @@ add_library(coil
     "src/New.cpp"
     "src/DefaultLexer.cpp"
     "src/Buffer.cpp"
-    "src/StdLibCompat.cpp"
 )
 add_library(coil::coil ALIAS coil)
 
