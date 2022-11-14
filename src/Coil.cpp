@@ -475,7 +475,7 @@ namespace coil
         return !(*this == rhs);
     }
 
-/// TypeSerializer.h ///
+    /// TypeSerializer.h ///
     namespace errors
     {
         Unexpected<String> createGenericError(StringView typeName, Value const& input, StringView details)

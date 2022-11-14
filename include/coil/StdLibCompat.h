@@ -177,7 +177,7 @@ inline coil::String coil::TypeSerializer<std::string_view>::toString(std::string
 // stream operators
 inline std::ostream& coil::operator<<(std::ostream& os, coil::String const& str)
 {
-    return os << coil::StringView{ str };
+    return os << coil::StringView{str};
 }
 
 inline std::ostream& coil::operator<<(std::ostream& os, coil::StringView const& str)
@@ -188,20 +188,20 @@ inline std::ostream& coil::operator<<(std::ostream& os, coil::StringView const& 
 // conversion helpers
 inline std::string coil::toStdString(StringView str)
 {
-    return { str.data(), str.length() };
+    return {str.data(), str.length()};
 }
 
 inline std::string_view coil::toStdStringView(StringView str)
 {
-    return { str.data(), str.length() };
+    return {str.data(), str.length()};
 }
 
 inline coil::String coil::fromStdString(std::string_view str)
 {
-    return { str.data(), str.length() };
+    return {str.data(), str.length()};
 }
 
 inline coil::StringView coil::fromStdStringView(std::string_view str)
 {
-    return { str.data(), str.length() };
+    return {str.data(), str.length()};
 }
