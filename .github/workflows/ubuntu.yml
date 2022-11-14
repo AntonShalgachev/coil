@@ -26,7 +26,7 @@ jobs:
         gcc --version
         cmake --version
     - name: CMake
-      run: cmake -B ${{github.workspace}}/build -DCOIL_COMPILATION_TESTS=ON -DCOIL_CATCH_EXCEPTIONS=${{matrix.exceptions}} -DCOIL_RUNTIME_TESTS=ON -DCOIL_EXAMPLES=ON -DCMAKE_BUILD_TYPE=${{matrix.config}}
+      run: cmake -B ${{github.workspace}}/build -DCOIL_COMPILATION_TESTS=ON -DCOIL_CATCH_EXCEPTIONS=${{matrix.exceptions}} -DCOIL_RUNTIME_TESTS=ON -DCOIL_EXAMPLES=ON -DCOIL_ENABLE_ASSERTS=ON -DCMAKE_BUILD_TYPE=${{matrix.config}}
     - name: Build
       run: cmake --build ${{github.workspace}}/build --parallel 10
     - name: CTest

@@ -19,10 +19,10 @@ jobs:
     - uses: actions/checkout@v2
     - name: CMake (cl)
       if: matrix.compiler == 'cl'
-      run: cmake -B ${{github.workspace}}/build -G "Visual Studio 16 2019" -DCOIL_COMPILATION_TESTS=ON -DCOIL_CATCH_EXCEPTIONS=${{matrix.exceptions}} -DCOIL_RUNTIME_TESTS=ON -DCOIL_EXAMPLES=ON -DCMAKE_TRY_COMPILE_CONFIGURATION=${{matrix.config}}
+      run: cmake -B ${{github.workspace}}/build -G "Visual Studio 16 2019" -DCOIL_COMPILATION_TESTS=ON -DCOIL_CATCH_EXCEPTIONS=${{matrix.exceptions}} -DCOIL_RUNTIME_TESTS=ON -DCOIL_EXAMPLES=ON -DCOIL_ENABLE_ASSERTS=ON -DCMAKE_TRY_COMPILE_CONFIGURATION=${{matrix.config}}
     - name: CMake (clang)
       if: matrix.compiler == 'clang'
-      run: cmake -B ${{github.workspace}}/build -G "Visual Studio 16 2019" -T ClangCL -DCOIL_COMPILATION_TESTS=ON -DCOIL_CATCH_EXCEPTIONS=${{matrix.exceptions}} -DCOIL_RUNTIME_TESTS=ON -DCOIL_EXAMPLES=ON -DCMAKE_TRY_COMPILE_CONFIGURATION=${{matrix.config}}
+      run: cmake -B ${{github.workspace}}/build -G "Visual Studio 16 2019" -T ClangCL -DCOIL_COMPILATION_TESTS=ON -DCOIL_CATCH_EXCEPTIONS=${{matrix.exceptions}} -DCOIL_RUNTIME_TESTS=ON -DCOIL_EXAMPLES=ON -DCOIL_ENABLE_ASSERTS=ON -DCMAKE_TRY_COMPILE_CONFIGURATION=${{matrix.config}}
     - name: Build
       run: cmake --build ${{github.workspace}}/build --config ${{matrix.config}} --parallel 10
     - name: CTest
@@ -40,10 +40,10 @@ jobs:
     - uses: actions/checkout@v2
     - name: CMake (cl)
       if: matrix.compiler == 'cl'
-      run: cmake -B ${{github.workspace}}/build -G "Visual Studio 17 2022" -DCOIL_COMPILATION_TESTS=ON -DCOIL_CATCH_EXCEPTIONS=${{matrix.exceptions}} -DCOIL_RUNTIME_TESTS=ON -DCOIL_EXAMPLES=ON -DCMAKE_TRY_COMPILE_CONFIGURATION=${{matrix.config}}
+      run: cmake -B ${{github.workspace}}/build -G "Visual Studio 17 2022" -DCOIL_COMPILATION_TESTS=ON -DCOIL_CATCH_EXCEPTIONS=${{matrix.exceptions}} -DCOIL_RUNTIME_TESTS=ON -DCOIL_EXAMPLES=ON -DCOIL_ENABLE_ASSERTS=ON -DCMAKE_TRY_COMPILE_CONFIGURATION=${{matrix.config}}
     - name: CMake (clang)
       if: matrix.compiler == 'clang'
-      run: cmake -B ${{github.workspace}}/build -G "Visual Studio 17 2022" -T ClangCL -DCOIL_COMPILATION_TESTS=ON -DCOIL_CATCH_EXCEPTIONS=${{matrix.exceptions}} -DCOIL_RUNTIME_TESTS=ON -DCOIL_EXAMPLES=ON -DCMAKE_TRY_COMPILE_CONFIGURATION=${{matrix.config}}
+      run: cmake -B ${{github.workspace}}/build -G "Visual Studio 17 2022" -T ClangCL -DCOIL_COMPILATION_TESTS=ON -DCOIL_CATCH_EXCEPTIONS=${{matrix.exceptions}} -DCOIL_RUNTIME_TESTS=ON -DCOIL_EXAMPLES=ON -DCOIL_ENABLE_ASSERTS=ON -DCMAKE_TRY_COMPILE_CONFIGURATION=${{matrix.config}}
     - name: Build
       run: cmake --build ${{github.workspace}}/build --config ${{matrix.config}} --parallel 10
     - name: CTest
