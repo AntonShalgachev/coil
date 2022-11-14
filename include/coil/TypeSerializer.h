@@ -13,23 +13,20 @@ namespace coil
 {
     namespace errors
     {
+        Unexpected<String> createGenericError(StringView typeName, Value const& input, StringView details = {});
+
         template<typename T>
         Unexpected<String> createGenericError(Value const& input, StringView details = {})
         {
-            StringView typeName = TypeName<T>::name();
-
-            String representation = input.str();
-
-            if (details.empty())
-                return makeUnexpected(sprintf("Unable to convert '%s' to type '%.*s'", representation.cStr(), typeName.slength(), typeName.data()));
-
-            return makeUnexpected(sprintf("Unable to convert '%s' to type '%.*s': %.*s", representation.cStr(), typeName.slength(), typeName.data(), details.slength(), details.data()));
+            return createGenericError(TypeName<T>::name(), input, details);
         }
+
+        Unexpected<String> createMismatchedSubvaluesError(StringView typeName, Value const& input, size_t expectedSubvalues);
 
         template<typename T>
         Unexpected<String> createMismatchedSubvaluesError(Value const& input, size_t expectedSubvalues)
         {
-            return createGenericError<T>(input, sprintf("Expected %zu subvalues, got %zu", expectedSubvalues, input.subvalues.size()));
+            return createMismatchedSubvaluesError(TypeName<T>::name(), input, expectedSubvalues);
         }
     }
 

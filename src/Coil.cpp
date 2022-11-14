@@ -476,6 +476,24 @@ namespace coil
     }
 
 /// TypeSerializer.h ///
+    namespace errors
+    {
+        Unexpected<String> createGenericError(StringView typeName, Value const& input, StringView details)
+        {
+            String representation = input.str();
+
+            if (details.empty())
+                return makeUnexpected(sprintf("Unable to convert '%s' to type '%.*s'", representation.cStr(), typeName.slength(), typeName.data()));
+
+            return makeUnexpected(sprintf("Unable to convert '%s' to type '%.*s': %.*s", representation.cStr(), typeName.slength(), typeName.data(), details.slength(), details.data()));
+        }
+
+        Unexpected<String> createMismatchedSubvaluesError(StringView typeName, Value const& input, size_t expectedSubvalues)
+        {
+            return createGenericError(typeName, input, sprintf("Expected %zu subvalues, got %zu", expectedSubvalues, input.subvalues.size()));
+        }
+    }
+
 #define DEFINE_ARITHMETIC_TYPE_SERIALIZER(Type)                                       \
     coil::Expected<Type, String> TypeSerializer<Type>::fromString(Value const& input) \
     {                                                                                 \
