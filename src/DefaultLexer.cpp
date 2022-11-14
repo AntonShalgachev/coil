@@ -1,5 +1,7 @@
 #include "coil/DefaultLexer.h"
 
+#include "coil/Extern.h"
+
 #include "coil/ExecutionInput.h"
 #include "coil/Expected.h"
 #include "coil/Optional.h"
