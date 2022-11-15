@@ -2,10 +2,10 @@
 <AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
 
   <Type Name="coil::Vector&lt;*&gt;">
-    <DisplayString>size={m_buffer.m_size} capacity={m_buffer.m_count}</DisplayString>
+    <DisplayString>size={m_buffer.m_size} capacity={m_buffer.m_capacity}</DisplayString>
     <Expand>
       <Item Name="[size]]">m_buffer.m_size</Item>
-      <Item Name="[capacity]">m_buffer.m_count</Item>
+      <Item Name="[capacity]">m_buffer.m_capacity</Item>
       <ArrayItems>
         <Size>m_buffer.m_size</Size>
         <ValuePointer>($T1*)m_buffer.m_ptr</ValuePointer>
@@ -18,7 +18,7 @@
     <StringView>(char*)m_buffer.m_ptr,[m_buffer.m_size > 0 ? (m_buffer.m_size-1) : 0]na</StringView>
     <Expand>
       <Item Name="[size]]">m_buffer.m_size > 0 ? (m_buffer.m_size-1) : 0</Item>
-      <Item Name="[capacity]">m_buffer.m_count-1</Item>
+      <Item Name="[capacity]">m_buffer.m_capacity-1</Item>
       <ArrayItems>
         <Size>m_buffer.m_size > 0 ? (m_buffer.m_size-1) : 0</Size>
         <ValuePointer>(char*)m_buffer.m_ptr</ValuePointer>
