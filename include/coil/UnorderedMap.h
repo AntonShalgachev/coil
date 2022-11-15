@@ -166,33 +166,30 @@ namespace coil
                 return;
 
             COIL_ASSERT(nodeIndex < m_nodes.size());
-            Node& node = m_nodes[nodeIndex];
+            Node& erasedNode = m_nodes[nodeIndex];
 
-            COIL_ASSERT(node.bucket < m_buckets.size());
+            COIL_ASSERT(erasedNode.bucket < m_buckets.size());
 
-            if (node.prev != invalidIndex)
+            if (erasedNode.prev != invalidIndex)
             {
-                COIL_ASSERT(m_buckets[node.bucket] != nodeIndex);
-                COIL_ASSERT(node.prev < m_nodes.size());
-                m_nodes[node.prev].next = node.next;
+                COIL_ASSERT(m_buckets[erasedNode.bucket] != nodeIndex);
+                COIL_ASSERT(erasedNode.prev < m_nodes.size());
+                m_nodes[erasedNode.prev].next = erasedNode.next;
             }
             else
             {
-                COIL_ASSERT(m_buckets[node.bucket] == nodeIndex);
-                m_buckets[node.bucket] = node.next;
+                COIL_ASSERT(m_buckets[erasedNode.bucket] == nodeIndex);
+                m_buckets[erasedNode.bucket] = erasedNode.next;
             }
 
-            if (node.next != invalidIndex)
+            if (erasedNode.next != invalidIndex)
             {
-                COIL_ASSERT(node.next < m_nodes.size());
-                m_nodes[node.next].prev = node.prev;
+                COIL_ASSERT(erasedNode.next < m_nodes.size());
+                m_nodes[erasedNode.next].prev = erasedNode.prev;
             }
 
-            node.prev = invalidIndex;
-            node.next = invalidIndex;
-
-            COIL_ASSERT(nodeIndex < m_nodes.size());
-            Node& erasedNode = m_nodes[nodeIndex];
+            erasedNode.prev = invalidIndex;
+            erasedNode.next = invalidIndex;
 
             COIL_ASSERT(!m_nodes.empty());
 
