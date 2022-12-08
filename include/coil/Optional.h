@@ -99,7 +99,7 @@ coil::Optional<T>::Optional(Optional&& rhs) : Optional()
 }
 
 template<typename T>
-coil::Optional<T>::~Optional()
+coil::Optional<T>::~Optional<T>()
 {
     destroy();
 }

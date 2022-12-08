@@ -24,7 +24,7 @@ extern template coil::Unexpected<coil::NamedArgs::Error> coil::makeUnexpected(co
 // can't fully instantiate coil::Vector<coil::AnyFunctor>
 extern template coil::Vector<coil::AnyFunctor>::Vector(size_t);
 extern template void coil::Vector<coil::AnyFunctor>::pushBack(coil::AnyFunctor);
-extern template coil::Vector<coil::AnyFunctor>::~Vector();
+extern template coil::Vector<coil::AnyFunctor>::~Vector<coil::AnyFunctor>();
 
 extern template class coil::UniquePtr<coil::Lexer>;
 

@@ -88,7 +88,7 @@ template<typename T>
 coil::Vector<T>::Vector(Vector&& rhs) = default;
 
 template<typename T>
-coil::Vector<T>::~Vector()
+coil::Vector<T>::~Vector<T>()
 {
     clear();
 }
