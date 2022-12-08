@@ -116,7 +116,7 @@ namespace coil::detail
     }
 
     template<typename... Args>
-    coil::detail::FunctionWrapper<Args...>::~FunctionWrapper()
+    coil::detail::FunctionWrapper<Args...>::~FunctionWrapper<Args...>()
     {
         (this->*m_destroyFunc)();
     }

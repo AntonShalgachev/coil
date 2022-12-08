@@ -33,7 +33,7 @@ template coil::Unexpected<coil::NamedArgs::Error> coil::makeUnexpected(coil::Nam
 
 template coil::Vector<coil::AnyFunctor>::Vector(size_t);
 template void coil::Vector<coil::AnyFunctor>::pushBack(coil::AnyFunctor);
-template coil::Vector<coil::AnyFunctor>::~Vector();
+template coil::Vector<coil::AnyFunctor>::~Vector<coil::AnyFunctor>();
 
 template class coil::UniquePtr<coil::Lexer>;
 

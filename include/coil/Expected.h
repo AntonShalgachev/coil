@@ -93,7 +93,7 @@ coil::Expected<T, E>::Expected(Expected<T, E>&& rhs) noexcept
 }
 
 template<typename T, typename E>
-coil::Expected<T, E>::~Expected()
+coil::Expected<T, E>::~Expected<T, E>()
 {
     destruct();
 }
