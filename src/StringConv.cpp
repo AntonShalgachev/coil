@@ -30,6 +30,9 @@ namespace
     template<typename T>
     bool signedIntegerFromString(coil::StringView str, T& value)
     {
+        if (str.empty())
+            return false;
+
         coil::String strCopy = coil::String{ str }; // make a C-string to avoid reimplementing strtoX functions
 
         char* end = nullptr;
@@ -37,13 +40,16 @@ namespace
         value = strtoxfunc<T>(strCopy.cStr(), &end, 10);
         if (errno)
             return false;
-        return end == str.end();
+        return end == strCopy.end();
     }
 
     template<typename T>
     bool unsignedIntegerFromString(coil::StringView str, T& value)
     {
-        if (!str.empty() && str[0] == '-')
+        if (str.empty())
+            return false;
+
+        if (str[0] == '-')
             return false;
 
         coil::String strCopy = coil::String{ str }; // make a C-string to avoid reimplementing strtoX functions
@@ -53,12 +59,15 @@ namespace
         value = strtoxfunc<T>(strCopy.cStr(), &end, 10);
         if (errno)
             return false;
-        return end == str.end();
+        return end == strCopy.end();
     }
 
     template<typename T>
     bool floatFromString(coil::StringView str, T& value)
     {
+        if (str.empty())
+            return false;
+
         coil::String strCopy = coil::String{ str }; // make a C-string to avoid reimplementing strtoX functions
 
         char* end = nullptr;
@@ -66,7 +75,7 @@ namespace
         value = strtoxfunc<T>(strCopy.cStr(), &end);
         if (errno)
             return false;
-        return end == str.end();
+        return end == strCopy.end();
     }
 
     template<typename T>
