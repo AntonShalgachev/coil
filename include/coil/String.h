@@ -14,7 +14,7 @@ namespace coil
     {
     public:
         String(char const* str = "");
-        String(StringView str);
+        explicit String(StringView str);
         String(char const* str, size_t length);
 
         size_t length() const;

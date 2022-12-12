@@ -4,64 +4,78 @@
 #include "coil/StringView.h"
 #include "coil/Utils.h"
 
-#include "coil/detail/StrToX.h"
-
 #include <errno.h>
 #include <limits.h>
+#include <stdlib.h>
 
 namespace
 {
     template<typename T>
     auto strtoxfunc = nullptr;
     template<>
-    auto strtoxfunc<float> = &coil::strtof;
+    auto strtoxfunc<float> = &strtof;
     template<>
-    auto strtoxfunc<double> = &coil::strtod;
+    auto strtoxfunc<double> = &strtod;
     template<>
-    auto strtoxfunc<long double> = &coil::strtold;
+    auto strtoxfunc<long double> = &strtold;
     template<>
-    auto strtoxfunc<long> = &coil::strtol;
+    auto strtoxfunc<long> = &strtol;
     template<>
-    auto strtoxfunc<unsigned long> = &coil::strtoul;
+    auto strtoxfunc<unsigned long> = &strtoul;
     template<>
-    auto strtoxfunc<long long> = &coil::strtoll;
+    auto strtoxfunc<long long> = &strtoll;
     template<>
-    auto strtoxfunc<unsigned long long> = &coil::strtoull;
+    auto strtoxfunc<unsigned long long> = &strtoull;
 
     template<typename T>
     bool signedIntegerFromString(coil::StringView str, T& value)
     {
+        if (str.empty())
+            return false;
+
+        coil::String strCopy = coil::String{str}; // make a C-string to avoid reimplementing strtoX functions
+
         char* end = nullptr;
         errno = 0;
-        value = strtoxfunc<T>(str.begin(), str.end(), &end, 10);
+        value = strtoxfunc<T>(strCopy.cStr(), &end, 10);
         if (errno)
             return false;
-        return end == str.end();
+        return end == strCopy.end();
     }
 
     template<typename T>
     bool unsignedIntegerFromString(coil::StringView str, T& value)
     {
-        if (!str.empty() && str[0] == '-')
+        if (str.empty())
             return false;
+
+        if (str[0] == '-')
+            return false;
+
+        coil::String strCopy = coil::String{str}; // make a C-string to avoid reimplementing strtoX functions
 
         char* end = nullptr;
         errno = 0;
-        value = strtoxfunc<T>(str.begin(), str.end(), &end, 10);
+        value = strtoxfunc<T>(strCopy.cStr(), &end, 10);
         if (errno)
             return false;
-        return end == str.end();
+        return end == strCopy.end();
     }
 
     template<typename T>
     bool floatFromString(coil::StringView str, T& value)
     {
+        if (str.empty())
+            return false;
+
+        coil::String strCopy = coil::String{str}; // make a C-string to avoid reimplementing strtoX functions
+
         char* end = nullptr;
         errno = 0;
-        value = strtoxfunc<T>(str.begin(), str.end(), &end);
+        value = strtoxfunc<T>(strCopy.cStr(), &end);
         if (errno)
             return false;
-        return end == str.end();
+        return end == strCopy.end();
     }
 
     template<typename T>

@@ -40,7 +40,7 @@ namespace coil
 
         static coil::String toString(E const& value)
         {
-            return coil::fromStdStringView(magic_enum::enum_name(value));
+            return coil::fromStdString(magic_enum::enum_name(value));
         }
     };
 
