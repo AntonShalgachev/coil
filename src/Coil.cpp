@@ -210,7 +210,7 @@ namespace coil
 
     Bindings::Command const& Bindings::add(StringView name, Vector<AnyFunctor> anyFunctors)
     {
-        auto it = m_commands.insertOrAssign(name, Command{StringView{}, coil::move(anyFunctors)});
+        auto it = m_commands.insertOrAssign(String{name}, Command{StringView{}, coil::move(anyFunctors)});
         it->value().name = it->key();
 
         return it->value();
@@ -582,7 +582,7 @@ namespace coil
 
     String coil::TypeSerializer<StringView>::toString(StringView const& value)
     {
-        return value;
+        return String{value};
     }
 
     String coil::TypeSerializer<char const*>::toString(char const* const& value)

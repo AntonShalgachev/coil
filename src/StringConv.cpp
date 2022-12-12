@@ -33,7 +33,7 @@ namespace
         if (str.empty())
             return false;
 
-        coil::String strCopy = coil::String{ str }; // make a C-string to avoid reimplementing strtoX functions
+        coil::String strCopy = coil::String{str}; // make a C-string to avoid reimplementing strtoX functions
 
         char* end = nullptr;
         errno = 0;
@@ -52,7 +52,7 @@ namespace
         if (str[0] == '-')
             return false;
 
-        coil::String strCopy = coil::String{ str }; // make a C-string to avoid reimplementing strtoX functions
+        coil::String strCopy = coil::String{str}; // make a C-string to avoid reimplementing strtoX functions
 
         char* end = nullptr;
         errno = 0;
@@ -68,7 +68,7 @@ namespace
         if (str.empty())
             return false;
 
-        coil::String strCopy = coil::String{ str }; // make a C-string to avoid reimplementing strtoX functions
+        coil::String strCopy = coil::String{str}; // make a C-string to avoid reimplementing strtoX functions
 
         char* end = nullptr;
         errno = 0;
