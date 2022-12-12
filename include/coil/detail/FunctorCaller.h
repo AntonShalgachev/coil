@@ -1,10 +1,9 @@
 #pragma once
 
-// TODO don't use ".." (everywhere)
-#include "../Assert.h"
-#include "../String.h"
-#include "../TypeSerializer.h"
-#include "../Types.h"
+#include "Assert.h"
+#include "String.h"
+#include "TypeSerializer.h"
+#include "Types.h"
 #include "CallContext.h"
 #include "Sequence.h"
 #include "Utility.h"

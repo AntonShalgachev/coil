@@ -2,7 +2,7 @@
 
 #include "StringView.h"
 #include "TypeName.h"
-#include "detail/Sequence.h"
+#include "Sequence.h"
 
 namespace coil
 {

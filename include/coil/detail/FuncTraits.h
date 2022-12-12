@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../Context.h"
-#include "../Types.h"
+#include "Context.h"
+#include "Types.h"
 #include "TypeTraits.h"
 
 namespace coil::detail

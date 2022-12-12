@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 
-#include "coil/Vector.h"
+#include "coil/detail/Vector.h"
 
 namespace
 {

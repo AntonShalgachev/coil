@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Assert.h"
-#include "detail/New.h"
-#include "detail/Utility.h"
+#include "New.h"
+#include "Utility.h"
 
 #include <stddef.h>
 

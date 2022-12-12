@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 
-#include "coil/Buffer.h"
+#include "coil/detail/Buffer.h"
 
 namespace
 {

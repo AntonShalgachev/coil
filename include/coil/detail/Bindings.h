@@ -5,8 +5,8 @@
 #include "StringView.h"
 #include "UniquePtr.h"
 #include "UnorderedMap.h"
-#include "detail/FuncTraits.h"
-#include "detail/Utility.h"
+#include "FuncTraits.h"
+#include "Utility.h"
 
 namespace coil
 {

@@ -7,7 +7,7 @@
 #include "UniquePtr.h"
 #include "Value.h"
 #include "Variable.h"
-#include "detail/Utility.h"
+#include "Utility.h"
 
 extern template class coil::Vector<coil::String>;
 extern template class coil::Optional<coil::String>;

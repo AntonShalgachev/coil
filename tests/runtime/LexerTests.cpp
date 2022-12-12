@@ -2,8 +2,8 @@
 
 #include "gtest/gtest.h"
 
-#include "coil/DefaultLexer.h"
-#include "coil/String.h"
+#include "coil/detail/DefaultLexer.h"
+#include "coil/detail/String.h"
 
 #include <list>
 #include <random>

@@ -5,9 +5,8 @@
 #include "TypeName.h"
 #include "Utils.h"
 #include "Value.h"
-#include "detail/Utility.h"
-
-#include "detail/StringConv.h"
+#include "Utility.h"
+#include "StringConv.h"
 
 namespace coil
 {

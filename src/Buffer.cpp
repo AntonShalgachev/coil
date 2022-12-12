@@ -1,4 +1,4 @@
-#include "coil/Buffer.h"
+#include "coil/detail/Buffer.h"
 
 #include <string.h>
 

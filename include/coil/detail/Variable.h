@@ -2,7 +2,7 @@
 
 #include "Context.h"
 #include "Overloaded.h"
-#include "detail/Utility.h"
+#include "Utility.h"
 
 namespace coil
 {

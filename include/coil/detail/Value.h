@@ -5,7 +5,7 @@
 #include "StringView.h"
 #include "TypeName.h"
 #include "Vector.h"
-#include "detail/Functional.h"
+#include "Functional.h"
 
 namespace coil
 {

@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
 
-#include "coil/String.h"
-#include "coil/StringView.h"
+#include "coil/detail/String.h"
+#include "coil/detail/StringView.h"
 
 namespace
 {

@@ -1,10 +1,10 @@
 #pragma once
 
 #include "StringView.h"
-#include "detail/CallContext.h"
-#include "detail/FunctionWrapper.h"
-#include "detail/FunctorCaller.h"
-#include "detail/Utility.h"
+#include "CallContext.h"
+#include "FunctionWrapper.h"
+#include "FunctorCaller.h"
+#include "Utility.h"
 
 namespace coil
 {

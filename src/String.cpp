@@ -1,7 +1,7 @@
-#include "coil/String.h"
+#include "coil/detail/String.h"
 
-#include "coil/Assert.h"
-#include "coil/StringView.h"
+#include "coil/detail/Assert.h"
+#include "coil/detail/StringView.h"
 
 #include <string.h>
 

@@ -3,7 +3,7 @@
 #include "Assert.h"
 #include "Hash.h"
 #include "Vector.h"
-#include "detail/Utility.h"
+#include "Utility.h"
 
 namespace coil
 {
