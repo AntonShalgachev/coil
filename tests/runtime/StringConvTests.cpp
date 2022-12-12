@@ -443,14 +443,17 @@ TEST(StringConvTests, TestFloatFromStringNoDigits)
     {
         float value = 0.0f;
         EXPECT_FALSE(coil::fromString("string", value));
+        EXPECT_FALSE(coil::fromString("", value));
     }
     {
         double value = 0.0;
         EXPECT_FALSE(coil::fromString("string", value));
+        EXPECT_FALSE(coil::fromString("", value));
     }
     {
         long double value = 0.0l;
         EXPECT_FALSE(coil::fromString("string", value));
+        EXPECT_FALSE(coil::fromString("", value));
     }
 }
 
