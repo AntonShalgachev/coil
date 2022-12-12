@@ -1,8 +1,8 @@
 #pragma once
 
+#include "Sequence.h"
 #include "StringView.h"
 #include "TypeName.h"
-#include "Sequence.h"
 
 namespace coil
 {

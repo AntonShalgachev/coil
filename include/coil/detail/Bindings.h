@@ -1,11 +1,11 @@
 #pragma once
 
 #include "AnyFunctor.h"
+#include "FuncTraits.h"
 #include "String.h"
 #include "StringView.h"
 #include "UniquePtr.h"
 #include "UnorderedMap.h"
-#include "FuncTraits.h"
 #include "Utility.h"
 
 namespace coil

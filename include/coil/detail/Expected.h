@@ -1,9 +1,9 @@
 #pragma once
 
 #include "Assert.h"
-#include "Unexpected.h"
 #include "New.h"
 #include "TypeTraits.h"
+#include "Unexpected.h"
 #include "Utility.h"
 
 namespace coil
