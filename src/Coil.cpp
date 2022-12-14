@@ -5,6 +5,7 @@
 #include "coil/detail/ExecutionResult.h"
 #include "coil/detail/Expected.h"
 #include "coil/detail/Lexer.h"
+#include "coil/detail/StringConv.h"
 #include "coil/detail/Utils.h"
 
 #include "coil/detail/FunctorCaller.h"

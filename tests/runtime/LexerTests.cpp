@@ -4,6 +4,7 @@
 
 #include "coil/detail/DefaultLexer.h"
 #include "coil/detail/String.h"
+#include "coil/detail/StringConv.h"
 
 #include <list>
 #include <random>

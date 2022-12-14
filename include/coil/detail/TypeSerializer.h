@@ -2,7 +2,6 @@
 
 #include "Expected.h"
 #include "String.h"
-#include "StringConv.h"
 #include "TypeName.h"
 #include "Utility.h"
 #include "Utils.h"
