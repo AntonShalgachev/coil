@@ -12,6 +12,6 @@ namespace coil
         ExecutionInput input;
         Vector<String> errors;
         Optional<String> returnValue;
-        String output; // TODO use a custom string class to avoid reallocations when appending
+        String output;
     };
 }
