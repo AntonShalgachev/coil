@@ -2,20 +2,20 @@ cmake_minimum_required(VERSION 3.15.0 FATAL_ERROR)
 
 project(coil LANGUAGES C CXX VERSION 1.0)
 
-set(COIL_CATCH_EXCEPTIONS OFF CACHE BOOL "Configure Coil to catch exceptions in commands")
-set(COIL_ENABLE_ASSERTS OFF CACHE BOOL "Configure Coil to enable asserts")
-set(COIL_TYPE_NAME_USE_INTEGER_ALIAS OFF CACHE BOOL "Configure Coil to use type aliases as integer type names (e.g. 'uint64' instead of 'unsigned long')")
+option(COIL_CATCH_EXCEPTIONS "Configure Coil to catch exceptions in commands" OFF)
+option(COIL_ENABLE_ASSERTS "Configure Coil to enable asserts" OFF)
+option(COIL_TYPE_NAME_USE_INTEGER_ALIAS "Configure Coil to use type aliases as integer type names (e.g. 'uint64' instead of 'unsigned long')" OFF)
 
-set(COIL_EXAMPLES OFF CACHE BOOL "Coil examples")
-set(COIL_RUNTIME_TESTS OFF CACHE BOOL "Coil runtime tests")
-set(COIL_COMPILATION_TESTS OFF CACHE BOOL "Run Coil compilation tests within CMake")
+option(COIL_EXAMPLES "Coil examples" OFF)
+option(COIL_RUNTIME_TESTS "Coil runtime tests" OFF)
+option(COIL_COMPILATION_TESTS "Run Coil compilation tests within CMake" OFF)
 
-set(COIL_COMPILATION_TIME_BENCHMARK OFF CACHE BOOL "Coil compilation time benchmark")
-set(COIL_COMPILATION_TIME_BENCHMARK_TRACE OFF CACHE BOOL "Generate Clang trace files for Coil compilation time benchmark")
-set(COIL_COMPILATION_TIME_BENCHMARK_WITH_COIL OFF CACHE BOOL "Use Coil library for compilation time benchmark")
-set(COIL_COMPILATION_TIME_BENCHMARK_WITH_MANUAL OFF CACHE BOOL "Use manually-written bindings for compilation time benchmark")
-set(COIL_COMPILATION_TIME_BENCHMARK_PCH OFF CACHE BOOL "Enable PCH for the compilation time benchmark")
-set(COIL_COMPILATION_TIME_BENCHMARK_EXTERN_TEMPLATES OFF CACHE BOOL "Implement frequently-instantiated templates in a single cpp file (Common.cpp)")
+option(COIL_COMPILATION_TIME_BENCHMARK "Coil compilation time benchmark" OFF)
+option(COIL_COMPILATION_TIME_BENCHMARK_TRACE "Generate Clang trace files for Coil compilation time benchmark" OFF)
+option(COIL_COMPILATION_TIME_BENCHMARK_WITH_COIL "Use Coil library for compilation time benchmark" OFF)
+option(COIL_COMPILATION_TIME_BENCHMARK_WITH_MANUAL "Use manually-written bindings for compilation time benchmark" OFF)
+option(COIL_COMPILATION_TIME_BENCHMARK_PCH "Enable PCH for the compilation time benchmark" OFF)
+option(COIL_COMPILATION_TIME_BENCHMARK_EXTERN_TEMPLATES "Implement frequently-instantiated templates in a single cpp file (Common.cpp)" OFF)
 
 add_library(coil
     # TODO sort
