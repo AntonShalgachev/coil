@@ -16,7 +16,7 @@ jobs:
         compiler: [cl, clang]
         exceptions: ['ON', 'OFF']
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: CMake (cl)
       if: matrix.compiler == 'cl'
       run: cmake -B ${{github.workspace}}/build -G "Visual Studio 16 2019" -DCOIL_COMPILATION_TESTS=ON -DCOIL_CATCH_EXCEPTIONS=${{matrix.exceptions}} -DCOIL_RUNTIME_TESTS=ON -DCOIL_EXAMPLES=ON -DCOIL_ENABLE_ASSERTS=ON -DCMAKE_TRY_COMPILE_CONFIGURATION=${{matrix.config}}
@@ -37,7 +37,7 @@ jobs:
         compiler: [cl, clang]
         exceptions: ["ON", "OFF"]
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: CMake (cl)
       if: matrix.compiler == 'cl'
       run: cmake -B ${{github.workspace}}/build -G "Visual Studio 17 2022" -DCOIL_COMPILATION_TESTS=ON -DCOIL_CATCH_EXCEPTIONS=${{matrix.exceptions}} -DCOIL_RUNTIME_TESTS=ON -DCOIL_EXAMPLES=ON -DCOIL_ENABLE_ASSERTS=ON -DCMAKE_TRY_COMPILE_CONFIGURATION=${{matrix.config}}
