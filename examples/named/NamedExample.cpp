@@ -28,7 +28,7 @@ namespace
 
     struct Item
     {
-        std::uint64_t id = 0;
+        std::size_t id = 0;
         std::string_view name;
         std::size_t amount = 1;
         Source source = Source::None;
@@ -70,7 +70,7 @@ namespace
                 auto typeName = magic_enum::enum_name(item.type);
                 if (doesItemMatch(item))
                 {
-                    context.loglinef("%llu\t%.*s\t%llu\t%.*s\t%.*s",
+                    context.loglinef("%zu\t%.*s\t%zu\t%.*s\t%.*s",
                                      item.id,
                                      static_cast<int>(item.name.size()),
                                      item.name.data(),
@@ -83,7 +83,7 @@ namespace
             }
         }
 
-        void add(coil::Context context, std::uint64_t id, std::string_view name)
+        void add(coil::Context context, std::size_t id, std::string_view name)
         {
             auto namedArgs = context.namedArgs();
 
