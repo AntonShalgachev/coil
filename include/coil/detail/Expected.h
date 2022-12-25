@@ -1,10 +1,10 @@
 #pragma once
 
 #include "Assert.h"
+#include "New.h"
+#include "TypeTraits.h"
 #include "Unexpected.h"
-#include "detail/New.h"
-#include "detail/TypeTraits.h"
-#include "detail/Utility.h"
+#include "Utility.h"
 
 namespace coil
 {

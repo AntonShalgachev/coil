@@ -1,6 +1,6 @@
-#include "coil/StringView.h"
+#include "coil/detail/StringView.h"
 
-#include "coil/Assert.h"
+#include "coil/detail/Assert.h"
 
 #include <string.h>
 

@@ -2,8 +2,8 @@
 
 #include "Assert.h"
 #include "Hash.h"
+#include "Utility.h"
 #include "Vector.h"
-#include "detail/Utility.h"
 
 namespace coil
 {

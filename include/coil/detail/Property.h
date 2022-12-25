@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Overloaded.h"
-#include "detail/TypeTraits.h"
-#include "detail/Utility.h"
+#include "TypeTraits.h"
+#include "Utility.h"
 
 namespace coil
 {

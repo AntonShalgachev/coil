@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Config.h"
 #include "StringView.h"
 
 namespace coil
@@ -41,8 +40,6 @@ namespace coil
             return str;               \
         }                             \
     }
-
-// TODO add a way to define typename inline
 
 namespace coil
 {

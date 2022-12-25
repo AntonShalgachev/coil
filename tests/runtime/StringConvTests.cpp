@@ -1,9 +1,9 @@
 #include "Common.h"
 #include "gtest/gtest.h"
 
-#include "coil/String.h"
-#include "coil/StringView.h"
+#include "coil/detail/String.h"
 #include "coil/detail/StringConv.h"
+#include "coil/detail/StringView.h"
 
 #include <limits.h>
 #include <math.h>

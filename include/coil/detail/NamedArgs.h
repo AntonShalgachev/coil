@@ -1,11 +1,11 @@
 #pragma once
 
+#include "CallContext.h"
+#include "Functional.h"
 #include "Optional.h"
 #include "String.h"
+#include "Utility.h"
 #include "Value.h"
-#include "detail/CallContext.h"
-#include "detail/Functional.h"
-#include "detail/Utility.h"
 
 namespace coil
 {

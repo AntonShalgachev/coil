@@ -1,6 +1,6 @@
 #pragma once
 
-#include "coil/TypeName.h"
+#include "coil/CoilFwd.h"
 
 #include <type_traits>
 #include <typeinfo>

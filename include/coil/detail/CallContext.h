@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../ExecutionInput.h"
-#include "../ExecutionResult.h"
+#include "ExecutionInput.h"
+#include "ExecutionResult.h"
 
 namespace coil
 {

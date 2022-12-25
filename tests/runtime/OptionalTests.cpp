@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 
-#include "coil/Optional.h"
+#include "coil/detail/Optional.h"
 
 namespace
 {

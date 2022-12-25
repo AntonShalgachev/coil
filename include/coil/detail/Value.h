@@ -1,11 +1,11 @@
 #pragma once
 
 #include "Expected.h"
+#include "Functional.h"
 #include "String.h"
 #include "StringView.h"
 #include "TypeName.h"
 #include "Vector.h"
-#include "detail/Functional.h"
 
 namespace coil
 {

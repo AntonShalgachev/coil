@@ -1,15 +1,15 @@
 #pragma once
 
-#include "../Context.h"
-#include "../Optional.h"
-#include "../String.h"
-#include "../StringView.h"
-#include "../TypeName.h"
-#include "../TypeSerializer.h"
-#include "../Types.h"
+#include "Context.h"
 #include "FuncTraits.h"
+#include "Optional.h"
 #include "Sequence.h"
+#include "String.h"
+#include "StringView.h"
+#include "TypeName.h"
+#include "TypeSerializer.h"
 #include "TypeTraits.h"
+#include "Types.h"
 #include "Utility.h"
 
 namespace coil::detail

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "coil/TypeSerializer.h"
+#include "detail/TypeSerializer.h"
 
 #include <optional>
 #include <ostream>

@@ -1,14 +1,14 @@
-#include "coil/DefaultLexer.h"
+#include "coil/detail/DefaultLexer.h"
 
-#include "coil/Extern.h"
+#include "coil/detail/Extern.h"
 
-#include "coil/ExecutionInput.h"
-#include "coil/Expected.h"
-#include "coil/Optional.h"
-#include "coil/Utils.h"
-#include "coil/Vector.h"
 #include "coil/detail/Algorithm.h"
+#include "coil/detail/ExecutionInput.h"
+#include "coil/detail/Expected.h"
+#include "coil/detail/Optional.h"
 #include "coil/detail/Utility.h"
+#include "coil/detail/Utils.h"
+#include "coil/detail/Vector.h"
 
 namespace
 {

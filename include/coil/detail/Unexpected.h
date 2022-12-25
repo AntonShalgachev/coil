@@ -1,7 +1,7 @@
 #pragma once
 
-#include "detail/TypeTraits.h"
-#include "detail/Utility.h"
+#include "TypeTraits.h"
+#include "Utility.h"
 
 namespace coil
 {

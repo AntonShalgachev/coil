@@ -3,11 +3,9 @@
 #include "Expected.h"
 #include "String.h"
 #include "TypeName.h"
+#include "Utility.h"
 #include "Utils.h"
 #include "Value.h"
-#include "detail/Utility.h"
-
-#include "detail/StringConv.h"
 
 namespace coil
 {
@@ -98,7 +96,6 @@ namespace coil
 
     //////////////////////////////////////
 
-    // TODO remove this specialization?
     template<typename T>
     struct TypeSerializer<T*>
     {

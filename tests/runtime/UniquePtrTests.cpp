@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 
-#include "coil/UniquePtr.h"
+#include "coil/detail/UniquePtr.h"
 
 namespace
 {

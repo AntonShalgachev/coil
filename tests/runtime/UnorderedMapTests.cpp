@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 
-#include "coil/UnorderedMap.h"
+#include "coil/detail/UnorderedMap.h"
 
 namespace coil
 {

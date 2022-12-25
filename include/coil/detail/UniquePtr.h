@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Assert.h"
-#include "detail/Utility.h"
+#include "Utility.h"
 
 namespace coil
 {
