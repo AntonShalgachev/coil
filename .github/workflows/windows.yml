@@ -60,8 +60,7 @@ jobs:
       run: OpenCppCoverage.exe --sources ${{github.workspace}}\include --sources ${{github.workspace}}\src --excluded_sources StdLibCompat.h --export_type cobertura:Codecov.xml --excluded_line_regex ".*@NOCOVERAGE.*" -- ${{github.workspace}}\build\tests\runtime\${{matrix.config}}\cmake_tests.exe
     - name: Upload report to Codecov
       if: matrix.compiler == 'clang' && matrix.config == 'Debug' && matrix.exceptions == 'ON'
-      uses: codecov/codecov-action@v1.3.2
+      uses: codecov/codecov-action@v3
       with:
         files: ./Codecov.xml
         fail_ci_if_error: true
-        functionalities: fix
