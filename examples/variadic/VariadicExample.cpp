@@ -11,14 +11,14 @@ namespace
 {
     struct Entity
     {
-        std::uint64_t id;
+        std::size_t id;
         std::string name;
     };
 
     class Entities
     {
     public:
-        Entity* getById(std::uint64_t id)
+        Entity* getById(std::size_t id)
         {
             for (Entity& entity : m_entities)
                 if (entity.id == id)
@@ -47,7 +47,7 @@ namespace
 
             // See ErrorsExample ('errors') to learn more about reporting errors
             Entity* target = nullptr;
-            if (auto id = entity.get<std::uint64_t>())
+            if (auto id = entity.get<std::size_t>())
                 target = getById(*id);
             else if (auto name = entity.get<std::string_view>())
                 target = getByName(*name);
@@ -64,7 +64,7 @@ namespace
         {
             context.logline("Entities:");
             for (Entity const& entity : m_entities)
-                context.loglinef("%llu: %s", entity.id, entity.name.c_str());
+                context.loglinef("%zu: %s", entity.id, entity.name.c_str());
         }
 
         void add(std::size_t id, std::string name)
