@@ -267,6 +267,8 @@ def profile_compilation_command(compilation_commands, configuration: BuildConfig
     durations = []
     traces = []
 
+    execute_db_command(find_db_entry(compilation_commands, 'ClassWithBindings0.h')) # generate classes
+
     if configuration.pch:
         execute_db_command(find_db_entry(compilation_commands, 'cmake_pch.cxx.obj'))
 
