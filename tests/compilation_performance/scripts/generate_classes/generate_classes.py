@@ -147,7 +147,12 @@ class SourceWriter:
         Path(output_folder).mkdir(parents=True, exist_ok=True)
         return output_folder
 
+    def _get_and_create_folder(self):
+        Path(self._destination).mkdir(parents=True, exist_ok=True)
+        return self._destination
+
     def _write_source(self, c, ext, name_key):
+        output_folder = self._get_and_create_folder()
         template_name = os.path.join(self._source, 'Class' + ext + '.template')
         source_name = c[name_key] + ext
 
@@ -156,7 +161,7 @@ class SourceWriter:
         search_list['if_non_empty'] = if_non_empty
         search_list['arg_names'] = arg_names
         search_list['return_type'] = return_type
-        self._write_template(template_name, search_list, self._destination, source_name)
+        self._write_template(template_name, search_list, output_folder, source_name)
 
     def _write_template(self, template_file, search_list, output_folder, output_filename):
         t = Template(file=template_file, searchList=search_list)
