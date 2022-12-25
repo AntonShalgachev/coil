@@ -42,7 +42,7 @@ void PropertiesExample::run()
 
     Window window;
 
-    bindings["window.print_size"] = [&window](coil::Context context) { context.loglinef("%llux%llu", window.width, window.height); };
+    bindings["window.print_size"] = [&window](coil::Context context) { context.loglinef("%zux%zu", window.width, window.height); };
     bindings["window.aspect"] = coil::bindProperty(&Window::getAspect, &Window::setAspect, &window);
     bindings["window.diagonal"] = coil::bindProperty(&getWindowDiagonal, &setWindowDiagonal, &window);
 
