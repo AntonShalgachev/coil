@@ -1,8 +1,8 @@
+import sys
 from Cheetah.Template import Template
 from pathlib import Path
 import os.path
 import random
-import shutil
 
 
 def arg_names(args):
@@ -133,19 +133,14 @@ class ClassGenerator:
 
 
 class SourceWriter:
-    def __init__(self, destination):
+    def __init__(self, source, destination):
+        self._source = source
         self._destination = destination
 
     def write(self, seed, classes, classes_key='classes', name_key='name'):
-        self._clear_destination()
-        self._write_cmake(classes)
         for c in classes[classes_key]:
             self._write_source(c, '.h', name_key)
             self._write_source(c, '.cpp', name_key)
-
-    def _clear_destination(self):
-        if os.path.exists(self._destination):
-            shutil.rmtree(self._destination)
 
     def _get_and_create_folder(self, relative_output_folder):
         output_folder = os.path.join(self._destination, relative_output_folder)
@@ -153,8 +148,7 @@ class SourceWriter:
         return output_folder
 
     def _write_source(self, c, ext, name_key):
-        output_folder = self._get_and_create_folder('classes')
-        template_name = 'Class' + ext + '.template'
+        template_name = os.path.join(self._source, 'Class' + ext + '.template')
         source_name = c[name_key] + ext
 
         search_list = c.copy()
@@ -162,13 +156,7 @@ class SourceWriter:
         search_list['if_non_empty'] = if_non_empty
         search_list['arg_names'] = arg_names
         search_list['return_type'] = return_type
-        self._write_template(template_name, search_list, output_folder, source_name)
-
-    def _write_cmake(self, classes):
-        output_folder = self._get_and_create_folder('.')
-        template_name = 'CMakeLists.txt.template'
-        source_name = 'CMakeLists.txt'
-        self._write_template(template_name, classes, output_folder, source_name)
+        self._write_template(template_name, search_list, self._destination, source_name)
 
     def _write_template(self, template_file, search_list, output_folder, output_filename):
         t = Template(file=template_file, searchList=search_list)
@@ -179,7 +167,7 @@ class SourceWriter:
 
 def main():
     seed = 88005553535
-    classes_with_bindings_count = 200
+    classes_with_bindings_count = int(sys.argv[1])
     classes_without_bindings_count = 0
     methods_count = 4
     functions_count = 4
@@ -188,13 +176,14 @@ def main():
     includes_count = 0
     args_count = [0, 1, 2]
     types = ['int', 'float', 'double', 'bool', 'short', 'unsigned']
-    destination = '../../generated'
+    source = sys.argv[2]
+    destination = sys.argv[3]
 
     class_generator = ClassGenerator(classes_with_bindings_count, classes_without_bindings_count, methods_count, functions_count, member_variables_count, variables_count, args_count, includes_count, types, seed)
     
     classes = class_generator.generate()
 
-    writer = SourceWriter(destination)
+    writer = SourceWriter(source, destination)
     writer.write(class_generator._seed, classes)
 
 

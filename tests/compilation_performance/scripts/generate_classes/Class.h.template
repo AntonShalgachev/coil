@@ -3,7 +3,7 @@
 // Generated with seed '$seed'
 
 #if $has_bindings
-\#include "../../Common.h"
+\#include "Common.h"
 #end if
 
 #for $include in $includes
