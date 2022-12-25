@@ -1,6 +1,7 @@
 #include "coil/Coil.h"
 
 #include "coil/detail/Assert.h"
+#include "coil/detail/Config.h"
 #include "coil/detail/DefaultLexer.h"
 #include "coil/detail/ExecutionResult.h"
 #include "coil/detail/Expected.h"

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Config.h"
 #include "StringView.h"
 
 namespace coil
